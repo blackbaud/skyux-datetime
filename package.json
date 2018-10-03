@@ -25,7 +25,15 @@
     "url": "https://github.com/blackbaud/skyux-sample/issues"
   },
   "homepage": "https://github.com/blackbaud/skyux-sample#readme",
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@angular/core": "^4.3.6",
+    "@angular/router": "^4.3.6",
+    "@skyux/core": "^3.1.0",
+    "@skyux/i18n": "^3.0.1",
+    "@skyux/indicators": ">=3.0.0-rc.0",
+    "@skyux/popovers": ">=3.0.0-rc.0",
+    "rxjs": "^5.4.3"
+  },
   "dependencies": {},
   "devDependencies": {
     "@angular/animations": "4.3.6",
