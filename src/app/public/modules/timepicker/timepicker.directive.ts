@@ -24,10 +24,6 @@ import {
 } from 'rxjs/Subscription';
 
 import {
-  SkyAppResourcesService
-} from '@skyux/i18n';
-
-import {
   SkyTimepickerComponent
 } from './timepicker.component';
 import {
@@ -90,10 +86,14 @@ export class SkyTimepickerInputDirective implements
   private modelValue: SkyTimepickerTimeOutput;
   private _disabled: boolean;
 
+  // TODO: The following require statement is not recommended, but was done
+  // to avoid a breaking change (SkyResources is synchronous, but SkyAppResources is asynchronous).
+  // We should switch to using SkyAppResources in the next major release.
+  private resources: any = require('!json-loader!.skypageslocales/resources_en_US.json');
+
   public constructor(
     private renderer: Renderer,
-    private elRef: ElementRef,
-    private skyResourceService: SkyAppResourcesService
+    private elRef: ElementRef
   ) { }
 
   public ngOnInit() {
@@ -104,9 +104,10 @@ export class SkyTimepickerInputDirective implements
         this._onChange(newTime);
       });
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
-      this.skyResourceService.getString('timepicker_input_default_label').take(1).subscribe((value) => {
-        this.renderer.setElementAttribute(this.elRef.nativeElement, 'aria-label', value);
-      });
+      this.renderer.setElementAttribute(
+        this.elRef.nativeElement,
+        'aria-label',
+        this.getString('timepicker_input_default_label'));
     }
   }
 
@@ -199,6 +200,16 @@ export class SkyTimepickerInputDirective implements
       return formatTime;
     }
   }
+
+  /**
+   * This method is a stand-in for the old SkyResources service from skyux2.
+   * TODO: We should consider using Builder's resources service instead.
+   * @param key
+   */
+  private getString(key: string): string {
+    return this.resources[key].message;
+  }
+
   /*istanbul ignore next */
   private _onChange = (_: any) => { };
   /*istanbul ignore next */

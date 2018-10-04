@@ -2,7 +2,8 @@ import {
   TestBed,
   ComponentFixture,
   fakeAsync,
-  tick
+  tick,
+  async
 } from '@angular/core/testing';
 
 import {
@@ -231,6 +232,16 @@ describe('datepicker', () => {
 
       expect(component.selectedDate).toEqual(new Date('5/2/2017'));
       expect(nativeElement.querySelector('input').value).toBe('05/02/2017');
+    }));
+
+    it('should be accessible', async(() => {
+      fixture.detectChanges();
+      openDatepicker(nativeElement, fixture);
+      fixture.detectChanges();
+
+      fixture.whenStable().then(() => {
+        expect(fixture.nativeElement).toBeAccessible();
+      });
     }));
 
     describe('initialization', () => {

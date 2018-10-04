@@ -2,7 +2,8 @@ import {
   TestBed,
   ComponentFixture,
   fakeAsync,
-  tick
+  tick,
+  async
 } from '@angular/core/testing';
 import {
   FormsModule
@@ -185,6 +186,18 @@ describe('Timepicker', () => {
     fixture.detectChanges();
     expect(nativeElement.querySelector('input').getAttribute('aria-label')).toBe('This is a time field.');
   });
+
+  it('should be accessible', async(() => {
+    fixture.detectChanges();
+
+    let dropdownButtonEl = nativeElement.querySelector('.sky-dropdown-button') as HTMLElement;
+    dropdownButtonEl.click();
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      expect(fixture.nativeElement).toBeAccessible();
+    });
+  }));
 
   describe('validation', () => {
     it('should have active css when in twelve hour timeFormat',
