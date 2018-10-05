@@ -5,23 +5,35 @@ import {
   tick,
   async
 } from '@angular/core/testing';
+
 import {
   FormsModule
 } from '@angular/forms';
+
 import {
   By
 } from '@angular/platform-browser';
+
 import {
   NoopAnimationsModule
 } from '@angular/platform-browser/animations';
 
 import {
+  SkyAppResourcesService
+} from '@skyux/i18n';
+
+import {
+  SkyAppResourcesTestService
+} from '@skyux/i18n/testing';
+
+import {
   expect
-} from '@blackbaud/skyux-builder/runtime/testing/browser';
+} from '@skyux-sdk/testing';
 
 import {
   SkyTimepickerModule
 } from './timepicker.module';
+
 import {
   TimepickerTestComponent
 } from './fixtures/timepicker-component.fixture';
@@ -74,6 +86,12 @@ describe('Timepicker', () => {
         SkyTimepickerModule,
         NoopAnimationsModule,
         FormsModule
+      ],
+      providers: [
+        {
+          provide: SkyAppResourcesService,
+          useClass: SkyAppResourcesTestService
+        }
       ]
     });
 

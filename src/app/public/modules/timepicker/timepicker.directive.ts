@@ -10,6 +10,7 @@ import {
   Renderer,
   SimpleChanges
 } from '@angular/core';
+
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -18,7 +19,10 @@ import {
   Validator
 } from '@angular/forms';
 
-const moment = require('moment');
+import {
+  SkyAppResourcesService
+} from '@skyux/i18n';
+
 import {
   Subscription
 } from 'rxjs/Subscription';
@@ -26,9 +30,12 @@ import {
 import {
   SkyTimepickerComponent
 } from './timepicker.component';
+
 import {
   SkyTimepickerTimeOutput
 } from './timepicker.interface';
+
+const moment = require('moment');
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_TIMEPICKER_VALUE_ACCESSOR = {
@@ -42,6 +49,7 @@ const SKY_TIMEPICKER_VALIDATOR = {
   useExisting: forwardRef(() => SkyTimepickerInputDirective),
   multi: true
 };
+
 // tslint:enable
 @Directive({
   selector: '[skyTimepickerInput]',
@@ -86,28 +94,29 @@ export class SkyTimepickerInputDirective implements
   private modelValue: SkyTimepickerTimeOutput;
   private _disabled: boolean;
 
-  // TODO: The following require statement is not recommended, but was done
-  // to avoid a breaking change (SkyResources is synchronous, but SkyAppResources is asynchronous).
-  // We should switch to using SkyAppResources in the next major release.
-  private resources: any = require('!json-loader!.skypageslocales/resources_en_US.json');
-
-  public constructor(
+  constructor(
     private renderer: Renderer,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private resourcesService: SkyAppResourcesService
   ) { }
 
   public ngOnInit() {
     this.renderer.setElementClass(this.elRef.nativeElement, 'sky-form-control', true);
-    this.pickerChangedSubscription =
-      this.skyTimepickerInput.selectedTimeChanged.subscribe((newTime: String) => {
+    this.pickerChangedSubscription = this.skyTimepickerInput.selectedTimeChanged
+      .subscribe((newTime: String) => {
         this.writeValue(this.formatter(newTime));
         this._onChange(newTime);
       });
+
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
-      this.renderer.setElementAttribute(
-        this.elRef.nativeElement,
-        'aria-label',
-        this.getString('timepicker_input_default_label'));
+      this.resourcesService.getString('skyux_timepicker_input_default_label')
+        .subscribe((value: string) => {
+          this.renderer.setElementAttribute(
+            this.elRef.nativeElement,
+            'aria-label',
+            value
+          );
+        });
     }
   }
 
@@ -201,19 +210,9 @@ export class SkyTimepickerInputDirective implements
     }
   }
 
-  /**
-   * This method is a stand-in for the old SkyResources service from skyux2.
-   * TODO: We should consider using Builder's resources service instead.
-   * @param key
-   */
-  private getString(key: string): string {
-    return this.resources[key].message;
-  }
-
   /*istanbul ignore next */
   private _onChange = (_: any) => { };
   /*istanbul ignore next */
   private _onTouched = () => { };
   private _validatorChange = () => { };
-
 }
