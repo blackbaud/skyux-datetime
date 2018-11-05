@@ -57,7 +57,7 @@ import {
 
 const moment = require('moment');
 
-fdescribe('datepicker', () => {
+describe('datepicker', () => {
 
   function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>) {
     let dropdownButtonEl = element.querySelector('.sky-dropdown-button') as HTMLElement;
