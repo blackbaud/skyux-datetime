@@ -16,7 +16,7 @@ export class DatepickerVisualComponent implements OnInit {
 
   public ngOnInit() {
     this.dateControl = new FormControl({ value: '', disabled: this.disable }, [Validators.required]);
-    this.timeControl = new FormControl({ value: '', disabled: this.disable }, [Validators.required]);
+    this.timeControl = new FormControl({ value: '2:55 AM', disabled: this.disable }, [Validators.required]);
     this.dateTimeForm = new FormGroup({
       'date': this.dateControl,
       'time': this.timeControl
