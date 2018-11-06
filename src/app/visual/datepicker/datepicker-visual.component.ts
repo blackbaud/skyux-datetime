@@ -33,4 +33,8 @@ export class DatepickerVisualComponent implements OnInit {
       this.timeControl.enable();
     }
   }
+
+  public printInfo() {
+    console.log(this.dateTimeForm.get('time').value);
+  }
 }

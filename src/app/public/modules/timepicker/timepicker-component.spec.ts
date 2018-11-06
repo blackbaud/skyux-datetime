@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import {
-  FormsModule
+  FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 
 import {
@@ -414,7 +414,7 @@ describe('Timepicker', () => {
       describe('disabled state', () => {
 
         it('should disable the input and dropdown when disable is set to true', () => {
-          component.isDisabled = true;
+          (<TimepickerTestComponent>component).isDisabled = true;
           fixture.detectChanges();
 
           expect(fixture.componentInstance.timepicker.disabled).toBeTruthy();
@@ -423,7 +423,7 @@ describe('Timepicker', () => {
         });
 
         it('should not disable the input and dropdown when disable is set to false', () => {
-          component.isDisabled = false;
+          (<TimepickerTestComponent>component).isDisabled = false;
           fixture.detectChanges();
 
           expect(fixture.componentInstance.timepicker.disabled).toBeFalsy();
@@ -445,7 +445,8 @@ describe('Timepicker', () => {
         imports: [
           SkyTimepickerModule,
           NoopAnimationsModule,
-          FormsModule
+          FormsModule,
+          ReactiveFormsModule
         ],
         providers: [
           {
@@ -470,15 +471,15 @@ describe('Timepicker', () => {
         tick();
         fixture.detectChanges();
         expect(nativeElement.querySelector('input').value).toBe('2:55 AM');
-        expect(component.selectedTime.local).toEqual('2:55 AM');
+        expect((<TimepickerReactiveTestComponent>component).timeControl.value).toEqual('2:55 AM');
       }));
     });
 
     describe('validation', () => {
       it('should have active css when in twelve hour timeFormat',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'hh';
+          fixture.detectChanges();
           openTimepicker(nativeElement, fixture);
           fixture.detectChanges();
           tick();
@@ -508,8 +509,8 @@ describe('Timepicker', () => {
 
       it('should have active css when in twenty four hour timeFormat',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'HH';
+          fixture.detectChanges();
           openTimepicker(nativeElement, fixture);
           fixture.detectChanges();
           tick();
@@ -536,8 +537,8 @@ describe('Timepicker', () => {
 
       it('should update time on mouse click for twelve four hour timeFormat',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'hh';
+          fixture.detectChanges();
           openTimepicker(nativeElement, fixture);
           fixture.detectChanges();
           tick();
@@ -565,8 +566,8 @@ describe('Timepicker', () => {
 
       it('should update time on mouse click for twenty four hour timeFormat',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'HH';
+          fixture.detectChanges();
           openTimepicker(nativeElement, fixture);
           fixture.detectChanges();
           tick();
@@ -591,9 +592,9 @@ describe('Timepicker', () => {
 
       it('should return a custom time timeFormat',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'HH';
           component.returnFormat = 'HH:mm:ssZ';
+          fixture.detectChanges();
           openTimepicker(nativeElement, fixture);
           fixture.detectChanges(); tick();
           let sections = fixture.nativeElement.querySelectorAll('.sky-timepicker-container');
@@ -612,8 +613,8 @@ describe('Timepicker', () => {
 
       it('should toggle AM and set active css',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'hh';
+          fixture.detectChanges();
           setInput(nativeElement, '1:00 PM', fixture);
           openTimepicker(nativeElement, fixture);
           let sections = fixture.nativeElement.querySelectorAll('.sky-timepicker-container');
@@ -647,8 +648,8 @@ describe('Timepicker', () => {
 
       it('should toggle PM and set active css',
         fakeAsync(() => {
-          fixture.detectChanges();
           component.timeFormat = 'hh';
+          fixture.detectChanges();
           setInput(nativeElement, '1:00 AM', fixture);
           openTimepicker(nativeElement, fixture);
           let sections = fixture.nativeElement.querySelectorAll('.sky-timepicker-container');
@@ -680,27 +681,34 @@ describe('Timepicker', () => {
 
     describe('disabled state', () => {
 
-      it('should disable the input and dropdown when disable is set to true', () => {
-        component.isDisabled = true;
+      it('should disable the input and dropdown when disable is set to true', fakeAsync(() => {
+        fixture.detectChanges();
+        (<TimepickerReactiveTestComponent>component).timeControl.disable();
+        fixture.detectChanges();
+        tick();
         fixture.detectChanges();
 
         expect(fixture.componentInstance.timepicker.disabled).toBeTruthy();
         expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeTruthy();
         expect(fixture.debugElement.query(By.css('sky-dropdown button')).nativeElement.disabled).toBeTruthy();
-      });
+      }));
 
-      it('should not disable the input and dropdown when disable is set to false', () => {
-        component.isDisabled = false;
+      it('should not disable the input and dropdown when disable is set to false', fakeAsync(() => {
+        fixture.detectChanges();
+        (<TimepickerReactiveTestComponent>component).timeControl.enable();
+        fixture.detectChanges();
+        tick();
         fixture.detectChanges();
 
         expect(fixture.componentInstance.timepicker.disabled).toBeFalsy();
         expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeFalsy();
         expect(fixture.debugElement.query(By.css('sky-dropdown button')).nativeElement.disabled).toBeFalsy();
-      });
+      }));
 
     });
 
     it('should be accessible', async(() => {
+      fixture.detectChanges();
       fixture.detectChanges();
 
       let dropdownButtonEl = nativeElement.querySelector('.sky-dropdown-button') as HTMLElement;
