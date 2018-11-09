@@ -4,9 +4,6 @@
   "description": "SKY UX DateTime",
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
-  "engines": {
-    "node": ">=8.11.1"
-  },
   "scripts": {
     "build": "skyux build-public-library",
     "skyux": "skyux",
