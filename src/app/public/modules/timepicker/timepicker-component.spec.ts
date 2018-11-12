@@ -615,8 +615,12 @@ describe('Timepicker', () => {
           tick();
           let input = nativeElement.querySelector('input');
           input.value = '12:30 AM';
-          input.dispatchEvent(new Event('input'));
-          input.dispatchEvent(new Event('change'));
+          let inputEvent = new Event('input');
+          inputEvent.initEvent('input', false, false);
+          let changeEvent = new Event('change');
+          changeEvent.initEvent('change', false, false);
+          input.dispatchEvent(inputEvent);
+          input.dispatchEvent(changeEvent);
           fixture.detectChanges();
           tick();
           fixture.detectChanges();

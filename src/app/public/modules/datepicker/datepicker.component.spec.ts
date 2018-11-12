@@ -719,12 +719,6 @@ describe('datepicker', () => {
           NoopAnimationsModule,
           FormsModule,
           ReactiveFormsModule
-        ],
-        providers: [
-          {
-            provide: SkyLibResourcesService,
-            useClass: SkyLibResourcesTestService
-          }
         ]
       });
 
