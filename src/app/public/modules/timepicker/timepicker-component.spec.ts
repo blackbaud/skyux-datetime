@@ -615,9 +615,9 @@ describe('Timepicker', () => {
           tick();
           let input = nativeElement.querySelector('input');
           input.value = '12:30 AM';
-          let inputEvent = new Event('input');
+          let inputEvent = document.createEvent('CustomEvent');
           inputEvent.initEvent('input', false, false);
-          let changeEvent = new Event('change');
+          let changeEvent = document.createEvent('CustomEvent');
           changeEvent.initEvent('change', false, false);
           input.dispatchEvent(inputEvent);
           input.dispatchEvent(changeEvent);
