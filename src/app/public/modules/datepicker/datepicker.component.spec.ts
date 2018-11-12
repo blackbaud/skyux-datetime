@@ -25,14 +25,6 @@ import {
 } from '@skyux/core';
 
 import {
-  SkyLibResourcesService
-} from '@skyux/i18n';
-
-import {
-  SkyLibResourcesTestService
-} from '@skyux/i18n/testing';
-
-import {
   expect
 } from '@skyux-sdk/testing';
 
@@ -123,12 +115,6 @@ describe('datepicker', () => {
           SkyDatepickerModule,
           NoopAnimationsModule,
           FormsModule
-        ],
-        providers: [
-          {
-            provide: SkyLibResourcesService,
-            useClass: SkyLibResourcesTestService
-          }
         ]
       });
 
@@ -174,12 +160,6 @@ describe('datepicker', () => {
           SkyDatepickerModule,
           NoopAnimationsModule,
           FormsModule
-        ],
-        providers: [
-          {
-            provide: SkyLibResourcesService,
-            useClass: SkyLibResourcesTestService
-          }
         ]
       });
 
@@ -1159,11 +1139,7 @@ describe('datepicker', () => {
           FormsModule
         ],
         providers: [
-          { provide: SkyWindowRefService, useValue: mockWindowService },
-          {
-            provide: SkyLibResourcesService,
-            useClass: SkyLibResourcesTestService
-          }
+          { provide: SkyWindowRefService, useValue: mockWindowService }
         ]
       });
 

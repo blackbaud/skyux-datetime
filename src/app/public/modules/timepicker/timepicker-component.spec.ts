@@ -19,14 +19,6 @@ import {
 } from '@angular/platform-browser/animations';
 
 import {
-  SkyLibResourcesService
-} from '@skyux/i18n';
-
-import {
-  SkyLibResourcesTestService
-} from '@skyux/i18n/testing';
-
-import {
   expect
 } from '@skyux-sdk/testing';
 
@@ -118,12 +110,6 @@ describe('Timepicker', () => {
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule
-        ],
-        providers: [
-          {
-            provide: SkyLibResourcesService,
-            useClass: SkyLibResourcesTestService
-          }
         ]
       });
 
@@ -447,12 +433,6 @@ describe('Timepicker', () => {
           NoopAnimationsModule,
           FormsModule,
           ReactiveFormsModule
-        ],
-        providers: [
-          {
-            provide: SkyLibResourcesService,
-            useClass: SkyLibResourcesTestService
-          }
         ]
       });
 
