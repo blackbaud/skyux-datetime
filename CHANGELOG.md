@@ -1,6 +1,6 @@
 # 3.0.0-rc.3 (2018-11-20)
 
-- Fixed datepicker and timepicker components to be able to set the disabled state in reactive forms. [blackbaud/skyux-datetime#4](https://github.com/blackbaud/skyux-datetime/pull/4)
+- Fixed datepicker and timepicker components to allow a disabled state when appearing in reactive forms. [blackbaud/skyux-datetime#4](https://github.com/blackbaud/skyux-datetime/pull/4)
 
 # 3.0.0-rc.2 (2018-11-09)
 
