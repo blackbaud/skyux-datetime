@@ -8,7 +8,10 @@ import {
   Renderer,
   ElementRef,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Injector
 } from '@angular/core';
 
 import {
@@ -20,7 +23,9 @@ import {
   NG_VALUE_ACCESSOR,
   Validator,
   NG_VALIDATORS,
-  AbstractControl
+  AbstractControl,
+  FormControl,
+  NgControl
 } from '@angular/forms';
 
 import {
@@ -30,9 +35,11 @@ import {
 import {
   SkyDatepickerComponent
 } from './datepicker.component';
+
 import {
   SkyDateFormatter
 } from './date-formatter';
+
 import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
@@ -59,7 +66,7 @@ const SKY_DATEPICKER_VALIDATOR = {
   ]
 })
 export class SkyDatepickerInputDirective implements
-  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges {
+  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges, AfterViewInit {
 
   public pickerChangedSubscription: Subscription;
 
@@ -102,7 +109,9 @@ export class SkyDatepickerInputDirective implements
     private renderer: Renderer,
     private elRef: ElementRef,
     private config: SkyDatepickerConfigService,
-    private resourcesService: SkyLibResourcesService
+    private resourcesService: SkyLibResourcesService,
+    private injector: Injector,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.configureOptions();
   }
@@ -128,6 +137,14 @@ export class SkyDatepickerInputDirective implements
             value
           );
         });
+    }
+  }
+
+  public ngAfterViewInit(): void {
+    let control: FormControl = (<NgControl>this.injector.get(NgControl)).control as FormControl;
+    if (control && this.modelValue) {
+      control.setValue(this.modelValue, { emitEvent: false });
+      this.changeDetector.detectChanges();
     }
   }
 

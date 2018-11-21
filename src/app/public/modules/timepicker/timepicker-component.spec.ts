@@ -446,12 +446,12 @@ describe('Timepicker', () => {
     });
 
     describe('initial value', () => {
-      it('should set the intiial value correctly', fakeAsync(() => {
+      it('should set the intial value correctly', fakeAsync(() => {
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
         expect(nativeElement.querySelector('input').value).toBe('2:55 AM');
-        expect((<TimepickerReactiveTestComponent>component).timeControl.value).toEqual('2:55 AM');
+        expect((<TimepickerReactiveTestComponent>component).timeControl.value.local).toEqual('2:55 AM');
       }));
     });
 

@@ -731,6 +731,17 @@ describe('datepicker', () => {
       fixture.destroy();
     });
 
+    describe('initial value', () => {
+      it('should set the intial value correctly', fakeAsync(() => {
+        component.initialValue = '5/12/2017';
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+        expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
+        expect(component.dateControl.value).toEqual(new Date('5/12/2017'));
+      }));
+    });
+
     describe('input change', () => {
       it('should handle input change with a string with the expected format', fakeAsync(() => {
         fixture.detectChanges();

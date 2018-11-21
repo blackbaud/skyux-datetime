@@ -8,7 +8,10 @@ import {
   OnDestroy,
   OnInit,
   Renderer,
-  SimpleChanges
+  SimpleChanges,
+  Injector,
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -16,7 +19,9 @@ import {
   ControlValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  Validator
+  Validator,
+  FormControl,
+  NgControl
 } from '@angular/forms';
 
 import {
@@ -59,7 +64,7 @@ const SKY_TIMEPICKER_VALIDATOR = {
   ]
 })
 export class SkyTimepickerInputDirective implements
-  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges {
+  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges, AfterViewInit {
 
   public pickerChangedSubscription: Subscription;
   private _timeFormat: string = 'hh';
@@ -97,7 +102,9 @@ export class SkyTimepickerInputDirective implements
   constructor(
     private renderer: Renderer,
     private elRef: ElementRef,
-    private resourcesService: SkyLibResourcesService
+    private resourcesService: SkyLibResourcesService,
+    private injector: Injector,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   public ngOnInit() {
@@ -117,6 +124,14 @@ export class SkyTimepickerInputDirective implements
             value
           );
         });
+    }
+  }
+
+  public ngAfterViewInit(): void {
+    let control: FormControl = (<NgControl>this.injector.get(NgControl)).control as FormControl;
+    if (control && this.modelValue) {
+      control.setValue(this.modelValue, { emitEvent: false });
+      this.changeDetector.detectChanges();
     }
   }
 
@@ -154,8 +169,11 @@ export class SkyTimepickerInputDirective implements
 
   public writeValue(value: any) {
     this.modelValue = this.formatter(value);
+    this._validatorChange();
+    this._onChange(this.modelValue);
     this.writeModelValue(this.modelValue);
   }
+
   public validate(control: AbstractControl): { [key: string]: any } {
     let value = control.value;
     if (!value) {
