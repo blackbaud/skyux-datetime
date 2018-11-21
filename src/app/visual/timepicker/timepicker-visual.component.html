@@ -40,18 +40,3 @@
     </span>
   </div>
 </div>
-
-<form
-  style="max-width: 400px; height: 500px;"
-  [formGroup]="timepickerForm"
->
-  <sky-timepicker #timePicker>
-    <input
-      id="timeInput"
-      placeholder="Time"
-      [skyTimepickerInput]="timePicker"
-      formControlName="time"
-    />
-  </sky-timepicker>
-  <p>{{ timepickerForm.value.time.local }}</p>
-</form>

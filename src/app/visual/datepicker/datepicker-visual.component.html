@@ -13,16 +13,3 @@
       [skyDatepickerInput]="picker" />
   </sky-datepicker>
 </div>
-
-<form
-  style="max-width: 400px; height: 500px;"
-  [formGroup]="timepickerForm"
->
-  <sky-datepicker #timePicker>
-    <input
-      [skyDatepickerInput]="timePicker"
-      formControlName="time"
-    />
-  </sky-datepicker>
-  <p>{{ timepickerForm.value.time }}</p>
-</form>
