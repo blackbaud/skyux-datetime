@@ -170,7 +170,9 @@ export class SkyTimepickerInputDirective implements
   public writeValue(value: any) {
     this.modelValue = this.formatter(value);
     this._validatorChange();
-    this._onChange(this.modelValue);
+    if (value !== this.modelValue) {
+      this._onChange(this.modelValue);
+    }
     this.writeModelValue(this.modelValue);
   }
 
