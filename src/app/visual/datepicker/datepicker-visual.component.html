@@ -13,3 +13,39 @@
       [skyDatepickerInput]="picker" />
   </sky-datepicker>
 </div>
+
+<h2
+  class="sky-section-heading"
+>
+  Reactive form datepicker
+</h2>
+
+<form
+  novalidate
+  style="max-width: 50%"
+  [formGroup]="reactiveForm"
+>
+  <sky-datepicker #reactivePicker>
+    <input
+      formControlName="selectedDate"
+      [skyDatepickerInput]="reactivePicker"
+      [minDate]="minDate"
+      [maxDate]="maxDate"
+    />
+  </sky-datepicker>
+</form>
+
+<div>
+  Reactive form selected date is {{ reactiveDate.value }}
+</div>
+
+<div *ngIf="reactiveDate.errors && (reactiveDate.dirty || reactiveDate.touched)"
+  class="sky-error-label"
+>
+  <p *ngIf="reactiveDate.errors.required">
+    This date is required. Please supply a value.
+  </p>
+  <p *ngIf="reactiveDate.errors.skyDate">
+    The date you have entered is invalid. Please enter a valid date or use the picker.
+  </p>
+</div>

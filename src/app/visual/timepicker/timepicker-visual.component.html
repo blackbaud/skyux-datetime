@@ -40,3 +40,40 @@
     </span>
   </div>
 </div>
+
+<h3>
+  Reactive form timepicker
+</h3>
+
+<form
+  novalidate
+  style="max-width: 400px"
+  [formGroup]="reactiveForm"
+>
+  <sky-timepicker
+    #timePickerExample4
+  >
+    <input
+      formControlName="time"
+      type="text"
+      [timeFormat]="format12"
+      [skyTimepickerInput]="timePickerExample4"
+    />
+  </sky-timepicker>
+</form>
+
+<div>
+  Reactive form selected time is {{ reactiveTime.value.local }}
+</div>
+
+<div *ngIf="reactiveTime.errors && (reactiveTime.dirty || reactiveTime.touched)"
+  class="sky-error-label"
+>
+  <p *ngIf="reactiveTime.errors.required">
+    This time is required. Please supply a value.
+  </p>
+  <p *ngIf="reactiveTime.errors.skyTime">
+    The time you have entered is invalid. Please enter a valid time or use the picker.
+  </p>
+</div>
+<br>

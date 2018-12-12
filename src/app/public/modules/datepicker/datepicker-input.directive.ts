@@ -1,17 +1,18 @@
 import {
-  Directive,
-  Input,
-  OnInit,
-  OnDestroy,
-  forwardRef,
-  HostListener,
-  Renderer,
-  ElementRef,
-  SimpleChanges,
-  OnChanges,
   AfterViewInit,
   ChangeDetectorRef,
-  Injector
+  Directive,
+  ElementRef,
+  forwardRef,
+  HostListener,
+  Injector,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer,
+  SimpleChanges
 } from '@angular/core';
 
 import {
@@ -19,13 +20,13 @@ import {
 } from 'rxjs';
 
 import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  Validator,
-  NG_VALIDATORS,
   AbstractControl,
+  ControlValueAccessor,
   FormControl,
-  NgControl
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  Validator
 } from '@angular/forms';
 
 import {
@@ -101,8 +102,19 @@ export class SkyDatepickerInputDirective implements
     this._disabled = value;
   }
 
+  private get modelValue(): Date {
+    return this._modelValue;
+  }
+  private set modelValue(value: Date) {
+    if (value !== this.modelValue) {
+      this._modelValue = value;
+      this._onChange(value);
+      this._onTouched();
+    }
+  }
+
   private dateFormatter = new SkyDateFormatter();
-  private modelValue: Date;
+  private _modelValue: Date;
   private _disabled: boolean;
 
   public constructor(
@@ -110,8 +122,8 @@ export class SkyDatepickerInputDirective implements
     private elRef: ElementRef,
     private config: SkyDatepickerConfigService,
     private resourcesService: SkyLibResourcesService,
-    private injector: Injector,
-    private changeDetector: ChangeDetectorRef
+    @Optional() private injector: Injector,
+    @Optional() private changeDetector: ChangeDetectorRef
   ) {
     this.configureOptions();
   }
@@ -125,7 +137,6 @@ export class SkyDatepickerInputDirective implements
     this.pickerChangedSubscription = this.skyDatepickerInput.dateChanged
       .subscribe((newDate: Date) => {
         this.writeValue(newDate);
-        this._onChange(newDate);
       });
 
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
@@ -179,7 +190,6 @@ export class SkyDatepickerInputDirective implements
     // need to parse date here:
     this.modelValue = this.dateFormatter.getDateFromString(newValue, this.dateFormat);
     if (this.dateFormatter.dateIsValid(this.modelValue)) {
-      this._onChange(this.modelValue);
       this.writeModelValue(this.modelValue);
     } else {
       this._onChange(newValue);
@@ -206,12 +216,8 @@ export class SkyDatepickerInputDirective implements
       this.modelValue = value;
     } else if (value) {
       this.modelValue = this.dateFormatter.getDateFromString(value, this.dateFormat);
-      if (value !== this.modelValue && this.dateFormatter.dateIsValid(this.modelValue)) {
-        this._onChange(this.modelValue);
-      }
     } else {
       this.modelValue = value;
-      this._onChange(this.modelValue);
     }
 
     if (this.dateFormatter.dateIsValid(this.modelValue) || !this.modelValue) {
@@ -268,7 +274,6 @@ export class SkyDatepickerInputDirective implements
   }
 
   private writeModelValue(model: Date) {
-
     this.renderer.setElementProperty(
       this.elRef.nativeElement,
       'value',

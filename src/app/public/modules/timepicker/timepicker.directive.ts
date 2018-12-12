@@ -1,17 +1,18 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Directive,
   ElementRef,
   forwardRef,
   HostListener,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Renderer,
-  SimpleChanges,
-  Injector,
-  AfterViewInit,
-  ChangeDetectorRef
+  SimpleChanges
 } from '@angular/core';
 
 import {
@@ -96,15 +97,26 @@ export class SkyTimepickerInputDirective implements
     this._disabled = value;
   }
 
-  private modelValue: SkyTimepickerTimeOutput;
+  private get modelValue(): SkyTimepickerTimeOutput {
+    return this._modelValue;
+  }
+  private set modelValue(value: SkyTimepickerTimeOutput) {
+    if (value !== this.modelValue) {
+      this._modelValue = value;
+      this._onChange(this._modelValue);
+      this._onTouched();
+    }
+  }
+
+  private _modelValue: SkyTimepickerTimeOutput;
   private _disabled: boolean;
 
   constructor(
     private renderer: Renderer,
     private elRef: ElementRef,
     private resourcesService: SkyLibResourcesService,
-    private injector: Injector,
-    private changeDetector: ChangeDetectorRef
+    @Optional() private injector: Injector,
+    @Optional() private changeDetector: ChangeDetectorRef
   ) { }
 
   public ngOnInit() {
@@ -112,7 +124,6 @@ export class SkyTimepickerInputDirective implements
     this.pickerChangedSubscription = this.skyTimepickerInput.selectedTimeChanged
       .subscribe((newTime: String) => {
         this.writeValue(this.formatter(newTime));
-        this._onChange(newTime);
       });
 
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
@@ -150,7 +161,6 @@ export class SkyTimepickerInputDirective implements
     let newValue = event.target.value;
     this.modelValue = this.formatter(newValue);
     this._validatorChange();
-    this._onChange(this.modelValue);
     this.writeModelValue(this.modelValue);
   }
 
@@ -170,9 +180,6 @@ export class SkyTimepickerInputDirective implements
   public writeValue(value: any) {
     this.modelValue = this.formatter(value);
     this._validatorChange();
-    if (value !== this.modelValue) {
-      this._onChange(this.modelValue);
-    }
     this.writeModelValue(this.modelValue);
   }
 
