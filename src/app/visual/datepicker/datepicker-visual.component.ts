@@ -22,7 +22,7 @@ export class DatepickerVisualComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
 
-  public get reactiveDate() {
+  public get reactiveDate(): any {
     return this.reactiveForm.get('selectedDate');
   }
 

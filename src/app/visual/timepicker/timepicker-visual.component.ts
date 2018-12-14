@@ -21,7 +21,7 @@ export class TimepickerVisualComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
 
-  public get reactiveTime() {
+  public get reactiveTime(): any {
     return this.reactiveForm.get('time');
   }
 
