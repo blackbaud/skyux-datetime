@@ -104,7 +104,6 @@ export class SkyTimepickerInputDirective implements
     if (value !== this.modelValue) {
       this._modelValue = value;
       this._onChange(this._modelValue);
-      this._onTouched();
     }
   }
 
@@ -124,6 +123,7 @@ export class SkyTimepickerInputDirective implements
     this.pickerChangedSubscription = this.skyTimepickerInput.selectedTimeChanged
       .subscribe((newTime: String) => {
         this.writeValue(this.formatter(newTime));
+        this._onTouched();
       });
 
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
@@ -218,6 +218,7 @@ export class SkyTimepickerInputDirective implements
   private formatter(time: any) {
     if (time && typeof time !== 'string' && 'local' in time) { return time; }
     if (typeof time === 'string') {
+      /* istanbul ignore next */
       if (time.length === 0) { return ''; }
       let currentFormat: string;
       let formatTime: SkyTimepickerTimeOutput;

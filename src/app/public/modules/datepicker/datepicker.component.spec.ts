@@ -474,7 +474,7 @@ describe('datepicker', () => {
         ngModel = <NgModel>inputElement.injector.get(NgModel);
       });
 
-      it('should validate properly when invalid date is passed through input change',
+     it('should validate properly when invalid date is passed through input change',
         fakeAsync(() => {
           fixture.detectChanges();
           tick();

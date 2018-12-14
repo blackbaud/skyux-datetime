@@ -106,10 +106,9 @@ export class SkyDatepickerInputDirective implements
     return this._modelValue;
   }
   private set modelValue(value: Date) {
-    if (value !== this.modelValue) {
+    if (value !== this.modelValue && (this.dateFormatter.dateIsValid(value) || !value)) {
       this._modelValue = value;
       this._onChange(value);
-      this._onTouched();
     }
   }
 
@@ -137,6 +136,7 @@ export class SkyDatepickerInputDirective implements
     this.pickerChangedSubscription = this.skyDatepickerInput.dateChanged
       .subscribe((newDate: Date) => {
         this.writeValue(newDate);
+        this._onTouched();
       });
 
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
@@ -186,14 +186,7 @@ export class SkyDatepickerInputDirective implements
 
   @HostListener('change', ['$event'])
   public onChange(event: any) {
-    let newValue = event.target.value;
-    // need to parse date here:
-    this.modelValue = this.dateFormatter.getDateFromString(newValue, this.dateFormat);
-    if (this.dateFormatter.dateIsValid(this.modelValue)) {
-      this.writeModelValue(this.modelValue);
-    } else {
-      this._onChange(newValue);
-    }
+    this.writeValue(event.target.value);
   }
 
   @HostListener('blur')
@@ -212,17 +205,24 @@ export class SkyDatepickerInputDirective implements
   }
 
   public writeValue(value: any) {
+    let dateValue: Date;
     if (this.dateFormatter.dateIsValid(value)) {
       this.modelValue = value;
+      dateValue = value;
     } else if (value) {
-      this.modelValue = this.dateFormatter.getDateFromString(value, this.dateFormat);
+      dateValue = this.dateFormatter.getDateFromString(value, this.dateFormat);
+      if (this.dateFormatter.dateIsValid(dateValue)) {
+        this.modelValue = dateValue;
+      } else {
+        this._onChange(value);
+      }
     } else {
       this.modelValue = value;
     }
 
-    if (this.dateFormatter.dateIsValid(this.modelValue) || !this.modelValue) {
+    if (this.dateFormatter.dateIsValid(dateValue) || !value) {
       this.writeModelValue(this.modelValue);
-    } else if (value) {
+    } else {
       this.renderer.setElementProperty(
         this.elRef.nativeElement,
         'value',
