@@ -36,11 +36,9 @@ import {
 import {
   SkyDatepickerComponent
 } from './datepicker.component';
-
 import {
   SkyDateFormatter
 } from './date-formatter';
-
 import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
@@ -105,24 +103,46 @@ export class SkyDatepickerInputDirective implements
   private get modelValue(): Date {
     return this._modelValue;
   }
+
   private set modelValue(value: Date) {
-    if (value !== this.modelValue && (this.dateFormatter.dateIsValid(value) || !value)) {
-      this._modelValue = value;
-      this._onChange(value);
+    let dateValue = value;
+    let formattedValue = '';
+
+    if (dateValue !== this.modelValue) {
+      if (typeof value === 'string') {
+        dateValue = this.dateFormatter.getDateFromString(value as any, this.dateFormat);
+      }
+
+      const isValid = this.dateFormatter.dateIsValid(dateValue);
+      if (isValid) {
+        formattedValue = this.dateFormatter.format(dateValue, this.dateFormat);
+      } else {
+        dateValue = value;
+        if (typeof value === 'string') {
+          formattedValue = value;
+        }
+      }
+
+      this._modelValue = dateValue;
+      this.setInputValue(formattedValue);
+      this.skyDatepickerInput.setSelectedDate(dateValue);
+      this._onChange(dateValue);
+      this._validatorChange();
     }
   }
 
   private dateFormatter = new SkyDateFormatter();
-  private _modelValue: Date;
+
   private _disabled: boolean;
+  private _modelValue: Date;
 
   public constructor(
     private renderer: Renderer,
     private elRef: ElementRef,
     private config: SkyDatepickerConfigService,
     private resourcesService: SkyLibResourcesService,
-    @Optional() private injector: Injector,
-    @Optional() private changeDetector: ChangeDetectorRef
+    @Optional() private changeDetector: ChangeDetectorRef,
+    @Optional() private injector: Injector
   ) {
     this.configureOptions();
   }
@@ -152,10 +172,16 @@ export class SkyDatepickerInputDirective implements
   }
 
   public ngAfterViewInit(): void {
-    let control: FormControl = (<NgControl>this.injector.get(NgControl)).control as FormControl;
+    // This is needed to address a bug in Angular 4, where the value is not changed on the view.
+    // See: https://github.com/angular/angular/issues/13792
+    const control = (<NgControl>this.injector.get(NgControl)).control as FormControl;
+    /* istanbul ignore else */
     if (control && this.modelValue) {
       control.setValue(this.modelValue, { emitEvent: false });
-      this.changeDetector.detectChanges();
+      /* istanbul ignore else */
+      if (this.changeDetector) {
+        this.changeDetector.detectChanges();
+      }
     }
   }
 
@@ -205,29 +231,7 @@ export class SkyDatepickerInputDirective implements
   }
 
   public writeValue(value: any) {
-    let dateValue: Date;
-    if (this.dateFormatter.dateIsValid(value)) {
-      this.modelValue = value;
-      dateValue = value;
-    } else if (value) {
-      dateValue = this.dateFormatter.getDateFromString(value, this.dateFormat);
-      if (this.dateFormatter.dateIsValid(dateValue)) {
-        this.modelValue = dateValue;
-      } else {
-        this._onChange(value);
-      }
-    } else {
-      this.modelValue = value;
-    }
-
-    if (this.dateFormatter.dateIsValid(dateValue) || !value) {
-      this.writeModelValue(this.modelValue);
-    } else {
-      this.renderer.setElementProperty(
-        this.elRef.nativeElement,
-        'value',
-        value);
-    }
+    this.modelValue = value;
   }
 
   public validate(control: AbstractControl): {[key: string]: any} {
@@ -273,13 +277,12 @@ export class SkyDatepickerInputDirective implements
     return undefined;
   }
 
-  private writeModelValue(model: Date) {
+  private setInputValue(value: string): void {
     this.renderer.setElementProperty(
       this.elRef.nativeElement,
       'value',
-      model ? this.dateFormatter.format(model, this.dateFormat) : '');
-
-    this.skyDatepickerInput.setSelectedDate(model);
+      value
+    );
   }
 
   /*istanbul ignore next */

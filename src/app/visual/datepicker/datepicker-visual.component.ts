@@ -7,7 +7,8 @@ import {
   FormBuilder,
   FormGroup,
   FormControl,
-  Validators
+  Validators,
+  AbstractControl
 } from '@angular/forms';
 
 @Component({
@@ -22,13 +23,21 @@ export class DatepickerVisualComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
 
-  public get reactiveDate(): any {
+  public get reactiveDate(): AbstractControl {
     return this.reactiveForm.get('selectedDate');
   }
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       selectedDate: new FormControl('4/4/2017', Validators.required)
+    });
+
+    this.reactiveDate.statusChanges.subscribe((status: any) => {
+      console.log('Reactive date status:', status);
+    });
+
+    this.reactiveDate.valueChanges.subscribe((value: any) => {
+      console.log('Reactive date value:', value);
     });
   }
 }

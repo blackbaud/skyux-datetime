@@ -32,13 +32,14 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   public maxDate: Date;
 
   @Input()
-  public get selectedDate(): Date {
-    return this._selectedDate;
-  }
   public set selectedDate(value: Date) {
     if (this.dateFormatter.dateIsValid(value)) {
       this._selectedDate = value;
     }
+  }
+
+  public get selectedDate(): Date {
+    return this._selectedDate;
   }
 
   @Output()
@@ -291,6 +292,7 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   }
 
   public select(date: Date, isManual: boolean = true): void {
+
     this.activeDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     /*
