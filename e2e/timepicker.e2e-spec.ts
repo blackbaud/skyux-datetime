@@ -33,7 +33,7 @@ describe('timepicker', () => {
     });
   });
 
-  fit('should show the timepicker correctly after clicking on the icon for 24 hr', (done) => {
+  it('should show the timepicker correctly after clicking on the icon for 24 hr', (done) => {
     element(by.css('#screenshot-timepicker24hr .sky-dropdown-button')).click();
     SkyHostBrowser.scrollTo('#screenshot-timepicker24hr');
     expect('#screenshot-timepicker24hr').toMatchBaselineScreenshot(done, {
