@@ -1,6 +1,6 @@
 {
   "name": "@skyux/datetime",
-  "version": "3.0.0-rc.4",
+  "version": "3.0.0",
   "description": "SKY UX DateTime",
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
@@ -28,13 +28,13 @@
     "@angular/forms": ">=4.3.6",
     "@angular/router": ">=4.3.6",
     "@skyux/core": "^3.5.1",
-    "@skyux/i18n": "^3.3.0",
-    "@skyux/indicators": "^3.0.0-rc.1",
-    "@skyux/popovers": "^3.0.0-rc.0"
+    "@skyux/i18n": "^3.5.0",
+    "@skyux/indicators": "^3.0.0",
+    "@skyux/popovers": "^3.0.0"
   },
   "dependencies": {},
   "devDependencies": {
-    "@blackbaud/skyux": "2.35.0",
+    "@blackbaud/skyux": "2.38.0",
     "@blackbaud/skyux-builder": "1.30.0",
     "@skyux-sdk/builder-plugin-skyux": "1.0.0-rc.5"
   }
