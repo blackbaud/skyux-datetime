@@ -5,6 +5,7 @@
   <select
     [disabled]="disabled"
     [(ngModel)]="selectedFormat"
+    (blur)="onTouched()"
   >
     <option *ngFor="let format of dateRangeFormats"
       [ngValue]="format"
@@ -21,8 +22,9 @@
     <input
       placeholder="MM/DD/YYYY"
       [disabled]="disabled"
-      [(ngModel)]="selectedFirstDate"
       [skyDatepickerInput]="startPicker"
+      [(ngModel)]="selectedFirstDate"
+      (blur)="onTouched()"
     />
   </sky-datepicker>
 </label>
@@ -34,8 +36,9 @@
     <input
       placeholder="MM/DD/YYYY"
       [disabled]="disabled"
-      [(ngModel)]="selectedSecondDate"
       [skyDatepickerInput]="endPicker"
+      [(ngModel)]="selectedSecondDate"
+      (blur)="onTouched()"
     />
   </sky-datepicker>
 </label>
