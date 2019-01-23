@@ -1,0 +1,41 @@
+<label
+  class="sky-date-range-picker-label"
+>
+  {{ label }}
+  <select
+    [disabled]="disabled"
+    [(ngModel)]="selectedFormat"
+  >
+    <option *ngFor="let format of dateRangeFormats"
+      [ngValue]="format"
+    >
+      {{ format.resourceStringKey | skyLibResources }}
+    </option>
+  </select>
+</label>
+<label *ngIf="selectedFormat && selectedFormat.formatType < 3"
+  class="sky-date-range-picker-label"
+>
+  {{ selectedFormat.dateFieldResourceStringKey | skyLibResources }}
+  <sky-datepicker #startPicker>
+    <input
+      placeholder="MM/DD/YYYY"
+      [disabled]="disabled"
+      [(ngModel)]="selectedFirstDate"
+      [skyDatepickerInput]="startPicker"
+    />
+  </sky-datepicker>
+</label>
+<label *ngIf="selectedFormat && selectedFormat.formatType === 0"
+  class="sky-date-range-picker-label"
+>
+  {{ 'skyux_date_range_picker_specific_range_to_field_label' | skyLibResources }}
+  <sky-datepicker #endPicker>
+    <input
+      placeholder="MM/DD/YYYY"
+      [disabled]="disabled"
+      [(ngModel)]="selectedSecondDate"
+      [skyDatepickerInput]="endPicker"
+    />
+  </sky-datepicker>
+</label>

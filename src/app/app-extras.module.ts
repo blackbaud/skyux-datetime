@@ -4,17 +4,20 @@ import {
 
 import {
   SkyDatepickerModule,
+  SkyDateRangePickerModule,
   SkyTimepickerModule
 } from './public';
 
 @NgModule({
   imports: [
     SkyDatepickerModule,
-    SkyTimepickerModule
+    SkyTimepickerModule,
+    SkyDateRangePickerModule
   ],
   exports: [
     SkyDatepickerModule,
-    SkyTimepickerModule
+    SkyTimepickerModule,
+    SkyDateRangePickerModule
   ],
   providers: [],
   entryComponents: []

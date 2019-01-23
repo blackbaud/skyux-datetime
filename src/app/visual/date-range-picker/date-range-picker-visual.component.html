@@ -1,0 +1,23 @@
+<h2>Date range picker</h2>
+<form
+  #form="ngForm"
+>
+  <sky-date-range-picker
+    name="donation"
+    label="Last donation"
+    ngModel
+    [disabled]="disabled"
+  >
+  </sky-date-range-picker>
+</form>
+
+<label>
+  Disabled:
+  <input
+    type="checkbox"
+    [(ngModel)]="disabled"
+  />
+</label>
+
+<h3>Form value:</h3>
+<pre>{{ form.value | json }}</pre>

@@ -1,0 +1,23 @@
+@import "~@skyux/theme/scss/mixins";
+@import "~@skyux/theme/scss/_compat/mixins";
+
+:host() {
+  display: flex;
+  padding: 10px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  min-height: 75px;
+}
+
+@media (max-width: $sky-screen-sm-min) {
+  :host() {
+    flex-direction: column
+  }
+}
+
+.sky-date-range-picker-label {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  margin-right: 10px;
+}
