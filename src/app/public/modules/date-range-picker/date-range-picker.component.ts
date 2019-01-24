@@ -14,8 +14,11 @@ import {
 
 import {
   SkyDateRangeFormat
-} from './types';
-import { SkyDateRangeFormatType } from './types/date-range-format-type';
+} from './types/date-range-format';
+
+import {
+  SkyDateRangeFormatType
+} from './types/date-range-format-type';
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
@@ -47,6 +50,9 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
 
   @Input()
   public disabled = false;
+
+  @Input()
+  public dateFormat: string;
 
   public dateRangeFormats = SkyDateRangeDefaultValues.DEFAULT_VALUES;
 

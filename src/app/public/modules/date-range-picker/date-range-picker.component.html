@@ -21,6 +21,7 @@
   <sky-datepicker #startPicker>
     <input
       placeholder="MM/DD/YYYY"
+      [dateFormat]="dateFormat"
       [disabled]="disabled"
       [skyDatepickerInput]="startPicker"
       [(ngModel)]="selectedFirstDate"
@@ -35,6 +36,7 @@
   <sky-datepicker #endPicker>
     <input
       placeholder="MM/DD/YYYY"
+      [dateFormat]="dateFormat"
       [disabled]="disabled"
       [skyDatepickerInput]="endPicker"
       [(ngModel)]="selectedSecondDate"
