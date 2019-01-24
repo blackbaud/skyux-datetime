@@ -80,6 +80,20 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
     return this._selectedSecondDate;
   }
 
+  public get displayFirstDatepicker(): boolean {
+    return this.selectedFormat &&
+      (
+        this.selectedFormat.formatType === SkyDateRangeFormatType.SpecificRange ||
+        this.selectedFormat.formatType === SkyDateRangeFormatType.Before ||
+        this.selectedFormat.formatType === SkyDateRangeFormatType.After
+      );
+  }
+
+  public get displaySecondDatepicker(): boolean {
+    return this.selectedFormat &&
+      this.selectedFormat.formatType === SkyDateRangeFormatType.SpecificRange;
+  }
+
   private _selectedFirstDate: Date;
   private _selectedSecondDate: Date;
   private _selectedFormat = this.dateRangeFormats[0];

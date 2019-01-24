@@ -16,7 +16,8 @@ import {
 
 @Component({
   selector: 'date-range-picker-visual',
-  templateUrl: './date-range-picker-visual.component.html'
+  templateUrl: './date-range-picker-visual.component.html',
+  styleUrls: ['./date-range-picker-visual.component.scss']
 })
 export class DateRangePickerVisualComponent implements OnInit {
   public value: SkyDateRangeValue = {};
