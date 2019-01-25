@@ -13,6 +13,12 @@
   margin-top: 5px;
 }
 
+.sky-date-range-picker-invalid {
+  box-shadow: 1 0 8px rgba(239, 64, 68, 0.6);
+  border: 1px solid #ef4044;
+  outline: none;
+}
+
 @media (max-width: $sky-screen-sm-min) {
   :host() {
     flex-direction: column

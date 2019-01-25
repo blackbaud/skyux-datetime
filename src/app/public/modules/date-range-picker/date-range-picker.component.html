@@ -26,6 +26,9 @@
     <input
       [dateFormat]="dateFormat"
       [disabled]="disabled"
+      [ngClass]="{
+        'sky-date-range-picker-invalid': isInvalid
+      }"
       [skyDatepickerInput]="startPicker"
       [(ngModel)]="selectedFirstDate"
       (blur)="onTouched()"
@@ -43,6 +46,9 @@
     <input
       [dateFormat]="dateFormat"
       [disabled]="disabled"
+      [ngClass]="{
+        'sky-date-range-picker-invalid': isInvalid
+      }"
       [skyDatepickerInput]="endPicker"
       [(ngModel)]="selectedSecondDate"
       (blur)="onTouched()"

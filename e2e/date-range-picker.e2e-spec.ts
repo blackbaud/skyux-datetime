@@ -15,7 +15,6 @@ describe('Date range picker', () => {
   });
 
   it('should match previous date range picker specific range screenshot', (done) => {
-    element(by.css('select')).selectedIndex = 0;
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-specific-range'
     });
@@ -23,14 +22,14 @@ describe('Date range picker', () => {
 
   it('should match previous date range picker specific range screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).selectedIndex = 0;
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-specific-range-xs'
     });
   });
 
   it('should match previous date-range-picker before screenshot', (done) => {
-    element(by.css('select')).selectedIndex = 1;
+    element(by.css('select')).click();
+    element.all(by.css('select option')).get(1).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-before'
     });
@@ -38,14 +37,16 @@ describe('Date range picker', () => {
 
   it('should match previous date-range-picker before screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).selectedIndex = 1;
+    element(by.css('select')).click();
+    element.all(by.css('select option')).get(1).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-before-xs'
     });
   });
 
   it('should match previous date-range-picker after screenshot', (done) => {
-    element(by.css('select')).selectedIndex = 2;
+    element(by.css('select')).click();
+    element.all(by.css('select option')).get(2).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-after'
     });
@@ -53,14 +54,16 @@ describe('Date range picker', () => {
 
   it('should match previous date-range-picker after screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).selectedIndex = 2;
+    element(by.css('select')).click();
+    element.all(by.css('select option')).get(2).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-after-xs'
     });
   });
 
   it('should match previous date-range-picker default value screenshot', (done) => {
-    element(by.css('select')).selectedIndex = 3;
+    element(by.css('select')).click();
+    element.all(by.css('select option')).get(3).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-default-value'
     });
@@ -68,7 +71,8 @@ describe('Date range picker', () => {
 
   it('should match previous date-range-picker default value screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).selectedIndex = 3;
+    element(by.css('select')).click();
+    element.all(by.css('select option')).get(3).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-default-value-xs'
     });
