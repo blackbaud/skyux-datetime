@@ -9,6 +9,10 @@
   min-height: 75px;
 }
 
+.sky-date-range-picker-input {
+  margin-top: 5px;
+}
+
 @media (max-width: $sky-screen-sm-min) {
   :host() {
     flex-direction: column

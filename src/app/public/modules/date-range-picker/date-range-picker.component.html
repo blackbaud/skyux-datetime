@@ -3,6 +3,7 @@
 >
   {{ label }}
   <select
+    class="sky-date-range-picker-input"
     [disabled]="disabled"
     [(ngModel)]="selectedFormat"
     (blur)="onTouched()"
@@ -18,7 +19,10 @@
   class="sky-date-range-picker-label"
 >
   {{ selectedFormat.dateFieldResourceStringKey | skyLibResources }}
-  <sky-datepicker #startPicker>
+  <sky-datepicker
+    class="sky-date-range-picker-input"
+    #startPicker
+  >
     <input
       [dateFormat]="dateFormat"
       [disabled]="disabled"
@@ -32,7 +36,10 @@
   class="sky-date-range-picker-label"
 >
   {{ 'skyux_date_range_picker_specific_range_to_field_label' | skyLibResources }}
-  <sky-datepicker #endPicker>
+  <sky-datepicker
+    class="sky-date-range-picker-input"
+    #endPicker
+  >
     <input
       [dateFormat]="dateFormat"
       [disabled]="disabled"
