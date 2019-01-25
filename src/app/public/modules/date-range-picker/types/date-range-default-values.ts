@@ -10,6 +10,7 @@ import {
   SkyDateRangeFormatType
 } from './date-range-format-type';
 
+/*istanbul ignore next */
 export class SkyDateRangeDefaultValues {
   public static DEFAULT_VALUES: SkyDateRangeFormat[] = [
     {

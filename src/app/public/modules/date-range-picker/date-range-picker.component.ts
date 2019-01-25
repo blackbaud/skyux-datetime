@@ -5,7 +5,10 @@ import {
 } from '@angular/core';
 
 import {
-  ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, AbstractControl
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS,
+  AbstractControl
 } from '@angular/forms';
 
 import {
@@ -111,7 +114,7 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
 
     if (this.selectedFirstDate !== obj.startDate || this.selectedSecondDate !== obj.endDate) {
       this._selectedFirstDate = obj.startDate;
-      this._selectedSecondDate = obj.startDate;
+      this._selectedSecondDate = obj.endDate;
       this.updateValue();
     }
   }

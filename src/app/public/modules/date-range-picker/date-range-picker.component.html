@@ -20,7 +20,6 @@
   {{ selectedFormat.dateFieldResourceStringKey | skyLibResources }}
   <sky-datepicker #startPicker>
     <input
-      placeholder="MM/DD/YYYY"
       [dateFormat]="dateFormat"
       [disabled]="disabled"
       [skyDatepickerInput]="startPicker"
@@ -35,7 +34,6 @@
   {{ 'skyux_date_range_picker_specific_range_to_field_label' | skyLibResources }}
   <sky-datepicker #endPicker>
     <input
-      placeholder="MM/DD/YYYY"
       [dateFormat]="dateFormat"
       [disabled]="disabled"
       [skyDatepickerInput]="endPicker"
