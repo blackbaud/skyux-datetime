@@ -21,7 +21,7 @@
 
 @media (max-width: $sky-screen-sm-min) {
   :host() {
-    flex-direction: column
+    flex-direction: column;
   }
 
   .sky-date-range-picker-label {
