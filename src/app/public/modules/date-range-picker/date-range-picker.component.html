@@ -27,7 +27,7 @@
       [dateFormat]="dateFormat"
       [disabled]="disabled"
       [ngClass]="{
-        'sky-date-range-picker-invalid': isInvalid
+        'sky-date-range-picker-invalid': isInvalid && !disabled
       }"
       [skyDatepickerInput]="startPicker"
       [(ngModel)]="selectedFirstDate"
@@ -47,7 +47,7 @@
       [dateFormat]="dateFormat"
       [disabled]="disabled"
       [ngClass]="{
-        'sky-date-range-picker-invalid': isInvalid
+        'sky-date-range-picker-invalid': isInvalid && !disabled
       }"
       [skyDatepickerInput]="endPicker"
       [(ngModel)]="selectedSecondDate"
