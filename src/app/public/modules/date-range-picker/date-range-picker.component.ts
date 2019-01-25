@@ -120,7 +120,7 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
     }
   }
 
-  public setDisabledState?(isDisabled: boolean): void {
+  public setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
 
