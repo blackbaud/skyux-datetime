@@ -58,7 +58,7 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
   public dateFormat: string;
 
   public dateRangeFormats = SkyDateRangeDefaultValues.DEFAULT_VALUES;
-  public isInvalid = false;
+  public isInvalidRange = false;
 
   public set selectedFormat(value: SkyDateRangeFormat) {
     if (this.selectedFormat !== value) {
@@ -133,7 +133,7 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
       value.startDate && value.endDate &&
       value.startDate > value.endDate
     ) {
-      this.isInvalid = true;
+      this.isInvalidRange = true;
       return {
         'skyDateRange': {
           invalid: control.value
@@ -141,7 +141,7 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
       };
     }
 
-    this.isInvalid = false;
+    this.isInvalidRange = false;
     return undefined;
   }
 
