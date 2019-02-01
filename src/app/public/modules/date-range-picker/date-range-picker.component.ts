@@ -1,32 +1,27 @@
 import {
   Component,
   Input,
-  forwardRef
+  forwardRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  AbstractControl
+  FormControl
 } from '@angular/forms';
 
-import {
-  SkyDateRangeDefaultValues
-} from './types/date-range-default-values';
-
-import {
-  SkyDateRangeFormat
-} from './types/date-range-format';
-
-import {
-  SkyDateRangeFormatType
-} from './types/date-range-format-type';
+import { SkyDateRange } from './date-range';
+import { SkyDateRangeService } from './date-range.service';
+import { SkyDateRangeOption } from './date-range-option';
+import { SkyDateRangeType } from './date-range-type';
+import { SkyDateRangeOptionContext } from './date-range-option-context';
+import { SkyDateRangeControl } from './date-range-control';
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
-  // tslint:disable-next-line:no-forward-ref
   useExisting: forwardRef(() => SkyDateRangePickerComponent),
   multi: true
 };
@@ -38,14 +33,18 @@ const SKY_DATE_RANGE_PICKER_VALIDATOR = {
 };
 // tslint:enable
 
+let uniqueId = 0;
+
 @Component({
   selector: 'sky-date-range-picker',
   templateUrl: './date-range-picker.component.html',
   styleUrls: ['./date-range-picker.component.scss'],
   providers: [
     SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR,
-    SKY_DATE_RANGE_PICKER_VALIDATOR
-  ]
+    SKY_DATE_RANGE_PICKER_VALIDATOR,
+    SkyDateRangeService
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkyDateRangePickerComponent implements ControlValueAccessor {
   @Input()
@@ -57,109 +56,102 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
   @Input()
   public dateFormat: string;
 
-  public dateRangeFormats = SkyDateRangeDefaultValues.DEFAULT_VALUES;
+  @Input()
+  public dateRangeOptions: SkyDateRangeOption[];
+
+  public get value(): SkyDateRange {
+    return this._value;
+  }
+
+  public set value(value: SkyDateRange) {
+    this._value = value;
+    this.onTouched();
+    this.onChange(this._value);
+  }
+
+  public readonly dateRangePickerId = `sky-date-range-picker-${uniqueId++}`;
+
   public isInvalidRange = false;
 
-  public set selectedFormat(value: SkyDateRangeFormat) {
-    if (this.selectedFormat !== value) {
-      this._selectedFormat = value;
-      this.updateValue();
-    }
-  }
-  public get selectedFormat(): SkyDateRangeFormat {
-    return this._selectedFormat;
+  private _value: SkyDateRange;
+
+  constructor(
+    private dateRangeService: SkyDateRangeService
+  ) {
+    this.dateRangeOptions = this.dateRangeService.getDefaultDateRangeOptions();
   }
 
-  public set selectedFirstDate(value: Date) {
-    if (this._selectedFirstDate !== value) {
-      this._selectedFirstDate = value;
-      this.updateValue();
-    }
-  }
-  public get selectedFirstDate(): Date {
-    return this._selectedFirstDate;
-  }
-
-  public set selectedSecondDate(value: Date) {
-    if (this._selectedSecondDate !== value) {
-      this._selectedSecondDate = value;
-      this.updateValue();
-    }
-  }
-  public get selectedSecondDate(): Date {
-    return this._selectedSecondDate;
-  }
-
-  public get displayFirstDatepicker(): boolean {
-    return this.selectedFormat &&
-      (
-        this.selectedFormat.formatType === SkyDateRangeFormatType.SpecificRange ||
-        this.selectedFormat.formatType === SkyDateRangeFormatType.Before ||
-        this.selectedFormat.formatType === SkyDateRangeFormatType.After
-      );
-  }
-
-  public get displaySecondDatepicker(): boolean {
-    return this.selectedFormat &&
-      this.selectedFormat.formatType === SkyDateRangeFormatType.SpecificRange;
-  }
-
-  private _selectedFirstDate: Date;
-  private _selectedSecondDate: Date;
-  private _selectedFormat = this.dateRangeFormats[0];
-
-  public writeValue(obj: any): void {
-    if (!obj) {
-      obj = {};
-    }
-
-    if (this.selectedFirstDate !== obj.startDate || this.selectedSecondDate !== obj.endDate) {
-      this._selectedFirstDate = obj.startDate;
-      this._selectedSecondDate = obj.endDate;
-      this.updateValue();
+  public writeValue(value: SkyDateRange): void {
+    if (value) {
+      this.value = value;
     }
   }
 
-  public setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  public setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
   }
 
-  public validate(control: AbstractControl): {[key: string]: any} {
-    let value = control.value;
+  // public validate(control: AbstractControl): {[key: string]: { invalid: SkyDateRange }} {
+  //   const value = control.value;
 
-    if (
-      value &&
-      this.selectedFormat.formatType === SkyDateRangeFormatType.SpecificRange &&
-      value.startDate && value.endDate &&
-      value.startDate > value.endDate
-    ) {
-      this.isInvalidRange = true;
-      return {
-        'skyDateRange': {
-          invalid: control.value
-        }
-      };
+  //   if (
+  //     value &&
+  //     this.selectedFormat.formatType === SkyDateRangeFormatType.SpecificRange &&
+  //     value.startDate && value.endDate &&
+  //     value.startDate > value.endDate
+  //   ) {
+  //     this.isInvalidRange = true;
+
+  //     return {
+  //       'skyDateRange': {
+  //         invalid: value
+  //       }
+  //     };
+  //   }
+
+  //   this.isInvalidRange = false;
+  // }
+
+  public validate(formControl: FormControl): any {
+    console.log('validate:', formControl.value);
+  }
+
+  public registerOnChange(fn: (value: SkyDateRange) => SkyDateRange): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: () => SkyDateRange): void {
+    this.onTouched = fn;
+  }
+
+  public onSelectionChange(event: any): void {
+    console.log('Selection change:', event.target.value);
+    const found = this.dateRangeOptions.find((option) => {
+      return (parseInt(event.target.value, 10) === option.dateRangeType);
+    });
+
+    if (found) {
+      // if (found.settings) {
+
+      // }
+
+      // TODO:
+      // Watch start and end date controls for selection changes?
+
+      const value = found.getValue();
+      console.log('value?', value);
+      this.value = value;
     }
-
-    this.isInvalidRange = false;
-    return undefined;
   }
 
-  public registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
-  public registerOnTouched(fn: () => any): void { this.onTouched = fn; }
-  public registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; }
-
-  public onTouched = () => {};
-  /*istanbul ignore next */
-  private _onChange = (_: any) => {};
-  /*istanbul ignore next */
-  private _validatorChange = () => {};
-
-  private updateValue() {
-    this.onTouched();
-    this._onChange(
-      this.selectedFormat.getDateRangeValue(this.selectedFirstDate, this.selectedSecondDate)
-    );
-    this._validatorChange();
+  public onStartDateChange(event: any): void {
+    console.log('Start date change:', event.target.value);
   }
+
+  public onEndDateChange(event: any): void {
+    console.log('End date change:', event.target.value);
+  }
+
+  private onTouched = () => {};
+  private onChange = (_: SkyDateRange) => {};
 }

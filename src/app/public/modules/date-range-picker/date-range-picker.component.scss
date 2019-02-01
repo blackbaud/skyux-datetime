@@ -1,40 +1,28 @@
 @import "~@skyux/theme/scss/mixins";
 @import "~@skyux/theme/scss/_compat/mixins";
 
-:host() {
+.sky-date-range-picker {
   display: flex;
-  padding: $sky-padding;
-  flex-wrap: wrap;
-  flex-direction: row;
-  min-height: 75px;
+  margin-left: -5px;
+  margin-right: -5px;
 }
 
-.sky-date-range-picker-input {
-  margin-top: $sky-margin-half;
+.sky-date-range-picker-form-group {
+  flex: 1 1 auto;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-.sky-date-range-picker-invalid {
-  box-shadow: 1 0 8px rgba(239, 64, 68, 0.6);
-  border: 1px solid #ef4044;
-  outline: none;
-}
-
-@media (max-width: $sky-screen-sm-min) {
-  :host() {
+@media (max-width: $sky-screen-xs-max) {
+  .sky-date-range-picker {
     flex-direction: column;
   }
 
-  .sky-date-range-picker-label {
+  .sky-date-range-picker-form-group {
     margin-bottom: $sky-margin;
-  }
-  .sky-date-range-picker-label:last-of-type {
-    margin-bottom: 0;
-  }
-}
 
-.sky-date-range-picker-label {
-  display: flex;
-  flex-direction: column;
-  width: 220px;
-  margin-right: $sky-margin;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

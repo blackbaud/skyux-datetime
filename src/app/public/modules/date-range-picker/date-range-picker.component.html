@@ -1,64 +1,86 @@
-<label
-  class="sky-date-range-picker-label"
->
-  {{ label }}
-  <select
-    class="sky-date-range-picker-input"
-    [disabled]="disabled"
-    [(ngModel)]="selectedFormat"
-    (blur)="onTouched()"
-  >
-    <option *ngFor="let format of dateRangeFormats"
-      [ngValue]="format"
+<div class="sky-date-range-picker">
+
+  <div class="sky-date-range-picker-form-group">
+    <label
+      class="sky-control-label"
+      [attr.for]="dateRangePickerId + '-select-format'"
     >
-      {{ format.resourceStringKey | skyLibResources }}
-    </option>
-  </select>
-</label>
-<label *ngIf="displayFirstDatepicker"
-  class="sky-date-range-picker-label"
->
-  {{ selectedFormat.dateFieldResourceStringKey | skyLibResources }}
-  <sky-datepicker
-    class="sky-date-range-picker-input"
-    #startPicker
-  >
-    <input
-      [dateFormat]="dateFormat"
+      {{ label }}
+    </label>
+
+    <select
+      class="sky-form-control"
+      [attr.id]="dateRangePickerId + '-select-format'"
       [disabled]="disabled"
-      [ngClass]="{
-        'sky-date-range-picker-invalid': isInvalidRange && !disabled
-      }"
-      [skyDatepickerInput]="startPicker"
-      [(ngModel)]="selectedFirstDate"
-      (blur)="onTouched()"
-    />
-  </sky-datepicker>
-</label>
-<label *ngIf="displaySecondDatepicker"
-  class="sky-date-range-picker-label"
->
-  {{ 'skyux_date_range_picker_specific_range_to_field_label' | skyLibResources }}
-  <sky-datepicker
-    class="sky-date-range-picker-input"
-    #endPicker
-  >
-    <input
-      [dateFormat]="dateFormat"
-      [disabled]="disabled"
-      [ngClass]="{
-        'sky-date-range-picker-invalid': isInvalidRange && !disabled
-      }"
-      [skyDatepickerInput]="endPicker"
-      [(ngModel)]="selectedSecondDate"
-      (blur)="onTouched()"
-    />
-  </sky-datepicker>
-  <div *ngIf="isInvalidRange && !disabled"
-    class="sky-error-label"
-  >
-    <span>
-      {{ 'skyux_date_range_picker_invalid_range_error_label' | skyLibResources }}
-    </span>
+      (change)="onSelectionChange($event)"
+    >
+      <option *ngFor="let dateRangeOption of dateRangeOptions"
+        [value]="dateRangeOption.dateRangeType"
+        [selected]="value.dateRangeType === dateRangeOption.dateRangeType"
+      >
+        {{ dateRangeOption.caption }}
+      </option>
+    </select>
   </div>
-</label>
+
+  <div *ngIf="displayFirstDatepicker"
+    class="sky-date-range-picker-form-group"
+  >
+    <label
+      class="sky-control-label"
+      [attr.for]="dateRangePickerId + '-first-date'"
+    >
+      {{ selectedFormat.dateFieldResourceStringKey | skyLibResources }}
+    </label>
+
+    <sky-datepicker
+      #startPicker
+    >
+      <input
+        [attr.id]="dateRangePickerId + '-first-date'"
+        [dateFormat]="dateFormat"
+        [disabled]="disabled"
+        [ngClass]="{
+          'ng-invalid': isInvalidRange && !disabled
+        }"
+        [skyDatepickerInput]="startPicker"
+        [ngModel]="value.startDate"
+        (change)="onStartDateChange($event)"
+      />
+    </sky-datepicker>
+  </div>
+
+  <div *ngIf="displaySecondDatepicker"
+    class="sky-date-range-picker-form-group"
+  >
+    <label
+      class="sky-control-label"
+      [attr.for]="dateRangePickerId + '-second-date'"
+    >
+      {{ 'skyux_date_range_picker_specific_range_to_field_label' | skyLibResources }}
+    </label>
+
+    <sky-datepicker
+      #endPicker
+    >
+      <input
+        [attr.id]="dateRangePickerId + '-second-date'"
+        [dateFormat]="dateFormat"
+        [disabled]="disabled"
+        [ngClass]="{
+          'ng-invalid': isInvalidRange && !disabled
+        }"
+        [skyDatepickerInput]="endPicker"
+        [ngModel]="value.endDate"
+        (change)="onEndDateChange($event)"
+      />
+    </sky-datepicker>
+
+    <!-- <div *ngIf="isInvalidRange && !disabled"
+      class="sky-error-label"
+    >
+      {{ 'skyux_date_range_picker_invalid_range_error_label' | skyLibResources }}
+    </div> -->
+  </div>
+
+</div>
