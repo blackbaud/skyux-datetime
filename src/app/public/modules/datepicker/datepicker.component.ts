@@ -1,67 +1,67 @@
 import {
   Component,
   EventEmitter,
+  OnDestroy,
   ViewChild
 } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
-
-import { SkyDatepickerCalendarComponent } from './datepicker-calendar.component';
-
 import {
-  SkyDropdownComponent,
   SkyDropdownMessage,
   SkyDropdownMessageType
 } from '@skyux/popovers';
+
+import {
+  Observable
+} from 'rxjs/Observable';
+
+import {
+  Subject
+} from 'rxjs/Subject';
+
+import {
+  SkyDatepickerCalendarComponent
+} from './datepicker-calendar.component';
 
 @Component({
   selector: 'sky-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss']
 })
-export class SkyDatepickerComponent {
-  @ViewChild(SkyDatepickerCalendarComponent)
-  public calendar: SkyDatepickerCalendarComponent;
+export class SkyDatepickerComponent implements OnDestroy {
+  public get dropdownController(): Observable<SkyDropdownMessage> {
+    return this._dropdownController;
+  }
 
-  @ViewChild(SkyDropdownComponent)
-  public dropdown: SkyDropdownComponent;
+  public set selectedDate(value: Date) {
+    this.calendar.writeValue(value);
+  }
 
-  public dropdownController = new Subject<SkyDropdownMessage>();
-  public dateChanged: EventEmitter<Date> = new EventEmitter<Date>();
-  public disabled: boolean;
-  private _startingDay: number = 0;
+  public dateChange = new EventEmitter<Date>();
+  public disabled = false;
   public maxDate: Date;
   public minDate: Date;
+  public startingDay = 0;
 
-  public get startingDay(): number {
-    return this._startingDay;
-  }
-  public set startingDay(value: number) {
-    this._startingDay = value;
+  @ViewChild(SkyDatepickerCalendarComponent)
+  private calendar: SkyDatepickerCalendarComponent;
+
+  private _dropdownController = new Subject<SkyDropdownMessage>();
+
+  public ngOnDestroy(): void {
+    this._dropdownController.complete();
+    this.dateChange.complete();
   }
 
-  public dateSelected(newDate: Date) {
-    this.dateChanged.emit(newDate);
-    this.dropdownController.next({
-      type: SkyDropdownMessageType.Close
+  public onCalendarModeChange(): void {
+    this._dropdownController.next({
+      type: SkyDropdownMessageType.Reposition
     });
   }
 
-  public setSelectedDate(newDate: Date) {
-    this.calendar.writeValue(newDate);
-  }
-
-  public setMinDate(_minDate: Date) {
-    this.minDate = _minDate;
-  }
-
-  public setMaxDate(_maxDate: Date) {
-    this.maxDate = _maxDate;
-  }
-
-  public onCalendarModeChange() {
-    this.dropdownController.next({
-      type: SkyDropdownMessageType.Reposition
+  public onSelectedDateChange(value: Date): void {
+    this.dateChange.emit(value);
+    this._dropdownController.next({
+      type: SkyDropdownMessageType.Close
     });
   }
 }

@@ -4,14 +4,10 @@ import {
 } from '@angular/core';
 
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   FormControl
 } from '@angular/forms';
-
-import { SkyDateRange } from '../../public/modules/date-range-picker/date-range';
-import { SkyDateRangeType } from '../../public/modules/date-range-picker/date-range-type';
 
 @Component({
   selector: 'date-range-picker-visual',
@@ -22,9 +18,9 @@ export class DateRangePickerVisualComponent implements OnInit {
   public disabled = false;
   public reactiveForm: FormGroup;
 
-  public get reactiveRange(): AbstractControl {
-    return this.reactiveForm.get('lastDonation');
-  }
+  // public get reactiveRange(): AbstractControl {
+  //   return this.reactiveForm.get('lastDonation');
+  // }
 
   constructor(
     private formBuilder: FormBuilder
@@ -32,19 +28,17 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      lastDonation: new FormControl({}),
-      birthday: new FormControl({
-        dateRangeType: SkyDateRangeType.Today
-      } as SkyDateRange)
+      // lastDonation: new FormControl({}),
+      birthday: new FormControl({})
     });
 
-    this.reactiveForm.statusChanges.subscribe((status: any) => {
-      console.log('Reactive date status:', status);
-    });
+    // this.reactiveForm.statusChanges.subscribe((status: any) => {
+    //   console.log('Reactive date status:', status);
+    // });
 
-    this.reactiveForm.valueChanges.subscribe((value: any) => {
-      console.log('Reactive date value:', value);
-    });
+    // this.reactiveForm.valueChanges.subscribe((value: any) => {
+    //   console.log('Reactive date value:', value);
+    // });
   }
 
   public toggleDisabled(): void {

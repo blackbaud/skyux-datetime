@@ -1,6 +1,11 @@
-<div class="sky-date-range-picker">
+<div
+  class="sky-date-range-picker"
+  [formGroup]="formGroup"
+>
 
-  <div class="sky-date-range-picker-form-group">
+  <div
+    class="sky-date-range-picker-form-group"
+  >
     <label
       class="sky-control-label"
       [attr.for]="dateRangePickerId + '-select-format'"
@@ -10,69 +15,57 @@
 
     <select
       class="sky-form-control"
+      formControlName="handle"
       [attr.id]="dateRangePickerId + '-select-format'"
-      [disabled]="disabled"
-      (change)="onSelectionChange($event)"
     >
-      <option *ngFor="let dateRangeOption of dateRangeOptions"
-        [value]="dateRangeOption.dateRangeType"
-        [selected]="value.dateRangeType === dateRangeOption.dateRangeType"
+      <option *ngFor="let calculator of calculators"
+        [value]="calculator.handle"
       >
-        {{ dateRangeOption.caption }}
+        {{ calculator.captionResourceKey | skyLibResources }}
       </option>
     </select>
   </div>
 
-  <div *ngIf="displayFirstDatepicker"
+  <div *ngIf="showStartDatePicker"
     class="sky-date-range-picker-form-group"
   >
     <label
       class="sky-control-label"
-      [attr.for]="dateRangePickerId + '-first-date'"
+      [attr.for]="dateRangePickerId + '-start-date'"
     >
-      {{ selectedFormat.dateFieldResourceStringKey | skyLibResources }}
+      Start date label
     </label>
 
     <sky-datepicker
       #startPicker
     >
       <input
-        [attr.id]="dateRangePickerId + '-first-date'"
+        formControlName="startDate"
+        [attr.id]="dateRangePickerId + '-start-date'"
         [dateFormat]="dateFormat"
-        [disabled]="disabled"
-        [ngClass]="{
-          'ng-invalid': isInvalidRange && !disabled
-        }"
         [skyDatepickerInput]="startPicker"
-        [ngModel]="value.startDate"
-        (change)="onStartDateChange($event)"
       />
     </sky-datepicker>
   </div>
 
-  <div *ngIf="displaySecondDatepicker"
+  <div *ngIf="showEndDatePicker"
     class="sky-date-range-picker-form-group"
   >
     <label
       class="sky-control-label"
-      [attr.for]="dateRangePickerId + '-second-date'"
+      [attr.for]="dateRangePickerId + '-end-date'"
     >
-      {{ 'skyux_date_range_picker_specific_range_to_field_label' | skyLibResources }}
+      End date label
     </label>
 
     <sky-datepicker
       #endPicker
     >
       <input
-        [attr.id]="dateRangePickerId + '-second-date'"
+        formControlName="endDate"
+        [attr.id]="dateRangePickerId + '-end-date'"
         [dateFormat]="dateFormat"
-        [disabled]="disabled"
-        [ngClass]="{
-          'ng-invalid': isInvalidRange && !disabled
-        }"
         [skyDatepickerInput]="endPicker"
-        [ngModel]="value.endDate"
-        (change)="onEndDateChange($event)"
       />
     </sky-datepicker>
 

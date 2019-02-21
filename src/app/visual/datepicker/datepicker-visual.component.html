@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="app-screenshot"
   id="screenshot-datepicker-calendar"
   style="display: inline-block;"
@@ -9,7 +9,7 @@
     (selectedDateChange)="selectedDate = $event"
   >
   </sky-datepicker-calendar>
-</div>
+</div> -->
 
 <div
   class="app-screenshot"
@@ -18,8 +18,12 @@
 >
   <sky-datepicker #picker>
     <input
-      [(ngModel)]="selectedDate"
+      [disabled]="disabled"
+      [maxDate]="maxDate"
+      [minDate]="minDate"
       [skyDatepickerInput]="picker"
+      [skyDatepickerNoValidate]="noValidate"
+      [(ngModel)]="selectedDate"
     />
   </sky-datepicker>
   <p>
@@ -45,7 +49,11 @@
     <sky-datepicker #reactivePicker>
       <input
         formControlName="selectedDate"
+        type="text"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
         [skyDatepickerInput]="reactivePicker"
+        [skyDatepickerNoValidate]="noValidate"
       />
     </sky-datepicker>
 
@@ -61,7 +69,24 @@
     </p>
 
     <p>
-      Reactive form selected date is {{ reactiveDate.value }}
+      Reactive form selected date is {{ reactiveForm.value | json }}
     </p>
   </form>
+
+  <p>
+    <button
+      class="sky-btn"
+      type="button"
+      (click)="setMinMaxDates()"
+    >
+      Set min and max dates
+    </button>
+    <button
+      class="sky-btn"
+      type="button"
+      (click)="toggleDisabled()"
+    >
+      Toggle disabled
+    </button>
+  </p>
 </div>

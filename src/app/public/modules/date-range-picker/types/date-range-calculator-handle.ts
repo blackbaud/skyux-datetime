@@ -1,8 +1,8 @@
-export enum SkyDateRangeType {
-  SpecificRange = 0,
+export const enum SkyDateRangeCalculatorHandle {
+  AtAnyTime,
   Before,
   After,
-  AtAnyTime,
+  SpecificRange,
   Yesterday,
   Today,
   Tomorrow,
@@ -20,6 +20,5 @@ export enum SkyDateRangeType {
   NextYear,
   LastFiscalYear,
   ThisFiscalYear,
-  NextFiscalYear,
-  Custom
+  NextFiscalYear
 }

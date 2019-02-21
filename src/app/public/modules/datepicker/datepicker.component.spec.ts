@@ -25,7 +25,8 @@ import {
 } from '@skyux/core';
 
 import {
-  expect
+  expect,
+  SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
 import {
@@ -51,7 +52,7 @@ import { DatepickerReactiveTestComponent } from './fixtures/datepicker-reactive.
 
 const moment = require('moment');
 
-describe('datepicker', () => {
+fdescribe('datepicker', () => {
 
   function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>) {
     let dropdownButtonEl = element.querySelector('.sky-dropdown-button') as HTMLElement;
@@ -62,42 +63,22 @@ describe('datepicker', () => {
   function setInput(
     element: HTMLElement,
     text: string,
-    compFixture: ComponentFixture<any>) {
-    let inputEvent = document.createEvent('Event');
-    let params = {
-      bubbles: false,
-      cancelable: false
-    };
-    inputEvent.initEvent('input', params.bubbles, params.cancelable);
-
-    let changeEvent = document.createEvent('Event');
-    changeEvent.initEvent('change', params.bubbles, params.cancelable);
-    let inputEl = element.querySelector('input');
+    fixture: ComponentFixture<any>
+  ) {
+    const inputEl = element.querySelector('input');
     inputEl.value = text;
 
-    inputEl.dispatchEvent(inputEvent);
-    compFixture.detectChanges();
-
-    inputEl.dispatchEvent(changeEvent);
-    compFixture.detectChanges();
-    tick();
-
+    blurInput(element, fixture);
   }
 
   function blurInput(
     element: HTMLElement,
-    compFixture: ComponentFixture<any>) {
+    fixture: ComponentFixture<any>
+  ) {
+    const inputEl = element.querySelector('input');
+    SkyAppTestUtility.fireDomEvent(inputEl, 'blur');
 
-    let inputEvent = document.createEvent('Event');
-    let params = {
-      bubbles: false,
-      cancelable: false
-    };
-    inputEvent.initEvent('blur', params.bubbles, params.cancelable);
-    let inputEl = element.querySelector('input');
-
-    inputEl.dispatchEvent(inputEvent);
-    compFixture.detectChanges();
+    fixture.detectChanges();
     tick();
   }
 
@@ -146,7 +127,7 @@ describe('datepicker', () => {
     }));
   });
 
-  describe('standard configuration', () => {
+  fdescribe('standard configuration', () => {
     let fixture: ComponentFixture<DatepickerTestComponent>;
     let component: DatepickerTestComponent;
     let nativeElement: HTMLElement;
@@ -578,7 +559,7 @@ describe('datepicker', () => {
         tick();
       }));
 
-      it('should handle noValidate property', fakeAsync(() => {
+      fit('should handle noValidate property', fakeAsync(() => {
         component.noValidate = true;
 
         fixture.detectChanges();

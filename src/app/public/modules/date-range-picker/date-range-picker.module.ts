@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import {
-  FormsModule
+  FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 
 import {
@@ -33,6 +33,7 @@ import {
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SkyI18nModule,
     SkyDateTimeResourcesModule,
     SkyDatepickerModule
