@@ -63,28 +63,28 @@ describe('Date pipe', () => {
   it('should format a date object', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent;
-    expect(value).toContain('1/1/2000, 12:00 AM');
+    expect(value.trim()).toEqual('1/1/2000, 12:00 AM');
   });
 
   it('should support Angular DatePipe formats', () => {
     fixture.componentInstance.format = 'fullDate';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent;
-    expect(value).toContain('Saturday, January 1, 2000');
+    expect(value.trim()).toEqual('Saturday, January 1, 2000');
   });
 
   it('should support changing locale inline', () => {
     fixture.componentInstance.locale = 'fr-CA';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent;
-    expect(value).toContain('2000-01-01 00 h 00');
+    expect(value.trim()).toEqual('2000-01-01 00 h 00');
   });
 
   it('should respect locale set by SkyAppLocaleProvider', () => {
     fixture.detectChanges();
 
     let value = fixture.nativeElement.textContent;
-    expect(value).toContain('1/1/2000, 12:00 AM');
+    expect(value.trim()).toEqual('1/1/2000, 12:00 AM');
 
     mockLocaleStream.next({
       locale: 'fr-CA'
@@ -93,7 +93,7 @@ describe('Date pipe', () => {
     fixture.detectChanges();
 
     value = fixture.nativeElement.textContent;
-    expect(value).toContain('2000-01-01 00 h 00');
+    expect(value.trim()).toEqual('2000-01-01 00 h 00');
   });
 
   it('should only transform if the value is set', () => {
