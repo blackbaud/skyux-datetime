@@ -1,6 +1,6 @@
 # 3.0.1 (2019-02-20)
 
-- Added `SkyTimepickerTimeOutput` to index barrel so it can be imported from the package root. [#17](https://github.com/blackbaud/skyux-datetime/pull/17).
+- Fixed timepicker index barrel to include `SkyTimepickerTimeOutput` so it can be imported from the package root. [#17](https://github.com/blackbaud/skyux-datetime/pull/17).
 
 # 3.0.0 (2019-01-11)
 
