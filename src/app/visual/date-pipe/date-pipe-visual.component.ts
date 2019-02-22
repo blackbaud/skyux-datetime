@@ -7,7 +7,9 @@ import {
   templateUrl: './date-pipe-visual.component.html'
 })
 export class DatePipeVisualComponent {
-  public dateValue = new Date('01/01/2019');
+  public dateValue1 = new Date('01/01/2019');
+  public dateValue2 = new Date('02/02/2019');
+  public dateValue3 = new Date('03/03/2019');
   public format: string;
   public locale: string;
 
