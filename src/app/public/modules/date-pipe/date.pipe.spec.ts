@@ -62,29 +62,45 @@ describe('Date pipe', () => {
 
   it('should format a date object', () => {
     fixture.detectChanges();
-    const value = fixture.nativeElement.textContent;
-    expect(value).toContain('1/1/2000, 12:00 AM');
+    const value = fixture.nativeElement.textContent.trim();
+    const expectedValues = [
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should support Angular DatePipe formats', () => {
     fixture.componentInstance.format = 'fullDate';
     fixture.detectChanges();
-    const value = fixture.nativeElement.textContent;
-    expect(value).toContain('Saturday, January 1, 2000');
+    const value = fixture.nativeElement.textContent.trim();
+    const expectedValues = [
+      'Saturday, January 1, 2000',
+      'Saturday, January 01, 2000' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should support changing locale inline', () => {
     fixture.componentInstance.locale = 'fr-CA';
     fixture.detectChanges();
-    const value = fixture.nativeElement.textContent;
-    expect(value).toContain('2000-01-01 00 h 00');
+    const value = fixture.nativeElement.textContent.trim();
+    const expectedValues = [
+      '2000-01-01 00 h 00',
+      '2000-01-01 00:00' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should respect locale set by SkyAppLocaleProvider', () => {
     fixture.detectChanges();
 
-    let value = fixture.nativeElement.textContent;
-    expect(value).toContain('1/1/2000, 12:00 AM');
+    let value = fixture.nativeElement.textContent.trim();
+    let expectedValues = [
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
 
     mockLocaleStream.next({
       locale: 'fr-CA'
@@ -92,8 +108,12 @@ describe('Date pipe', () => {
 
     fixture.detectChanges();
 
-    value = fixture.nativeElement.textContent;
-    expect(value).toContain('2000-01-01 00 h 00');
+    value = fixture.nativeElement.textContent.trim();
+    expectedValues = [
+      '2000-01-01 00 h 00',
+      '2000-01-01 00:00' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should only transform if the value is set', () => {
@@ -113,11 +133,15 @@ describe('Date pipe', () => {
   });
 
   it('should default to en-US locale', () => {
-    const date = new Date('01/01/2001');
+    const date = new Date('01/01/2000');
     const pipe = new SkyDatePipe(mockLocaleProvider);
+    const expectedValues = [
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM' // IE 11
+    ];
 
     pipe.transform(date, 'short').take(1).subscribe((value) => {
-      expect(value).toEqual('1/1/2001, 12:00 AM');
+      expect(expectedValues).toContain(value);
       expect(pipe['locale']).toEqual('en-US');
     });
   });
