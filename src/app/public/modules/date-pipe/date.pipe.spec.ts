@@ -16,8 +16,6 @@ import {
   BehaviorSubject
 } from 'rxjs/BehaviorSubject';
 
-import 'rxjs/add/operator/take';
-
 import {
   DatePipeTestComponent
 } from './fixtures/date-pipe.component.fixture';
@@ -122,14 +120,12 @@ describe('Date pipe', () => {
 
     const spy = spyOn(pipe['ngDatePipe'], 'transform').and.callThrough();
 
-    pipe.transform(date).take(1).subscribe(() => {
-      expect(spy.calls.count()).toEqual(1);
-      spy.calls.reset();
+    let result = pipe.transform(date);
+    expect(spy.calls.count()).toEqual(1);
+    spy.calls.reset();
 
-      pipe.transform(undefined).take(1).subscribe(() => {
-        expect(spy.calls.count()).toEqual(0);
-      });
-    });
+    result = pipe.transform(undefined);
+    expect(spy.calls.count()).toEqual(0);
   });
 
   it('should default to en-US locale', () => {
@@ -140,9 +136,8 @@ describe('Date pipe', () => {
       '1/1/2000 12:00 AM' // IE 11
     ];
 
-    pipe.transform(date, 'short').take(1).subscribe((value) => {
-      expect(expectedValues).toContain(value);
-      expect(pipe['locale']).toEqual('en-US');
-    });
+    const value = pipe.transform(date, 'short');
+    expect(expectedValues).toContain(value);
+    expect(pipe['_locale']).toEqual('en-US');
   });
 });
