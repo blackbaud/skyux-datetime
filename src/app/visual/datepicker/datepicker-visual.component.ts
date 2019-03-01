@@ -1,27 +1,29 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   OnInit
 } from '@angular/core';
 
 import {
+  AbstractControl,
   FormBuilder,
-  FormGroup,
   FormControl,
-  Validators,
-  AbstractControl
+  FormGroup,
+  Validators
 } from '@angular/forms';
 
 @Component({
   selector: 'datepicker-visual',
-  templateUrl: './datepicker-visual.component.html'
+  templateUrl: './datepicker-visual.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerVisualComponent implements OnInit {
-  public selectedDate: Date = new Date('4/4/2017');
+  public selectedDate = new Date('4/4/2017');
   public reactiveForm: FormGroup;
   public disabled = false;
   public minDate: Date;
   public maxDate: Date;
-  public noValidate = true;
+  public noValidate = false;
 
   constructor(
     private formBuilder: FormBuilder

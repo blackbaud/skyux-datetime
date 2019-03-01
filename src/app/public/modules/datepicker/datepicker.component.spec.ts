@@ -52,7 +52,7 @@ import { DatepickerReactiveTestComponent } from './fixtures/datepicker-reactive.
 
 const moment = require('moment');
 
-fdescribe('datepicker', () => {
+describe('datepicker', () => {
 
   function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>) {
     let dropdownButtonEl = element.querySelector('.sky-dropdown-button') as HTMLElement;
@@ -127,7 +127,7 @@ fdescribe('datepicker', () => {
     }));
   });
 
-  fdescribe('standard configuration', () => {
+  describe('standard configuration', () => {
     let fixture: ComponentFixture<DatepickerTestComponent>;
     let component: DatepickerTestComponent;
     let nativeElement: HTMLElement;
@@ -559,7 +559,7 @@ fdescribe('datepicker', () => {
         tick();
       }));
 
-      fit('should handle noValidate property', fakeAsync(() => {
+      it('should handle noValidate property', fakeAsync(() => {
         component.noValidate = true;
 
         fixture.detectChanges();

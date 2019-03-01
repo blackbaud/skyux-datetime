@@ -100,28 +100,38 @@ export class SkyDatepickerInputDirective
   @Input()
   public startingDay: number;
 
-  public get value(): Date {
+  public get value(): any {
     return this._value;
   }
 
-  // TODO: The value can be either a string or a Date object.
-  public set value(value: Date) {
+  public set value(value: any) {
     this.onTouched();
 
-    const isNewValue = (
-      (!value || !this._value) ||
-      value.getTime() !== this._value.getTime()
+    const dateValue = this.getDateValue(value);
+
+    const areDatesEqual = (
+      this._value instanceof Date &&
+      dateValue && dateValue.getTime() === this._value.getTime()
     );
 
-    if (isNewValue) {
-      this._value = value;
-      this.onChange(value);
-      this.skyDatepickerInput.selectedDate = value;
+    const isNewValue = (
+      dateValue !== this._value ||
+      !areDatesEqual
+    );
 
-      if (value) {
-        const formattedDate = this.dateFormatter.format(value, this.dateFormat);
-        this.setInputValue(formattedDate);
-      }
+    this._value = (dateValue || value);
+
+    if (isNewValue) {
+      this.onChange(this._value);
+    }
+
+    this.skyDatepickerInput.selectedDate = this._value;
+
+    if (dateValue) {
+      const formattedDate = this.dateFormatter.format(dateValue, this.dateFormat);
+      this.setInputElementValue(formattedDate);
+    } else {
+      this.setInputElementValue(value || '');
     }
   }
 
@@ -130,7 +140,7 @@ export class SkyDatepickerInputDirective
   private ngUnsubscribe = new Subject<void>();
 
   private _disabled = false;
-  private _value: Date;
+  private _value: any;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -211,24 +221,7 @@ export class SkyDatepickerInputDirective
   }
 
   public writeValue(value: any): void {
-    if (this.disabled) {
-      return;
-    }
-
-    if (value instanceof Date) {
-      this.value = value;
-      return;
-    }
-
-    if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
-      if (this.dateFormatter.dateIsValid(date)) {
-        this.value = date;
-        return;
-      }
-    }
-
-    this.value = undefined;
+    this.value = value;
   }
 
   public registerOnChange(fn: (value: any) => void): void {
@@ -263,11 +256,9 @@ export class SkyDatepickerInputDirective
       return;
     }
 
-    if (typeof value === 'string') {
-      return;
-    }
+    const dateValue = this.getDateValue(value);
+    const isDateValid = (dateValue && this.dateFormatter.dateIsValid(dateValue));
 
-    const isDateValid = this.dateFormatter.dateIsValid(value);
     if (!isDateValid) {
       return {
         'skyDate': {
@@ -305,7 +296,7 @@ export class SkyDatepickerInputDirective
     return;
   }
 
-  private setInputValue(value: string): void {
+  private setInputElementValue(value: string): void {
     this.renderer.setElementProperty(
       this.elementRef.nativeElement,
       'value',
@@ -329,6 +320,20 @@ export class SkyDatepickerInputDirective
     if (this.configService.startingDay) {
       this.startingDay = this.configService.startingDay;
     }
+  }
+
+  private getDateValue(value: any): Date {
+    let dateValue: Date;
+    if (value instanceof Date) {
+      dateValue = value;
+    } else if (typeof value === 'string') {
+      const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
+      if (this.dateFormatter.dateIsValid(date)) {
+        dateValue = date;
+      }
+    }
+
+    return dateValue;
   }
 
   private onChange = (_: any) => {};

@@ -14,8 +14,12 @@
 <div
   class="app-screenshot"
   id="screenshot-datepicker"
-  style="max-width: 50%; height: 500px;"
 >
+  <h2
+    class="sky-section-heading"
+  >
+    Template-driven datepicker
+  </h2>
   <sky-datepicker #picker>
     <input
       [disabled]="disabled"
@@ -24,13 +28,30 @@
       [skyDatepickerInput]="picker"
       [skyDatepickerNoValidate]="noValidate"
       [(ngModel)]="selectedDate"
+      #date="ngModel"
     />
   </sky-datepicker>
+
+  <p *ngIf="date.errors && date.errors.skyDate && (date.dirty || date.touched)"
+    class="sky-error-label"
+  >
+    <span [hidden]="!date.errors.skyDate.invalid">
+      Please enter a valid date.
+    </span>
+
+    <span [hidden]="!date.errors.skyDate.minDate">
+      Date is prior to minimum date range.
+    </span>
+
+    <span [hidden]="!date.errors.skyDate.maxDate">
+      Date is after maximum date range.
+    </span>
+  </p>
+
   <p>
     Selected date is {{ selectedDate }}
   </p>
 </div>
-
 
 <div
   class="app-screenshot"
@@ -38,12 +59,11 @@
   <h2
     class="sky-section-heading"
   >
-    Reactive form datepicker
+    Reactive datepicker
   </h2>
 
   <form
     novalidate
-    style="max-width: 50%; height: 500px;"
     [formGroup]="reactiveForm"
   >
     <sky-datepicker #reactivePicker>
@@ -60,16 +80,21 @@
     <p *ngIf="reactiveDate.errors && (reactiveDate.dirty || reactiveDate.touched)"
       class="sky-error-label"
     >
-      <span *ngIf="reactiveDate.errors.required">
-        This date is required. Please supply a value.
+      <span [hidden]="!reactiveDate.errors.skyDate.invalid">
+        Please enter a valid date.
       </span>
-      <span *ngIf="reactiveDate.errors.skyDate">
-        The date you have entered is invalid. Please enter a valid date or use the picker.
+
+      <span [hidden]="!reactiveDate.errors.skyDate.minDate">
+        Date is prior to minimum date range.
+      </span>
+
+      <span [hidden]="!reactiveDate.errors.skyDate.maxDate">
+        Date is after maximum date range.
       </span>
     </p>
 
     <p>
-      Reactive form selected date is {{ reactiveForm.value | json }}
+      Selected date is {{ reactiveForm.value.selectedDate }}
     </p>
   </form>
 
