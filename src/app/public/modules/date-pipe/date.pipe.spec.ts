@@ -30,10 +30,15 @@ import {
 
 describe('Date pipe', () => {
   let fixture: ComponentFixture<DatePipeTestComponent>;
+  let mockChangeDetector: any;
   let mockLocaleProvider: SkyAppLocaleProvider;
   let mockLocaleStream: BehaviorSubject<SkyAppLocaleInfo>;
 
   beforeEach(() => {
+    mockChangeDetector = {
+      markForCheck() {}
+    };
+
     mockLocaleStream = new BehaviorSubject({
       locale: 'en-US'
     });
@@ -116,21 +121,21 @@ describe('Date pipe', () => {
 
   it('should only transform if the value is set', () => {
     const date = new Date('01/01/2001');
-    const pipe = new SkyDatePipe(mockLocaleProvider);
+    const pipe = new SkyDatePipe(mockChangeDetector, mockLocaleProvider);
 
     const spy = spyOn(pipe['ngDatePipe'], 'transform').and.callThrough();
 
-    let result = pipe.transform(date);
+    pipe.transform(date);
     expect(spy.calls.count()).toEqual(1);
     spy.calls.reset();
 
-    result = pipe.transform(undefined);
+    pipe.transform(undefined);
     expect(spy.calls.count()).toEqual(0);
   });
 
   it('should default to en-US locale', () => {
     const date = new Date('01/01/2000');
-    const pipe = new SkyDatePipe(mockLocaleProvider);
+    const pipe = new SkyDatePipe(mockChangeDetector, mockLocaleProvider);
     const expectedValues = [
       '1/1/2000, 12:00 AM',
       '1/1/2000 12:00 AM' // IE 11
