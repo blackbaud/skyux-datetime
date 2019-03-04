@@ -51,7 +51,7 @@ export class SkyDatePipe implements PipeTransform {
     this.localeProvider.getLocaleInfo()
       .subscribe((localeInfo) => {
         this.locale = localeInfo.locale;
-        this.refreshFormattedValue();
+        this.updateFormattedValue();
       });
   }
 
@@ -64,12 +64,12 @@ export class SkyDatePipe implements PipeTransform {
     this.format = format;
     this.locale = locale;
 
-    this.refreshFormattedValue();
+    this.updateFormattedValue();
 
     return this.formattedValue;
   }
 
-  private refreshFormattedValue(): void {
+  private updateFormattedValue(): void {
     if (this.value) {
       this.formattedValue = this.ngDatePipe.transform(this.value, this.format);
     }
