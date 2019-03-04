@@ -1,3 +1,7 @@
+# 3.1.0 (2019-03-04)
+
+- Added `SkyDatePipe` which allows preferred locale of Angular's underlying `DatePipe` to be provided by `SkyAppLocaleProvider`. [#20](https://github.com/blackbaud/skyux-datetime/pull/20)
+
 # 3.0.1 (2019-02-20)
 
 - Fixed timepicker index barrel to include `SkyTimepickerTimeOutput` so it can be imported from the package root. [#17](https://github.com/blackbaud/skyux-datetime/pull/17).
