@@ -100,11 +100,11 @@ export class SkyDatepickerInputDirective
   @Input()
   public startingDay: number;
 
-  public get value(): any {
+  private get value(): any {
     return this._value;
   }
 
-  public set value(value: any) {
+  private set value(value: any) {
     this.onTouched();
 
     const dateValue = this.getDateValue(value);
@@ -167,7 +167,8 @@ export class SkyDatepickerInputDirective
         this.writeValue(value);
       });
 
-    if (!element.getAttribute('aria-label')) {
+    const hasAriaLabel = element.getAttribute('aria-label');
+    if (!hasAriaLabel) {
       this.resourcesService.getString('skyux_date_field_default_label')
         .takeUntil(this.ngUnsubscribe)
         .subscribe((value: string) => {

@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 
 import {
+  SkyDatePipeModule,
   SkyDatepickerModule,
   SkyDateRangePickerModule,
   SkyTimepickerModule
@@ -10,6 +11,7 @@ import {
 
 @NgModule({
   exports: [
+    SkyDatePipeModule,
     SkyDatepickerModule,
     SkyTimepickerModule,
     SkyDateRangePickerModule
