@@ -3,18 +3,16 @@ import {
 } from '@angular/core';
 
 import {
-  SkyDatePipeModule,
   SkyDatepickerModule,
-  SkyDateRangePickerModule,
+  SkyDatePipeModule,
   SkyTimepickerModule
 } from './public';
 
 @NgModule({
   exports: [
-    SkyDatePipeModule,
     SkyDatepickerModule,
-    SkyTimepickerModule,
-    SkyDateRangePickerModule
+    SkyDatePipeModule,
+    SkyTimepickerModule
   ]
 })
 export class AppExtrasModule { }
