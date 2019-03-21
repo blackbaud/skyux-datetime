@@ -38,8 +38,10 @@ export class DatepickerVisualComponent implements OnInit {
       selectedDate: new FormControl('4/4/2017', Validators.required)
     });
 
+    console.log('1', this.reactiveDate.invalid, this.reactiveDate.touched, this.reactiveDate.pristine);
     this.reactiveDate.statusChanges.subscribe((status: any) => {
       console.log('Status changed:', status);
+      console.log('2', this.reactiveDate.invalid, this.reactiveDate.touched, this.reactiveDate.pristine);
     });
 
     this.reactiveDate.valueChanges.subscribe((value: any) => {

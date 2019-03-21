@@ -105,8 +105,6 @@ export class SkyDatepickerInputDirective
   }
 
   private set value(value: any) {
-    this.onTouched();
-
     const dateValue = this.getDateValue(value);
 
     const areDatesEqual = (
@@ -165,6 +163,7 @@ export class SkyDatepickerInputDirective
       .takeUntil(this.ngUnsubscribe)
       .subscribe((value: Date) => {
         this.writeValue(value);
+        this.onTouched();
       });
 
     const hasAriaLabel = element.getAttribute('aria-label');
@@ -219,6 +218,7 @@ export class SkyDatepickerInputDirective
   @HostListener('blur', ['$event'])
   public onInputBlur(event: any): void {
     this.writeValue(event.target.value);
+    this.onTouched();
   }
 
   public writeValue(value: any): void {

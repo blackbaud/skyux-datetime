@@ -469,7 +469,7 @@ describe('datepicker', () => {
 
           expect(ngModel.valid).toBe(false);
           expect(ngModel.pristine).toBe(false);
-          expect(ngModel.touched).toBe(false);
+          expect(ngModel.touched).toBe(true);
 
         }));
 
@@ -663,14 +663,16 @@ describe('datepicker', () => {
 
     describe('disabled state', () => {
 
-      it('should disable the input and dropdown when disable is set to true', () => {
+      it('should disable the input and dropdown when disable is set to true', fakeAsync(() => {
         component.isDisabled = true;
+        fixture.detectChanges();
+        tick();
         fixture.detectChanges();
 
         expect(fixture.componentInstance.inputDirective.disabled).toBeTruthy();
         expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeTruthy();
         expect(fixture.debugElement.query(By.css('sky-dropdown button')).nativeElement.disabled).toBeTruthy();
-      });
+      }));
 
       it('should not disable the input and dropdown when disable is set to false', () => {
         component.isDisabled = false;
@@ -879,7 +881,7 @@ describe('datepicker', () => {
 
           expect(component.dateControl.valid).toBe(false);
           expect(component.dateControl.pristine).toBe(false);
-          expect(component.dateControl.touched).toBe(false);
+          expect(component.dateControl.touched).toBe(true);
 
         }));
 
