@@ -1,5 +1,8 @@
-<form [formGroup]="datepickerForm">
-  <sky-datepicker #datePicker class="form-input">
+<form [formGroup]="datepickerForm" novalidate>
+  <sky-datepicker
+    class="form-input"
+    #datePicker
+  >
     <input
       id="dateInput"
       placeholder="Date"

@@ -7,13 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import {
-  NoopAnimationsModule
-} from '@angular/platform-browser/animations';
-
-import {
-  FormsModule,
-  NgModel,
-  ReactiveFormsModule
+  NgModel
 } from '@angular/forms';
 
 import {
@@ -21,17 +15,13 @@ import {
 } from '@angular/platform-browser';
 
 import {
-  SkyWindowRefService
-} from '@skyux/core';
-
-import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
 import {
-  SkyDatepickerModule
-} from './datepicker.module';
+  SkyWindowRefService
+} from '@skyux/core';
 
 import {
   DatepickerTestComponent
@@ -48,7 +38,14 @@ import {
 import {
   SkyDatepickerComponent
 } from './datepicker.component';
-import { DatepickerReactiveTestComponent } from './fixtures/datepicker-reactive.component.fixture';
+
+import {
+  DatepickerReactiveTestComponent
+} from './fixtures/datepicker-reactive.component.fixture';
+
+import {
+  DatepickerTestModule
+} from './fixtures/datepicker.module.fixture';
 
 const moment = require('moment');
 
@@ -67,8 +64,11 @@ describe('datepicker', () => {
   ) {
     const inputEl = element.querySelector('input');
     inputEl.value = text;
+    fixture.detectChanges();
 
-    blurInput(element, fixture);
+    SkyAppTestUtility.fireDomEvent(inputEl, 'change');
+    fixture.detectChanges();
+    tick();
   }
 
   function blurInput(
@@ -87,15 +87,10 @@ describe('datepicker', () => {
     let component: DatepickerNoFormatTestComponent;
     let nativeElement: HTMLElement;
 
-    it('should handle different format from configuration', fakeAsync(() => {
+    beforeEach(function () {
       TestBed.configureTestingModule({
-        declarations: [
-          DatepickerNoFormatTestComponent
-        ],
         imports: [
-          SkyDatepickerModule,
-          NoopAnimationsModule,
-          FormsModule
+          DatepickerTestModule
         ]
       });
 
@@ -114,7 +109,9 @@ describe('datepicker', () => {
 
       nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
+    });
 
+    it('should handle different format from configuration', fakeAsync(() => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
@@ -134,13 +131,8 @@ describe('datepicker', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          DatepickerTestComponent
-        ],
         imports: [
-          SkyDatepickerModule,
-          NoopAnimationsModule,
-          FormsModule
+          DatepickerTestModule
         ]
       });
 
@@ -242,6 +234,7 @@ describe('datepicker', () => {
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
+        tick();
 
         expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
 
@@ -469,7 +462,7 @@ describe('datepicker', () => {
 
           expect(ngModel.valid).toBe(false);
           expect(ngModel.pristine).toBe(false);
-          expect(ngModel.touched).toBe(true);
+          expect(ngModel.touched).toBe(false);
 
         }));
 
@@ -694,14 +687,8 @@ describe('datepicker', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          DatepickerReactiveTestComponent
-        ],
         imports: [
-          SkyDatepickerModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule
+          DatepickerTestModule
         ]
       });
 
@@ -881,7 +868,7 @@ describe('datepicker', () => {
 
           expect(component.dateControl.valid).toBe(false);
           expect(component.dateControl.pristine).toBe(false);
-          expect(component.dateControl.touched).toBe(true);
+          expect(component.dateControl.touched).toBe(false);
 
         }));
 
@@ -1115,16 +1102,10 @@ describe('datepicker', () => {
     }
 
     let mockWindowService = new MockWindowService();
-
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          DatepickerNoFormatTestComponent
-        ],
         imports: [
-          SkyDatepickerModule,
-          NoopAnimationsModule,
-          FormsModule
+          DatepickerTestModule
         ],
         providers: [
           { provide: SkyWindowRefService, useValue: mockWindowService }

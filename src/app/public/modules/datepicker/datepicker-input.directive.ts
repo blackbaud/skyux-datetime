@@ -1,5 +1,5 @@
 import {
-  AfterContentInit,
+  AfterViewInit,
   Directive,
   ElementRef,
   forwardRef,
@@ -66,10 +66,16 @@ const SKY_DATEPICKER_VALIDATOR = {
   ]
 })
 export class SkyDatepickerInputDirective
-  implements OnInit, OnChanges, OnDestroy, ControlValueAccessor, Validator, AfterContentInit {
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit, ControlValueAccessor, Validator {
 
   @Input()
-  public dateFormat: string;
+  public set dateFormat(value: string) {
+    this._dateFormat = value;
+  }
+
+  public get dateFormat(): string {
+    return this._dateFormat || this.configService.dateFormat;
+  }
 
   @Input()
   public set disabled(value: boolean) {
@@ -86,10 +92,22 @@ export class SkyDatepickerInputDirective
   }
 
   @Input()
-  public maxDate: Date;
+  public set maxDate(value: Date) {
+    this._maxDate = value;
+  }
+
+  public get maxDate(): Date {
+    return this._maxDate || this.configService.maxDate;
+  }
 
   @Input()
-  public minDate: Date;
+  public set minDate(value: Date) {
+    this._minDate = value;
+  }
+
+  public get minDate(): Date {
+    return this._minDate || this.configService.minDate;
+  }
 
   @Input()
   public skyDatepickerInput: SkyDatepickerComponent;
@@ -98,7 +116,13 @@ export class SkyDatepickerInputDirective
   public skyDatepickerNoValidate = false;
 
   @Input()
-  public startingDay: number;
+  public set startingDay(value: number) {
+    this._startingDay = value;
+  }
+
+  public get startingDay(): number {
+    return this._startingDay || this.configService.startingDay;
+  }
 
   private get value(): any {
     return this._value;
@@ -121,9 +145,19 @@ export class SkyDatepickerInputDirective
 
     if (isNewValue) {
       this.onChange(this._value);
-    }
 
-    this.skyDatepickerInput.selectedDate = this._value;
+      // Do not mark the field as "dirty"
+      // if the field has been initialized with a value.
+      if (this.isFirstChange && this.control) {
+        this.control.markAsPristine();
+      }
+
+      if (this.isFirstChange && this._value) {
+        this.isFirstChange = false;
+      }
+
+      this.skyDatepickerInput.selectedDate = this._value;
+    }
 
     if (dateValue) {
       const formattedDate = this.dateFormatter.format(dateValue, this.dateFormat);
@@ -135,9 +169,14 @@ export class SkyDatepickerInputDirective
 
   private control: AbstractControl;
   private dateFormatter = new SkyDateFormatter();
+  private isFirstChange = true;
   private ngUnsubscribe = new Subject<void>();
 
+  private _dateFormat: string;
   private _disabled = false;
+  private _maxDate: Date;
+  private _minDate: Date;
+  private _startingDay: number;
   private _value: any;
 
   constructor(
@@ -146,11 +185,16 @@ export class SkyDatepickerInputDirective
     private elementRef: ElementRef,
     private renderer: Renderer,
     private resourcesService: SkyLibResourcesService
-  ) {
-    this.configureOptions();
-  }
+  ) { }
 
   public ngOnInit(): void {
+    this.skyDatepickerInput.dateChange
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((value: Date) => {
+        this.writeValue(value);
+        this.onTouched();
+      });
+
     const element = this.elementRef.nativeElement;
 
     this.renderer.setElementClass(
@@ -158,13 +202,6 @@ export class SkyDatepickerInputDirective
       'sky-form-control',
       true
     );
-
-    this.skyDatepickerInput.dateChange
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe((value: Date) => {
-        this.writeValue(value);
-        this.onTouched();
-      });
 
     const hasAriaLabel = element.getAttribute('aria-label');
     if (!hasAriaLabel) {
@@ -180,17 +217,15 @@ export class SkyDatepickerInputDirective
     }
   }
 
-  public ngAfterContentInit(): void {
+  public ngAfterViewInit(): void {
     // This is needed to address a bug in Angular 4.
     // When a control value is set intially, its value is not represented on the view.
     // See: https://github.com/angular/angular/issues/13792
-    if (this.control) {
-      this.control.setValue(this.value, {
-        emitEvent: false
-      });
+    this.control.setValue(this.value, {
+      emitEvent: false
+    });
 
-      this.changeDetector.detectChanges();
-    }
+    this.changeDetector.detectChanges();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -215,31 +250,24 @@ export class SkyDatepickerInputDirective
     this.ngUnsubscribe.complete();
   }
 
-  @HostListener('blur', ['$event'])
-  public onInputBlur(event: any): void {
+  @HostListener('change', ['$event'])
+  public onInputChange(event: any) {
+    this.isFirstChange = false;
     this.writeValue(event.target.value);
+  }
+
+  @HostListener('blur')
+  public onInputBlur(): void {
     this.onTouched();
+  }
+
+  @HostListener('keyup')
+  public onInputKeyup(): void {
+    this.control.markAsDirty();
   }
 
   public writeValue(value: any): void {
     this.value = value;
-  }
-
-  public registerOnChange(fn: (value: any) => void): void {
-    this.onChange = fn;
-  }
-
-  public registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  public registerOnValidatorChange(fn: () => void): void {
-    this.onValidatorChange = fn;
-  }
-
-  public setDisabledState(disabled: boolean): void {
-    this.disabled = disabled;
-    this.skyDatepickerInput.disabled = disabled;
   }
 
   public validate(control: AbstractControl): ValidationErrors {
@@ -269,6 +297,7 @@ export class SkyDatepickerInputDirective
     }
 
     const minDate = this.minDate;
+
     if (
       minDate &&
       this.dateFormatter.dateIsValid(minDate) &&
@@ -282,6 +311,7 @@ export class SkyDatepickerInputDirective
     }
 
     const maxDate = this.maxDate;
+
     if (
       maxDate &&
       this.dateFormatter.dateIsValid(maxDate) &&
@@ -293,8 +323,23 @@ export class SkyDatepickerInputDirective
         }
       };
     }
+  }
 
-    return;
+  public registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  public registerOnValidatorChange(fn: () => void): void {
+    this.onValidatorChange = fn;
+  }
+
+  public setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+    this.skyDatepickerInput.disabled = disabled;
   }
 
   private setInputElementValue(value: string): void {
@@ -303,24 +348,6 @@ export class SkyDatepickerInputDirective
       'value',
       value
     );
-  }
-
-  private configureOptions(): void {
-    if (this.configService.dateFormat) {
-      this.dateFormat = this.configService.dateFormat;
-    }
-
-    if (this.configService.maxDate) {
-      this.maxDate = this.configService.maxDate;
-    }
-
-    if (this.configService.minDate) {
-      this.minDate = this.configService.minDate;
-    }
-
-    if (this.configService.startingDay) {
-      this.startingDay = this.configService.startingDay;
-    }
   }
 
   private getDateValue(value: any): Date {
@@ -338,6 +365,7 @@ export class SkyDatepickerInputDirective
   }
 
   private onChange = (_: any) => {};
+  /*istanbul ignore next */
   private onTouched = () => {};
   private onValidatorChange = () => {};
 }

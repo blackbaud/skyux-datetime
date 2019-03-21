@@ -48,25 +48,16 @@ export class SkyDatepickerComponent implements OnDestroy {
     this.calendar.writeValue(value);
   }
 
-  public get startingDay(): number {
-    return this._startingDay;
-  }
-
-  public set startingDay(value: number) {
-    this._startingDay = value;
-    this.changeDetector.markForCheck();
-  }
-
   public dateChange = new EventEmitter<Date>();
   public maxDate: Date;
   public minDate: Date;
+  public startingDay: number;
 
   @ViewChild(SkyDatepickerCalendarComponent)
   private calendar: SkyDatepickerCalendarComponent;
 
   private _disabled = false;
   private _dropdownController = new Subject<SkyDropdownMessage>();
-  private _startingDay = 0;
 
   constructor(
     private changeDetector: ChangeDetectorRef

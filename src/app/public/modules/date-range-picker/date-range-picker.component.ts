@@ -12,7 +12,8 @@ import {
   NG_VALIDATORS,
   FormControl,
   FormBuilder,
-  FormGroup
+  FormGroup,
+  Validator
 } from '@angular/forms';
 import { SkyDateRangeService } from './date-range.service';
 import { SkyDateRange } from './types/date-range';
@@ -46,7 +47,7 @@ let uniqueId = 0;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SkyDateRangePickerComponent implements ControlValueAccessor {
+export class SkyDateRangePickerComponent implements ControlValueAccessor, Validator {
   @Input()
   public label: string;
 
@@ -116,10 +117,9 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
 
   public readonly dateRangePickerId = `sky-date-range-picker-${uniqueId++}`;
 
+  public formGroup: FormGroup;
   public showEndDatePicker = false;
   public showStartDatePicker = false;
-
-  public formGroup: FormGroup;
 
   private _selectedCalculator: SkyDateRangeCalculatorConfig;
   // private _selectedEndDate: Date;
@@ -166,10 +166,6 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
     this.updateForm(value);
   }
 
-  public setDisabledState(disabled: boolean): void {
-    this.disabled = disabled;
-  }
-
   // public validate(control: AbstractControl): {[key: string]: { invalid: SkyDateRange }} {
   //   const value = control.value;
 
@@ -203,6 +199,14 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
+  public registerOnValidatorChange(fn: () => void): void {
+    this.onValidatorChange = fn;
+  }
+
+  public setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+  }
+
   // public onSelectionChange(event: any): void {
   //   const found = this.calculators.find((calculator) => {
   //     return (parseInt(event.target.value, 10) === calculator.handle);
@@ -212,9 +216,6 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
   //     this.updateForm(found);
   //   }
   // }
-
-  private onTouched = () => {};
-  private onChange = (_: SkyDateRange) => {};
 
   private updateForm(value: SkyDateRange): void {
     this.showEndDatePicker = false;
@@ -252,4 +253,8 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor {
       return (handle === calculator.handle);
     });
   }
+
+  private onChange = (_: SkyDateRange) => {};
+  private onTouched = () => {};
+  private onValidatorChange = () => {};
 }

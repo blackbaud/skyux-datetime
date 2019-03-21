@@ -8,7 +8,7 @@ import {
 } from '../datepicker-input.directive';
 
 @Component({
-  selector: 'sky-test-cmp',
+  selector: 'datepicker-test',
   templateUrl: './datepicker.component.fixture.html'
 })
 export class DatepickerTestComponent {

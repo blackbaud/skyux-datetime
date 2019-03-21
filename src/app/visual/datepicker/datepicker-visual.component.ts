@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   OnInit
 } from '@angular/core';
@@ -14,16 +13,16 @@ import {
 
 @Component({
   selector: 'datepicker-visual',
-  templateUrl: './datepicker-visual.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './datepicker-visual.component.html'
 })
 export class DatepickerVisualComponent implements OnInit {
-  public selectedDate = new Date('4/4/2017');
-  public reactiveForm: FormGroup;
   public disabled = false;
   public minDate: Date;
   public maxDate: Date;
   public noValidate = false;
+  public reactiveForm: FormGroup;
+  public selectedDate = '5/12/2017';
+  public startingDay: number;
 
   constructor(
     private formBuilder: FormBuilder
@@ -38,10 +37,8 @@ export class DatepickerVisualComponent implements OnInit {
       selectedDate: new FormControl('4/4/2017', Validators.required)
     });
 
-    console.log('1', this.reactiveDate.invalid, this.reactiveDate.touched, this.reactiveDate.pristine);
     this.reactiveDate.statusChanges.subscribe((status: any) => {
       console.log('Status changed:', status);
-      console.log('2', this.reactiveDate.invalid, this.reactiveDate.touched, this.reactiveDate.pristine);
     });
 
     this.reactiveDate.valueChanges.subscribe((value: any) => {
@@ -52,6 +49,10 @@ export class DatepickerVisualComponent implements OnInit {
   public setMinMaxDates(): void {
     this.minDate = new Date('01/01/2018');
     this.maxDate = new Date('01/01/2020');
+  }
+
+  public setStartingDay(): void {
+    this.startingDay = 1;
   }
 
   public toggleDisabled(): void {
