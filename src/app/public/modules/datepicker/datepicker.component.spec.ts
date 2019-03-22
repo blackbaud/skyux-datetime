@@ -82,18 +82,22 @@ describe('datepicker', () => {
     tick();
   }
 
+  beforeEach(function () {
+    TestBed.configureTestingModule({
+      imports: [
+        DatepickerTestModule
+      ]
+    });
+
+    spyOn(console, 'warn');
+  });
+
   describe('nonstandard configuration', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
     let nativeElement: HTMLElement;
 
     beforeEach(function () {
-      TestBed.configureTestingModule({
-        imports: [
-          DatepickerTestModule
-        ]
-      });
-
       fixture = TestBed.overrideComponent(SkyDatepickerComponent, {
         add: {
           providers: [
@@ -130,15 +134,28 @@ describe('datepicker', () => {
     let nativeElement: HTMLElement;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          DatepickerTestModule
-        ]
-      });
-
       fixture = TestBed.createComponent(DatepickerTestComponent);
       nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
+    });
+
+    it('should throw an error if directive is added in isolation', function () {
+      try {
+        component.showInvalidDirective = true;
+        fixture.detectChanges();
+      } catch (err) {
+        expect(err.message).toContain('skyDatepickerInput');
+      }
+    });
+
+    it('should mark the control as dirty on keyup', function () {
+      fixture.detectChanges();
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      const ngModel = inputElement.injector.get(NgModel);
+      expect(ngModel.dirty).toEqual(false);
+      SkyAppTestUtility.fireDomEvent(inputElement.nativeElement, 'keyup');
+      fixture.detectChanges();
+      expect(ngModel.dirty).toEqual(true);
     });
 
     it('should create the component with the appropriate styles', () => {
@@ -686,12 +703,6 @@ describe('datepicker', () => {
     let nativeElement: HTMLElement;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          DatepickerTestModule
-        ]
-      });
-
       fixture = TestBed.createComponent(DatepickerReactiveTestComponent);
       nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
@@ -702,7 +713,7 @@ describe('datepicker', () => {
     });
 
     describe('initial value', () => {
-      it('should set the intial value correctly', fakeAsync(() => {
+      it('should set the initial value correctly', fakeAsync(() => {
         component.initialValue = '5/12/2017';
         fixture.detectChanges();
         tick();
@@ -1103,14 +1114,10 @@ describe('datepicker', () => {
 
     let mockWindowService = new MockWindowService();
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          DatepickerTestModule
-        ],
-        providers: [
-          { provide: SkyWindowRefService, useValue: mockWindowService }
-        ]
-      });
+      TestBed.overrideProvider(
+        SkyWindowRefService,
+        { useValue: mockWindowService }
+      );
 
       fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);
       nativeElement = fixture.nativeElement as HTMLElement;

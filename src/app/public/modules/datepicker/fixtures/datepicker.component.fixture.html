@@ -1,16 +1,23 @@
 <div>
-  <sky-datepicker>
+  <sky-datepicker
+    #picker>
     <input
       name="myDate"
       [(ngModel)]="selectedDate"
+      [skyDatepickerInput]="picker"
       [minDate]="minDate"
       [maxDate]="maxDate"
       [startingDay]="startingDay"
       [dateFormat]="format"
       [disabled]="isDisabled"
       [skyDatepickerNoValidate]="noValidate"
-      skyDatepickerInput
-      #date="ngModel"
-    />
+      #date="ngModel" />
   </sky-datepicker>
+</div>
+
+<div *ngIf="showInvalidDirective">
+  <input
+    type="text"
+    skyDatepickerInput
+  />
 </div>
