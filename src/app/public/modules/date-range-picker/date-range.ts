@@ -1,0 +1,9 @@
+import {
+  SkyDateRangeCalculatorName
+} from './date-range-calculator-name';
+
+export interface SkyDateRange {
+  name: SkyDateRangeCalculatorName;
+  startDate: Date;
+  endDate: Date;
+}

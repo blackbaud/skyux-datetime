@@ -3,8 +3,8 @@ import {
 } from 'rxjs/Observable';
 
 import {
-  SkyDateRangeCalculatorHandle
-} from './date-range-calculator-handle';
+  SkyDateRangeCalculatorName
+} from './date-range-calculator-name';
 
 import {
   SkyDateRangeCalculatorType
@@ -18,10 +18,10 @@ import {
   SkyDateRange
 } from './date-range';
 
-export interface SkyDateRangeCalculatorConfig {
+export interface SkyDateRangeCalculator {
   captionResourceKey: string;
   type: SkyDateRangeCalculatorType;
-  handle: SkyDateRangeCalculatorHandle;
+  name: SkyDateRangeCalculatorName;
   getValue: (startDate?: Date, endDate?: Date) => SkyDateRange;
   validate?: (startDate?: Date, endDate?: Date) => Observable<SkyDateRangeValidationResult>;
 }

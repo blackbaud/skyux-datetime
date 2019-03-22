@@ -1,24 +1,26 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
-  forwardRef,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef
+  forwardRef
 } from '@angular/core';
 
 import {
+  AbstractControl,
   ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NG_VALIDATORS,
   FormControl,
   FormBuilder,
   FormGroup,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS,
   Validator
 } from '@angular/forms';
+
+import { SkyDateRangeCalculator } from './date-range-calculator';
+import { SkyDateRangeCalculatorType } from './date-range-calculator-type';
 import { SkyDateRangeService } from './date-range.service';
-import { SkyDateRange } from './types/date-range';
-import { SkyDateRangeCalculatorConfig } from './types/date-range-calculator-config';
-import { SkyDateRangeCalculatorType } from './types/date-range-calculator-type';
+import { SkyDateRange } from './date-range';
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
@@ -49,16 +51,23 @@ let uniqueId = 0;
 })
 export class SkyDateRangePickerComponent implements ControlValueAccessor, Validator {
   @Input()
-  public label: string;
-
-  @Input()
-  public disabled = false;
-
-  @Input()
   public dateFormat: string;
 
   @Input()
-  public calculators: SkyDateRangeCalculatorConfig[];
+  public set disabled(value: boolean) {
+    this._disabled = value;
+    this.changeDetector.markForCheck();
+  }
+
+  public get disabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
+  public calculators: SkyDateRangeCalculator[];
+
+  @Input()
+  public label: string;
 
   public get value(): SkyDateRange {
     return this.formGroup.value as SkyDateRange;
@@ -70,13 +79,13 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor, Valida
     this.onChange(this._value);
   }
 
-  public set selectedCalculator(value: SkyDateRangeCalculatorConfig) {
+  public set selectedCalculator(value: SkyDateRangeCalculator) {
     if (value !== this._selectedCalculator) {
       this._selectedCalculator = value;
     }
   }
 
-  public get selectedCalculator(): SkyDateRangeCalculatorConfig {
+  public get selectedCalculator(): SkyDateRangeCalculator {
     return this._selectedCalculator || this.calculators[0];
   }
 
@@ -121,45 +130,38 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor, Valida
   public showEndDatePicker = false;
   public showStartDatePicker = false;
 
-  private _selectedCalculator: SkyDateRangeCalculatorConfig;
+  private get endDate(): AbstractControl {
+    return this.formGroup.get('endDate');
+  }
+
+  private get startDate(): AbstractControl {
+    return this.formGroup.get('startDate');
+  }
+
+  private _disabled = false;
+  private _selectedCalculator: SkyDateRangeCalculator;
   // private _selectedEndDate: Date;
   // private _selectedStartDate: Date;
   private _value: SkyDateRange;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
-    private dateRangeService: SkyDateRangeService
+    private dateRangeService: SkyDateRangeService,
+    private formBuilder: FormBuilder
   ) {
     this.calculators = this.dateRangeService.getDefaultDateRangeCalculators();
 
     this.formGroup = this.formBuilder.group({
-      handle: new FormControl(this.selectedCalculator.handle),
+      name: new FormControl(this.selectedCalculator.name),
       startDate: new FormControl(),
       endDate: new FormControl()
     });
 
-    this.formGroup.get('handle').valueChanges.subscribe((value) => {
-      console.log('Handle changes:', value);
-      // The template parses the handle value as a string, but it needs to be a number.
-      const handle = parseInt(value, 10);
+    this.registerEventListeners();
+  }
 
-      this._value = undefined;
-
-      this.updateForm({
-        handle,
-        startDate: undefined,
-        endDate: undefined
-      });
-    });
-
-    this.formGroup.get('startDate').valueChanges.subscribe((value) => {
-      console.log('Start date changes:', value);
-    });
-
-    this.formGroup.get('endDate').valueChanges.subscribe((value) => {
-      console.log('End date changes:', value);
-    });
+  public onFieldBlur(): void {
+    this.onTouched();
   }
 
   public writeValue(value: SkyDateRange): void {
@@ -205,36 +207,38 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor, Valida
 
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
+
+    if (this.disabled) {
+      this.formGroup.disable();
+    } else {
+      this.formGroup.enable();
+    }
   }
-
-  // public onSelectionChange(event: any): void {
-  //   const found = this.calculators.find((calculator) => {
-  //     return (parseInt(event.target.value, 10) === calculator.handle);
-  //   });
-
-  //   if (found) {
-  //     this.updateForm(found);
-  //   }
-  // }
 
   private updateForm(value: SkyDateRange): void {
     this.showEndDatePicker = false;
     this.showStartDatePicker = false;
 
+    this.endDate.reset();
+    this.startDate.reset();
+
     if (value) {
-      this.selectedCalculator = this.getCalculatorByHandle(value.handle);
+      this.selectedCalculator = this.getCalculatorByName(value.name);
 
       switch (this.selectedCalculator.type) {
         case SkyDateRangeCalculatorType.Before:
           this.showEndDatePicker = true;
           break;
+
         case SkyDateRangeCalculatorType.After:
           this.showStartDatePicker = true;
           break;
-        case SkyDateRangeCalculatorType.BeforeAndAfter:
+
+        case SkyDateRangeCalculatorType.Range:
           this.showEndDatePicker = true;
           this.showStartDatePicker = true;
           break;
+
         default:
           break;
       }
@@ -248,9 +252,32 @@ export class SkyDateRangePickerComponent implements ControlValueAccessor, Valida
     this.changeDetector.markForCheck();
   }
 
-  private getCalculatorByHandle(handle: number): SkyDateRangeCalculatorConfig {
+  private getCalculatorByName(name: number): SkyDateRangeCalculator {
     return this.calculators.find((calculator) => {
-      return (handle === calculator.handle);
+      return (name === calculator.name);
+    });
+  }
+
+  private registerEventListeners(): void {
+    this.formGroup.get('name').valueChanges.subscribe((value) => {
+      // The template parses the name value as a string, but it needs to be a number.
+      const name = parseInt(value, 10);
+
+      this._value = undefined;
+
+      this.updateForm({
+        name,
+        startDate: undefined,
+        endDate: undefined
+      });
+    });
+
+    this.startDate.valueChanges.subscribe((value) => {
+      console.log('Start date changes:', value);
+    });
+
+    this.endDate.valueChanges.subscribe((value) => {
+      console.log('End date changes:', value);
     });
   }
 

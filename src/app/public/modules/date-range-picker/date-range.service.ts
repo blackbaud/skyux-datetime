@@ -1,11 +1,15 @@
 import {
   Injectable
 } from '@angular/core';
-import { SkyDateRangeCalculatorConfig } from './types/date-range-calculator-config';
-import { SkyDateRangeCalculatorHandle } from './types/date-range-calculator-handle';
-import { SkyDateRangeCalculatorType } from './types/date-range-calculator-type';
-import { SkyDateRange } from './types/date-range';
-import { Observable } from 'rxjs';
+
+import {
+  Observable
+} from 'rxjs/Observable';
+
+import { SkyDateRangeCalculator } from './date-range-calculator';
+import { SkyDateRangeCalculatorName } from './date-range-calculator-name';
+import { SkyDateRangeCalculatorType } from './date-range-calculator-type';
+import { SkyDateRange } from './date-range';
 
 @Injectable()
 export class SkyDateRangeService {
@@ -19,7 +23,7 @@ export class SkyDateRangeService {
     const { startDate, endDate } = this.getClosestFiscalYearRange(start);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.LastFiscalYear,
+      name: SkyDateRangeCalculatorName.LastFiscalYear,
       startDate,
       endDate
     };
@@ -37,7 +41,7 @@ export class SkyDateRangeService {
     lastDayOfMonth.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.LastMonth,
+      name: SkyDateRangeCalculatorName.LastMonth,
       startDate: firstDayOfMonth,
       endDate: lastDayOfMonth
     };
@@ -63,7 +67,7 @@ export class SkyDateRangeService {
     }
 
     return {
-      handle: SkyDateRangeCalculatorHandle.LastQuarter,
+      name: SkyDateRangeCalculatorName.LastQuarter,
       startDate,
       endDate
     };
@@ -77,7 +81,7 @@ export class SkyDateRangeService {
     lastDayOfWeek.setDate(lastDayOfWeek.getDate() - lastDayOfWeek.getDay() - 1);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.LastWeek,
+      name: SkyDateRangeCalculatorName.LastWeek,
       startDate: firstDayOfWeek,
       endDate: lastDayOfWeek
     };
@@ -95,7 +99,7 @@ export class SkyDateRangeService {
     endDate.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.LastYear,
+      name: SkyDateRangeCalculatorName.LastYear,
       startDate,
       endDate
     };
@@ -109,7 +113,7 @@ export class SkyDateRangeService {
     const { startDate, endDate } = this.getClosestFiscalYearRange(start);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.NextFiscalYear,
+      name: SkyDateRangeCalculatorName.NextFiscalYear,
       startDate,
       endDate
     };
@@ -126,7 +130,7 @@ export class SkyDateRangeService {
     endDate.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.NextMonth,
+      name: SkyDateRangeCalculatorName.NextMonth,
       startDate,
       endDate
     };
@@ -158,7 +162,7 @@ export class SkyDateRangeService {
     }
 
     return {
-      handle: SkyDateRangeCalculatorHandle.NextQuarter,
+      name: SkyDateRangeCalculatorName.NextQuarter,
       startDate,
       endDate
     };
@@ -172,7 +176,7 @@ export class SkyDateRangeService {
     endDate.setDate(endDate.getDate() - endDate.getDay() + 13);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.NextWeek,
+      name: SkyDateRangeCalculatorName.NextWeek,
       startDate,
       endDate
     };
@@ -191,7 +195,7 @@ export class SkyDateRangeService {
     endDate.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.NextYear,
+      name: SkyDateRangeCalculatorName.NextYear,
       startDate,
       endDate
     };
@@ -204,7 +208,7 @@ export class SkyDateRangeService {
     const { startDate, endDate } = this.getClosestFiscalYearRange(start);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.ThisFiscalYear,
+      name: SkyDateRangeCalculatorName.ThisFiscalYear,
       startDate: startDate,
       endDate: endDate
     };
@@ -219,7 +223,7 @@ export class SkyDateRangeService {
     lastDayOfMonth.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.ThisMonth,
+      name: SkyDateRangeCalculatorName.ThisMonth,
       startDate: firstDayOfMonth,
       endDate: lastDayOfMonth
     };
@@ -238,7 +242,7 @@ export class SkyDateRangeService {
     endDate.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.ThisQuarter,
+      name: SkyDateRangeCalculatorName.ThisQuarter,
       startDate,
       endDate
     };
@@ -252,7 +256,7 @@ export class SkyDateRangeService {
     endDate.setDate(endDate.getDate() - endDate.getDay() + 6);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.ThisWeek,
+      name: SkyDateRangeCalculatorName.ThisWeek,
       startDate,
       endDate
     };
@@ -270,7 +274,7 @@ export class SkyDateRangeService {
     endDate.setDate(0);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.ThisYear,
+      name: SkyDateRangeCalculatorName.ThisYear,
       startDate,
       endDate
     };
@@ -280,7 +284,7 @@ export class SkyDateRangeService {
     const today = new Date();
 
     return {
-      handle: SkyDateRangeCalculatorHandle.Today,
+      name: SkyDateRangeCalculatorName.Today,
       startDate: today,
       endDate: today
     };
@@ -293,7 +297,7 @@ export class SkyDateRangeService {
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.Tomorrow,
+      name: SkyDateRangeCalculatorName.Tomorrow,
       startDate: today,
       endDate: tomorrow
     };
@@ -306,7 +310,7 @@ export class SkyDateRangeService {
     yesterday.setDate(yesterday.getDate() - 1);
 
     return {
-      handle: SkyDateRangeCalculatorHandle.Yesterday,
+      name: SkyDateRangeCalculatorName.Yesterday,
       startDate: yesterday,
       endDate: today
     };
@@ -314,14 +318,14 @@ export class SkyDateRangeService {
 
   // #endregion
 
-  private defaultCalculatorConfigs: SkyDateRangeCalculatorConfig[] = [
+  private defaultCalculatorConfigs: SkyDateRangeCalculator[] = [
     {
       captionResourceKey: 'skyux_date_range_picker_format_label_specific_range',
-      type: SkyDateRangeCalculatorType.BeforeAndAfter,
-      handle: SkyDateRangeCalculatorHandle.SpecificRange,
+      type: SkyDateRangeCalculatorType.Range,
+      name: SkyDateRangeCalculatorName.SpecificRange,
       getValue: (startDate, endDate) => {
         return {
-          handle: SkyDateRangeCalculatorHandle.SpecificRange,
+          name: SkyDateRangeCalculatorName.SpecificRange,
           startDate,
           endDate
         };
@@ -337,10 +341,10 @@ export class SkyDateRangeService {
     {
       captionResourceKey: 'skyux_date_range_picker_format_label_before',
       type: SkyDateRangeCalculatorType.Before,
-      handle: SkyDateRangeCalculatorHandle.Before,
+      name: SkyDateRangeCalculatorName.Before,
       getValue: (startDate, endDate) => {
         return {
-          handle: SkyDateRangeCalculatorHandle.Before,
+          name: SkyDateRangeCalculatorName.Before,
           startDate: undefined,
           endDate
         };
@@ -349,10 +353,10 @@ export class SkyDateRangeService {
     {
       captionResourceKey: 'skyux_date_range_picker_format_label_after',
       type: SkyDateRangeCalculatorType.After,
-      handle: SkyDateRangeCalculatorHandle.After,
+      name: SkyDateRangeCalculatorName.After,
       getValue: (startDate) => {
         return {
-          handle: SkyDateRangeCalculatorHandle.After,
+          name: SkyDateRangeCalculatorName.After,
           startDate,
           endDate: undefined
         };
@@ -361,118 +365,118 @@ export class SkyDateRangeService {
     {
       captionResourceKey: 'skyux_date_range_picker_format_label_at_any_time',
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.AtAnyTime,
+      name: SkyDateRangeCalculatorName.AtAnyTime,
       getValue: () => ({
-        handle: SkyDateRangeCalculatorHandle.AtAnyTime,
+        name: SkyDateRangeCalculatorName.AtAnyTime,
         startDate: undefined,
         endDate: undefined
       })
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.LastFiscalYear,
+      name: SkyDateRangeCalculatorName.LastFiscalYear,
       getValue: () => this.lastFiscalYear,
       captionResourceKey: 'skyux_date_range_picker_format_label_last_fiscal_year'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.LastMonth,
+      name: SkyDateRangeCalculatorName.LastMonth,
       getValue: () => this.lastMonth,
       captionResourceKey: 'skyux_date_range_picker_format_label_last_month'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.LastQuarter,
+      name: SkyDateRangeCalculatorName.LastQuarter,
       getValue: () => this.lastQuarter,
       captionResourceKey: 'skyux_date_range_picker_format_label_last_quarter'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.LastWeek,
+      name: SkyDateRangeCalculatorName.LastWeek,
       getValue: () => this.lastWeek,
       captionResourceKey: 'skyux_date_range_picker_format_label_last_week'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.LastYear,
+      name: SkyDateRangeCalculatorName.LastYear,
       getValue: () => this.lastYear,
       captionResourceKey: 'skyux_date_range_picker_format_label_last_year'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.NextFiscalYear,
+      name: SkyDateRangeCalculatorName.NextFiscalYear,
       getValue: () => this.nextFiscalYear,
       captionResourceKey: 'skyux_date_range_picker_format_label_next_fiscal_year'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.NextMonth,
+      name: SkyDateRangeCalculatorName.NextMonth,
       getValue: () => this.nextMonth,
       captionResourceKey: 'skyux_date_range_picker_format_label_next_month'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.NextQuarter,
+      name: SkyDateRangeCalculatorName.NextQuarter,
       getValue: () => this.nextQuarter,
       captionResourceKey: 'skyux_date_range_picker_format_label_next_quarter'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.NextWeek,
+      name: SkyDateRangeCalculatorName.NextWeek,
       getValue: () => this.nextWeek,
       captionResourceKey: 'skyux_date_range_picker_format_label_next_week'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.NextYear,
+      name: SkyDateRangeCalculatorName.NextYear,
       getValue: () => this.nextYear,
       captionResourceKey: 'skyux_date_range_picker_format_label_next_year'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.ThisFiscalYear,
+      name: SkyDateRangeCalculatorName.ThisFiscalYear,
       getValue: () => this.thisFiscalYear,
       captionResourceKey: 'skyux_date_range_picker_format_label_this_fiscal_year'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.ThisMonth,
+      name: SkyDateRangeCalculatorName.ThisMonth,
       getValue: () => this.thisMonth,
       captionResourceKey: 'skyux_date_range_picker_format_label_this_month'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.ThisQuarter,
+      name: SkyDateRangeCalculatorName.ThisQuarter,
       getValue: () => this.thisQuarter,
       captionResourceKey: 'skyux_date_range_picker_format_label_this_quarter'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.ThisWeek,
+      name: SkyDateRangeCalculatorName.ThisWeek,
       getValue: () => this.thisWeek,
       captionResourceKey: 'skyux_date_range_picker_format_label_this_week'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.ThisYear,
+      name: SkyDateRangeCalculatorName.ThisYear,
       getValue: () => this.thisYear,
       captionResourceKey: 'skyux_date_range_picker_format_label_this_year'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.Today,
+      name: SkyDateRangeCalculatorName.Today,
       getValue: () => this.today,
       captionResourceKey: 'skyux_date_range_picker_format_label_today'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.Tomorrow,
+      name: SkyDateRangeCalculatorName.Tomorrow,
       getValue: () => this.tomorrow,
       captionResourceKey: 'skyux_date_range_picker_format_label_tomorrow'
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
-      handle: SkyDateRangeCalculatorHandle.Yesterday,
+      name: SkyDateRangeCalculatorName.Yesterday,
       getValue: () => this.yesterday,
       captionResourceKey: 'skyux_date_range_picker_format_label_yesterday'
     }
@@ -489,7 +493,7 @@ export class SkyDateRangeService {
   //   };
   // }
 
-  public getDefaultDateRangeCalculators(): SkyDateRangeCalculatorConfig[] {
+  public getDefaultDateRangeCalculators(): SkyDateRangeCalculator[] {
     return this.defaultCalculatorConfigs;
   }
 

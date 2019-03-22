@@ -2,24 +2,24 @@
   class="sky-date-range-picker"
   [formGroup]="formGroup"
 >
-
   <div
     class="sky-date-range-picker-form-group"
   >
     <label
       class="sky-control-label"
-      [attr.for]="dateRangePickerId + '-select-format'"
+      [attr.for]="dateRangePickerId + '-select-calculator'"
     >
       {{ label }}
     </label>
 
     <select
       class="sky-form-control"
-      formControlName="handle"
-      [attr.id]="dateRangePickerId + '-select-format'"
+      formControlName="name"
+      [attr.id]="dateRangePickerId + '-select-calculator'"
+      (blur)="onFieldBlur()"
     >
       <option *ngFor="let calculator of calculators"
-        [value]="calculator.handle"
+        [value]="calculator.name"
       >
         {{ calculator.captionResourceKey | skyLibResources }}
       </option>
@@ -37,13 +37,14 @@
     </label>
 
     <sky-datepicker
-      #startPicker
+      #startDatePicker
     >
       <input
         formControlName="startDate"
         [attr.id]="dateRangePickerId + '-start-date'"
         [dateFormat]="dateFormat"
-        [skyDatepickerInput]="startPicker"
+        [skyDatepickerInput]="startDatePicker"
+        (blur)="onFieldBlur()"
       />
     </sky-datepicker>
   </div>
@@ -59,13 +60,14 @@
     </label>
 
     <sky-datepicker
-      #endPicker
+      #endDatePicker
     >
       <input
         formControlName="endDate"
         [attr.id]="dateRangePickerId + '-end-date'"
         [dateFormat]="dateFormat"
-        [skyDatepickerInput]="endPicker"
+        [skyDatepickerInput]="endDatePicker"
+        (blur)="onFieldBlur()"
       />
     </sky-datepicker>
 
@@ -75,5 +77,4 @@
       {{ 'skyux_date_range_picker_invalid_range_error_label' | skyLibResources }}
     </div> -->
   </div>
-
 </div>

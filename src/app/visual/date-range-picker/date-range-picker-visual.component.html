@@ -65,12 +65,48 @@
 
     <div class="sky-form-group">
       <sky-date-range-picker
-        formControlName="birthday"
-        label="Constituent birthday"
+        formControlName="lastDonation"
+        label="Last donation"
       >
       </sky-date-range-picker>
     </div>
   </form>
+
+  <table>
+    <tr>
+      <th>Touched</th>
+      <td>{{ reactiveRange.touched }}</td>
+    </tr>
+    <tr>
+      <th>Pristine</th>
+      <td>{{ reactiveRange.pristine }}</td>
+    </tr>
+    <tr>
+      <th>Valid</th>
+      <td>{{ reactiveRange.valid }}</td>
+    </tr>
+  </table>
+
+  <p *ngIf="reactiveRange.errors"
+    class="sky-error-label"
+  >
+    {{ reactiveRange.errors | json }}
+    <!-- <span *ngIf="reactiveRange.errors.skyDate?.invalid">
+      Please enter a valid date.
+    </span>
+
+    <span *ngIf="reactiveDate.errors.skyDate?.minDate">
+      Date is prior to minimum date range.
+    </span>
+
+    <span *ngIf="reactiveDate.errors.skyDate?.maxDate">
+      Date is after maximum date range.
+    </span> -->
+  </p>
+
+  <p>
+    Model value: <code>{{ reactiveRange.value }}</code>
+  </p>
 
   <button
     class="sky-btn sky-btn-default"
@@ -79,12 +115,4 @@
   >
     Toggle disabled
   </button>
-
-  <br>
-  <strong>
-    Form value:
-  </strong>
-  <br>
-
-  <pre>{{ reactiveForm.value | json }}</pre>
 </div>

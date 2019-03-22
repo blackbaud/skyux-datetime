@@ -1,6 +1,6 @@
 export const enum SkyDateRangeCalculatorType {
   After,
   Before,
-  BeforeAndAfter,
+  Range,
   Relative
 }

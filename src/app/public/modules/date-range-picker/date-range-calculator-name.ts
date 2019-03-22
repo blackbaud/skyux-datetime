@@ -1,4 +1,4 @@
-export const enum SkyDateRangeCalculatorHandle {
+export const enum SkyDateRangeCalculatorName {
   AtAnyTime,
   Before,
   After,
