@@ -80,6 +80,17 @@ export class SkyDateRangePickerComponent
   public calculators: SkyDateRangeCalculator[];
 
   @Input()
+  public set defaultCalculator(value: SkyDateRangeCalculator) {
+    this._defaultCalculator = value;
+  }
+
+  public get defaultCalculator(): SkyDateRangeCalculator {
+    return this._defaultCalculator || this.getCalculatorByName(
+      SkyDateRangeCalculatorName.AtAnyTime
+    );
+  }
+
+  @Input()
   public label: string;
 
   public set selectedCalculator(value: SkyDateRangeCalculator) {
@@ -132,17 +143,6 @@ export class SkyDateRangePickerComponent
   public formGroup: FormGroup;
   public showEndDatePicker = false;
   public showStartDatePicker = false;
-
-  @Input()
-  public set defaultCalculator(value: SkyDateRangeCalculator) {
-    this._defaultCalculator = value;
-  }
-
-  public get defaultCalculator(): SkyDateRangeCalculator {
-    return this._defaultCalculator || this.getCalculatorByName(
-      SkyDateRangeCalculatorName.AtAnyTime
-    );
-  }
 
   private get defaultValue(): SkyDateRange {
     return this.defaultCalculator.getValue();
@@ -362,38 +362,7 @@ export class SkyDateRangePickerComponent
   }
 
   private dateRangesEqual(rangeA: SkyDateRange, rangeB: SkyDateRange): boolean {
-    const isEqual = (JSON.stringify(rangeA) === JSON.stringify(rangeB));
-    console.log('dateRangesEqual()', isEqual, rangeA, rangeB);
-    return isEqual;
-    // if (
-    //   rangeA.name !== rangeB.name
-    // ) {
-    //   return false;
-    // }
-
-    // // Either of the start dates empty?
-    // if (
-    //   (!rangeA.startDate || !rangeB.startDate) &&
-    //   rangeA.startDate !== rangeB.startDate
-    // ) {
-    //   return false;
-    // }
-
-    // if (
-    //   (!rangeA.endDate || !rangeB.endDate) &&
-    //   rangeA.endDate !== rangeB.endDate
-    // ) {
-    //   return false;
-    // }
-
-    // if (
-    //   rangeA.startDate.getTime() !== rangeB.startDate.getTime() ||
-    //   rangeA.endDate.getTime() !== rangeB.endDate.getTime()
-    // ) {
-    //   return false;
-    // }
-
-    // return true;
+    return (JSON.stringify(rangeA) === JSON.stringify(rangeB));
   }
 
   private onChange = (_: SkyDateRange) => {};
