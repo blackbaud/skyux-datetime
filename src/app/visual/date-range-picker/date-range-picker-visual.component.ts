@@ -9,6 +9,8 @@ import {
   FormControl,
   FormGroup
 } from '@angular/forms';
+import { SkyDateRangeCalculatorName } from '../../public/modules/date-range-picker/date-range-calculator-name';
+import { SkyDateRange } from '../../public/modules/date-range-picker/date-range';
 
 @Component({
   selector: 'date-range-picker-visual',
@@ -29,16 +31,18 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      lastDonation: new FormControl({})
+      lastDonation: new FormControl()
     });
 
-    this.reactiveForm.statusChanges.subscribe((status: any) => {
-      console.log('Reactive date status:', status);
-    });
+    // this.reactiveForm.statusChanges.subscribe((status) => {
+    //   console.log('Date range status change:', status);
+    // });
 
-    this.reactiveForm.valueChanges.subscribe((value: any) => {
-      console.log('Reactive date value:', value);
-    });
+    this.reactiveRange.valueChanges
+      .distinctUntilChanged()
+      .subscribe((value) => {
+        console.log('[CONSUMER] Date range value change:', value);
+      });
   }
 
   public toggleDisabled(): void {
@@ -49,5 +53,21 @@ export class DateRangePickerVisualComponent implements OnInit {
     } else {
       this.reactiveForm.disable();
     }
+  }
+
+  public resetForm(): void {
+    this.reactiveForm.reset();
+    this.reactiveForm.markAsPristine();
+    this.reactiveForm.markAsUntouched();
+  }
+
+  public setRange(): void {
+    const range: SkyDateRange = {
+      name: SkyDateRangeCalculatorName.SpecificRange,
+      startDate: new Date('1/1/2012'),
+      endDate: new Date('1/1/2013')
+    };
+
+    this.reactiveRange.setValue(range);
   }
 }

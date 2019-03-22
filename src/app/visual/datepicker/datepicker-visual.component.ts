@@ -21,7 +21,7 @@ export class DatepickerVisualComponent implements OnInit {
   public maxDate: Date;
   public noValidate = false;
   public reactiveForm: FormGroup;
-  public selectedDate = '5/12/2017';
+  public selectedDate: any = '5/12/2017';
   public startingDay: number;
 
   constructor(
@@ -37,13 +37,17 @@ export class DatepickerVisualComponent implements OnInit {
       selectedDate: new FormControl('4/4/2017', Validators.required)
     });
 
-    this.reactiveDate.statusChanges.subscribe((status: any) => {
-      console.log('Status changed:', status);
-    });
+    this.reactiveDate.statusChanges
+      .distinctUntilChanged()
+      .subscribe((status: any) => {
+        console.log('Status changed:', status);
+      });
 
-    this.reactiveDate.valueChanges.subscribe((value: any) => {
-      console.log('Value changed:', value);
-    });
+    this.reactiveDate.valueChanges
+      .distinctUntilChanged()
+      .subscribe((value: any) => {
+        console.log('Value changed:', value);
+      });
   }
 
   public setMinMaxDates(): void {
@@ -63,5 +67,10 @@ export class DatepickerVisualComponent implements OnInit {
     }
 
     this.disabled = !this.disabled;
+  }
+
+  public setValue(): void {
+    this.reactiveDate.setValue(new Date('2/2/2001'));
+    this.selectedDate = new Date('2/2/2001');
   }
 }

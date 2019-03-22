@@ -82,13 +82,13 @@
     novalidate
     [formGroup]="reactiveForm"
   >
-    <sky-datepicker #reactivePicker>
+    <sky-datepicker>
       <input
         formControlName="selectedDate"
+        skyDatepickerInput
         type="text"
         [maxDate]="maxDate"
         [minDate]="minDate"
-        [skyDatepickerInput]="reactivePicker"
         [skyDatepickerNoValidate]="noValidate"
         [startingDay]="startingDay"
       />
@@ -151,6 +151,13 @@
       (click)="toggleDisabled()"
     >
       Toggle disabled
+    </button>
+    <button
+      class="sky-btn"
+      type="button"
+      (click)="setValue()"
+    >
+      Set new value
     </button>
   </p>
 </div>

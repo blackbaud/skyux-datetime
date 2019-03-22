@@ -22,11 +22,11 @@ export class SkyDateRangeService {
 
     const { startDate, endDate } = this.getClosestFiscalYearRange(start);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.LastFiscalYear,
       startDate,
       endDate
-    };
+    });
   }
 
   private get lastMonth(): SkyDateRange {
@@ -40,11 +40,11 @@ export class SkyDateRangeService {
     const lastDayOfMonth = new Date();
     lastDayOfMonth.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.LastMonth,
       startDate: firstDayOfMonth,
       endDate: lastDayOfMonth
-    };
+    });
   }
 
   private get lastQuarter(): SkyDateRange {
@@ -66,11 +66,11 @@ export class SkyDateRangeService {
       endDate.setDate(0);
     }
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.LastQuarter,
       startDate,
       endDate
-    };
+    });
   }
 
   private get lastWeek(): SkyDateRange {
@@ -80,11 +80,11 @@ export class SkyDateRangeService {
     const lastDayOfWeek = new Date();
     lastDayOfWeek.setDate(lastDayOfWeek.getDate() - lastDayOfWeek.getDay() - 1);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.LastWeek,
       startDate: firstDayOfWeek,
       endDate: lastDayOfWeek
-    };
+    });
   }
 
   private get lastYear(): SkyDateRange {
@@ -98,11 +98,11 @@ export class SkyDateRangeService {
     endDate.setMonth(0);
     endDate.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.LastYear,
       startDate,
       endDate
-    };
+    });
   }
 
   private get nextFiscalYear(): SkyDateRange {
@@ -112,11 +112,11 @@ export class SkyDateRangeService {
 
     const { startDate, endDate } = this.getClosestFiscalYearRange(start);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.NextFiscalYear,
       startDate,
       endDate
-    };
+    });
   }
 
   private get nextMonth(): SkyDateRange {
@@ -129,11 +129,11 @@ export class SkyDateRangeService {
     endDate.setMonth(endDate.getMonth() + 2);
     endDate.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.NextMonth,
       startDate,
       endDate
-    };
+    });
   }
 
   private get nextQuarter(): SkyDateRange {
@@ -161,11 +161,11 @@ export class SkyDateRangeService {
       endDate.setDate(0);
     }
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.NextQuarter,
       startDate,
       endDate
-    };
+    });
   }
 
   private get nextWeek(): SkyDateRange {
@@ -175,11 +175,11 @@ export class SkyDateRangeService {
     const endDate = new Date();
     endDate.setDate(endDate.getDate() - endDate.getDay() + 13);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.NextWeek,
       startDate,
       endDate
-    };
+    });
   }
 
   private get nextYear(): SkyDateRange {
@@ -194,11 +194,11 @@ export class SkyDateRangeService {
     endDate.setFullYear(startDate.getFullYear() + 2);
     endDate.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.NextYear,
       startDate,
       endDate
-    };
+    });
   }
 
   private get thisFiscalYear(): SkyDateRange {
@@ -207,11 +207,11 @@ export class SkyDateRangeService {
 
     const { startDate, endDate } = this.getClosestFiscalYearRange(start);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.ThisFiscalYear,
       startDate: startDate,
       endDate: endDate
-    };
+    });
   }
 
   private get thisMonth(): SkyDateRange {
@@ -222,11 +222,11 @@ export class SkyDateRangeService {
     lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1);
     lastDayOfMonth.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.ThisMonth,
       startDate: firstDayOfMonth,
       endDate: lastDayOfMonth
-    };
+    });
   }
 
   private get thisQuarter(): SkyDateRange {
@@ -241,11 +241,11 @@ export class SkyDateRangeService {
     endDate.setMonth(beginningOfQuarter + 3);
     endDate.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.ThisQuarter,
       startDate,
       endDate
-    };
+    });
   }
 
   private get thisWeek(): SkyDateRange {
@@ -255,11 +255,11 @@ export class SkyDateRangeService {
     const endDate = new Date();
     endDate.setDate(endDate.getDate() - endDate.getDay() + 6);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.ThisWeek,
       startDate,
       endDate
-    };
+    });
   }
 
   private get thisYear(): SkyDateRange {
@@ -273,21 +273,21 @@ export class SkyDateRangeService {
     endDate.setFullYear(endDate.getFullYear() + 1);
     endDate.setDate(0);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.ThisYear,
       startDate,
       endDate
-    };
+    });
   }
 
   private get today(): SkyDateRange {
     const today = new Date();
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.Today,
       startDate: today,
       endDate: today
-    };
+    });
   }
 
   private get tomorrow(): SkyDateRange {
@@ -296,11 +296,11 @@ export class SkyDateRangeService {
 
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.Tomorrow,
       startDate: today,
       endDate: tomorrow
-    };
+    });
   }
 
   private get yesterday(): SkyDateRange {
@@ -309,11 +309,11 @@ export class SkyDateRangeService {
 
     yesterday.setDate(yesterday.getDate() - 1);
 
-    return {
+    return this.parseDateRange({
       name: SkyDateRangeCalculatorName.Yesterday,
       startDate: yesterday,
       endDate: today
-    };
+    });
   }
 
   // #endregion
@@ -324,13 +324,13 @@ export class SkyDateRangeService {
       type: SkyDateRangeCalculatorType.Range,
       name: SkyDateRangeCalculatorName.SpecificRange,
       getValue: (startDate, endDate) => {
-        return {
+        return this.parseDateRange({
           name: SkyDateRangeCalculatorName.SpecificRange,
           startDate,
           endDate
-        };
+        });
       },
-      validate: (startDate: Date, endDate: Date) => {
+      validate: () => {
         return Observable.of({
           errors: [{
             message: 'The start date must come before the end date.'
@@ -343,11 +343,10 @@ export class SkyDateRangeService {
       type: SkyDateRangeCalculatorType.Before,
       name: SkyDateRangeCalculatorName.Before,
       getValue: (startDate, endDate) => {
-        return {
+        return this.parseDateRange({
           name: SkyDateRangeCalculatorName.Before,
-          startDate: undefined,
           endDate
-        };
+        });
       }
     },
     {
@@ -355,22 +354,21 @@ export class SkyDateRangeService {
       type: SkyDateRangeCalculatorType.After,
       name: SkyDateRangeCalculatorName.After,
       getValue: (startDate) => {
-        return {
+        return this.parseDateRange({
           name: SkyDateRangeCalculatorName.After,
-          startDate,
-          endDate: undefined
-        };
+          startDate
+        });
       }
     },
     {
       captionResourceKey: 'skyux_date_range_picker_format_label_at_any_time',
       type: SkyDateRangeCalculatorType.Relative,
       name: SkyDateRangeCalculatorName.AtAnyTime,
-      getValue: () => ({
-        name: SkyDateRangeCalculatorName.AtAnyTime,
-        startDate: undefined,
-        endDate: undefined
-      })
+      getValue: () => {
+        return this.parseDateRange({
+          name: SkyDateRangeCalculatorName.AtAnyTime
+        });
+      }
     },
     {
       type: SkyDateRangeCalculatorType.Relative,
@@ -516,5 +514,19 @@ export class SkyDateRangeService {
       startDate,
       endDate
     };
+  }
+
+  private parseDateRange(value: any): SkyDateRange {
+    /* tslint:disable:no-null-keyword */
+    if (value.startDate === undefined) {
+      value.startDate = null;
+    }
+
+    if (value.endDate === undefined) {
+      value.endDate = null;
+    }
+    /* tslint:enable */
+
+    return value as SkyDateRange;
   }
 }

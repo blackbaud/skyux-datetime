@@ -4,6 +4,6 @@ import {
 
 export interface SkyDateRange {
   name: SkyDateRangeCalculatorName;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }

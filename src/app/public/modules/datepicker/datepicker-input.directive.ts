@@ -10,7 +10,9 @@ import {
   OnInit,
   Renderer,
   SimpleChanges,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Optional,
+  AfterContentInit
 } from '@angular/core';
 
 import {
@@ -30,6 +32,7 @@ import {
   Subject
 } from 'rxjs/Subject';
 
+import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/takeUntil';
 
 import {
@@ -66,7 +69,7 @@ const SKY_DATEPICKER_VALIDATOR = {
   ]
 })
 export class SkyDatepickerInputDirective
-  implements OnInit, OnChanges, OnDestroy, AfterViewInit, ControlValueAccessor, Validator {
+  implements OnInit, OnChanges, OnDestroy, AfterContentInit, ControlValueAccessor, Validator {
 
   @Input()
   public set dateFormat(value: string) {
@@ -109,8 +112,24 @@ export class SkyDatepickerInputDirective
     return this._minDate || this.configService.minDate;
   }
 
+  /**
+   * @deprecated Use other method
+   */
   @Input()
-  public skyDatepickerInput: SkyDatepickerComponent;
+  public set skyDatepickerInput(value: SkyDatepickerComponent) {
+    if (value) {
+      console.warn(
+        '[Deprecation warning] You no longer need to provide a template reference variable ' +
+        'to the `skyDatepickerInput` attribute (this will be a breaking change in the next release).\n' +
+        'Do this instead:\n' +
+        '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
+      );
+    }
+
+    if (!this.datepickerComponent) {
+      this.datepickerComponent = value;
+    }
+  }
 
   @Input()
   public skyDatepickerNoValidate = false;
@@ -156,7 +175,7 @@ export class SkyDatepickerInputDirective
         this.isFirstChange = false;
       }
 
-      this.skyDatepickerInput.selectedDate = this._value;
+      this.datepickerComponent.selectedDate = this._value;
     }
 
     if (dateValue) {
@@ -184,16 +203,17 @@ export class SkyDatepickerInputDirective
     private configService: SkyDatepickerConfigService,
     private elementRef: ElementRef,
     private renderer: Renderer,
-    private resourcesService: SkyLibResourcesService
+    private resourcesService: SkyLibResourcesService,
+    @Optional() private datepickerComponent: SkyDatepickerComponent
   ) { }
 
   public ngOnInit(): void {
-    this.skyDatepickerInput.dateChange
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe((value: Date) => {
-        this.writeValue(value);
-        this.onTouched();
-      });
+    if (!this.datepickerComponent) {
+      throw new Error(
+        'You must wrap the `skyDatepickerInput` directive within a ' +
+        '`<sky-datepicker>` component!'
+      );
+    }
 
     const element = this.elementRef.nativeElement;
 
@@ -217,31 +237,41 @@ export class SkyDatepickerInputDirective
     }
   }
 
-  public ngAfterViewInit(): void {
+  public ngAfterContentInit(): void {
+    this.datepickerComponent.dateChange
+      .distinctUntilChanged()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((value: Date) => {
+        this.writeValue(value);
+        this.onTouched();
+      });
+
     // This is needed to address a bug in Angular 4.
     // When a control value is set intially, its value is not represented on the view.
     // See: https://github.com/angular/angular/issues/13792
-    this.control.setValue(this.value, {
-      emitEvent: false
-    });
+    if (this.control) {
+      this.control.setValue(this.value, {
+        emitEvent: false
+      });
 
-    this.changeDetector.detectChanges();
+      this.changeDetector.detectChanges();
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.minDate) {
       this.onValidatorChange();
-      this.skyDatepickerInput.minDate = this.minDate;
+      this.datepickerComponent.minDate = this.minDate;
     }
 
     if (changes.maxDate) {
       this.onValidatorChange();
-      this.skyDatepickerInput.maxDate = this.maxDate;
+      this.datepickerComponent.maxDate = this.maxDate;
     }
 
     if (changes.startingDay) {
       this.onValidatorChange();
-      this.skyDatepickerInput.startingDay = this.startingDay;
+      this.datepickerComponent.startingDay = this.startingDay;
     }
   }
 
@@ -339,7 +369,7 @@ export class SkyDatepickerInputDirective
 
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
-    this.skyDatepickerInput.disabled = disabled;
+    this.datepickerComponent.disabled = disabled;
   }
 
   private setInputElementValue(value: string): void {

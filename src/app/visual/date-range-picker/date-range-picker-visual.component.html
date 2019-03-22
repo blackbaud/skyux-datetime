@@ -105,7 +105,7 @@
   </p>
 
   <p>
-    Model value: <code>{{ reactiveRange.value }}</code>
+    Model value: <code>{{ reactiveRange.value | json }}</code>
   </p>
 
   <button
@@ -114,5 +114,19 @@
     (click)="toggleDisabled()"
   >
     Toggle disabled
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="resetForm()"
+  >
+    Reset form
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="setRange()"
+  >
+    Set specific range
   </button>
 </div>

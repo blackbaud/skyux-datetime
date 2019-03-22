@@ -36,15 +36,13 @@
       Start date label
     </label>
 
-    <sky-datepicker
-      #startDatePicker
-    >
+    <sky-datepicker>
       <input
         formControlName="startDate"
         [attr.id]="dateRangePickerId + '-start-date'"
         [dateFormat]="dateFormat"
-        [skyDatepickerInput]="startDatePicker"
         (blur)="onFieldBlur()"
+        skyDatepickerInput
       />
     </sky-datepicker>
   </div>
@@ -59,14 +57,12 @@
       End date label
     </label>
 
-    <sky-datepicker
-      #endDatePicker
-    >
+    <sky-datepicker>
       <input
         formControlName="endDate"
+        skyDatepickerInput
         [attr.id]="dateRangePickerId + '-end-date'"
         [dateFormat]="dateFormat"
-        [skyDatepickerInput]="endDatePicker"
         (blur)="onFieldBlur()"
       />
     </sky-datepicker>

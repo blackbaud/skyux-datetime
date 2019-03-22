@@ -1,17 +1,16 @@
 <form [formGroup]="datepickerForm" novalidate>
   <sky-datepicker
     class="form-input"
-    #datePicker
   >
     <input
       id="dateInput"
       placeholder="Date"
-      [skyDatepickerInput]="datePicker"
       [skyDatepickerNoValidate]="noValidate"
       [minDate]="minDate"
       [maxDate]="maxDate"
       [startingDay]="startingDay"
       formControlName="date"
+      skyDatepickerInput
     />
   </sky-datepicker>
 </form>
