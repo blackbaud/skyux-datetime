@@ -15,6 +15,14 @@
     "_description": "The label for the timepicker component's input field for screen readers when the consumer has not specified a label.",
     "message": "Time input field."
   },
+  "skyux_datepicker_invalid_date": {
+    "_description": "The error displayed when an invalid date is entered.",
+    "message": "Invalid date."
+  },
+  "skyux_date_range_picker_default_label": {
+    "_description": "The default label for the date range picker.",
+    "message": "Select a date range"
+  },
   "skyux_date_range_picker_format_label_specific_range": {
     "_description": "The label for the date range picker component's select field Specific Range format type",
     "message": "Specific range"
@@ -27,7 +35,7 @@
     "_description": "The label for the date range picker component's select field After format type",
     "message": "After"
   },
-  "skyux_date_range_picker_format_label_at_any_time": {
+  "skyux_date_range_picker_format_label_any_time": {
     "_description": "The label for the date range picker component's select field At Any time format type",
     "message": "At any time"
   },

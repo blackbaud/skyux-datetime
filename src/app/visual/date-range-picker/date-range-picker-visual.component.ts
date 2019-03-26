@@ -7,10 +7,17 @@ import {
   AbstractControl,
   FormBuilder,
   FormControl,
-  FormGroup
+  FormGroup,
+  Validators
 } from '@angular/forms';
-import { SkyDateRangeCalculatorName } from '../../public/modules/date-range-picker/date-range-calculator-name';
-import { SkyDateRange } from '../../public/modules/date-range-picker/date-range';
+
+import {
+  SkyDateRangeCalculatorId,
+  SkyDateRangeCalculatorType,
+  SkyDateRangeService,
+  SkyDateRange
+} from '../../public';
+import { SkyAppResourcesService } from '@skyux/i18n';
 
 @Component({
   selector: 'date-range-picker-visual',
@@ -18,6 +25,7 @@ import { SkyDateRange } from '../../public/modules/date-range-picker/date-range'
   styleUrls: ['./date-range-picker-visual.component.scss']
 })
 export class DateRangePickerVisualComponent implements OnInit {
+  public calculatorIds: SkyDateRangeCalculatorId[];
   public disabled = false;
   public reactiveForm: FormGroup;
 
@@ -25,13 +33,24 @@ export class DateRangePickerVisualComponent implements OnInit {
     return this.reactiveForm.get('lastDonation');
   }
 
+  public get constituentName(): AbstractControl {
+    return this.reactiveForm.get('constituentName');
+  }
+
   constructor(
-    private formBuilder: FormBuilder
+    private dateRangeService: SkyDateRangeService,
+    private formBuilder: FormBuilder,
+    private resourcesService: SkyAppResourcesService
   ) { }
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      lastDonation: new FormControl()
+      constituentName: new FormControl(undefined, [Validators.required]),
+      lastDonation: new FormControl({
+        id: SkyDateRangeCalculatorId.SpecificRange,
+        startDate: new Date('1/1/2012'),
+        endDate: new Date('1/1/2013')
+      }, [Validators.required])
     });
 
     // this.reactiveForm.statusChanges.subscribe((status) => {
@@ -63,11 +82,39 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public setRange(): void {
     const range: SkyDateRange = {
-      name: SkyDateRangeCalculatorName.SpecificRange,
+      id: SkyDateRangeCalculatorId.SpecificRange,
       startDate: new Date('1/1/2012'),
       endDate: new Date('1/1/2013')
     };
 
     this.reactiveRange.setValue(range);
+  }
+
+  public submit(): void {
+    const value = this.reactiveForm.value;
+    console.log(value, this.constituentName.errors);
+    alert(JSON.stringify(value));
+  }
+
+  public setCalculatorIds(): void {
+    this.resourcesService
+      .getString('skyux_date_range_picker_invalid_range_error_label')
+      .first()
+      .subscribe((value) => {
+        const instance = this.dateRangeService.createCalculator({
+          shortDescription: value,
+          type: SkyDateRangeCalculatorType.Relative,
+          getValue: () => ({
+            startDate: new Date(),
+            endDate: new Date('1/1/1')
+          })
+        });
+
+        this.calculatorIds = [
+          SkyDateRangeCalculatorId.SpecificRange,
+          SkyDateRangeCalculatorId.LastFiscalYear,
+          instance.id
+        ];
+      });
   }
 }
