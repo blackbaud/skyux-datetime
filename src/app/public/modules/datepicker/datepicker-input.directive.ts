@@ -234,7 +234,7 @@ export class SkyDatepickerInputDirective
       .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((value: Date) => {
-        this.writeValue(value);
+        this.value = value;
         this.onTouched();
       });
 
@@ -276,7 +276,7 @@ export class SkyDatepickerInputDirective
   @HostListener('change', ['$event'])
   public onInputChange(event: any) {
     this.isFirstChange = false;
-    this.writeValue(event.target.value);
+    this.value = event.target.value;
   }
 
   @HostListener('blur')
@@ -312,6 +312,10 @@ export class SkyDatepickerInputDirective
     const isDateValid = (dateValue && this.dateFormatter.dateIsValid(dateValue));
 
     if (!isDateValid) {
+      // Mark the invalid control as touched so that the input's invalid CSS styles appear.
+      // (This is only required when the invalid value is set by the FormControl constructor.)
+      this.control.markAsTouched();
+
       return {
         'skyDate': {
           invalid: value

@@ -14,22 +14,16 @@
 
     <select
       class="sky-form-control"
-      formControlName="id"
+      formControlName="calculatorId"
       [attr.id]="dateRangePickerId + '-select-calculator'"
       (blur)="onFieldBlur()"
     >
       <option *ngFor="let calculator of calculators"
-        [value]="calculator.id"
+        [value]="calculator.calculatorId"
       >
         {{ calculator.shortDescription }}
       </option>
     </select>
-
-    <div *ngIf="calculatorIdControl.errors?.skyDateRange && calculatorIdControl.touched"
-      class="sky-error-label"
-    >
-      {{ calculatorIdControl.errors.skyDateRange }}
-    </div>
   </div>
 
   <div *ngIf="showStartDatePicker"
@@ -51,11 +45,6 @@
         skyDatepickerInput
       />
     </sky-datepicker>
-    <div *ngIf="startDateControl.errors?.skyDate && startDateControl.touched"
-      class="sky-error-label"
-    >
-      {{ 'skyux_datepicker_invalid_date' | skyLibResources }}
-    </div>
   </div>
 
   <div *ngIf="showEndDatePicker"
@@ -77,10 +66,5 @@
         (blur)="onFieldBlur()"
       />
     </sky-datepicker>
-    <div *ngIf="endDateControl.errors?.skyDate && endDateControl.touched"
-      class="sky-error-label"
-    >
-      {{ 'skyux_datepicker_invalid_date' | skyLibResources }}
-    </div>
   </div>
 </div>

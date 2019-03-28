@@ -16,17 +16,20 @@ import {
 } from '@skyux/i18n';
 
 import {
-  SkyDateTimeResourcesModule
-} from '../shared/datetime-resources.module';
-
-import {
   SkyDatepickerModule
 } from '../datepicker/datepicker.module';
 
 import {
+  SkyDateTimeResourcesModule
+} from '../shared/datetime-resources.module';
+
+import {
   SkyDateRangePickerComponent
 } from './date-range-picker.component';
-import { SkyDateRangeService } from './date-range.service';
+
+import {
+  SkyDateRangeService
+} from './date-range.service';
 
 @NgModule({
   declarations: [
@@ -37,8 +40,8 @@ import { SkyDateRangeService } from './date-range.service';
     FormsModule,
     ReactiveFormsModule,
     SkyI18nModule,
-    SkyDateTimeResourcesModule,
-    SkyDatepickerModule
+    SkyDatepickerModule,
+    SkyDateTimeResourcesModule
   ],
   exports: [
     SkyDateRangePickerComponent

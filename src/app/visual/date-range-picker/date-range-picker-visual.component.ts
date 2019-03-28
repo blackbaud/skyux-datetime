@@ -12,12 +12,15 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppResourcesService
+} from '@skyux/i18n';
+
+import {
   SkyDateRangeCalculatorId,
   SkyDateRangeCalculatorType,
   SkyDateRangeService,
   SkyDateRange
 } from '../../public';
-import { SkyAppResourcesService } from '@skyux/i18n';
 
 @Component({
   selector: 'date-range-picker-visual',
@@ -46,16 +49,21 @@ export class DateRangePickerVisualComponent implements OnInit {
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       constituentName: new FormControl(undefined, [Validators.required]),
+      // lastDonation: new FormControl()
       lastDonation: new FormControl({
-        id: SkyDateRangeCalculatorId.SpecificRange,
-        startDate: new Date('1/1/2012'),
-        endDate: new Date('1/1/2013')
+        calculatorId: SkyDateRangeCalculatorId.LastFiscalYear
       }, [Validators.required])
     });
 
-    // this.reactiveForm.statusChanges.subscribe((status) => {
-    //   console.log('Date range status change:', status);
-    // });
+    this.reactiveRange.statusChanges
+      .distinctUntilChanged()
+      .subscribe((status) => {
+        console.log(
+          '[CONSUMER] Date range status change:',
+          status,
+          this.reactiveRange.errors
+        );
+      });
 
     this.reactiveRange.valueChanges
       .distinctUntilChanged()
@@ -82,9 +90,29 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public setRange(): void {
     const range: SkyDateRange = {
-      id: SkyDateRangeCalculatorId.SpecificRange,
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: new Date('1/1/2012'),
       endDate: new Date('1/1/2013')
+    };
+
+    this.reactiveRange.setValue(range);
+  }
+
+  public setInvalidRange(): void {
+    const range: SkyDateRange = {
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange,
+      startDate: new Date('1/1/2013'),
+      endDate: new Date('1/1/2012')
+    };
+
+    this.reactiveRange.setValue(range);
+  }
+
+  public setInvalidDates(): void {
+    const range: SkyDateRange = {
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange,
+      startDate: 'asdf' as any,
+      endDate: 'asdf' as any
     };
 
     this.reactiveRange.setValue(range);
@@ -113,7 +141,7 @@ export class DateRangePickerVisualComponent implements OnInit {
         this.calculatorIds = [
           SkyDateRangeCalculatorId.SpecificRange,
           SkyDateRangeCalculatorId.LastFiscalYear,
-          instance.id
+          instance.calculatorId
         ];
       });
   }

@@ -3,10 +3,6 @@ import {
 } from './date-range-calculator-date-range-function';
 
 import {
-  SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
-
-import {
   SkyDateRangeCalculatorType
 } from './date-range-calculator-type';
 
@@ -20,8 +16,6 @@ export interface SkyDateRangeCalculatorArgs {
   shortDescription?: string;
 
   shortDescriptionResourceKey?: string;
-
-  // errorMessageResourceKey?: string;
 
   getValue: SkyDateRangeCalculatorGetValueFunction;
 

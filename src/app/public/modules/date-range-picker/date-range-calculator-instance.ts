@@ -7,7 +7,7 @@ import {
 } from './date-range-calculator-type';
 
 export interface SkyDateRangeCalculatorInstance {
-  id: SkyDateRangeCalculatorId;
+  calculatorId: SkyDateRangeCalculatorId;
   shortDescription: string;
   type: SkyDateRangeCalculatorType;
 }

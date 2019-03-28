@@ -72,6 +72,12 @@
         [calculatorIds]="calculatorIds"
       >
       </sky-date-range-picker>
+
+      <div *ngIf="reactiveRange.errors && reactiveRange.touched"
+        class="sky-error-label"
+      >
+        {{ reactiveRange.errors | json }}
+      </div>
     </div>
 
     <div class="sky-form-group">
@@ -141,6 +147,20 @@
     (click)="setRange()"
   >
     Set specific range
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="setInvalidRange()"
+  >
+    Set invalid range
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="setInvalidDates()"
+  >
+    Set invalid dates
   </button>
   <button
     class="sky-btn sky-btn-default"

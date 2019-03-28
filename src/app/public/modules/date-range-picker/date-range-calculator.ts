@@ -1,6 +1,6 @@
 import {
-  Observable
-} from 'rxjs/Observable';
+  SkyDateRangeCalculatorArgs
+} from './date-range-calculator-args';
 
 import {
   SkyDateRangeCalculatorId
@@ -18,17 +18,13 @@ import {
   SkyDateRange
 } from './date-range';
 
-import {
-  SkyDateRangeCalculatorArgs
-} from './date-range-calculator-args';
-
 export class SkyDateRangeCalculator {
   public shortDescription: string;
   public readonly shortDescriptionResourceKey: string;
   public readonly type: SkyDateRangeCalculatorType;
 
   constructor(
-    public readonly id: SkyDateRangeCalculatorId,
+    public readonly calculatorId: SkyDateRangeCalculatorId,
     private args: SkyDateRangeCalculatorArgs
   ) {
     this.type = args.type;
@@ -37,40 +33,29 @@ export class SkyDateRangeCalculator {
   }
 
   public getValue(
-    startDate?: Date,
-    endDate?: Date
+    startDateInput?: Date,
+    endDateInput?: Date
   ): SkyDateRange {
-    const result = this.args.getValue(startDate, endDate);
+    const {
+      startDate,
+      endDate
+    } = this.args.getValue(startDateInput, endDateInput);
 
-    return this.parseDateRange(result);
+    return {
+      calculatorId: this.calculatorId,
+      startDate,
+      endDate
+    };
   }
 
   public validate(
     startDate?: Date,
     endDate?: Date
   ): SkyDateRangeValidationResult {
-    const defaultResult = Observable.of(undefined);
-
     if (!this.args.validate) {
-      return defaultResult;
+      return;
     }
 
-    return this.args.validate(startDate, endDate) || defaultResult;
-  }
-
-  private parseDateRange(value: any = {}): SkyDateRange {
-    /* tslint:disable:no-null-keyword */
-    if (value.startDate === undefined) {
-      value.startDate = null;
-    }
-
-    if (value.endDate === undefined) {
-      value.endDate = null;
-    }
-    /* tslint:enable */
-
-    value.id = this.id;
-
-    return value as SkyDateRange;
+    return this.args.validate(startDate, endDate);
   }
 }

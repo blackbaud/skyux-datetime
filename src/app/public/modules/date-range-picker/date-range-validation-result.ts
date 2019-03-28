@@ -1,5 +1,1 @@
-import {
-  Observable
-} from 'rxjs/Observable';
-
-export type SkyDateRangeValidationResult = Observable<string | void>;
+export type SkyDateRangeValidationResult = string | void;

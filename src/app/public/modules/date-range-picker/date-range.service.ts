@@ -12,14 +12,37 @@ import {
 
 import 'rxjs/add/operator/first';
 
-import { SkyDateRangeCalculatorArgs } from './date-range-calculator-args';
-import { SkyDateRangeCalculatorConfig } from './date-range-calculator-config';
-import { SkyDateRangeCalculatorId } from './date-range-calculator-id';
-import { SkyDateRangeCalculatorInstance } from './date-range-calculator-instance';
-import { SkyDateRangeCalculatorType } from './date-range-calculator-type';
-import { SkyDateRangeCalculator } from './date-range-calculator';
-import { SkyDateRangeValidationResult } from './date-range-validation-result';
-import { SkyDateRange } from './date-range';
+import {
+  SkyDateRangeCalculatorArgs
+} from './date-range-calculator-args';
+
+import {
+  SkyDateRangeCalculatorConfig
+} from './date-range-calculator-config';
+
+import {
+  SkyDateRangeCalculatorId
+} from './date-range-calculator-id';
+
+import {
+  SkyDateRangeCalculatorInstance
+} from './date-range-calculator-instance';
+
+import {
+  SkyDateRangeCalculatorType
+} from './date-range-calculator-type';
+
+import {
+  SkyDateRangeCalculator
+} from './date-range-calculator';
+
+import {
+  SkyDateRangeValidationResult
+} from './date-range-validation-result';
+
+import {
+  SkyDateRange
+} from './date-range';
 
 @Injectable()
 export class SkyDateRangeService {
@@ -54,11 +77,21 @@ export class SkyDateRangeService {
     [SkyDateRangeCalculatorId.SpecificRange]: {
       type: SkyDateRangeCalculatorType.Range,
       shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_specific_range',
-      getValue: (startDate, endDate) => ({ startDate, endDate })
+      getValue: (startDate, endDate) => ({ startDate, endDate }),
+      validate: (startDate, endDate) => {
+        if (
+          startDate &&
+          endDate &&
+          startDate > endDate
+        ) {
+          return 'endDateBeforeStartDate';
+        }
+      }
     },
 
     [SkyDateRangeCalculatorId.LastFiscalYear]: {
       type: SkyDateRangeCalculatorType.Relative,
+      shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_last_fiscal_year',
       getValue: () => {
         const start = new Date();
         start.setDate(1);
@@ -70,8 +103,7 @@ export class SkyDateRangeService {
           startDate,
           endDate
         };
-      },
-      shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_last_fiscal_year'
+      }
     }
   };
 
@@ -83,8 +115,8 @@ export class SkyDateRangeService {
 
   public createCalculator(config: SkyDateRangeCalculatorConfig): SkyDateRangeCalculatorInstance {
     const newId = SkyDateRangeService.uniqueId++;
-
     const calculator = new SkyDateRangeCalculator(newId, config);
+
     SkyDateRangeService.calculators.push(calculator);
 
     return this.parseCalculatorInstance(calculator);
@@ -124,7 +156,10 @@ export class SkyDateRangeService {
 
   public getValue(
     id: SkyDateRangeCalculatorId,
-    value: SkyDateRange = {}
+    value: {
+      startDate?: Date;
+      endDate?: Date;
+    } = { }
   ): SkyDateRange {
     const calculator = this.getCalculatorById(id);
     return calculator.getValue(value.startDate, value.endDate);
@@ -132,34 +167,68 @@ export class SkyDateRangeService {
 
   public validate(
     id: SkyDateRangeCalculatorId,
-    value: SkyDateRange = {}
-  ): SkyDateRangeValidationResult {
+    value: {
+      startDate?: Date;
+      endDate?: Date;
+    } = { }
+  ): {
+    calculatorId: SkyDateRangeCalculatorId,
+    error: {
+      [_: string]: boolean
+    }
+  } {
     const calculator = this.getCalculatorById(id);
 
-    if (calculator.type === SkyDateRangeCalculatorType.Range) {
-      if (
-        value.startDate &&
-        value.endDate &&
-        value.startDate > value.endDate
-      ) {
-        return this.resourcesService
-          .getString('skyux_date_range_picker_invalid_range_error_label')
-          .map(message => message);
-      }
+    const result: SkyDateRangeValidationResult = calculator.validate(
+      value.startDate,
+      value.endDate
+    );
+
+    if (result) {
+      const formatted: any = {};
+
+      formatted[result.trim().replace(/ /g, '')] = true;
+
+      return {
+        calculatorId: calculator.calculatorId,
+        error: formatted
+      };
     }
 
-    return calculator.validate(value.startDate, value.endDate);
+    return;
   }
 
   public getCalculatorInstanceById(
     calculatorId: SkyDateRangeCalculatorId
   ): SkyDateRangeCalculatorInstance {
     const id = parseInt(calculatorId as any, 10);
+
     const found = SkyDateRangeService.calculators.find((calculator) => {
-      return (calculator.id === id);
+      return (calculator.calculatorId === id);
     });
 
     return this.parseCalculatorInstance(found);
+  }
+
+  public parseDateRange(
+    value: {calculatorId: any, startDate?: Date, endDate?: Date}
+  ): SkyDateRange {
+    /* tslint:disable:no-null-keyword */
+    if (value.startDate === undefined) {
+      value.startDate = null;
+    }
+
+    if (value.endDate === undefined) {
+      value.endDate = null;
+    }
+    /* tslint:enable */
+
+    // ID will come in as a string if derived from a template control.
+    if (typeof value.calculatorId === 'string') {
+      value.calculatorId = parseInt(value.calculatorId, 10);
+    }
+
+    return value as SkyDateRange;
   }
 
   private getCalculatorById(
@@ -167,13 +236,13 @@ export class SkyDateRangeService {
   ): SkyDateRangeCalculator {
     const id: number = parseInt(calculatorId as any, 10);
     return SkyDateRangeService.calculators.find((calculator) => {
-      return (calculator.id === id);
+      return (calculator.calculatorId === id);
     });
   }
 
   private parseCalculatorInstance(value: any): SkyDateRangeCalculatorInstance {
     return {
-      id: value.id,
+      calculatorId: value.calculatorId,
       type: value.type,
       shortDescription: value.shortDescription
     };

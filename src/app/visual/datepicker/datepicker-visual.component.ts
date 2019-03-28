@@ -73,4 +73,8 @@ export class DatepickerVisualComponent implements OnInit {
     this.reactiveDate.setValue(new Date('2/2/2001'));
     this.selectedDate = new Date('2/2/2001');
   }
+
+  public setInvalidValue(): void {
+    this.reactiveDate.setValue('asdf');
+  }
 }

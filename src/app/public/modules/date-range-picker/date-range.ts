@@ -3,7 +3,7 @@ import {
 } from './date-range-calculator-id';
 
 export interface SkyDateRange {
-  id?: SkyDateRangeCalculatorId;
+  calculatorId: SkyDateRangeCalculatorId;
   startDate?: Date | null;
   endDate?: Date | null;
 }
