@@ -15,10 +15,6 @@
     "_description": "The label for the timepicker component's input field for screen readers when the consumer has not specified a label.",
     "message": "Time input field."
   },
-  "skyux_datepicker_invalid_date": {
-    "_description": "The error displayed when an invalid date is entered.",
-    "message": "Invalid date."
-  },
   "skyux_date_range_picker_default_label": {
     "_description": "The default label for the date range picker.",
     "message": "Select a date range"
@@ -111,24 +107,20 @@
     "_description": "The label for the date range picker component's select field Next Fiscal Year format type",
     "message": "Next fiscal year"
   },
-  "skyux_date_range_picker_specific_range_from_field_label": {
+  "skyux_date_range_picker_start_date_label": {
     "_description": "The label for the first date picker of the Specific Range format type",
     "message": "From date"
   },
-  "skyux_date_range_picker_specific_range_to_field_label": {
+  "skyux_date_range_picker_end_date_label": {
     "_description": "The label for the second date picker of the Specific Range format type",
     "message": "To date"
   },
-  "skyux_date_range_picker_before_field_label": {
+  "skyux_date_range_picker_before_date_label": {
     "_description": "The label for the date picker of the Before format type",
     "message": "Before date"
   },
-  "skyux_date_range_picker_after_field_label": {
+  "skyux_date_range_picker_after_date_label": {
     "_description": "The label for the date picker of the After format type",
     "message": "After date"
-  },
-  "skyux_date_range_picker_invalid_range_error_label": {
-    "_description": "The error label displayed when an end date is earlier than the start date.",
-    "message": "End date must be after start date"
   }
 }

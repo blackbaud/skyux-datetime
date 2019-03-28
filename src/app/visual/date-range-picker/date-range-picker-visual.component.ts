@@ -49,10 +49,10 @@ export class DateRangePickerVisualComponent implements OnInit {
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       constituentName: new FormControl(undefined, [Validators.required]),
-      // lastDonation: new FormControl()
-      lastDonation: new FormControl({
-        calculatorId: SkyDateRangeCalculatorId.LastFiscalYear
-      }, [Validators.required])
+      lastDonation: new FormControl()
+      // lastDonation: new FormControl({
+      //   calculatorId: SkyDateRangeCalculatorId.LastFiscalYear
+      // }, [Validators.required])
     });
 
     this.reactiveRange.statusChanges

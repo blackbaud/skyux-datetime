@@ -1,4 +1,4 @@
-<div
+<div *ngIf="calculators"
   class="sky-date-range-picker"
   [formGroup]="formGroup"
 >
@@ -26,14 +26,14 @@
     </select>
   </div>
 
-  <div *ngIf="showStartDatePicker"
+  <div [hidden]="!showStartDatePicker"
     class="sky-date-range-picker-form-group"
   >
     <label
       class="sky-control-label"
       [attr.for]="dateRangePickerId + '-start-date'"
     >
-      Start date label
+      {{ startDateLabelResourceKey | skyLibResources }}
     </label>
 
     <sky-datepicker>
@@ -47,14 +47,14 @@
     </sky-datepicker>
   </div>
 
-  <div *ngIf="showEndDatePicker"
+  <div [hidden]="!showEndDatePicker"
     class="sky-date-range-picker-form-group"
   >
     <label
       class="sky-control-label"
       [attr.for]="dateRangePickerId + '-end-date'"
     >
-      End date label
+      {{ endDateLabelResourceKey | skyLibResources }}
     </label>
 
     <sky-datepicker>

@@ -125,8 +125,30 @@ export class SkyDateRangePickerComponent
     return this.formGroup.get('startDate');
   }
 
+  public get startDateLabelResourceKey(): string {
+    if (this.selectedCalculator.type === SkyDateRangeCalculatorType.Range) {
+      return 'skyux_date_range_picker_start_date_label';
+    }
+
+    return 'skyux_date_range_picker_after_date_label';
+  }
+
   public get endDateControl(): AbstractControl {
     return this.formGroup.get('endDate');
+  }
+
+  public get endDateLabelResourceKey(): string {
+    if (this.selectedCalculator.type === SkyDateRangeCalculatorType.Range) {
+      return 'skyux_date_range_picker_end_date_label';
+    }
+
+    return 'skyux_date_range_picker_before_date_label';
+  }
+
+  public get selectedCalculator(): SkyDateRangeCalculatorInstance {
+    return this.dateRangeService.getCalculatorInstanceById(
+      this.calculatorIdControl.value
+    );
   }
 
   public readonly dateRangePickerId = `sky-date-range-picker-${uniqueId++}`;
@@ -156,11 +178,12 @@ export class SkyDateRangePickerComponent
   }
 
   private set value(value: SkyDateRange) {
-    if (
-      !this._value ||
-      !this.dateRangesEqual(this._value, value)
-    ) {
-      this._value = this.dateRangeService.parseDateRange(value || this.defaultValue);
+    const isNewValue = (!this.dateRangesEqual(this._value, value));
+
+    if (isNewValue) {
+      if (this._value || value) {
+        this._value = this.dateRangeService.parseDateRange(value || this.defaultValue);
+      }
 
       if (!this.isFirstChange) {
         this.onChange(this.value);
@@ -192,12 +215,8 @@ export class SkyDateRangePickerComponent
     this.updateCalculators().then(() => {
       this.resetFormValue();
 
-      const calculator = this.dateRangeService.getCalculatorInstanceById(
-        this.value.calculatorId
-      );
-
       const value = this.dateRangeService.getValue(
-        calculator.calculatorId,
+        this.calculatorIdControl.value,
         this.value
       );
 
@@ -211,29 +230,33 @@ export class SkyDateRangePickerComponent
         emitEvent: false
       });
 
-      this.setupForm(calculator);
-      this.addEventListeners();
+      this.setupForm();
+
+      setTimeout(() => {
+        this.addEventListeners();
+      });
     });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.calculatorIds && !changes.calculatorIds.firstChange) {
+    if (
+      changes.calculatorIds &&
+      !changes.calculatorIds.firstChange
+    ) {
       this.updateCalculators().then(() => {
-        let calculatorInstance = this.calculators.find((instance) => {
+        // Maintain the currently selected values if the calculators change after
+        // a value has been chosen.
+        const calculatorInstance = this.calculators.find((instance) => {
           return (instance.calculatorId === this.value.calculatorId);
         });
 
-        // TODO: The next few lines are duplicated in the id subscription.
         if (!calculatorInstance) {
           const id = this.defaultCalculator.calculatorId;
           const newValue = this.dateRangeService.getValue(id);
 
           this.value = newValue;
           this.resetFormValue(newValue);
-
-          calculatorInstance = this.dateRangeService.getCalculatorInstanceById(id);
-
-          this.setupForm(calculatorInstance);
+          this.setupForm();
         }
       });
     }
@@ -253,9 +276,8 @@ export class SkyDateRangePickerComponent
     this.value = value;
 
     if (this.calculators) {
-      const calculator = this.dateRangeService.getCalculatorInstanceById(this.value.calculatorId);
-      this.setupForm(calculator);
       this.resetFormValue();
+      this.setupForm();
     }
   }
 
@@ -284,12 +306,7 @@ export class SkyDateRangePickerComponent
         skyDateRange: result
       };
     } else {
-      if (
-        this.startDateControl.errors ||
-        this.endDateControl.errors
-      ) {
-        errors = this.startDateControl.errors;
-      }
+      errors = this.startDateControl.errors || this.endDateControl.errors;
     }
 
     if (!errors) {
@@ -300,7 +317,7 @@ export class SkyDateRangePickerComponent
     idControl.markAsTouched();
     idControl.markAsDirty();
 
-    // Need to mark the control as touched for the errors to appear.
+    // Need to mark the control as touched for the error messages to appear.
     this.control.markAsTouched();
 
     return errors;
@@ -312,10 +329,6 @@ export class SkyDateRangePickerComponent
 
   public registerOnTouched(fn: () => SkyDateRange): void {
     this.onTouched = fn;
-  }
-
-  public registerOnValidatorChange(fn: () => void): void {
-    this.onValidatorChange = fn;
   }
 
   public setDisabledState(disabled: boolean): void {
@@ -342,7 +355,9 @@ export class SkyDateRangePickerComponent
     });
   }
 
-  private setupForm(calculator: SkyDateRangeCalculatorInstance): void {
+  private setupForm(): void {
+    const calculator = this.selectedCalculator;
+
     let showEndDatePicker = false;
     let showStartDatePicker = false;
 
@@ -370,7 +385,10 @@ export class SkyDateRangePickerComponent
   }
 
   private resetFormValue(value?: SkyDateRange): void {
-    this.formGroup.setValue(value || this.value, {
+    // Clear any errors first.
+    this.formGroup.setErrors({});
+
+    this.formGroup.reset(value || this.value, {
       emitEvent: false
     });
   }
@@ -381,11 +399,10 @@ export class SkyDateRangePickerComponent
       .takeUntil(this.ngUnsubscribe)
       .subscribe((id) => {
         const newValue = this.dateRangeService.getValue(id);
-        const calculatorInstance = this.dateRangeService.getCalculatorInstanceById(id);
 
         this.value = newValue;
         this.resetFormValue(newValue);
-        this.setupForm(calculatorInstance);
+        this.setupForm();
       });
 
     this.startDateControl.valueChanges
@@ -405,20 +422,6 @@ export class SkyDateRangePickerComponent
           endDate: value
         });
       });
-
-    Observable.race(
-      this.startDateControl.statusChanges,
-      this.endDateControl.statusChanges
-    )
-      .distinctUntilChanged()
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe((status) => {
-        if (status === 'INVALID') {
-          setTimeout(() => {
-            this.onValidatorChange();
-          });
-        }
-      });
   }
 
   private dateRangesEqual(rangeA: SkyDateRange, rangeB: SkyDateRange): boolean {
@@ -435,5 +438,4 @@ export class SkyDateRangePickerComponent
 
   private onChange = (_: SkyDateRange) => {};
   private onTouched = () => {};
-  private onValidatorChange = () => {};
 }
