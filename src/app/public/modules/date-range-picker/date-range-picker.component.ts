@@ -23,14 +23,9 @@ import {
 } from '@angular/forms';
 
 import {
-  Observable
-} from 'rxjs/Observable';
-
-import {
   Subject
 } from 'rxjs/Subject';
 
-import 'rxjs/add/observable/race';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/takeUntil';
@@ -50,10 +45,7 @@ import {
 import {
   SkyDateRangeService
 } from './date-range.service';
-
-import {
-  SkyDateRange
-} from './date-range';
+import { SkyDateRangeCalculation } from './date-range-calculation';
 
 /* tslint:disable:no-forward-ref no-use-before-declare */
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
@@ -162,11 +154,11 @@ export class SkyDateRangePickerComponent
     return this.calculators[0];
   }
 
-  private get defaultValue(): SkyDateRange {
+  private get defaultValue(): SkyDateRangeCalculation {
     return this.dateRangeService.getValue(this.defaultCalculator.calculatorId);
   }
 
-  private get value(): SkyDateRange {
+  private get value(): SkyDateRangeCalculation {
     if (
       this._value &&
       this._value.calculatorId !== undefined
@@ -177,12 +169,14 @@ export class SkyDateRangePickerComponent
     return this.defaultValue;
   }
 
-  private set value(value: SkyDateRange) {
+  private set value(value: SkyDateRangeCalculation) {
     const isNewValue = (!this.dateRangesEqual(this._value, value));
 
     if (isNewValue) {
       if (this._value || value) {
-        this._value = this.dateRangeService.parseDateRange(value || this.defaultValue);
+        this._value = this.dateRangeService.parseDateRangeCalculation(
+          value || this.defaultValue
+        );
       }
 
       if (!this.isFirstChange) {
@@ -201,7 +195,7 @@ export class SkyDateRangePickerComponent
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
   private _disabled = false;
-  private _value: SkyDateRange;
+  private _value: SkyDateRangeCalculation;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -272,7 +266,7 @@ export class SkyDateRangePickerComponent
   }
 
   // Only use writeValue for external value assignments!
-  public writeValue(value: SkyDateRange | null): void {
+  public writeValue(value: SkyDateRangeCalculation | null): void {
     this.value = value;
 
     if (this.calculators) {
@@ -323,11 +317,11 @@ export class SkyDateRangePickerComponent
     return errors;
   }
 
-  public registerOnChange(fn: (value: SkyDateRange) => SkyDateRange): void {
+  public registerOnChange(fn: (value: SkyDateRangeCalculation) => SkyDateRangeCalculation): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: () => SkyDateRange): void {
+  public registerOnTouched(fn: () => SkyDateRangeCalculation): void {
     this.onTouched = fn;
   }
 
@@ -384,7 +378,7 @@ export class SkyDateRangePickerComponent
     this.changeDetector.markForCheck();
   }
 
-  private resetFormValue(value?: SkyDateRange): void {
+  private resetFormValue(value?: SkyDateRangeCalculation): void {
     // Clear any errors first.
     this.formGroup.setErrors({});
 
@@ -424,7 +418,10 @@ export class SkyDateRangePickerComponent
       });
   }
 
-  private dateRangesEqual(rangeA: SkyDateRange, rangeB: SkyDateRange): boolean {
+  private dateRangesEqual(
+    rangeA: SkyDateRangeCalculation,
+    rangeB: SkyDateRangeCalculation
+  ): boolean {
     return (JSON.stringify(rangeA) === JSON.stringify(rangeB));
   }
 
@@ -436,6 +433,6 @@ export class SkyDateRangePickerComponent
       });
   }
 
-  private onChange = (_: SkyDateRange) => {};
+  private onChange = (_: SkyDateRangeCalculation) => {};
   private onTouched = () => {};
 }

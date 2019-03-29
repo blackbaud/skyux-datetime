@@ -1,7 +1,8 @@
+import {
+  SkyDateRange
+} from './date-range';
+
 export type SkyDateRangeCalculatorGetValueFunction = (
   startDateInput?: Date,
   endDateInput?: Date
-) => {
-  startDate?: Date | null,
-  endDate?: Date | null
-};
+) => SkyDateRange;

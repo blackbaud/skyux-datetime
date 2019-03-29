@@ -1,4 +1,8 @@
 import {
+  SkyDateRangeCalculation
+} from './date-range-calculation';
+
+import {
   SkyDateRangeCalculatorArgs
 } from './date-range-calculator-args';
 
@@ -13,10 +17,6 @@ import {
 import {
   SkyDateRangeValidationResult
 } from './date-range-validation-result';
-
-import {
-  SkyDateRange
-} from './date-range';
 
 export class SkyDateRangeCalculator {
   public shortDescription: string;
@@ -35,7 +35,7 @@ export class SkyDateRangeCalculator {
   public getValue(
     startDateInput?: Date,
     endDateInput?: Date
-  ): SkyDateRange {
+  ): SkyDateRangeCalculation {
     const {
       startDate,
       endDate
