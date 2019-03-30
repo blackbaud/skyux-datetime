@@ -479,7 +479,7 @@ describe('datepicker', () => {
 
           expect(ngModel.valid).toBe(false);
           expect(ngModel.pristine).toBe(false);
-          expect(ngModel.touched).toBe(false);
+          expect(ngModel.touched).toBe(true);
 
         }));
 
@@ -496,7 +496,7 @@ describe('datepicker', () => {
 
         expect(ngModel.valid).toBe(false);
 
-        expect(ngModel.touched).toBe(false);
+        expect(ngModel.touched).toBe(true);
 
         blurInput(fixture.nativeElement, fixture);
         expect(ngModel.valid).toBe(false);
@@ -879,7 +879,7 @@ describe('datepicker', () => {
 
           expect(component.dateControl.valid).toBe(false);
           expect(component.dateControl.pristine).toBe(false);
-          expect(component.dateControl.touched).toBe(false);
+          expect(component.dateControl.touched).toBe(true);
 
         }));
 
@@ -897,7 +897,7 @@ describe('datepicker', () => {
 
         expect(component.dateControl.valid).toBe(false);
 
-        expect(component.dateControl.touched).toBe(false);
+        expect(component.dateControl.touched).toBe(true);
 
         blurInput(fixture.nativeElement, fixture);
         expect(component.dateControl.valid).toBe(false);

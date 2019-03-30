@@ -8,7 +8,7 @@ export abstract class SkyDateRangeRelativeValue {
     start.setDate(1);
     start.setFullYear(start.getFullYear() - 1);
 
-    const { startDate, endDate } = this.getClosestFiscalYearRange(start);
+    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
 
     return {
       startDate,
@@ -18,9 +18,11 @@ export abstract class SkyDateRangeRelativeValue {
 
   public static get lastMonth(): SkyDateRange {
     const firstDayOfMonth = new Date();
+
     // First, set the day of the month to zero,
     // which points to the last day of the previous month.
     firstDayOfMonth.setDate(0);
+
     // Finally, set the day of the month to 1.
     firstDayOfMonth.setDate(1);
 
@@ -41,6 +43,7 @@ export abstract class SkyDateRangeRelativeValue {
     endDate.setDate(1);
 
     const beginningOfQuarter = Math.floor((startDate.getMonth() - 1) / 3) * 3;
+
     if (beginningOfQuarter === 0) {
       startDate.setFullYear(startDate.getFullYear() - 1);
       startDate.setMonth(9);
@@ -93,7 +96,7 @@ export abstract class SkyDateRangeRelativeValue {
     start.setDate(1);
     start.setFullYear(start.getFullYear() + 1);
 
-    const { startDate, endDate } = this.getClosestFiscalYearRange(start);
+    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
 
     return SkyDateRangeRelativeValue.parseValue({
       startDate,
@@ -125,6 +128,7 @@ export abstract class SkyDateRangeRelativeValue {
     endDate.setDate(1);
 
     const beginningOfQuarter = Math.floor((startDate.getMonth()) / 3) * 3;
+
     if (beginningOfQuarter === 9) {
       startDate.setMonth(0);
       startDate.setFullYear(startDate.getFullYear() + 1);
@@ -183,7 +187,7 @@ export abstract class SkyDateRangeRelativeValue {
     const start = new Date();
     start.setDate(1);
 
-    const { startDate, endDate } = this.getClosestFiscalYearRange(start);
+    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
 
     return SkyDateRangeRelativeValue.parseValue({
       startDate: startDate,
@@ -309,6 +313,7 @@ export abstract class SkyDateRangeRelativeValue {
 
   private static parseValue(value: any): SkyDateRange {
     /* tslint:disable:no-null-keyword */
+    // Angular form controls use null for the "empty" value.
     if (value.startDate === undefined) {
       value.startDate = null;
     }

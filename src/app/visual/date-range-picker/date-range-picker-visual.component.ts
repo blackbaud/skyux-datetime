@@ -16,10 +16,10 @@ import {
 } from '@skyux/i18n';
 
 import {
+  SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
   SkyDateRangeCalculatorType,
-  SkyDateRangeService,
-  SkyDateRange
+  SkyDateRangeService
 } from '../../public';
 
 @Component({
@@ -89,7 +89,7 @@ export class DateRangePickerVisualComponent implements OnInit {
   }
 
   public setRange(): void {
-    const range: SkyDateRange = {
+    const range: SkyDateRangeCalculation = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: new Date('1/1/2012'),
       endDate: new Date('1/1/2013')
@@ -99,7 +99,7 @@ export class DateRangePickerVisualComponent implements OnInit {
   }
 
   public setInvalidRange(): void {
-    const range: SkyDateRange = {
+    const range: SkyDateRangeCalculation = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: new Date('1/1/2013'),
       endDate: new Date('1/1/2012')
@@ -109,7 +109,7 @@ export class DateRangePickerVisualComponent implements OnInit {
   }
 
   public setInvalidDates(): void {
-    const range: SkyDateRange = {
+    const range: SkyDateRangeCalculation = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: 'asdf' as any,
       endDate: 'asdf' as any
@@ -121,15 +121,14 @@ export class DateRangePickerVisualComponent implements OnInit {
   public submit(): void {
     const value = this.reactiveForm.value;
     console.log(value, this.constituentName.errors);
-    alert(JSON.stringify(value));
   }
 
   public setCalculatorIds(): void {
     this.resourcesService
-      .getString('skyux_date_range_picker_invalid_range_error_label')
+      .getString('my_resource_string')
       .first()
       .subscribe((value) => {
-        const instance = this.dateRangeService.createCalculator({
+        const calculator = this.dateRangeService.createCalculator({
           shortDescription: value,
           type: SkyDateRangeCalculatorType.Relative,
           getValue: () => ({
@@ -141,7 +140,7 @@ export class DateRangePickerVisualComponent implements OnInit {
         this.calculatorIds = [
           SkyDateRangeCalculatorId.SpecificRange,
           SkyDateRangeCalculatorId.LastFiscalYear,
-          instance.calculatorId
+          calculator.calculatorId
         ];
       });
   }

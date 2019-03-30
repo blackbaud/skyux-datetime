@@ -23,6 +23,10 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppWindowRef
+} from '@skyux/core';
+
+import {
   Subject
 } from 'rxjs/Subject';
 
@@ -31,21 +35,24 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/takeUntil';
 
 import {
-  SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
+  SkyDateRangeCalculation
+} from './date-range-calculation';
 
 import {
-  SkyDateRangeCalculatorInstance
-} from './date-range-calculator-instance';
+  SkyDateRangeCalculatorId
+} from './date-range-calculator-id';
 
 import {
   SkyDateRangeCalculatorType
 } from './date-range-calculator-type';
 
 import {
+  SkyDateRangeCalculator
+} from './date-range-calculator';
+
+import {
   SkyDateRangeService
 } from './date-range.service';
-import { SkyDateRangeCalculation } from './date-range-calculation';
 
 /* tslint:disable:no-forward-ref no-use-before-declare */
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
@@ -102,7 +109,24 @@ export class SkyDateRangePickerComponent
       SkyDateRangeCalculatorId.Before,
       SkyDateRangeCalculatorId.After,
       SkyDateRangeCalculatorId.SpecificRange,
-      SkyDateRangeCalculatorId.LastFiscalYear
+      SkyDateRangeCalculatorId.Yesterday,
+      SkyDateRangeCalculatorId.Today,
+      SkyDateRangeCalculatorId.Tomorrow,
+      SkyDateRangeCalculatorId.LastWeek,
+      SkyDateRangeCalculatorId.ThisWeek,
+      SkyDateRangeCalculatorId.NextWeek,
+      SkyDateRangeCalculatorId.LastMonth,
+      SkyDateRangeCalculatorId.ThisMonth,
+      SkyDateRangeCalculatorId.NextMonth,
+      SkyDateRangeCalculatorId.LastQuarter,
+      SkyDateRangeCalculatorId.ThisQuarter,
+      SkyDateRangeCalculatorId.NextQuarter,
+      SkyDateRangeCalculatorId.LastYear,
+      SkyDateRangeCalculatorId.ThisYear,
+      SkyDateRangeCalculatorId.NextYear,
+      SkyDateRangeCalculatorId.LastFiscalYear,
+      SkyDateRangeCalculatorId.ThisFiscalYear,
+      SkyDateRangeCalculatorId.NextFiscalYear
     ];
   }
 
@@ -137,25 +161,25 @@ export class SkyDateRangePickerComponent
     return 'skyux_date_range_picker_before_date_label';
   }
 
-  public get selectedCalculator(): SkyDateRangeCalculatorInstance {
-    return this.dateRangeService.getCalculatorInstanceById(
+  public get selectedCalculator(): SkyDateRangeCalculator {
+    return this.dateRangeService.getCalculatorById(
       this.calculatorIdControl.value
     );
   }
 
   public readonly dateRangePickerId = `sky-date-range-picker-${uniqueId++}`;
 
-  public calculators: SkyDateRangeCalculatorInstance[];
+  public calculators: SkyDateRangeCalculator[];
   public formGroup: FormGroup;
   public showEndDatePicker = false;
   public showStartDatePicker = false;
 
-  private get defaultCalculator(): SkyDateRangeCalculatorInstance {
+  private get defaultCalculator(): SkyDateRangeCalculator {
     return this.calculators[0];
   }
 
   private get defaultValue(): SkyDateRangeCalculation {
-    return this.dateRangeService.getValue(this.defaultCalculator.calculatorId);
+    return this.defaultCalculator.getValue();
   }
 
   private get value(): SkyDateRangeCalculation {
@@ -170,13 +194,11 @@ export class SkyDateRangePickerComponent
   }
 
   private set value(value: SkyDateRangeCalculation) {
-    const isNewValue = (!this.dateRangesEqual(this._value, value));
+    const isNewValue = !this.dateRangesEqual(this._value, value);
 
     if (isNewValue) {
       if (this._value || value) {
-        this._value = this.dateRangeService.parseDateRangeCalculation(
-          value || this.defaultValue
-        );
+        this._value = value || this.defaultValue;
       }
 
       if (!this.isFirstChange) {
@@ -200,7 +222,8 @@ export class SkyDateRangePickerComponent
   constructor(
     private changeDetector: ChangeDetectorRef,
     private dateRangeService: SkyDateRangeService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private windowRef: SkyAppWindowRef
   ) { }
 
   public ngOnInit(): void {
@@ -209,9 +232,9 @@ export class SkyDateRangePickerComponent
     this.updateCalculators().then(() => {
       this.resetFormValue();
 
-      const value = this.dateRangeService.getValue(
-        this.calculatorIdControl.value,
-        this.value
+      const value = this.selectedCalculator.getValue(
+        this.value.startDate,
+        this.value.endDate
       );
 
       this.isFirstChange = true;
@@ -226,7 +249,7 @@ export class SkyDateRangePickerComponent
 
       this.setupForm();
 
-      setTimeout(() => {
+      this.windowRef.nativeWindow.setTimeout(() => {
         this.addEventListeners();
       });
     });
@@ -238,16 +261,16 @@ export class SkyDateRangePickerComponent
       !changes.calculatorIds.firstChange
     ) {
       this.updateCalculators().then(() => {
+        const id = this.calculatorIdControl.value;
+
         // Maintain the currently selected values if the calculators change after
         // a value has been chosen.
-        const calculatorInstance = this.calculators.find((instance) => {
-          return (instance.calculatorId === this.value.calculatorId);
+        const found = this.calculators.find((calculator) => {
+          return (calculator.calculatorId === id);
         });
 
-        if (!calculatorInstance) {
-          const id = this.defaultCalculator.calculatorId;
-          const newValue = this.dateRangeService.getValue(id);
-
+        if (!found) {
+          const newValue = this.defaultCalculator.getValue();
           this.value = newValue;
           this.resetFormValue(newValue);
           this.setupForm();
@@ -265,7 +288,6 @@ export class SkyDateRangePickerComponent
     this.onTouched();
   }
 
-  // Only use writeValue for external value assignments!
   public writeValue(value: SkyDateRangeCalculation | null): void {
     this.value = value;
 
@@ -291,13 +313,16 @@ export class SkyDateRangePickerComponent
     }
 
     const idControl = this.calculatorIdControl;
-    const result = this.dateRangeService.validate(idControl.value, value);
+    const result = this.selectedCalculator.validate(value);
 
-    let errors: {[_: string]: any};
+    let errors: ValidationErrors;
 
     if (result) {
       errors = {
-        skyDateRange: result
+        skyDateRange: {
+          calculatorId: idControl.value,
+          errors: result
+        }
       };
     } else {
       errors = this.startDateControl.errors || this.endDateControl.errors;
@@ -327,7 +352,6 @@ export class SkyDateRangePickerComponent
 
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
-
     if (this.disabled) {
       this.formGroup.disable();
     } else {
@@ -337,7 +361,6 @@ export class SkyDateRangePickerComponent
 
   private patchValue(value: any): void {
     const newValue = Object.assign({}, this.value, value);
-
     this.value = newValue;
   }
 
@@ -391,9 +414,8 @@ export class SkyDateRangePickerComponent
     this.calculatorIdControl.valueChanges
       .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((id) => {
-        const newValue = this.dateRangeService.getValue(id);
-
+      .subscribe(() => {
+        const newValue = this.selectedCalculator.getValue();
         this.value = newValue;
         this.resetFormValue(newValue);
         this.setupForm();
@@ -426,7 +448,8 @@ export class SkyDateRangePickerComponent
   }
 
   private updateCalculators(): Promise<void> {
-    return this.dateRangeService.getCalculatorInstances(this.calculatorIds)
+    return this.dateRangeService
+      .getCalculators(this.calculatorIds)
       .then((calculators) => {
         this.calculators = calculators;
         this.changeDetector.markForCheck();

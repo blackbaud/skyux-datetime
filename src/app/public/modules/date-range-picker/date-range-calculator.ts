@@ -1,10 +1,14 @@
 import {
+  ValidationErrors
+} from '@angular/forms';
+
+import {
   SkyDateRangeCalculation
 } from './date-range-calculation';
 
 import {
-  SkyDateRangeCalculatorArgs
-} from './date-range-calculator-args';
+  SkyDateRangeCalculatorConfig
+} from './date-range-calculator-config';
 
 import {
   SkyDateRangeCalculatorId
@@ -15,47 +19,39 @@ import {
 } from './date-range-calculator-type';
 
 import {
-  SkyDateRangeValidationResult
-} from './date-range-validation-result';
+  SkyDateRange
+} from './date-range';
 
 export class SkyDateRangeCalculator {
-  public shortDescription: string;
-  public readonly shortDescriptionResourceKey: string;
+  public readonly shortDescription: string;
   public readonly type: SkyDateRangeCalculatorType;
 
   constructor(
     public readonly calculatorId: SkyDateRangeCalculatorId,
-    private args: SkyDateRangeCalculatorArgs
+    private config: SkyDateRangeCalculatorConfig
   ) {
-    this.type = args.type;
-    this.shortDescription = args.shortDescription;
-    this.shortDescriptionResourceKey = args.shortDescriptionResourceKey;
+    this.type = config.type;
+    this.shortDescription = config.shortDescription;
   }
 
-  public getValue(
-    startDateInput?: Date,
-    endDateInput?: Date
-  ): SkyDateRangeCalculation {
-    const {
-      startDate,
-      endDate
-    } = this.args.getValue(startDateInput, endDateInput);
+  public getValue(startDate?: Date, endDate?: Date): SkyDateRangeCalculation {
+    const result = this.config.getValue(startDate, endDate);
 
+    /* tslint:disable:no-null-keyword */
+    // Angular form controls use null for the "empty" value.
     return {
       calculatorId: this.calculatorId,
-      startDate,
-      endDate
+      startDate: result.startDate || null,
+      endDate: result.endDate || null
     };
+    /* tslint:enable */
   }
 
-  public validate(
-    startDate?: Date,
-    endDate?: Date
-  ): SkyDateRangeValidationResult {
-    if (!this.args.validate) {
+  public validate(value?: SkyDateRange): ValidationErrors {
+    if (!this.config.validate) {
       return;
     }
 
-    return this.args.validate(startDate, endDate);
+    return this.config.validate(value);
   }
 }

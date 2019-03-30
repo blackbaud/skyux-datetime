@@ -12,6 +12,10 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppWindowRef
+} from '@skyux/core';
+
+import {
   SkyI18nModule
 } from '@skyux/i18n';
 
@@ -47,6 +51,7 @@ import {
     SkyDateRangePickerComponent
   ],
   providers: [
+    SkyAppWindowRef,
     SkyDateRangeService
   ]
 })

@@ -1,5 +1,23 @@
+<form
+  [formGroup]="reactiveForm"
+  novalidate
+>
+  <sky-date-range-picker
+    formControlName="reactiveDateRange"
+    [calculatorIds]="calculatorIds"
+    [dateFormat]="dateFormat"
+    [label]="label"
+    #reactiveDateRangePicker
+  >
+  </sky-date-range-picker>
+</form>
+
 <sky-date-range-picker
-  formControlName="lastDonation"
+  [calculatorIds]="calculatorIds"
+  [dateFormat]="dateFormat"
+  [disabled]="disabled"
   [label]="label"
+  [(ngModel)]="templateDrivenValue"
+  #templateDrivenDateRangePicker
 >
 </sky-date-range-picker>

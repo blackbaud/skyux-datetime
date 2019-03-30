@@ -1,27 +1,43 @@
 import {
-  Component, ViewChild, OnInit
+  Component,
+  OnInit,
+  ViewChild
 } from '@angular/core';
+
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup
+} from '@angular/forms';
+
+import {
+  SkyDateRangeCalculation
+} from '../date-range-calculation';
+import { SkyDateRangeCalculatorId } from '../date-range-calculator-id';
 import { SkyDateRangePickerComponent } from '../date-range-picker.component';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { SkyDateRangeCalculator } from '../date-range-calculator';
 
 @Component({
   selector: 'date-range-picker-test',
   templateUrl: './date-range-picker.component.fixture.html'
 })
 export class DateRangePickerTestComponent implements OnInit {
-  @ViewChild(SkyDateRangePickerComponent)
-  public dateRangePicker: SkyDateRangePickerComponent;
+  @ViewChild('reactiveDateRangePicker', { read: SkyDateRangePickerComponent })
+  public reactiveDateRangePicker: SkyDateRangePickerComponent;
 
-  public calculators: SkyDateRangeCalculator[];
+  @ViewChild('templateDrivenDateRangePicker', { read: SkyDateRangePickerComponent })
+  public templateDrivenDateRangePicker: SkyDateRangePickerComponent;
+
+  public calculatorIds: SkyDateRangeCalculatorId[];
 
   public dateFormat: string;
 
-  public defaultCalculator: SkyDateRangeCalculator;
+  public disabled = false;
 
   public label: string;
 
   public reactiveForm: FormGroup;
+
+  public templateDrivenValue: SkyDateRangeCalculation;
 
   constructor(
     private formBuilder: FormBuilder
@@ -29,7 +45,7 @@ export class DateRangePickerTestComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      lastDonation: new FormControl()
+      reactiveDateRange: new FormControl()
     });
   }
 }

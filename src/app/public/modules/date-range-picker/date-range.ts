@@ -1,4 +1,4 @@
 export interface SkyDateRange {
-  startDate?: Date | null;
-  endDate?: Date | null;
+  startDate: Date | null;
+  endDate: Date | null;
 }

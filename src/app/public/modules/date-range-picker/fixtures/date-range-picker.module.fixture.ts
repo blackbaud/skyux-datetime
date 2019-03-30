@@ -7,6 +7,11 @@ import {
 } from '@angular/core';
 
 import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+
+import {
   SkyDateRangePickerModule
 } from '../date-range-picker.module';
 
@@ -17,6 +22,8 @@ import {
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     SkyDateRangePickerModule
   ],
   declarations: [

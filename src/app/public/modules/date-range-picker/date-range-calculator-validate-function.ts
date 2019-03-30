@@ -1,8 +1,9 @@
 import {
-  SkyDateRangeValidationResult
-} from './date-range-validation-result';
+  ValidationErrors
+} from '@angular/forms';
 
-export type SkyDateRangeCalculatorValidateFunction = (
-  startDateInput?: Date,
-  endDateInput?: Date
-) => SkyDateRangeValidationResult;
+import {
+  SkyDateRange
+} from './date-range';
+
+export type SkyDateRangeCalculatorValidateFunction = (value?: SkyDateRange) => ValidationErrors;
