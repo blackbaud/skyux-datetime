@@ -3,12 +3,52 @@ import {
 } from './date-range';
 
 export abstract class SkyDateRangeRelativeValue {
-  public static get lastFiscalYear(): SkyDateRange {
-    const start = new Date();
-    start.setDate(1);
-    start.setFullYear(start.getFullYear() - 1);
+  // Abstract classes are not covered properly.
+  /* istanbul ignore next */
+  constructor () {}
 
-    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
+  public static get today(): SkyDateRange {
+    const today = new Date();
+
+    return {
+      startDate: today,
+      endDate: today
+    };
+  }
+
+  public static get tomorrow(): SkyDateRange {
+    const today = new Date();
+    const tomorrow = new Date();
+
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    return {
+      startDate: today,
+      endDate: tomorrow
+    };
+  }
+
+  public static get yesterday(): SkyDateRange {
+    const today = new Date();
+    const yesterday = new Date();
+
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    return {
+      startDate: yesterday,
+      endDate: today
+    };
+  }
+
+  /**
+   * A date range starting with the nearest past Sunday and ending with the following Saturday.
+   */
+  public static get thisWeek(): SkyDateRange {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - startDate.getDay());
+
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() - endDate.getDay() + 6);
 
     return {
       startDate,
@@ -16,92 +56,47 @@ export abstract class SkyDateRangeRelativeValue {
     };
   }
 
-  public static get lastMonth(): SkyDateRange {
-    const firstDayOfMonth = new Date();
-
-    // First, set the day of the month to zero,
-    // which points to the last day of the previous month.
-    firstDayOfMonth.setDate(0);
-
-    // Finally, set the day of the month to 1.
-    firstDayOfMonth.setDate(1);
-
-    const lastDayOfMonth = new Date();
-    lastDayOfMonth.setDate(0);
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: firstDayOfMonth,
-      endDate: lastDayOfMonth
-    });
-  }
-
-  public static get lastQuarter(): SkyDateRange {
+  /**
+   * A date range starting with the nearest upcoming Sunday and ending with the following Saturday.
+   */
+  public static get nextWeek(): SkyDateRange {
     const startDate = new Date();
-    startDate.setDate(1);
+    startDate.setDate(startDate.getDate() - startDate.getDay() + 7);
 
     const endDate = new Date();
-    endDate.setDate(1);
+    endDate.setDate(endDate.getDate() - endDate.getDay() + 13);
 
-    const beginningOfQuarter = Math.floor((startDate.getMonth() - 1) / 3) * 3;
-
-    if (beginningOfQuarter === 0) {
-      startDate.setFullYear(startDate.getFullYear() - 1);
-      startDate.setMonth(9);
-      endDate.setMonth(0);
-      endDate.setDate(0);
-    } else {
-      startDate.setMonth(beginningOfQuarter - 3);
-      endDate.setMonth(beginningOfQuarter);
-      endDate.setDate(0);
-    }
-
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
+    };
   }
 
   public static get lastWeek(): SkyDateRange {
-    const firstDayOfWeek = new Date();
-    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay() - 7);
-
-    const lastDayOfWeek = new Date();
-    lastDayOfWeek.setDate(lastDayOfWeek.getDate() - lastDayOfWeek.getDay() - 1);
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: firstDayOfWeek,
-      endDate: lastDayOfWeek
-    });
-  }
-
-  public static get lastYear(): SkyDateRange {
     const startDate = new Date();
-    startDate.setDate(1);
-    startDate.setMonth(0);
-    startDate.setFullYear(startDate.getFullYear() - 1);
+    startDate.setDate(startDate.getDate() - startDate.getDay() - 7);
 
     const endDate = new Date();
-    endDate.setDate(1);
-    endDate.setMonth(0);
-    endDate.setDate(0);
+    endDate.setDate(endDate.getDate() - endDate.getDay() - 1);
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
+    };
   }
 
-  public static get nextFiscalYear(): SkyDateRange {
-    const start = new Date();
-    start.setDate(1);
-    start.setFullYear(start.getFullYear() + 1);
+  public static get thisMonth(): SkyDateRange {
+    const startDate = new Date();
+    startDate.setDate(1);
 
-    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setDate(0);
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
+    };
   }
 
   public static get nextMonth(): SkyDateRange {
@@ -114,130 +109,89 @@ export abstract class SkyDateRangeRelativeValue {
     endDate.setMonth(endDate.getMonth() + 2);
     endDate.setDate(0);
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
+    };
   }
 
-  public static get nextQuarter(): SkyDateRange {
+  public static get lastMonth(): SkyDateRange {
     const startDate = new Date();
+
+    // First, set the day of the month to zero,
+    // which points to the last day of the previous month.
+    startDate.setDate(0);
+
+    // Finally, set the day of the month to 1.
     startDate.setDate(1);
 
     const endDate = new Date();
-    endDate.setDate(1);
-
-    const beginningOfQuarter = Math.floor((startDate.getMonth()) / 3) * 3;
-
-    if (beginningOfQuarter === 9) {
-      startDate.setMonth(0);
-      startDate.setFullYear(startDate.getFullYear() + 1);
-      endDate.setMonth(3);
-      endDate.setFullYear(endDate.getFullYear() + 1);
-      endDate.setDate(0);
-    } else if (beginningOfQuarter === 6) {
-      startDate.setMonth(9);
-      endDate.setMonth(0);
-      endDate.setFullYear(endDate.getFullYear() + 1);
-      endDate.setDate(0);
-    } else {
-      startDate.setMonth(beginningOfQuarter + 3);
-      endDate.setMonth(beginningOfQuarter + 4);
-      endDate.setDate(0);
-    }
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate,
-      endDate
-    });
-  }
-
-  public static get nextWeek(): SkyDateRange {
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - startDate.getDay() + 7);
-
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() - endDate.getDay() + 13);
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate,
-      endDate
-    });
-  }
-
-  public static get nextYear(): SkyDateRange {
-    const startDate = new Date();
-    startDate.setDate(1);
-    startDate.setMonth(0);
-    startDate.setFullYear(startDate.getFullYear() + 1);
-
-    const endDate = new Date();
-    endDate.setDate(1);
-    endDate.setMonth(0);
-    endDate.setFullYear(startDate.getFullYear() + 2);
     endDate.setDate(0);
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
-  }
-
-  public static get thisFiscalYear(): SkyDateRange {
-    const start = new Date();
-    start.setDate(1);
-
-    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: startDate,
-      endDate: endDate
-    });
-  }
-
-  public static get thisMonth(): SkyDateRange {
-    const firstDayOfMonth = new Date();
-    firstDayOfMonth.setDate(1);
-
-    const lastDayOfMonth = new Date();
-    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1);
-    lastDayOfMonth.setDate(0);
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: firstDayOfMonth,
-      endDate: lastDayOfMonth
-    });
+    };
   }
 
   public static get thisQuarter(): SkyDateRange {
     const startDate = new Date();
+    const endDate = new Date();
+
+    const currentMonth = startDate.getMonth();
+    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(currentMonth);
+
+    startDate.setMonth(quarterStartMonth);
+    startDate.setDate(1);
+
+    endDate.setMonth(quarterStartMonth + 3);
+    endDate.setDate(0);
+
+    return {
+      startDate,
+      endDate
+    };
+  }
+
+  public static get nextQuarter(): SkyDateRange {
+    const startDate = new Date();
+    const endDate = new Date();
+
+    const currentMonth = startDate.getMonth();
+    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(currentMonth);
+
+    startDate.setMonth(quarterStartMonth + 3);
+    startDate.setDate(1);
+
+    endDate.setMonth(quarterStartMonth + 6);
+    endDate.setDate(0);
+
+    return {
+      startDate,
+      endDate
+    };
+  }
+
+  public static get lastQuarter(): SkyDateRange {
+    const startDate = new Date();
     startDate.setDate(1);
 
     const endDate = new Date();
     endDate.setDate(1);
 
-    const beginningOfQuarter = Math.floor((startDate.getMonth() - 1) / 3) * 3;
-    startDate.setMonth(beginningOfQuarter);
-    endDate.setMonth(beginningOfQuarter + 3);
+    const currentMonth = startDate.getMonth();
+    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(currentMonth);
+
+    startDate.setMonth(quarterStartMonth - 3);
+    startDate.setDate(1);
+
+    endDate.setMonth(quarterStartMonth);
     endDate.setDate(0);
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
-  }
-
-  public static get thisWeek(): SkyDateRange {
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - startDate.getDay());
-
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() - endDate.getDay() + 6);
-
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate,
-      endDate
-    });
+    };
   }
 
   public static get thisYear(): SkyDateRange {
@@ -251,46 +205,105 @@ export abstract class SkyDateRangeRelativeValue {
     endDate.setFullYear(endDate.getFullYear() + 1);
     endDate.setDate(0);
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
+    };
   }
 
-  public static get today(): SkyDateRange {
-    const today = new Date();
+  public static get nextYear(): SkyDateRange {
+    const startDate = new Date();
+    startDate.setDate(1);
+    startDate.setMonth(0);
+    startDate.setFullYear(startDate.getFullYear() + 1);
 
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: today,
-      endDate: today
-    });
+    const endDate = new Date();
+    endDate.setDate(1);
+    endDate.setMonth(0);
+    endDate.setFullYear(startDate.getFullYear() + 1);
+    endDate.setDate(0);
+
+    return {
+      startDate,
+      endDate
+    };
   }
 
-  public static get tomorrow(): SkyDateRange {
-    const today = new Date();
-    const tomorrow = new Date();
+  public static get lastYear(): SkyDateRange {
+    const startDate = new Date();
+    startDate.setDate(1);
+    startDate.setMonth(0);
+    startDate.setFullYear(startDate.getFullYear() - 1);
 
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const endDate = new Date();
+    endDate.setDate(1);
+    endDate.setMonth(0);
+    endDate.setDate(0);
 
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: today,
-      endDate: tomorrow
-    });
+    return {
+      startDate,
+      endDate
+    };
   }
 
-  public static get yesterday(): SkyDateRange {
-    const today = new Date();
-    const yesterday = new Date();
+  public static get thisFiscalYear(): SkyDateRange {
+    const start = new Date();
+    start.setDate(1);
 
-    yesterday.setDate(yesterday.getDate() - 1);
+    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
 
-    return SkyDateRangeRelativeValue.parseValue({
-      startDate: yesterday,
-      endDate: today
-    });
+    return {
+      startDate,
+      endDate
+    };
   }
 
-  public static getClosestFiscalYearRange(startDate: Date): SkyDateRange {
+  public static get nextFiscalYear(): SkyDateRange {
+    const start = new Date();
+    start.setDate(1);
+    start.setFullYear(start.getFullYear() + 1);
+
+    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
+
+    return {
+      startDate,
+      endDate
+    };
+  }
+
+  public static get lastFiscalYear(): SkyDateRange {
+    const start = new Date();
+    start.setDate(1);
+    start.setFullYear(start.getFullYear() - 1);
+
+    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
+
+    return {
+      startDate,
+      endDate
+    };
+  }
+
+  private static getQuarterStartMonth(currentMonth: number): number {
+    let month: number;
+    if (currentMonth < 3) {
+      month = 0;
+    } else if (currentMonth < 6) {
+      month = 3;
+    } else if (currentMonth < 9) {
+      month = 6;
+    } else {
+      month = 9;
+    }
+
+    return month;
+  }
+
+  /**
+   * Return a fiscal year based on a start date.
+   * (The fiscal year starts in October and continues through to next September.)
+   */
+  private static getClosestFiscalYearRange(startDate: Date): SkyDateRange {
     const endDate = new Date(startDate);
 
     if (startDate.getMonth() >= 9) {
@@ -305,24 +318,9 @@ export abstract class SkyDateRangeRelativeValue {
       endDate.setDate(0);
     }
 
-    return SkyDateRangeRelativeValue.parseValue({
+    return {
       startDate,
       endDate
-    });
-  }
-
-  private static parseValue(value: any): SkyDateRange {
-    /* tslint:disable:no-null-keyword */
-    // Angular form controls use null for the "empty" value.
-    if (value.startDate === undefined) {
-      value.startDate = null;
-    }
-
-    if (value.endDate === undefined) {
-      value.endDate = null;
-    }
-    /* tslint:enable */
-
-    return value;
+    };
   }
 }

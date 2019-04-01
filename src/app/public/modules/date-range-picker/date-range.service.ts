@@ -1,6 +1,5 @@
 import {
-  Injectable,
-  OnDestroy
+  Injectable
 } from '@angular/core';
 
 import {
@@ -14,10 +13,6 @@ import {
 import {
   Observable
 } from 'rxjs/Observable';
-
-import {
-  Subject
-} from 'rxjs/Subject';
 
 import 'rxjs/add/operator/first';
 
@@ -37,16 +32,16 @@ import {
   SKY_DEFAULT_CALCULATOR_CONFIGS
 } from './date-range-default-calculator-configs';
 
-// Start the count higher than the number of available values
-// provided in the SkyDateRangeCalculatorId enum.
-let uniqueId = 1000;
-
 @Injectable()
-export class SkyDateRangeService implements OnDestroy {
+export class SkyDateRangeService {
+
+  // Start the count higher than the number of available values
+  // provided in the SkyDateRangeCalculatorId enum.
+  private static lastId = 1000;
+
   private calculatorReadyStream = new BehaviorSubject<boolean>(false);
   private calculatorConfigs: {[id: number]: SkyDateRangeCalculatorConfig} = {};
   private calculators: SkyDateRangeCalculator[] = [];
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private resourcesService: SkyLibResourcesService
@@ -54,13 +49,8 @@ export class SkyDateRangeService implements OnDestroy {
     this.createDefaultCalculators();
   }
 
-  public ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-
   public createCalculator(config: SkyDateRangeCalculatorConfig): SkyDateRangeCalculator {
-    const newId = uniqueId++;
+    const newId = SkyDateRangeService.lastId++;
     const calculator = new SkyDateRangeCalculator(newId, config);
 
     this.calculators.push(calculator);
@@ -69,23 +59,32 @@ export class SkyDateRangeService implements OnDestroy {
   }
 
   public getCalculators(ids: SkyDateRangeCalculatorId[]): Promise<SkyDateRangeCalculator[]> {
-    const calculators = ids.map((id) => {
+    const promises = ids.map((id) => {
       return this.getCalculatorById(id);
     });
 
-    return new Promise((resolve) => {
-      this.calculatorReadyStream
-        .takeUntil(this.ngUnsubscribe)
-        .subscribe(() => {
-          resolve(calculators);
-        });
-    });
+    return Promise.all(promises);
   }
 
-  public getCalculatorById(id: SkyDateRangeCalculatorId): SkyDateRangeCalculator {
+  public getCalculatorById(id: SkyDateRangeCalculatorId): Promise<SkyDateRangeCalculator> {
     const calculatorId = parseInt(id as any, 10);
-    return this.calculators.find((calculator) => {
+    const found = this.calculators.find((calculator) => {
       return (calculator.calculatorId === calculatorId);
+    });
+
+    return new Promise((resolve, reject) => {
+      if (!found) {
+        reject(
+          new Error(`A calculator with the ID ${id} was not found.`)
+        );
+        return;
+      }
+
+      this.calculatorReadyStream
+        .first()
+        .subscribe(() => {
+          resolve(found);
+        });
     });
   }
 
@@ -114,8 +113,9 @@ export class SkyDateRangeService implements OnDestroy {
     });
 
     Observable.forkJoin(tasks).first().subscribe(() => {
-      const calculators = Object.keys(this.calculatorConfigs).map((key) => {
-        const id = parseInt(key, 10);
+      const calculatorIds = Object.keys(this.calculatorConfigs);
+      const calculators = calculatorIds.map((calculatorId) => {
+        const id = parseInt(calculatorId, 10);
         return new SkyDateRangeCalculator(id, this.calculatorConfigs[id]);
       });
 

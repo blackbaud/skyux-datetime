@@ -162,9 +162,7 @@ export class SkyDateRangePickerComponent
   }
 
   public get selectedCalculator(): SkyDateRangeCalculator {
-    return this.dateRangeService.getCalculatorById(
-      this.calculatorIdControl.value
-    );
+    return this._selectedCalculator;
   }
 
   public readonly dateRangePickerId = `sky-date-range-picker-${uniqueId++}`;
@@ -217,6 +215,7 @@ export class SkyDateRangePickerComponent
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
   private _disabled = false;
+  private _selectedCalculator: SkyDateRangeCalculator;
   private _value: SkyDateRangeCalculation;
 
   constructor(
@@ -415,10 +414,15 @@ export class SkyDateRangePickerComponent
       .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(() => {
-        const newValue = this.selectedCalculator.getValue();
-        this.value = newValue;
-        this.resetFormValue(newValue);
-        this.setupForm();
+        this.dateRangeService.getCalculatorById(
+          this.calculatorIdControl.value
+        ).then((calculator) => {
+          this._selectedCalculator = calculator;
+          const newValue = calculator.getValue();
+          this.value = newValue;
+          this.resetFormValue(newValue);
+          this.setupForm();
+        });
       });
 
     this.startDateControl.valueChanges

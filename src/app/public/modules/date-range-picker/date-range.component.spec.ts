@@ -16,9 +16,12 @@ import {
 import {
   DateRangePickerTestModule
 } from './fixtures/date-range-picker.module.fixture';
-import { SkyDateRangeCalculatorId } from './date-range-calculator-id';
 
-fdescribe('Date range picker', function () {
+import {
+  SkyDateRangeCalculatorId
+} from './date-range-calculator-id';
+
+describe('Date range picker', function () {
   let fixture: ComponentFixture<DateRangePickerTestComponent>;
   let component: DateRangePickerTestComponent;
 
