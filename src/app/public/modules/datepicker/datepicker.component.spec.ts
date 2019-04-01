@@ -177,7 +177,7 @@ describe('datepicker', () => {
       expect(nativeElement.querySelector('input').getAttribute('aria-label')).toBe('This is a date field.');
     });
 
-    fit('should keep the calendar open on mode change', fakeAsync(() => {
+    it('should keep the calendar open on mode change', fakeAsync(() => {
       fixture.detectChanges();
       openDatepicker(nativeElement, fixture);
       tick();

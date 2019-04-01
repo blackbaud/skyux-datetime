@@ -26,7 +26,7 @@ import {
   SkyDateRangeService
 } from './date-range.service';
 
-describe('Date range service', function () {
+fdescribe('Date range service', function () {
   let service: SkyDateRangeService;
 
   beforeEach(function () {

@@ -6,28 +6,26 @@ import {
   SkyDateRange
 } from './date-range';
 
-describe('Date range relative values', function () {
+fdescribe('Date range relative values', function () {
   const BASE_DATE = '1/1/2000';
-  // const dayMilliseconds = 86400000;
-  // const weekMilliseconds = 86400000 * 7;
 
   let now: Date;
 
   beforeEach(function () {
     now = new Date(BASE_DATE);
-    jasmine.clock().mockDate(now);
+    mockDate(now);
   });
 
-  afterEach(function () {
-    jasmine.clock().uninstall();
-  });
+  function mockDate(date: Date): void {
+    jasmine.clock().mockDate(date);
+  }
 
   function verifyThisQuarter(
     today: Date,
     expectedStartDate: Date,
     expectedEndDate: Date
   ): void {
-    jasmine.clock().mockDate(today);
+    mockDate(today);
     verifyRange(
       SkyDateRangeRelativeValue.thisQuarter,
       expectedStartDate,
@@ -190,7 +188,7 @@ describe('Date range relative values', function () {
     );
 
     // Set date to first day of fiscal year.
-    jasmine.clock().mockDate(new Date('10/1/2000'));
+    mockDate(new Date('10/1/2000'));
 
     verifyRange(
       SkyDateRangeRelativeValue.thisFiscalYear,

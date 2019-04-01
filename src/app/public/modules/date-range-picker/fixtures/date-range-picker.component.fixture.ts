@@ -10,9 +10,10 @@ import {
   FormGroup
 } from '@angular/forms';
 
-import {
-  SkyDateRangeCalculation
-} from '../date-range-calculation';
+// import {
+//   SkyDateRangeCalculation
+// } from '../date-range-calculation';
+
 import { SkyDateRangeCalculatorId } from '../date-range-calculator-id';
 import { SkyDateRangePickerComponent } from '../date-range-picker.component';
 
@@ -24,20 +25,20 @@ export class DateRangePickerTestComponent implements OnInit {
   @ViewChild('reactiveDateRangePicker', { read: SkyDateRangePickerComponent })
   public reactiveDateRangePicker: SkyDateRangePickerComponent;
 
-  @ViewChild('templateDrivenDateRangePicker', { read: SkyDateRangePickerComponent })
-  public templateDrivenDateRangePicker: SkyDateRangePickerComponent;
+  // @ViewChild('templateDrivenDateRangePicker', { read: SkyDateRangePickerComponent })
+  // public templateDrivenDateRangePicker: SkyDateRangePickerComponent;
 
   public calculatorIds: SkyDateRangeCalculatorId[];
 
   public dateFormat: string;
 
-  public disabled = false;
+  // public disabled = false;
 
   public label: string;
 
   public reactiveForm: FormGroup;
 
-  public templateDrivenValue: SkyDateRangeCalculation;
+  // public templateDrivenValue: SkyDateRangeCalculation;
 
   constructor(
     private formBuilder: FormBuilder
@@ -46,6 +47,14 @@ export class DateRangePickerTestComponent implements OnInit {
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       reactiveDateRange: new FormControl()
+    });
+  }
+
+  public setCalculatorIdsAsync(): void {
+    setTimeout(() => {
+      this.calculatorIds = [
+        SkyDateRangeCalculatorId.After
+      ];
     });
   }
 }

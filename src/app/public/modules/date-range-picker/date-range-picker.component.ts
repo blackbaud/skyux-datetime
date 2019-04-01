@@ -133,24 +133,12 @@ export class SkyDateRangePickerComponent
   @Input()
   public label: string;
 
-  public get calculatorIdControl(): AbstractControl {
-    return this.formGroup.get('calculatorId');
-  }
-
-  public get startDateControl(): AbstractControl {
-    return this.formGroup.get('startDate');
-  }
-
   public get startDateLabelResourceKey(): string {
     if (this.selectedCalculator.type === SkyDateRangeCalculatorType.Range) {
       return 'skyux_date_range_picker_start_date_label';
     }
 
     return 'skyux_date_range_picker_after_date_label';
-  }
-
-  public get endDateControl(): AbstractControl {
-    return this.formGroup.get('endDate');
   }
 
   public get endDateLabelResourceKey(): string {
@@ -162,7 +150,7 @@ export class SkyDateRangePickerComponent
   }
 
   public get selectedCalculator(): SkyDateRangeCalculator {
-    return this._selectedCalculator;
+    return this._selectedCalculator || this.defaultCalculator;
   }
 
   public readonly dateRangePickerId = `sky-date-range-picker-${uniqueId++}`;
@@ -172,12 +160,24 @@ export class SkyDateRangePickerComponent
   public showEndDatePicker = false;
   public showStartDatePicker = false;
 
+  private get calculatorIdControl(): AbstractControl {
+    return this.formGroup.get('calculatorId');
+  }
+
   private get defaultCalculator(): SkyDateRangeCalculator {
     return this.calculators[0];
   }
 
   private get defaultValue(): SkyDateRangeCalculation {
     return this.defaultCalculator.getValue();
+  }
+
+  private get endDateControl(): AbstractControl {
+    return this.formGroup.get('endDate');
+  }
+
+  private get startDateControl(): AbstractControl {
+    return this.formGroup.get('startDate');
   }
 
   private get value(): SkyDateRangeCalculation {
@@ -268,6 +268,7 @@ export class SkyDateRangePickerComponent
           return (calculator.calculatorId === id);
         });
 
+        /* istanbul ignore else */
         if (!found) {
           const newValue = this.defaultCalculator.getValue();
           this.value = newValue;
