@@ -34,7 +34,7 @@ import {
   Subject
 } from 'rxjs/Subject';
 
-import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/takeUntil';
