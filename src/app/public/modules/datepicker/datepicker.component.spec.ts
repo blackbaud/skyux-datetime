@@ -1116,7 +1116,9 @@ describe('datepicker', () => {
     beforeEach(() => {
       TestBed.overrideProvider(
         SkyWindowRefService,
-        { useValue: mockWindowService }
+        {
+          useValue: mockWindowService
+        }
       );
 
       fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);

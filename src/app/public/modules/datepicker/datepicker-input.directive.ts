@@ -32,6 +32,7 @@ import {
 } from 'rxjs/Subject';
 
 import 'rxjs/add/operator/distinctUntilChanged';
+
 import 'rxjs/add/operator/takeUntil';
 
 import {
@@ -216,6 +217,7 @@ export class SkyDatepickerInputDirective
     );
 
     const hasAriaLabel = element.getAttribute('aria-label');
+
     if (!hasAriaLabel) {
       this.resourcesService.getString('skyux_date_field_default_label')
         .takeUntil(this.ngUnsubscribe)

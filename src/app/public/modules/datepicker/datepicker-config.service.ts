@@ -7,7 +7,6 @@ import {
 } from '@skyux/core';
 
 const moment = require('moment');
-
 import 'moment/min/locales.min';
 
 @Injectable()

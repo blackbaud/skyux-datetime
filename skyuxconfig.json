@@ -1,5 +1,5 @@
 {
-  "$schema": "node_modules/@skyux/config/skyuxconfig-schema.json",
+  "$schema": "./node_modules/@skyux/config/skyuxconfig-schema.json",
   "name": "skyux-datetime",
   "mode": "easy",
   "compileMode": "aot",
