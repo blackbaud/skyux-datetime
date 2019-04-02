@@ -34,6 +34,7 @@ import {
   Subject
 } from 'rxjs/Subject';
 
+import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/takeUntil';
@@ -427,7 +428,7 @@ export class SkyDateRangePickerComponent
         this.endDateControl.statusChanges
       )
       .first()
-      .subscribe((status) => {
+      .subscribe((status: string[]) => {
         if (status.indexOf('INVALID') > -1) {
           // Wait for initial validation to complete.
           this.windowRef.nativeWindow.setTimeout(() => {

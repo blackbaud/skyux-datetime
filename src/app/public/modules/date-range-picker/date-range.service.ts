@@ -14,6 +14,7 @@ import {
   Observable
 } from 'rxjs/Observable';
 
+import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/first';
 
 import {
