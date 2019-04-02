@@ -4,8 +4,8 @@ import {
 } from '@skyux-sdk/e2e';
 
 import {
-  element,
-  by
+  by,
+  element
 } from 'protractor';
 
 describe('Date range picker', () => {
@@ -20,14 +20,14 @@ describe('Date range picker', () => {
     });
   });
 
-  it('should match previous date range picker specific range screenshot (xs screen)', (done) => {
+  it('should match previous `SpecificRange` screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
       screenshotName: 'date-range-picker-specific-range-xs'
     });
   });
 
-  it('should match previous date-range-picker before screenshot', (done) => {
+  it('should match previous `Before` screenshot', (done) => {
     element(by.css('select')).click();
     element.all(by.css('select option')).get(1).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
@@ -35,7 +35,7 @@ describe('Date range picker', () => {
     });
   });
 
-  it('should match previous date-range-picker before screenshot (xs screen)', (done) => {
+  it('should match previous `Before` screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
     element(by.css('select')).click();
     element.all(by.css('select option')).get(1).click();
@@ -44,7 +44,7 @@ describe('Date range picker', () => {
     });
   });
 
-  it('should match previous date-range-picker after screenshot', (done) => {
+  it('should match previous `After` screenshot', (done) => {
     element(by.css('select')).click();
     element.all(by.css('select option')).get(2).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
@@ -52,7 +52,7 @@ describe('Date range picker', () => {
     });
   });
 
-  it('should match previous date-range-picker after screenshot (xs screen)', (done) => {
+  it('should match previous `After` screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
     element(by.css('select')).click();
     element.all(by.css('select option')).get(2).click();
@@ -61,7 +61,7 @@ describe('Date range picker', () => {
     });
   });
 
-  it('should match previous date-range-picker default value screenshot', (done) => {
+  it('should match previous default value screenshot', (done) => {
     element(by.css('select')).click();
     element.all(by.css('select option')).get(3).click();
     expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
@@ -69,7 +69,7 @@ describe('Date range picker', () => {
     });
   });
 
-  it('should match previous date-range-picker default value screenshot (xs screen)', (done) => {
+  it('should match previous default value screenshot (xs screen)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
     element(by.css('select')).click();
     element.all(by.css('select option')).get(3).click();

@@ -1,57 +1,8 @@
 <div
   class="date-range-demo"
 >
-  <!-- <h2>
-    Templated date range picker
-  </h2>
-
   <form
     id="screenshot-date-range-picker"
-    #form="ngForm"
-  >
-    <div class="sky-form-group">
-      <label class="sky-control-label">First name</label>
-      <input type="text" class="sky-form-control" [disabled]="disabled">
-    </div>
-
-    <div class="sky-form-group">
-      <sky-date-range-picker
-        dateFormat="DD/MM/YYYY"
-        label="Last donation"
-        name="donation"
-        [disabled]="disabled"
-        [(ngModel)]="value"
-      >
-      </sky-date-range-picker>
-    </div>
-
-    <div class="sky-form-group">
-      <label class="sky-control-label">Last name</label>
-      <input type="text" class="sky-form-control" [disabled]="disabled">
-    </div>
-  </form>
-
-  <button
-    class="sky-btn sky-btn-default"
-    type="button"
-    (click)="toggleDisabled()"
-  >
-    Toggle disabled
-  </button>
-
-  <br>
-  <strong>
-    Form value:
-  </strong>
-  <br>
-
-  <pre>{{ value | json }}</pre>
-
-  <h2>
-    Reactive date range picker
-  </h2> -->
-
-  <form
     novalidate
     [formGroup]="reactiveForm"
   >
