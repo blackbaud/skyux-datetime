@@ -21,7 +21,7 @@ export class DatepickerVisualComponent implements OnInit {
   public maxDate: Date;
   public noValidate = false;
   public reactiveForm: FormGroup;
-  public selectedDate: any = '5/12/2017';
+  public selectedDate: any = '4/4/2017';
   public startingDay: number;
 
   constructor(
@@ -34,7 +34,7 @@ export class DatepickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      selectedDate: new FormControl('4/4/2017', Validators.required)
+      selectedDate: new FormControl(this.selectedDate, Validators.required)
     });
 
     this.reactiveDate.statusChanges
