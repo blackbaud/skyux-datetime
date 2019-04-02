@@ -29,15 +29,12 @@ import {
 })
 export class DateRangePickerVisualComponent implements OnInit {
   public calculatorIds: SkyDateRangeCalculatorId[];
+  public dateFormat: string;
   public disabled = false;
   public reactiveForm: FormGroup;
 
   public get reactiveRange(): AbstractControl {
     return this.reactiveForm.get('lastDonation');
-  }
-
-  public get constituentName(): AbstractControl {
-    return this.reactiveForm.get('constituentName');
   }
 
   constructor(
@@ -48,10 +45,13 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      constituentName: new FormControl(undefined, [Validators.required]),
       lastDonation: new FormControl()
+      // lastDonation: {
+      //   calculatorId: SkyDateRangeCalculatorId.SpecificRange,
+      //   startDate: 'invalid'
+      // }
       // lastDonation: new FormControl({
-      //   calculatorId: SkyDateRangeCalculatorId.LastFiscalYear
+      //   calculatorId: SkyDateRangeCalculatorId.SpecificRange
       // }, [Validators.required])
     });
 
@@ -59,7 +59,7 @@ export class DateRangePickerVisualComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe((status) => {
         console.log(
-          '[CONSUMER] Date range status change:',
+          'Date range status change:',
           status,
           this.reactiveRange.errors
         );
@@ -68,13 +68,15 @@ export class DateRangePickerVisualComponent implements OnInit {
     this.reactiveRange.valueChanges
       .distinctUntilChanged()
       .subscribe((value) => {
-        console.log('[CONSUMER] Date range value change:', value);
+        console.log(
+          'Date range value change:',
+          value
+        );
       });
   }
 
   public toggleDisabled(): void {
     this.disabled = !this.disabled;
-
     if (this.reactiveForm.disabled) {
       this.reactiveForm.enable();
     } else {
@@ -120,7 +122,7 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public submit(): void {
     const value = this.reactiveForm.value;
-    console.log(value, this.constituentName.errors);
+    console.log('Form submitted with:', value);
   }
 
   public setCalculatorIds(): void {
@@ -143,5 +145,9 @@ export class DateRangePickerVisualComponent implements OnInit {
           calculator.calculatorId
         ];
       });
+  }
+
+  public setDateFormat(): void {
+    this.dateFormat = 'YYYY-MM-DD';
   }
 }

@@ -1,44 +1,54 @@
 import {
   Component,
+  OnDestroy,
   OnInit,
   ViewChild
 } from '@angular/core';
 
 import {
+  AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup
 } from '@angular/forms';
 
-// import {
-//   SkyDateRangeCalculation
-// } from '../date-range-calculation';
+import {
+  Subject
+} from 'rxjs/Subject';
 
-import { SkyDateRangeCalculatorId } from '../date-range-calculator-id';
-import { SkyDateRangePickerComponent } from '../date-range-picker.component';
+import {
+  SkyDateRangeCalculation
+} from '../date-range-calculation';
+
+import {
+  SkyDateRangeCalculatorId
+} from '../date-range-calculator-id';
+
+import {
+  SkyDateRangePickerComponent
+} from '../date-range-picker.component';
 
 @Component({
   selector: 'date-range-picker-test',
   templateUrl: './date-range-picker.component.fixture.html'
 })
-export class DateRangePickerTestComponent implements OnInit {
-  @ViewChild('reactiveDateRangePicker', { read: SkyDateRangePickerComponent })
-  public reactiveDateRangePicker: SkyDateRangePickerComponent;
+export class DateRangePickerTestComponent implements OnInit, OnDestroy {
+  public get dateRange(): AbstractControl {
+    return this.reactiveForm.get('dateRange');
+  }
 
-  // @ViewChild('templateDrivenDateRangePicker', { read: SkyDateRangePickerComponent })
-  // public templateDrivenDateRangePicker: SkyDateRangePickerComponent;
+  @ViewChild('dateRangePicker', {
+    read: SkyDateRangePickerComponent
+  })
+  public dateRangePicker: SkyDateRangePickerComponent;
 
   public calculatorIds: SkyDateRangeCalculatorId[];
-
   public dateFormat: string;
-
-  // public disabled = false;
-
+  public initialValue: SkyDateRangeCalculation;
   public label: string;
-
+  public numValueChangeNotifications = 0;
   public reactiveForm: FormGroup;
 
-  // public templateDrivenValue: SkyDateRangeCalculation;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder
@@ -46,8 +56,19 @@ export class DateRangePickerTestComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      reactiveDateRange: new FormControl()
+      dateRange: this.initialValue
     });
+
+    this.dateRange.valueChanges
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(() => {
+        this.numValueChangeNotifications++;
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   public setCalculatorIdsAsync(): void {

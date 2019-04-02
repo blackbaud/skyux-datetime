@@ -56,20 +56,11 @@
     [formGroup]="reactiveForm"
   >
     <div class="sky-form-group">
-      <label>Name</label>
-      <input class="sky-form-control" type="text" formControlName="constituentName" />
-      <div *ngIf="constituentName.touched && constituentName.invalid"
-        class="sky-error-label"
-      >
-        {{constituentName.errors|json}}
-      </div>
-    </div>
-
-    <div class="sky-form-group">
       <sky-date-range-picker
         formControlName="lastDonation"
         label="Last donation"
         [calculatorIds]="calculatorIds"
+        [dateFormat]="dateFormat"
       >
       </sky-date-range-picker>
 
@@ -105,23 +96,6 @@
       <td>{{ reactiveRange.valid }}</td>
     </tr>
   </table>
-
-  <!-- <p *ngIf="reactiveRange.errors"
-    class="sky-error-label"
-  >
-    {{ reactiveForm.errors | json }}
-    <span *ngIf="reactiveRange.errors.skyDate?.invalid">
-      Please enter a valid date.
-    </span>
-
-    <span *ngIf="reactiveDate.errors.skyDate?.minDate">
-      Date is prior to minimum date range.
-    </span>
-
-    <span *ngIf="reactiveDate.errors.skyDate?.maxDate">
-      Date is after maximum date range.
-    </span>
-  </p> -->
 
   <p>
     Model value: <code>{{ reactiveForm.value | json }}</code>
@@ -168,5 +142,12 @@
     (click)="setCalculatorIds()"
   >
     Set custom calculators
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="setDateFormat()"
+  >
+    Set date format
   </button>
 </div>
