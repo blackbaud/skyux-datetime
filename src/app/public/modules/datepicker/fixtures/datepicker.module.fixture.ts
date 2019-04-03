@@ -31,23 +31,6 @@ import {
   DatepickerTestComponent
 } from './datepicker.component.fixture';
 
-// import {
-//   SkyWindowRefService
-// } from '@skyux/core';
-
-// export class MockWindowService {
-//   public getWindow() {
-//     return {
-//       navigator: {
-//         languages: ['es']
-//       },
-//       setTimeout(cb: any) {
-//         cb();
-//       }
-//     };
-//   }
-// }
-
 @NgModule({
   declarations: [
     DatepickerCalendarTestComponent,
@@ -67,11 +50,5 @@ import {
     DatepickerReactiveTestComponent,
     DatepickerTestComponent
   ]
-  // providers: [
-  //   {
-  //     provide: SkyWindowRefService,
-  //     useClass: MockWindowService
-  //   }
-  // ]
 })
-export class DatepickerTestModule {}
+export class DatepickerTestModule { }
