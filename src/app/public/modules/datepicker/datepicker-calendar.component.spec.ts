@@ -1,6 +1,8 @@
 import {
+  ComponentFixture,
+  fakeAsync,
   TestBed,
-  ComponentFixture
+  tick
 } from '@angular/core/testing';
 
 import {
@@ -418,6 +420,22 @@ describe('datepicker calendar', () => {
     verifyDatepicker(nativeElement, 'April 2017', '04', '04', '');
 
   });
+
+  it('should handle setting selected date asynchronously', fakeAsync(function () {
+    // Wait for initialization to complete.
+    component.selectedDate = undefined;
+    fixture.detectChanges();
+    tick(10);
+
+    verifyTodayDayPicker(nativeElement);
+
+    // Update value.
+    component.selectedDate = new Date('1/1/2000');
+    fixture.detectChanges();
+    tick();
+
+    verifyDatepicker(nativeElement, 'January 2000', '01', '01', '');
+  }));
 
   describe('keyboard behaviors', () => {
 

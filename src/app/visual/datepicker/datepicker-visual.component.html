@@ -71,7 +71,6 @@
 >
   <form
     novalidate
-    style="max-width: 50%; height: 500px;"
     [formGroup]="reactiveForm"
   >
     <sky-datepicker>
@@ -121,42 +120,45 @@
       Model value: <code>{{ reactiveForm.value.selectedDate }}</code>
     </p>
   </form>
+</div>
 
-  <p>
-    <button
-      class="sky-btn"
-      type="button"
-      (click)="setMinMaxDates()"
-    >
-      Set min and max dates
-    </button>
-    <button
-      class="sky-btn"
-      type="button"
-      (click)="setStartingDay()"
-    >
-      Set starting day to Monday
-    </button>
-    <button
-      class="sky-btn"
-      type="button"
-      (click)="toggleDisabled()"
-    >
-      Toggle disabled
-    </button>
-    <button
-      class="sky-btn"
-      type="button"
-      (click)="setValue()"
-    >
-      Set new value
-    </button>
-    <button
-      class="sky-btn"
-      type="button"
-      (click)="setInvalidValue()"
-    >
-      Set invalid value
-    </button>
-  </p>
+<div
+  class="app-screenshot"
+>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="setMinMaxDates()"
+  >
+    Set min and max dates
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="setStartingDay()"
+  >
+    Set starting day to Monday
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="toggleDisabled()"
+  >
+    Toggle disabled
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="setValue()"
+  >
+    Set new value
+  </button>
+  <button
+    class="sky-btn"
+    id="button-set-invalid-value"
+    type="button"
+    (click)="setInvalidValue()"
+  >
+    Set invalid value
+  </button>
 </div>

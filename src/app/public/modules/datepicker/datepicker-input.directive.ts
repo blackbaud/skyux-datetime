@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   ElementRef,
@@ -69,7 +70,7 @@ const SKY_DATEPICKER_VALIDATOR = {
   ]
 })
 export class SkyDatepickerInputDirective
-  implements OnInit, OnChanges, OnDestroy, AfterContentInit, ControlValueAccessor, Validator {
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
   @Input()
   public set dateFormat(value: string) {
@@ -239,18 +240,17 @@ export class SkyDatepickerInputDirective
         this.value = value;
         this.onTouched();
       });
+  }
 
+  public ngAfterViewInit(): void {
     // This is needed to address a bug in Angular 4.
     // When a control value is set intially, its value is not represented on the view.
     // See: https://github.com/angular/angular/issues/13792
-    /* istanbul ignore else */
-    if (this.control) {
-      this.control.setValue(this.value, {
-        emitEvent: false
-      });
+    this.control.setValue(this.value, {
+      emitEvent: false
+    });
 
-      this.changeDetector.detectChanges();
-    }
+    this.changeDetector.detectChanges();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

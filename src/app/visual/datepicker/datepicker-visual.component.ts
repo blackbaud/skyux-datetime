@@ -34,7 +34,7 @@ export class DatepickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      selectedDate: new FormControl(this.selectedDate, Validators.required)
+      selectedDate: new FormControl('4/4/2017', Validators.required)
     });
 
     this.reactiveDate.statusChanges
@@ -75,6 +75,7 @@ export class DatepickerVisualComponent implements OnInit {
   }
 
   public setInvalidValue(): void {
-    this.reactiveDate.setValue('asdf');
+    this.reactiveDate.setValue('invalid');
+    this.selectedDate = 'invalid';
   }
 }
