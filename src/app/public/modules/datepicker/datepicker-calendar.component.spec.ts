@@ -421,15 +421,15 @@ describe('datepicker calendar', () => {
 
   });
 
-  it('should handle setting selected date asynchronously', fakeAsync(function () {
-    // Wait for initialization to complete.
+  it('should handle selected date being set after initialization', fakeAsync(function () {
+    // Initialize value.
     component.selectedDate = undefined;
     fixture.detectChanges();
-    tick(10);
+    tick();
 
     verifyTodayDayPicker(nativeElement);
 
-    // Update value.
+    // Set the value again.
     component.selectedDate = new Date('1/1/2000');
     fixture.detectChanges();
     tick();

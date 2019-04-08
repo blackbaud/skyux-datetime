@@ -11,7 +11,7 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Renderer,
+  Renderer2,
   SimpleChanges
 } from '@angular/core';
 
@@ -84,7 +84,7 @@ export class SkyDatepickerInputDirective
   @Input()
   public set disabled(value: boolean) {
     this._disabled = value;
-    this.renderer.setElementProperty(
+    this.renderer.setProperty(
       this.elementRef.nativeElement,
       'disabled',
       value
@@ -196,7 +196,7 @@ export class SkyDatepickerInputDirective
     private changeDetector: ChangeDetectorRef,
     private configService: SkyDatepickerConfigService,
     private elementRef: ElementRef,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
   ) { }
@@ -211,10 +211,9 @@ export class SkyDatepickerInputDirective
 
     const element = this.elementRef.nativeElement;
 
-    this.renderer.setElementClass(
+    this.renderer.addClass(
       element,
-      'sky-form-control',
-      true
+      'sky-form-control'
     );
 
     const hasAriaLabel = element.getAttribute('aria-label');
@@ -223,7 +222,7 @@ export class SkyDatepickerInputDirective
       this.resourcesService.getString('skyux_date_field_default_label')
         .takeUntil(this.ngUnsubscribe)
         .subscribe((value: string) => {
-          this.renderer.setElementAttribute(
+          this.renderer.setAttribute(
             element,
             'aria-label',
             value
@@ -372,7 +371,7 @@ export class SkyDatepickerInputDirective
   }
 
   private setInputElementValue(value: string): void {
-    this.renderer.setElementProperty(
+    this.renderer.setProperty(
       this.elementRef.nativeElement,
       'value',
       value
