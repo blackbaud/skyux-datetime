@@ -7,12 +7,10 @@ import {
   forwardRef,
   HostListener,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
-  SimpleChanges
+  Renderer2
 } from '@angular/core';
 
 import {
@@ -70,7 +68,7 @@ const SKY_DATEPICKER_VALIDATOR = {
   ]
 })
 export class SkyDatepickerInputDirective
-  implements OnInit, OnChanges, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
+  implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
   @Input()
   public set dateFormat(value: string) {
@@ -98,6 +96,9 @@ export class SkyDatepickerInputDirective
   @Input()
   public set maxDate(value: Date) {
     this._maxDate = value;
+    this.datepickerComponent.maxDate = this.maxDate;
+
+    this.onValidatorChange();
   }
 
   public get maxDate(): Date {
@@ -107,6 +108,9 @@ export class SkyDatepickerInputDirective
   @Input()
   public set minDate(value: Date) {
     this._minDate = value;
+    this.datepickerComponent.minDate = this.minDate;
+
+    this.onValidatorChange();
   }
 
   public get minDate(): Date {
@@ -118,7 +122,8 @@ export class SkyDatepickerInputDirective
     if (value) {
       console.warn(
         '[Deprecation warning] You no longer need to provide a template reference variable ' +
-        'to the `skyDatepickerInput` attribute (this will be a breaking change in the next release).\n' +
+        'to the `skyDatepickerInput` attribute (this will be a breaking change in the next ' +
+        'major version release).\n' +
         'Do this instead:\n' +
         '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
       );
@@ -131,6 +136,9 @@ export class SkyDatepickerInputDirective
   @Input()
   public set startingDay(value: number) {
     this._startingDay = value;
+    this.datepickerComponent.startingDay = this.startingDay;
+
+    this.onValidatorChange();
   }
 
   public get startingDay(): number {
@@ -250,23 +258,6 @@ export class SkyDatepickerInputDirective
     });
 
     this.changeDetector.detectChanges();
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.minDate) {
-      this.onValidatorChange();
-      this.datepickerComponent.minDate = this.minDate;
-    }
-
-    if (changes.maxDate) {
-      this.onValidatorChange();
-      this.datepickerComponent.maxDate = this.maxDate;
-    }
-
-    if (changes.startingDay) {
-      this.onValidatorChange();
-      this.datepickerComponent.startingDay = this.startingDay;
-    }
   }
 
   public ngOnDestroy(): void {
