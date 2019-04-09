@@ -250,12 +250,7 @@ export abstract class SkyDateRangeRelativeValue {
     const start = new Date();
     start.setDate(1);
 
-    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
-
-    return {
-      startDate,
-      endDate
-    };
+    return SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
   }
 
   public static get nextFiscalYear(): SkyDateRange {
@@ -263,12 +258,7 @@ export abstract class SkyDateRangeRelativeValue {
     start.setDate(1);
     start.setFullYear(start.getFullYear() + 1);
 
-    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
-
-    return {
-      startDate,
-      endDate
-    };
+    return SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
   }
 
   public static get lastFiscalYear(): SkyDateRange {
@@ -276,12 +266,7 @@ export abstract class SkyDateRangeRelativeValue {
     start.setDate(1);
     start.setFullYear(start.getFullYear() - 1);
 
-    const { startDate, endDate } = SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
-
-    return {
-      startDate,
-      endDate
-    };
+    return SkyDateRangeRelativeValue.getClosestFiscalYearRange(start);
   }
 
   private static getQuarterStartMonth(currentMonth: number): number {
