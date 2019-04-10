@@ -11,8 +11,13 @@ import {
 } from './date-range-calculator-validate-function';
 
 export interface SkyDateRangeCalculatorConfig {
+
   shortDescription: string;
+
   type: SkyDateRangeCalculatorType;
+
   getValue: SkyDateRangeCalculatorGetValueFunction;
+
   validate?: SkyDateRangeCalculatorValidateFunction;
+
 }

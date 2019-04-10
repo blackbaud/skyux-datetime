@@ -15,6 +15,7 @@ import {
 } from './date-range-calculator-validate-function';
 
 export interface SkyDateRangeDefaultCalculatorConfig {
+
   calculatorId: SkyDateRangeCalculatorId;
 
   shortDescriptionResourceKey: string;
@@ -24,4 +25,5 @@ export interface SkyDateRangeDefaultCalculatorConfig {
   getValue: SkyDateRangeCalculatorGetValueFunction;
 
   validate?: SkyDateRangeCalculatorValidateFunction;
+
 }
