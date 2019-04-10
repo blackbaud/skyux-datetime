@@ -131,7 +131,7 @@ describe('Date range picker', function () {
     expect(labelElement.textContent).toContain('Select a date range');
 
     const picker = component.dateRangePicker;
-    expect(picker.dateFormat).toEqual(undefined);
+    expect(picker.dateFormat).toEqual('MM/DD/YYYY');
     expect(picker.label).toEqual(undefined);
     expect(picker.calculatorIds).toEqual([
       SkyDateRangeCalculatorId.AnyTime,

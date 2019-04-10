@@ -45,13 +45,6 @@ export class DateRangePickerVisualComponent implements OnInit {
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       lastDonation: new FormControl()
-      // lastDonation: {
-      //   calculatorId: SkyDateRangeCalculatorId.SpecificRange,
-      //   startDate: 'invalid'
-      // }
-      // lastDonation: new FormControl({
-      //   calculatorId: SkyDateRangeCalculatorId.SpecificRange
-      // }, [Validators.required])
     });
 
     this.reactiveRange.statusChanges

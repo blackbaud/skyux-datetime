@@ -26,8 +26,9 @@
     </select>
   </div>
 
-  <div [hidden]="!showStartDatePicker"
+  <div
     class="sky-date-range-picker-form-group"
+    [hidden]="!showStartDatePicker"
   >
     <label
       class="sky-control-label"
@@ -40,6 +41,7 @@
       <input
         formControlName="startDate"
         [attr.id]="dateRangePickerId + '-start-date'"
+        [attr.placeholder]="dateFormat"
         [dateFormat]="dateFormat"
         (blur)="onFieldBlur()"
         skyDatepickerInput
@@ -47,8 +49,9 @@
     </sky-datepicker>
   </div>
 
-  <div [hidden]="!showEndDatePicker"
+  <div
     class="sky-date-range-picker-form-group"
+    [hidden]="!showEndDatePicker"
   >
     <label
       class="sky-control-label"
@@ -62,6 +65,7 @@
         formControlName="endDate"
         skyDatepickerInput
         [attr.id]="dateRangePickerId + '-end-date'"
+        [attr.placeholder]="dateFormat"
         [dateFormat]="dateFormat"
         (blur)="onFieldBlur()"
       />

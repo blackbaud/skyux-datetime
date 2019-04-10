@@ -43,6 +43,10 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/takeUntil';
 
 import {
+  SkyDatepickerConfigService
+} from '../datepicker/datepicker-config.service';
+
+import {
   SkyDateRangeCalculation
 } from './date-range-calculation';
 
@@ -92,7 +96,13 @@ export class SkyDateRangePickerComponent
   implements OnInit, OnChanges, OnDestroy, ControlValueAccessor, Validator {
 
   @Input()
-  public dateFormat: string;
+  public set dateFormat(value: string) {
+    this._dateFormat = value;
+  }
+
+  public get dateFormat(): string {
+    return this._dateFormat || this.datePickerConfigService.dateFormat;
+  }
 
   @Input()
   public set disabled(value: boolean) {
@@ -204,11 +214,13 @@ export class SkyDateRangePickerComponent
   private ngUnsubscribe = new Subject<void>();
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
+  private _dateFormat: string;
   private _disabled = false;
   private _value: SkyDateRangeCalculation;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
+    private datePickerConfigService: SkyDatepickerConfigService,
     private dateRangeService: SkyDateRangeService,
     private formBuilder: FormBuilder,
     private windowRef: SkyAppWindowRef
