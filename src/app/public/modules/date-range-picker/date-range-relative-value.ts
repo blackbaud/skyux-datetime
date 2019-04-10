@@ -1,6 +1,6 @@
 import {
   SkyDateRange
-} from './date-range';
+} from './types/date-range';
 
 export abstract class SkyDateRangeRelativeValue {
   // Abstract classes are not covered properly.

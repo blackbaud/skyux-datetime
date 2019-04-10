@@ -4,7 +4,7 @@ import {
 
 import {
   SkyDateRange
-} from './date-range';
+} from './types/date-range';
 
 describe('Date range relative values', function () {
   const BASE_DATE = '1/1/2000';

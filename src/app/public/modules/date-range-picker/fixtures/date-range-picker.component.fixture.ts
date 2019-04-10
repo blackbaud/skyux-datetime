@@ -17,11 +17,11 @@ import {
 
 import {
   SkyDateRangeCalculation
-} from '../date-range-calculation';
+} from '../types/date-range-calculation';
 
 import {
   SkyDateRangeCalculatorId
-} from '../date-range-calculator-id';
+} from '../types/date-range-calculator-id';
 
 import {
   SkyDateRangePickerComponent

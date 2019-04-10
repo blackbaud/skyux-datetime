@@ -4,23 +4,23 @@ import {
 
 import {
   SkyDateRangeCalculation
-} from './date-range-calculation';
+} from './types/date-range-calculation';
 
 import {
   SkyDateRangeCalculatorConfig
-} from './date-range-calculator-config';
+} from './types/date-range-calculator-config';
 
 import {
   SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
+} from './types/date-range-calculator-id';
 
 import {
   SkyDateRangeCalculatorType
-} from './date-range-calculator-type';
+} from './types/date-range-calculator-type';
 
 import {
   SkyDateRange
-} from './date-range';
+} from './types/date-range';
 
 export class SkyDateRangeCalculator {
   public readonly shortDescription: string;

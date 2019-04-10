@@ -12,11 +12,11 @@ import {
 
 import {
   SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
+} from './types/date-range-calculator-id';
 
 import {
   SkyDateRangeCalculatorType
-} from './date-range-calculator-type';
+} from './types/date-range-calculator-type';
 
 import {
   SkyDateRangeCalculator

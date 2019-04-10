@@ -1,6 +1,6 @@
 import {
   SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
+} from './types/date-range-calculator-id';
 
 import {
   SKY_DEFAULT_CALCULATOR_CONFIGS as configs

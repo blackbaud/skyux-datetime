@@ -20,11 +20,11 @@ import 'rxjs/add/operator/first';
 
 import {
   SkyDateRangeCalculatorConfig
-} from './date-range-calculator-config';
+} from './types/date-range-calculator-config';
 
 import {
   SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
+} from './types/date-range-calculator-id';
 
 import {
   SkyDateRangeCalculator
