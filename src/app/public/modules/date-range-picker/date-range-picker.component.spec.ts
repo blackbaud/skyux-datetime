@@ -1,4 +1,5 @@
 import {
+  async,
   ComponentFixture,
   TestBed,
   fakeAsync,
@@ -397,6 +398,14 @@ describe('Date range picker', function () {
       skyDate: {
         invalid: 'invalid'
       }
+    });
+  }));
+
+  it('should be accessible', async(function () {
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      expect(fixture.elementRef.nativeElement).toBeAccessible();
     });
   }));
 });
