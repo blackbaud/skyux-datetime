@@ -4,15 +4,14 @@ import {
 
 import {
   SkyDateRange
-} from './types/date-range';
+} from './date-range';
 
 describe('Date range relative values', function () {
-  const BASE_DATE = '1/1/2000';
-
-  let now: Date;
 
   beforeEach(function () {
-    now = new Date(BASE_DATE);
+    // Set base date to enforce test-case consistency.
+    const now = new Date(2000, 0, 1);
+
     mockDate(now);
   });
 
@@ -43,26 +42,32 @@ describe('Date range relative values', function () {
   }
 
   it('should return today', function () {
+    const today = new Date('1/1/2000');
+
     verifyRange(
       SkyDateRangeRelativeValue.today,
-      now,
-      now
+      today,
+      today
     );
   });
 
   it('should return tomorrow', function () {
+    const tomorrow = new Date('1/2/2000');
+
     verifyRange(
       SkyDateRangeRelativeValue.tomorrow,
-      now,
-      new Date('1/2/2000')
+      tomorrow,
+      tomorrow
     );
   });
 
   it('should return yesterday', function () {
+    const yesterday = new Date('12/31/1999');
+
     verifyRange(
       SkyDateRangeRelativeValue.yesterday,
-      new Date('12/31/1999'),
-      now
+      yesterday,
+      yesterday
     );
   });
 
@@ -93,7 +98,7 @@ describe('Date range relative values', function () {
   it('should return this month', function () {
     verifyRange(
       SkyDateRangeRelativeValue.thisMonth,
-      now,
+      new Date('1/1/2000'),
       new Date('1/31/2000')
     );
   });
@@ -158,7 +163,7 @@ describe('Date range relative values', function () {
 
   it('should return this year', function () {
     verifyRange(
-      SkyDateRangeRelativeValue.thisYear,
+      SkyDateRangeRelativeValue.thisCalendarYear,
       new Date('1/1/2000'),
       new Date('12/31/2000')
     );
@@ -166,7 +171,7 @@ describe('Date range relative values', function () {
 
   it('should return next year', function () {
     verifyRange(
-      SkyDateRangeRelativeValue.nextYear,
+      SkyDateRangeRelativeValue.nextCalendarYear,
       new Date('1/1/2001'),
       new Date('12/31/2001')
     );
@@ -174,7 +179,7 @@ describe('Date range relative values', function () {
 
   it('should return last year', function () {
     verifyRange(
-      SkyDateRangeRelativeValue.lastYear,
+      SkyDateRangeRelativeValue.lastCalendarYear,
       new Date('1/1/1999'),
       new Date('12/31/1999')
     );

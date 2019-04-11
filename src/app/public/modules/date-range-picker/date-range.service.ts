@@ -28,11 +28,11 @@ import {
 
 import {
   SkyDateRangeCalculator
-} from './date-range-calculator';
+} from './types/date-range-calculator';
 
 import {
   SKY_DEFAULT_CALCULATOR_CONFIGS
-} from './date-range-default-calculator-configs';
+} from './types/date-range-default-calculator-configs';
 
 @Injectable()
 export class SkyDateRangeService {

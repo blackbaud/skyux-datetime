@@ -33,6 +33,10 @@
     </div>
   </form>
 
+  <h3>
+    Form control statuses
+  </h3>
+
   <table>
     <tr>
       <th>Touched</th>
@@ -48,9 +52,15 @@
     </tr>
   </table>
 
-  <p>
-    Model value: <code>{{ reactiveForm.value | json }}</code>
-  </p>
+  <h3>
+    Form control value
+  </h3>
+
+  <pre><code>{{ reactiveForm.value.lastDonation | json }}</code></pre>
+
+  <h3>
+    Manipulate value and state
+  </h3>
 
   <button
     class="sky-btn sky-btn-default"

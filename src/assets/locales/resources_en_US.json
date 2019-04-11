@@ -83,17 +83,17 @@
     "_description": "The label for the date range picker component's select field Next Quarter format type.",
     "message": "Next quarter"
   },
-  "skyux_date_range_picker_format_label_last_year": {
+  "skyux_date_range_picker_format_label_last_calendar_year": {
     "_description": "The label for the date range picker component's select field Last Year format type.",
-    "message": "Last year"
+    "message": "Last calendar year"
   },
-  "skyux_date_range_picker_format_label_this_year": {
+  "skyux_date_range_picker_format_label_this_calendar_year": {
     "_description": "The label for the date range picker component's select field This Year format type.",
-    "message": "This year"
+    "message": "This calendar year"
   },
-  "skyux_date_range_picker_format_label_next_year": {
+  "skyux_date_range_picker_format_label_next_calendar_year": {
     "_description": "The label for the date range picker component's select field Next Year format type.",
-    "message": "Next year"
+    "message": "Next calendar year"
   },
   "skyux_date_range_picker_format_label_last_fiscal_year": {
     "_description": "The label for the date range picker component's select field Last Fiscal Year format type.",

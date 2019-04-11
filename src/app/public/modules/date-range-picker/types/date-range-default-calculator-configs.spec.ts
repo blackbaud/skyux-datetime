@@ -1,6 +1,6 @@
 import {
   SkyDateRangeCalculatorId
-} from './types/date-range-calculator-id';
+} from './date-range-calculator-id';
 
 import {
   SKY_DEFAULT_CALCULATOR_CONFIGS as configs
@@ -33,8 +33,8 @@ describe('Default calculator configs', function () {
     [SkyDateRangeCalculatorId.LastWeek]: {
       getValue: 'lastWeek'
     },
-    [SkyDateRangeCalculatorId.LastYear]: {
-      getValue: 'lastYear'
+    [SkyDateRangeCalculatorId.LastCalendarYear]: {
+      getValue: 'lastCalendarYear'
     },
     [SkyDateRangeCalculatorId.ThisFiscalYear]: {
       getValue: 'thisFiscalYear'
@@ -48,8 +48,8 @@ describe('Default calculator configs', function () {
     [SkyDateRangeCalculatorId.ThisWeek]: {
       getValue: 'thisWeek'
     },
-    [SkyDateRangeCalculatorId.ThisYear]: {
-      getValue: 'thisYear'
+    [SkyDateRangeCalculatorId.ThisCalendarYear]: {
+      getValue: 'thisCalendarYear'
     },
     [SkyDateRangeCalculatorId.NextFiscalYear]: {
       getValue: 'nextFiscalYear'
@@ -63,8 +63,8 @@ describe('Default calculator configs', function () {
     [SkyDateRangeCalculatorId.NextWeek]: {
       getValue: 'nextWeek'
     },
-    [SkyDateRangeCalculatorId.NextYear]: {
-      getValue: 'nextYear'
+    [SkyDateRangeCalculatorId.NextCalendarYear]: {
+      getValue: 'nextCalendarYear'
     }
   };
 

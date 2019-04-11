@@ -15,9 +15,9 @@ export const enum SkyDateRangeCalculatorId {
   LastQuarter,
   ThisQuarter,
   NextQuarter,
-  LastYear,
-  ThisYear,
-  NextYear,
+  LastCalendarYear,
+  ThisCalendarYear,
+  NextCalendarYear,
   LastFiscalYear,
   ThisFiscalYear,
   NextFiscalYear

@@ -154,7 +154,8 @@ export class SkyDatepickerInputDirective
 
     const areDatesEqual = (
       this._value instanceof Date &&
-      dateValue && dateValue.getTime() === this._value.getTime()
+      dateValue &&
+      dateValue.getTime() === this._value.getTime()
     );
 
     const isNewValue = (

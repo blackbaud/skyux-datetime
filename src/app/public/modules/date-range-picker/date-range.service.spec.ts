@@ -20,7 +20,7 @@ import {
 
 import {
   SkyDateRangeCalculator
-} from './date-range-calculator';
+} from './types/date-range-calculator';
 
 import {
   SkyDateRangeService

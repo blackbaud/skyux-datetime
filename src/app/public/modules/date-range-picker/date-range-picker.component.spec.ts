@@ -150,9 +150,9 @@ describe('Date range picker', function () {
       SkyDateRangeCalculatorId.LastQuarter,
       SkyDateRangeCalculatorId.ThisQuarter,
       SkyDateRangeCalculatorId.NextQuarter,
-      SkyDateRangeCalculatorId.LastYear,
-      SkyDateRangeCalculatorId.ThisYear,
-      SkyDateRangeCalculatorId.NextYear,
+      SkyDateRangeCalculatorId.LastCalendarYear,
+      SkyDateRangeCalculatorId.ThisCalendarYear,
+      SkyDateRangeCalculatorId.NextCalendarYear,
       SkyDateRangeCalculatorId.LastFiscalYear,
       SkyDateRangeCalculatorId.ThisFiscalYear,
       SkyDateRangeCalculatorId.NextFiscalYear

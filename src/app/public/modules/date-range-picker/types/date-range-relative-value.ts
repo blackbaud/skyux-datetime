@@ -1,6 +1,6 @@
 import {
   SkyDateRange
-} from './types/date-range';
+} from './date-range';
 
 export abstract class SkyDateRangeRelativeValue {
   // Abstract classes are not covered properly.
@@ -17,26 +17,24 @@ export abstract class SkyDateRangeRelativeValue {
   }
 
   public static get tomorrow(): SkyDateRange {
-    const today = new Date();
     const tomorrow = new Date();
 
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     return {
-      startDate: today,
+      startDate: tomorrow,
       endDate: tomorrow
     };
   }
 
   public static get yesterday(): SkyDateRange {
-    const today = new Date();
     const yesterday = new Date();
 
     yesterday.setDate(yesterday.getDate() - 1);
 
     return {
       startDate: yesterday,
-      endDate: today
+      endDate: yesterday
     };
   }
 
@@ -194,7 +192,7 @@ export abstract class SkyDateRangeRelativeValue {
     };
   }
 
-  public static get thisYear(): SkyDateRange {
+  public static get thisCalendarYear(): SkyDateRange {
     const startDate = new Date();
     startDate.setDate(1);
     startDate.setMonth(0);
@@ -211,7 +209,7 @@ export abstract class SkyDateRangeRelativeValue {
     };
   }
 
-  public static get nextYear(): SkyDateRange {
+  public static get nextCalendarYear(): SkyDateRange {
     const startDate = new Date();
     startDate.setDate(1);
     startDate.setMonth(0);
@@ -229,7 +227,7 @@ export abstract class SkyDateRangeRelativeValue {
     };
   }
 
-  public static get lastYear(): SkyDateRange {
+  public static get lastCalendarYear(): SkyDateRange {
     const startDate = new Date();
     startDate.setDate(1);
     startDate.setMonth(0);

@@ -1,14 +1,14 @@
 import {
   SkyDateRangeCalculatorId
-} from './types/date-range-calculator-id';
+} from './date-range-calculator-id';
 
 import {
   SkyDateRangeCalculatorType
-} from './types/date-range-calculator-type';
+} from './date-range-calculator-type';
 
 import {
   SkyDateRangeDefaultCalculatorConfig
-} from './types/date-range-default-calculator-config';
+} from './date-range-default-calculator-config';
 
 import {
   SkyDateRangeRelativeValue
@@ -83,10 +83,10 @@ export const SKY_DEFAULT_CALCULATOR_CONFIGS: SkyDateRangeDefaultCalculatorConfig
   },
 
   {
-    calculatorId: SkyDateRangeCalculatorId.LastYear,
+    calculatorId: SkyDateRangeCalculatorId.LastCalendarYear,
     type: SkyDateRangeCalculatorType.Relative,
-    shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_last_year',
-    getValue: () => SkyDateRangeRelativeValue.lastYear
+    shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_last_calendar_year',
+    getValue: () => SkyDateRangeRelativeValue.lastCalendarYear
   },
 
   {
@@ -118,10 +118,10 @@ export const SKY_DEFAULT_CALCULATOR_CONFIGS: SkyDateRangeDefaultCalculatorConfig
   },
 
   {
-    calculatorId: SkyDateRangeCalculatorId.NextYear,
+    calculatorId: SkyDateRangeCalculatorId.NextCalendarYear,
     type: SkyDateRangeCalculatorType.Relative,
-    shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_next_year',
-    getValue: () => SkyDateRangeRelativeValue.nextYear
+    shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_next_calendar_year',
+    getValue: () => SkyDateRangeRelativeValue.nextCalendarYear
   },
 
   {
@@ -153,10 +153,10 @@ export const SKY_DEFAULT_CALCULATOR_CONFIGS: SkyDateRangeDefaultCalculatorConfig
   },
 
   {
-    calculatorId: SkyDateRangeCalculatorId.ThisYear,
+    calculatorId: SkyDateRangeCalculatorId.ThisCalendarYear,
     type: SkyDateRangeCalculatorType.Relative,
-    shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_this_year',
-    getValue: () => SkyDateRangeRelativeValue.thisYear
+    shortDescriptionResourceKey: 'skyux_date_range_picker_format_label_this_calendar_year',
+    getValue: () => SkyDateRangeRelativeValue.thisCalendarYear
   },
 
   {

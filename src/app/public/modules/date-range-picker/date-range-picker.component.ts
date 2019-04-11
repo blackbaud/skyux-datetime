@@ -60,7 +60,7 @@ import {
 
 import {
   SkyDateRangeCalculator
-} from './date-range-calculator';
+} from './types/date-range-calculator';
 
 import {
   SkyDateRangeService
@@ -139,9 +139,9 @@ export class SkyDateRangePickerComponent
       SkyDateRangeCalculatorId.LastQuarter,
       SkyDateRangeCalculatorId.ThisQuarter,
       SkyDateRangeCalculatorId.NextQuarter,
-      SkyDateRangeCalculatorId.LastYear,
-      SkyDateRangeCalculatorId.ThisYear,
-      SkyDateRangeCalculatorId.NextYear,
+      SkyDateRangeCalculatorId.LastCalendarYear,
+      SkyDateRangeCalculatorId.ThisCalendarYear,
+      SkyDateRangeCalculatorId.NextCalendarYear,
       SkyDateRangeCalculatorId.LastFiscalYear,
       SkyDateRangeCalculatorId.ThisFiscalYear,
       SkyDateRangeCalculatorId.NextFiscalYear
@@ -240,8 +240,10 @@ export class SkyDateRangePickerComponent
       // For example, if the control is initialized with only the `calculatorId`,
       // allow the calculator to fill in the missing start and end dates.
       const { startDate, endDate } = this.value;
-      const value = this.selectedCalculator.getValue(startDate, endDate);
-      this.setValue(value, false);
+      const defaultValue = this.selectedCalculator.getValue(startDate, endDate);
+      const newValue = Object.assign({}, defaultValue, this.value);
+
+      this.setValue(newValue, false);
 
       // This is needed to address a bug in Angular 4.
       // When a control value is set intially, its value is not represented on the view.
@@ -381,6 +383,7 @@ export class SkyDateRangePickerComponent
 
   private patchValue(value: any): void {
     const newValue = Object.assign({}, this.value, value);
+
     this.setValue(newValue);
   }
 
