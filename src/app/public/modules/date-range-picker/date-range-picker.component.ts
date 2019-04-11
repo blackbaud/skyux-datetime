@@ -289,11 +289,15 @@ export class SkyDateRangePickerComponent
   }
 
   public writeValue(value: SkyDateRangeCalculation): void {
-    this.setValue(value, false);
 
     // Only update the underlying controls when the calculators are ready.
-    // (We still need to save the value coming from the consumer's form, however.)
+    const notifyChange = false;
+
+    // (We still need to save the initial value set by the consumer's form, however.)
+    this.setValue(value, notifyChange);
+
     if (this.isReady) {
+
       // When the control's value is set to `null`,
       // set it to the default value.
       if (!value) {
@@ -425,16 +429,24 @@ export class SkyDateRangePickerComponent
   }
 
   private resetFormState(value?: SkyDateRangeCalculation): void {
+
     // Clear any errors first.
     this.control.setErrors(undefined);
-
     this.formGroup.setErrors(undefined, {
       emitEvent: false
     });
 
-    this.formGroup.reset(value || this.value, {
-      emitEvent: false
-    });
+    // Do not emit a value change event on the underlying form group
+    // because we're already watching for changes that are triggered by the end user.
+    // For example, if we change the value of the form group internally, we don't want the event
+    // listeners to be triggered, as those are reserved for user interactions.
+    // (See the event listeners listed below.)
+    this.formGroup.reset(
+      value || this.value,
+      {
+        emitEvent: false
+      }
+    );
   }
 
   private addEventListeners(): void {
@@ -457,7 +469,6 @@ export class SkyDateRangePickerComponent
 
     // Watch for selected calculator change.
     this.calculatorIdControl.valueChanges
-      .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((value) => {
         const id = parseInt(value, 10);

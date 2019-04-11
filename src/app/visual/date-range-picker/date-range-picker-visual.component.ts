@@ -48,7 +48,6 @@ export class DateRangePickerVisualComponent implements OnInit {
     });
 
     this.reactiveRange.statusChanges
-      .distinctUntilChanged()
       .subscribe((status) => {
         console.log(
           'Date range status change:',
@@ -58,7 +57,6 @@ export class DateRangePickerVisualComponent implements OnInit {
       });
 
     this.reactiveRange.valueChanges
-      .distinctUntilChanged()
       .subscribe((value) => {
         console.log(
           'Date range value change:',
