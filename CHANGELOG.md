@@ -1,8 +1,8 @@
 # 3.2.0 (2019-04-12)
 
-- Added date range picker component. [#30](https://github.com/blackbaud/skyux-datetime/pull/30)
-- Removed requirement for datepicker input directive to include a reference to its wrapping datepicker component. [#29](https://github.com/blackbaud/skyux-datetime/pull/29)
-- Fixed datepicker input directive to properly set `dirty`, `touched`, and `invalid` states on its control value accessor. [#29](https://github.com/blackbaud/skyux-datetime/pull/29)
+- Added date-range picker component. [#30](https://github.com/blackbaud/skyux-datetime/pull/30)
+- Removed requirement for datepicker input directive to include reference to wrapping datepicker component. [#29](https://github.com/blackbaud/skyux-datetime/pull/29)
+- Fixed datepicker input directive to properly set `dirty`, `touched`, and `invalid` states on control value accessor. [#29](https://github.com/blackbaud/skyux-datetime/pull/29)
 
 # 3.1.0 (2019-03-04)
 
