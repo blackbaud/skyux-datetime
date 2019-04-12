@@ -384,6 +384,30 @@ describe('Date range picker', function () {
     });
   }));
 
+  it('should reset errors after value change', fakeAsync(function () {
+    detectChanges();
+
+    const control = component.dateRange;
+
+    control.setValue({
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange,
+      startDate: new Date(),
+      endDate: 'invalid'
+    });
+
+    detectChanges();
+
+    expect(control.errors).toBeTruthy();
+
+    control.patchValue({
+      endDate: new Date()
+    });
+
+    detectChanges();
+
+    expect(control.errors).toBeFalsy();
+  }));
+
   it('should catch validation errors from date picker on initialization', fakeAsync(function () {
     component.initialValue = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,

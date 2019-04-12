@@ -431,10 +431,15 @@ export class SkyDateRangePickerComponent
   private resetFormState(value?: SkyDateRangeCalculation): void {
 
     // Clear any errors first.
-    this.control.setErrors(undefined);
-    this.formGroup.setErrors(undefined, {
+    /* tslint:disable:no-null-keyword */
+    this.control.setErrors(null, {
       emitEvent: false
     });
+
+    this.formGroup.setErrors(null, {
+      emitEvent: false
+    });
+    /* tslint:enable */
 
     // Do not emit a value change event on the underlying form group
     // because we're already watching for changes that are triggered by the end user.
@@ -484,20 +489,18 @@ export class SkyDateRangePickerComponent
     this.startDateControl.valueChanges
       .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((value) => {
-        this.patchValue({
-          startDate: value
-        });
+      .subscribe((startDate) => {
+        this.patchValue({ startDate });
+        this.resetFormState();
       });
 
     // Watch for end date value changes.
     this.endDateControl.valueChanges
       .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((value) => {
-        this.patchValue({
-          endDate: value
-        });
+      .subscribe((endDate) => {
+        this.patchValue({ endDate });
+        this.resetFormState();
       });
   }
 
