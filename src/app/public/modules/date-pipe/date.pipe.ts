@@ -1,8 +1,4 @@
 import {
-  DatePipe
-} from '@angular/common';
-
-import {
   ChangeDetectorRef,
   OnDestroy,
   Pipe,
@@ -19,49 +15,39 @@ import {
 
 import 'rxjs/add/operator/takeUntil';
 
+import {
+  SkyDateFormatUtility
+} from './date-format-utility';
+
 @Pipe({
   name: 'skyDate',
   pure: false
 })
 export class SkyDatePipe implements OnDestroy, PipeTransform {
-  private get format(): string {
-    return this._format || 'short';
-  }
+  private defaultFormat = 'short';
 
-  private set format(value: string) {
-    if (value && value !== this._format) {
-      this._format = value;
-    }
-  }
+  private format: string;
 
-  private set locale(value: string) {
-    if (value && value !== this._locale) {
-      this._locale = value;
+  private defaultLocale: string;
 
-      // Create a new pipe when the locale changes.
-      this.ngDatePipe = new DatePipe(this._locale);
-    }
-  }
+  private locale: string;
 
-  private defaultLocale = 'en-US';
   private formattedValue: string;
-  private ngDatePipe: DatePipe;
-  private ngUnsubscribe = new Subject<void>();
-  private value: Date;
 
-  private _format: string;
-  private _locale: string;
+  private ngUnsubscribe = new Subject<void>();
+
+  private value: Date;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private localeProvider: SkyAppLocaleProvider
   ) {
-    this.locale = this.defaultLocale;
+    this.defaultLocale = 'en-US';
 
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        this.locale = localeInfo.locale;
+        this.defaultLocale = localeInfo.locale;
         this.updateFormattedValue();
       });
   }
@@ -87,8 +73,14 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
 
   private updateFormattedValue(): void {
     if (this.value) {
-      this.formattedValue = this.ngDatePipe.transform(this.value, this.format);
-      this.changeDetector.markForCheck();
+      const locale = this.locale || this.defaultLocale;
+      const format = this.format || this.defaultFormat;
+
+      this.formattedValue = SkyDateFormatUtility.format(locale, this.value, format);
+    } else {
+      this.formattedValue = undefined;
     }
+
+    this.changeDetector.markForCheck();
   }
 }

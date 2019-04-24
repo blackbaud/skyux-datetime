@@ -28,6 +28,10 @@ import {
   SkyDatePipe
 } from './date.pipe';
 
+import {
+  SkyDateFormatUtility
+} from './date-format-utility';
+
 describe('Date pipe', () => {
   let fixture: ComponentFixture<DatePipeTestComponent>;
   let mockChangeDetector: any;
@@ -123,7 +127,7 @@ describe('Date pipe', () => {
     const date = new Date('01/01/2001');
     const pipe = new SkyDatePipe(mockChangeDetector, mockLocaleProvider);
 
-    const spy = spyOn(pipe['ngDatePipe'], 'transform').and.callThrough();
+    const spy = spyOn(SkyDateFormatUtility, 'format').and.callThrough();
 
     pipe.transform(date);
     expect(spy.calls.count()).toEqual(1);
@@ -143,6 +147,6 @@ describe('Date pipe', () => {
 
     const value = pipe.transform(date, 'short');
     expect(expectedValues).toContain(value);
-    expect(pipe['_locale']).toEqual('en-US');
+    expect(pipe['defaultLocale']).toEqual('en-US');
   });
 });
