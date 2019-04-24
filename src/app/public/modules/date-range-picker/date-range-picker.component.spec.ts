@@ -429,6 +429,7 @@ describe('Date range picker', function () {
     detectChanges();
 
     const control = component.dateRange;
+    const calculatorIdControl = component.dateRangePicker.formGroup.get('calculatorId');
 
     control.setValue({
       calculatorId: SkyDateRangeCalculatorId.SpecificRange
@@ -437,6 +438,7 @@ describe('Date range picker', function () {
     detectChanges();
 
     expect(control.errors).toBeFalsy();
+    expect(calculatorIdControl.errors).toBeFalsy();
 
     const datepickerInputs = fixture.nativeElement.querySelectorAll('.sky-datepicker input');
 
@@ -448,14 +450,25 @@ describe('Date range picker', function () {
 
     detectChanges();
 
-    expect(control.errors).toEqual({
+    const expectedError = {
       skyDateRange: {
         calculatorId: SkyDateRangeCalculatorId.SpecificRange,
         errors: {
           endDateBeforeStartDate: true
         }
       }
-    });
+    };
+
+    expect(control.errors).toEqual(expectedError);
+    expect(calculatorIdControl.errors).toEqual(expectedError);
+
+    datepickerInputs.item(1).value = '1/3/2000';
+    SkyAppTestUtility.fireDomEvent(datepickerInputs.item(1), 'change');
+
+    detectChanges();
+
+    expect(control.errors).toBeFalsy();
+    expect(calculatorIdControl.errors).toBeFalsy();
   }));
 
   it('should be accessible', async(function () {

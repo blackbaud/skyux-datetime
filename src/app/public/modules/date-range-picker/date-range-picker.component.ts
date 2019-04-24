@@ -321,13 +321,6 @@ export class SkyDateRangePickerComponent
       return;
     }
 
-    // Clear any errors on the underlying form group first.
-    /* tslint:disable:no-null-keyword */
-    this.formGroup.setErrors(null, {
-      emitEvent: false
-    });
-    /* tslint:enable */
-
     const value = control.value;
     const idControl = this.calculatorIdControl;
     const result = this.selectedCalculator.validate(value);
@@ -346,6 +339,9 @@ export class SkyDateRangePickerComponent
     }
 
     if (!errors) {
+      // Clear any errors on the calculator select.
+      // tslint:disable-next-line:no-null-keyword
+      idControl.setErrors(null);
       return;
     }
 
