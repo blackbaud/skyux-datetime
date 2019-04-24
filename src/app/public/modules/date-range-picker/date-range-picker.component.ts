@@ -233,7 +233,7 @@ export class SkyDateRangePickerComponent
     this.updateCalculators().then(() => {
       this.isReady = true;
 
-      this.resetFormState();
+      this.resetFormGroupValue();
       this.showRelevantFormFields();
 
       // Fill in any unprovided values after the calculators have been initialized.
@@ -275,7 +275,7 @@ export class SkyDateRangePickerComponent
         if (!found) {
           const newValue = this.defaultCalculator.getValue();
           this.setValue(newValue);
-          this.resetFormState(newValue);
+          this.resetFormGroupValue(newValue);
           this.showRelevantFormFields();
         }
       });
@@ -307,7 +307,7 @@ export class SkyDateRangePickerComponent
         this.onChange(this.defaultValue);
       }
 
-      this.resetFormState();
+      this.resetFormGroupValue();
       this.showRelevantFormFields();
     }
   }
@@ -320,6 +320,13 @@ export class SkyDateRangePickerComponent
     if (!this.isReady) {
       return;
     }
+
+    // Clear any errors on the underlying form group first.
+    /* tslint:disable:no-null-keyword */
+    this.formGroup.setErrors(null, {
+      emitEvent: false
+    });
+    /* tslint:enable */
 
     const value = control.value;
     const idControl = this.calculatorIdControl;
@@ -431,19 +438,7 @@ export class SkyDateRangePickerComponent
     this.changeDetector.markForCheck();
   }
 
-  private resetFormState(value?: SkyDateRangeCalculation): void {
-
-    // Clear any errors first.
-    /* tslint:disable:no-null-keyword */
-    this.control.setErrors(null, {
-      emitEvent: false
-    });
-
-    this.formGroup.setErrors(null, {
-      emitEvent: false
-    });
-    /* tslint:enable */
-
+  private resetFormGroupValue(value?: SkyDateRangeCalculation): void {
     // Do not emit a value change event on the underlying form group
     // because we're already watching for changes that are triggered by the end user.
     // For example, if we change the value of the form group internally, we don't want the event
@@ -484,7 +479,7 @@ export class SkyDateRangePickerComponent
         const newValue = calculator.getValue();
 
         this.setValue(newValue);
-        this.resetFormState(newValue);
+        this.resetFormGroupValue(newValue);
         this.showRelevantFormFields();
       });
 
@@ -494,7 +489,6 @@ export class SkyDateRangePickerComponent
       .takeUntil(this.ngUnsubscribe)
       .subscribe((startDate) => {
         this.patchValue({ startDate });
-        this.resetFormState();
       });
 
     // Watch for end date value changes.
@@ -503,7 +497,6 @@ export class SkyDateRangePickerComponent
       .takeUntil(this.ngUnsubscribe)
       .subscribe((endDate) => {
         this.patchValue({ endDate });
-        this.resetFormState();
       });
   }
 
