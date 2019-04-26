@@ -4,8 +4,8 @@
 // https://github.com/angular/angular/blob/4.4.x/packages/common/src/pipes/date_pipe.ts
 
 import {
-  SkyDateFormatter
-} from '@skyux/i18n/modules/i18n/intl';
+  SkyIntlDateFormatter
+} from '@skyux/i18n/modules/i18n/intl-date-formatter';
 
 const ISO8601_DATE_REGEX =
     /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
@@ -68,7 +68,11 @@ export class SkyDateFormatUtility {
       }
     }
 
-    return SkyDateFormatter.format(date, locale, SkyDateFormatUtility._ALIASES[pattern] || pattern);
+    return SkyIntlDateFormatter.format(
+      date,
+      locale,
+      SkyDateFormatUtility._ALIASES[pattern] || pattern
+    );
   }
 }
 
