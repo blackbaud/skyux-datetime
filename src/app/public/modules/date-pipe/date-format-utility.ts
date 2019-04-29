@@ -16,6 +16,7 @@ function isNumeric(value: any): boolean {
 }
 
 export class SkyDateFormatUtility {
+
   private static _ALIASES: {[key: string]: string} = {
     'medium': 'yMMMdjms',
     'short': 'yMdjm',
@@ -27,7 +28,15 @@ export class SkyDateFormatUtility {
     'shortTime': 'jm'
   };
 
-  public static format(locale: string, value: any, pattern: string = 'mediumDate'): string | null {
+  /* istanbul ignore next */
+  constructor() { }
+
+  public static format(
+    locale: string,
+    value: any,
+    pattern: string
+  ): string | null {
+
     let date: Date;
 
     if (isBlank(value) || value !== value) {
@@ -37,6 +46,8 @@ export class SkyDateFormatUtility {
     if (typeof value === 'string') {
       value = value.trim();
     }
+
+    console.log('EH?', value, isDate(value));
 
     if (isDate(value)) {
       date = value;
@@ -60,6 +71,7 @@ export class SkyDateFormatUtility {
 
     if (!isDate(date)) {
       let match: RegExpMatchArray|null;
+      /* istanbul ignore next */
       /* tslint:disable-next-line:no-conditional-assignment */
       if ((typeof value === 'string') && (match = value.match(ISO8601_DATE_REGEX))) {
         date = isoStringToDate(match);

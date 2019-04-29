@@ -24,6 +24,7 @@ import {
   pure: false
 })
 export class SkyDatePipe implements OnDestroy, PipeTransform {
+
   private defaultFormat = 'short';
 
   private format: string;
@@ -32,11 +33,11 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
 
   private locale: string;
 
+  private value: Date;
+
   private formattedValue: string;
 
   private ngUnsubscribe = new Subject<void>();
-
-  private value: Date;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -72,14 +73,10 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
   }
 
   private updateFormattedValue(): void {
-    if (this.value) {
-      const locale = this.locale || this.defaultLocale;
-      const format = this.format || this.defaultFormat;
+    const locale = this.locale || this.defaultLocale;
+    const format = this.format || this.defaultFormat;
 
-      this.formattedValue = SkyDateFormatUtility.format(locale, this.value, format);
-    } else {
-      this.formattedValue = undefined;
-    }
+    this.formattedValue = SkyDateFormatUtility.format(locale, this.value, format);
 
     this.changeDetector.markForCheck();
   }
