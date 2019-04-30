@@ -153,7 +153,8 @@ describe('Date pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '1/1/2000, 12:00 AM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM' // IE 11
     ];
     expect(expectedValues).toContain(value);
   });
@@ -210,13 +211,21 @@ describe('Date pipe', () => {
     fixture.componentInstance.dateValue = '2017-01-11T09:25:14.014-0500';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    expect(value).toEqual('1/11/2017, 9:25 AM');
+    const expectedValues = [
+      '1/11/2017, 9:25 AM',
+      '1/11/2017 9:25 AM' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should format invalid in Safari ISO date', () => {
     fixture.componentInstance.dateValue = '2017-01-20T19:00:00+0000';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    expect(value).toEqual('1/20/2017, 2:00 PM');
+    const expectedValues = [
+      '1/20/2017, 2:00 PM',
+      '1/20/2017 2:00 PM' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
   });
 });

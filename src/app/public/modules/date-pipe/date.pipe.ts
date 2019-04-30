@@ -29,7 +29,7 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
 
   private format: string;
 
-  private defaultLocale: string;
+  private defaultLocale = 'en-US';
 
   private locale: string;
 
@@ -43,8 +43,6 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
     private changeDetector: ChangeDetectorRef,
     private localeProvider: SkyAppLocaleProvider
   ) {
-    this.defaultLocale = 'en-US';
-
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {

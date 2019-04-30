@@ -96,6 +96,7 @@ function isDate(obj: any): obj is Date {
   return obj instanceof Date && !isNaN(obj.valueOf());
 }
 
+/* istanbul ignore next */
 function isoStringToDate(match: RegExpMatchArray): Date {
   const date = new Date(0);
   let tzHour = 0;
@@ -116,6 +117,7 @@ function isoStringToDate(match: RegExpMatchArray): Date {
   return date;
 }
 
+/* istanbul ignore next */
 function toInt(str: string): number {
   return parseInt(str, 10);
 }
