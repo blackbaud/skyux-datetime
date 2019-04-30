@@ -213,7 +213,8 @@ describe('Date pipe', () => {
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
       '1/11/2017, 9:25 AM',
-      '1/11/2017 9:25 AM' // IE 11
+      '1/11/2017 9:25 AM', // IE 11
+      '1/11/2017, 6:25 AM' // Safari 11
     ];
     expect(expectedValues).toContain(value);
   });
@@ -224,7 +225,8 @@ describe('Date pipe', () => {
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
       '1/20/2017, 2:00 PM',
-      '1/20/2017 2:00 PM' // IE 11
+      '1/20/2017 2:00 PM', // IE 11
+      '1/20/2017, 11:00 AM' // Safari 11
     ];
     expect(expectedValues).toContain(value);
   });
