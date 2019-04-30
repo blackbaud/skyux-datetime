@@ -1,6 +1,6 @@
 # 3.2.2 (2019-04-30)
 
-- Fixed `SkyDatePipe` to include proper locale data when used with Angular v.5 and higher. [#36](https://github.com/blackbaud/skyux-datetime/pull/36)
+- Fixed `SkyDatePipe` to include proper locale data when used with Angular version 5 and higher. [#36](https://github.com/blackbaud/skyux-datetime/pull/36)
 
 # 3.2.1 (2019-04-25)
 
