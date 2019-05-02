@@ -336,7 +336,7 @@ fdescribe('datepicker with field masker', () => {
         fixture.detectChanges();
         expect(nativeElement.querySelector('input').value).toBe('');
 
-        SkyAppTestUtility.fireDomEvent(nativeElement, 'focus');
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
         fixture.detectChanges();
 
         expect(nativeElement.querySelector('input').value).toBe(component.inputDirective.dateFormat);
