@@ -286,6 +286,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     if (!this.value) {
       this.writeValue(this.dateFormat);
     }
+    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+    inputElement.setSelectionRange(0, 2);
   }
 
   public writeValue(value: any): void {
