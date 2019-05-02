@@ -51,7 +51,7 @@ export class SkyDatepickerComponent implements OnDestroy {
   public dateChange = new EventEmitter<Date>();
   public maxDate: Date;
   public minDate: Date;
-  public startingDay: number;
+  public startingDay: number = 0;
 
   @ViewChild(SkyDatepickerCalendarComponent)
   private calendar: SkyDatepickerCalendarComponent;
