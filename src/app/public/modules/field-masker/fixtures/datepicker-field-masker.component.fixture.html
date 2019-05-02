@@ -1,0 +1,22 @@
+<div>
+  <sky-datepicker #picker>
+    <input
+      skyFieldMaskerInput
+      name="myDate"
+      [(ngModel)]="selectedDate"
+      [minDate]="minDate"
+      [maxDate]="maxDate"
+      [startingDay]="startingDay"
+      [dateFormat]="format"
+      [disabled]="isDisabled"
+      [skyDatepickerNoValidate]="noValidate"
+      #date="ngModel" />
+  </sky-datepicker>
+</div>
+
+<div *ngIf="showInvalidDirective">
+  <input
+    type="text"
+    skyFieldMaskerInput
+  />
+</div>
