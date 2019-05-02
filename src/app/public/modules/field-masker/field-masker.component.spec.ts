@@ -235,6 +235,14 @@ fdescribe('datepicker with field masker', () => {
 
         expect(nativeElement.querySelector('input')).not.toHaveCssClass('ng-invalid');
       }));
+
+      it('should set placeholder as date format', fakeAsync(() => {
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+
+        expect(nativeElement.querySelector('input').placeholder).toBe(component.inputDirective.dateFormat);
+      }));
     });
 
     describe('input change', () => {
@@ -355,7 +363,7 @@ fdescribe('datepicker with field masker', () => {
       fixture.detectChanges();
 
       expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
-    }))
+    }));
 
   });
 });
