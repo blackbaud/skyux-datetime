@@ -279,6 +279,13 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     this.control.markAsDirty();
   }
 
+  @HostListener('focus')
+  public onInputFocus(): void {
+    if (!this.value) {
+      this.writeValue(this.dateFormat);
+    }
+  }
+
   public writeValue(value: any): void {
     this.value = value;
   }
