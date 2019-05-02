@@ -283,6 +283,22 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     this.control.markAsDirty();
   }
 
+  @HostListener('keydown', ['$event'])
+  public onInputKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Tab') {
+      ++this.currentGroup;
+      if (this.currentGroup < this.groupLength.length) {
+        let startingIndex = 0;
+        for (let i = 0; i < this.currentGroup; ++i) {
+          startingIndex += this.groupLength[i] + 1;
+        }
+        const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+        inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
+        event.preventDefault();
+      }
+    }
+  }
+
   @HostListener('focus')
   public onInputFocus(): void {
     if (!this.value) {
