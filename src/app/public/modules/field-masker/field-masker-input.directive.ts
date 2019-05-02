@@ -194,6 +194,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private _minDate: Date;
   private _startingDay: number;
   private _value: any;
+  private currentGroup: number;
+  private groupLength: number[] = [2, 2, 4];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -286,8 +288,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     if (!this.value) {
       this.writeValue(this.dateFormat);
     }
+    this.currentGroup = 0;
     const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-    inputElement.setSelectionRange(0, 2);
+    inputElement.setSelectionRange(0, this.groupLength[this.currentGroup]);
   }
 
   public writeValue(value: any): void {
