@@ -341,7 +341,21 @@ fdescribe('datepicker with field masker', () => {
 
         expect(nativeElement.querySelector('input').value).toBe(component.inputDirective.dateFormat);
       }));
-    })
+    });
+
+    it('should not change value on focus if value is set', fakeAsync(() => {
+      fixture.detectChanges();
+      component.selectedDate = '05/12/2017';
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
+    }))
 
   });
 });
