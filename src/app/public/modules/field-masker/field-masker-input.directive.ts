@@ -276,6 +276,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   @HostListener('blur')
   public onInputBlur(): void {
     this.onTouched();
+    if (this.value === this.dateFormat) {
+      this.writeValue(undefined);
+    }
   }
 
   @HostListener('keyup')
@@ -292,6 +295,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         for (let i = 0; i < this.currentGroup; ++i) {
           startingIndex += this.groupLength[i] + 1;
         }
+
         const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
         inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
         event.preventDefault();
