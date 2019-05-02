@@ -443,25 +443,40 @@ fdescribe('datepicker with field masker', () => {
       expect(nativeElement.querySelector('input').value).toBe('01/11/0011');
     }));
 
-    it('should not convert to date if any groups are not filled', fakeAsync(() => {
+    it('should not convert to date on change event if any groups are not filled', fakeAsync(() => {
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
       fixture.detectChanges();
 
-      nativeElement.querySelector('input').value = '01/MM/YYYY';
+      nativeElement.querySelector('input').value = '01/DD/YYYY';
+      fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
+        target: {
+          value: '01/DD/YYYY'
+        }
+      });
       fixture.detectChanges();
 
-      expect(nativeElement.querySelector('input').value).toBe('01/MM/YYYY');
+      expect(nativeElement.querySelector('input').value).toBe('01/DD/YYYY');
 
-      nativeElement.querySelector('input').value = 'DD/01/YYYY';
+      nativeElement.querySelector('input').value = 'MM/01/YYYY';
+      fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
+        target: {
+          value: 'MM/01/YYYY'
+        }
+      });
       fixture.detectChanges();
 
-      expect(nativeElement.querySelector('input').value).toBe('DD/01/YYYY');
+      expect(nativeElement.querySelector('input').value).toBe('MM/01/YYYY');
 
-      nativeElement.querySelector('input').value = 'DD/MM/2019';
+      nativeElement.querySelector('input').value = 'MM/DD/2019';
+      fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
+        target: {
+          value: 'MM/DD/2019'
+        }
+      });
       fixture.detectChanges();
 
-      expect(nativeElement.querySelector('input').value).toBe('DD/MM/2019');
+      expect(nativeElement.querySelector('input').value).toBe('MM/DD/2019');
     }));
 
   });
