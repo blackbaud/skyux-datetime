@@ -365,5 +365,15 @@ fdescribe('datepicker with field masker', () => {
       expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
     }));
 
+    it('should highlight first section when input is focused', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(0);
+      expect(inputElement.selectionEnd).toEqual(2);
+    }));
+
   });
 });
