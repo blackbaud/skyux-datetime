@@ -410,5 +410,38 @@ fdescribe('datepicker with field masker', () => {
       expect(nativeElement.querySelector('input').value).toBe('');
     }));
 
+    it('should fill in group if only partially filled and tab is pushed', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      nativeElement.querySelector('input').value = '1/MM/YYYY';
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: { key: 'Tab' }
+      });
+      fixture.detectChanges();
+
+      expect(nativeElement.querySelector('input').value).toBe('01/MM/YYYY');
+
+      nativeElement.querySelector('input').value = '01/11/YYYY';
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: { key: 'Tab' }
+      });
+      fixture.detectChanges();
+
+      expect(nativeElement.querySelector('input').value).toBe('01/11/YYYY');
+
+      nativeElement.querySelector('input').value = '01/11/11';
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: { key: 'Tab' }
+      });
+      fixture.detectChanges();
+
+      expect(nativeElement.querySelector('input').value).toBe('01/11/0011');
+    }));
+
   });
 });
