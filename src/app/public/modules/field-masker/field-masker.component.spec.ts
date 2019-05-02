@@ -399,5 +399,16 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(10);
     }));
 
+    it('should reset value to blank if input blurs without any user input', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'blur');
+      fixture.detectChanges();
+
+      expect(nativeElement.querySelector('input').value).toBe('');
+    }));
+
   });
 });
