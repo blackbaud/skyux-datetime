@@ -214,6 +214,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
     const element = this.elementRef.nativeElement;
 
+    element.setAttribute('placeholder', this.dateFormat);
+
     this.renderer.addClass(
       element,
       'sky-form-control'
