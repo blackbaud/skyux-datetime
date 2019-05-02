@@ -6,13 +6,15 @@ import {
   SkyDatePipeModule,
   SkyDatepickerModule,
   SkyDateRangePickerModule,
-  SkyTimepickerModule
+  SkyTimepickerModule,
+  SkyFieldMaskerModule
 } from './public';
 
 @NgModule({
   exports: [
     SkyDatePipeModule,
     SkyDatepickerModule,
+    SkyFieldMaskerModule,
     SkyTimepickerModule,
     SkyDateRangePickerModule
   ]
