@@ -289,6 +289,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   @HostListener('keydown', ['$event'])
   public onInputKeydown(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
+      this.fillInCurrentGroup();
       ++this.currentGroup;
       if (this.currentGroup < this.groupLength.length) {
         let startingIndex = 0;
@@ -391,6 +392,16 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
     this.datepickerComponent.disabled = disabled;
+  }
+
+  private fillInCurrentGroup(): void {
+    let groups: string[] = this.elementRef.nativeElement.value.split('/');
+    let currentGroupValue = groups[this.currentGroup];
+    if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
+      groups[this.currentGroup] = '0'.repeat(this.groupLength[this.currentGroup] - currentGroupValue.length)
+        + currentGroupValue;
+      this.elementRef.nativeElement.value = groups.join('/');
+    }
   }
 
   private setInputElementValue(value: string): void {
