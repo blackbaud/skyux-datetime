@@ -195,7 +195,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private _startingDay: number;
   private _value: any;
   private currentGroup: number;
-  private groupLength: number[] = [2, 2, 4];
+  private groupLength: number[] = [];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -236,7 +236,13 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
           );
         });
     }
+
+    let groups: string[] = this.dateFormat.split('/');
+    for (let i = 0; i < groups.length; ++i) {
+      this.groupLength[i] = groups[i].length;
+    }
   }
+
 
   public ngAfterContentInit(): void {
     this.datepickerComponent.dateChange
