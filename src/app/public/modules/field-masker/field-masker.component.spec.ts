@@ -29,7 +29,7 @@ import {
 
 const moment = require('moment');
 
-describe('datepicker with field masker', () => {
+fdescribe('datepicker with field masker', () => {
 
   function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>) {
     let dropdownButtonEl = element.querySelector('.sky-dropdown-button') as HTMLElement;
@@ -330,6 +330,18 @@ describe('datepicker with field masker', () => {
           .toEqual(moment('1994-11-05T08:15:30-05:00', 'YYYY-MM-DDThh:mm:ss.sssZ').toDate());
       }));
     });
+
+    describe('field masker', () => {
+      it('should show date format as value when input is focused', fakeAsync(() => {
+        fixture.detectChanges();
+        expect(nativeElement.querySelector('input').value).toBe('');
+
+        SkyAppTestUtility.fireDomEvent(nativeElement, 'focus');
+        fixture.detectChanges();
+
+        expect(nativeElement.querySelector('input').value).toBe(component.inputDirective.dateFormat);
+      }));
+    })
 
   });
 });
