@@ -422,7 +422,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     let dateValue: Date;
     if (value instanceof Date) {
       dateValue = value;
-    } else if (typeof value === 'string') {
+    } else if (typeof value === 'string' && this.allGroupsHaveData(value)) {
       const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
       if (this.dateFormatter.dateIsValid(date)) {
         dateValue = date;
@@ -430,6 +430,21 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
 
     return dateValue;
+  }
+
+  private allGroupsHaveData(value: string): boolean {
+    let valueGroups: string[] = value.split('/');
+    let dateFormatGroups: string[] = this.dateFormat.split('/');
+
+    if (valueGroups.length === dateFormatGroups.length) {
+      for (let i = 0; i < valueGroups.length; ++i) {
+        if (valueGroups[i] === dateFormatGroups[i]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   private onChange = (_: any) => {};
