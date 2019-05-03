@@ -479,5 +479,27 @@ fdescribe('datepicker with field masker', () => {
       expect(nativeElement.querySelector('input').value).toBe('MM/DD/2019');
     }));
 
+    it('should highlight next group once current group is filled', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      nativeElement.querySelector('input').value = '01/DD/YYYY';
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup');
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(3);
+      expect(inputElement.selectionEnd).toEqual(5);
+
+      nativeElement.querySelector('input').value = '01/20/YYYY';
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup');
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+    }));
+
   });
 });
