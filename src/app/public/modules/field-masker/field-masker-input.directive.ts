@@ -308,16 +308,10 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   public onInputKeydown(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
       this.fillInCurrentGroup();
-      ++this.currentGroup;
-      if (this.currentGroup < this.groupLength.length) {
-        let startingIndex = 0;
-        for (let i = 0; i < this.currentGroup; ++i) {
-          startingIndex += this.groupLength[i] + 1;
-        }
-
-        const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-        inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
-        event.preventDefault();
+      if (event.shiftKey) {
+        this.moveToPreviousGroup(event);
+      } else {
+        this.moveToNextGroup(event);
       }
     }
   }
@@ -428,6 +422,31 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         + currentGroupValue;
       this.elementRef.nativeElement.value = groups.join('/');
     }
+  }
+
+  private moveToNextGroup(event: KeyboardEvent): void {
+    ++this.currentGroup;
+    if (this.currentGroup < this.groupLength.length) {
+      this.selectCurrentGroup(event);
+    }
+  }
+
+  private moveToPreviousGroup(event: KeyboardEvent): void {
+    --this.currentGroup;
+    if (this.currentGroup >= 0) {
+      this.selectCurrentGroup(event);
+    }
+  }
+
+  private selectCurrentGroup(event: KeyboardEvent): void {
+    let startingIndex = 0;
+    for (let i = 0; i < this.currentGroup; ++i) {
+      startingIndex += this.groupLength[i] + 1;
+    }
+
+    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+    inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
+    event.preventDefault();
   }
 
   private setInputElementValue(value: string): void {
