@@ -290,6 +290,18 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   @HostListener('keyup')
   public onInputKeyup(): void {
     this.control.markAsDirty();
+    if (this.currentGroupIsFilled()) {
+      ++this.currentGroup;
+      if (this.currentGroup < this.groupLength.length) {
+        let startingIndex = 0;
+        for (let i = 0; i < this.currentGroup; ++i) {
+          startingIndex += this.groupLength[i] + 1;
+        }
+
+        const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+        inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
+      }
+    }
   }
 
   @HostListener('keydown', ['$event'])
@@ -398,6 +410,14 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
     this.datepickerComponent.disabled = disabled;
+  }
+
+  private currentGroupIsFilled(): boolean {
+    let groups: string[] = this.elementRef.nativeElement.value.split('/');
+    let formatCharacter: string = this.dateFormat.split('/')[this.currentGroup].charAt(0);
+
+    return groups[this.currentGroup].indexOf(formatCharacter) === -1 &&
+      groups[this.currentGroup].length === this.groupLength[this.currentGroup];
   }
 
   private fillInCurrentGroup(): void {
