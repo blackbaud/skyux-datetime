@@ -501,5 +501,35 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(10);
     }));
 
+    it('shift + tab should move selection back', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: { key: 'Tab' }
+      });
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: { key: 'Tab' }
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {
+          key: 'Tab',
+          shiftKey: true
+        }
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(3);
+      expect(inputElement.selectionEnd).toEqual(5);
+    }));
+
   });
 });
