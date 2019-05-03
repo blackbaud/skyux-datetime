@@ -1069,22 +1069,6 @@ describe('datepicker', () => {
 
         expect(firstDayCol.textContent).toContain('Fr');
       }));
-
-      it('should pass starting day to calendar as 0 if not set', fakeAsync(() => {
-        fixture.detectChanges();
-        component.dateControl.setValue(new Date('5/21/2017'));
-        fixture.detectChanges();
-        tick();
-        fixture.detectChanges();
-
-        openDatepicker(fixture.nativeElement, fixture);
-        tick();
-
-        let firstDayCol = fixture.nativeElement
-          .querySelectorAll('.sky-datepicker-center.sky-datepicker-weekdays').item(0) as HTMLElement;
-
-        expect(firstDayCol.textContent).toContain('Su');
-      }));
     });
 
     describe('disabled state', () => {
