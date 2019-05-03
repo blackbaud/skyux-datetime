@@ -864,7 +864,8 @@ describe('datepicker', () => {
     });
 
     describe('Angular form control statuses', function () {
-      it('should set correct statuses on init', fakeAsync(function () {
+      it('should set correct statuses when initialized without value', fakeAsync(function () {
+        fixture.componentInstance.initialValue = undefined;
         fixture.detectChanges();
         tick();
 
@@ -873,7 +874,8 @@ describe('datepicker', () => {
         expect(component.dateControl.touched).toBe(false);
       }));
 
-      it('should set correct statuses on init', fakeAsync(function () {
+      it('should set correct statuses when initialized with value', fakeAsync(function () {
+        fixture.componentInstance.initialValue = '1/1/2000';
         fixture.detectChanges();
         tick();
 
