@@ -2,7 +2,7 @@
 
 - Fixed date range picker component to properly represent Angular form control statuses (`dirty`, `pristine`, etc.). [#44](https://github.com/blackbaud/skyux-datetime/pull/44)
 - Fixed date range picker component to properly use default calculators when `calculatorIds` is set to falsy value. [#43](https://github.com/blackbaud/skyux-datetime/pull/43)
-- Fixed date picker calendar component to default to Sunday as starting day. [#41](https://github.com/blackbaud/skyux-datetime/pull/41)
+- Fixed datepicker calendar component to default to Sunday as starting day. [#41](https://github.com/blackbaud/skyux-datetime/pull/41)
 
 # 3.2.2 (2019-04-30)
 
