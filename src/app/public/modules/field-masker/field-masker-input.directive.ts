@@ -184,8 +184,11 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private control: AbstractControl;
+  private currentGroup: number;
   private dateFormatter = new SkyDateFormatter();
+  private delimiter: string;
   private isFirstChange = true;
+  private groupLength: number[] = [];
   private ngUnsubscribe = new Subject<void>();
 
   private _dateFormat: string;
@@ -194,8 +197,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private _minDate: Date;
   private _startingDay: number;
   private _value: any;
-  private currentGroup: number;
-  private groupLength: number[] = [];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -237,10 +238,11 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         });
     }
 
-    let groups: string[] = this.dateFormat.split('/');
+    let groups: string[] = this.dateFormat.split(/[\\()-./]/g);
     for (let i = 0; i < groups.length; ++i) {
       this.groupLength[i] = groups[i].length;
     }
+    this.delimiter = this.dateFormat.charAt(this.groupLength[0]);
   }
 
 
@@ -398,20 +400,20 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private currentGroupIsFilled(): boolean {
-    let groups: string[] = this.elementRef.nativeElement.value.split('/');
-    let formatCharacter: string = this.dateFormat.split('/')[this.currentGroup].charAt(0);
+    let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
+    let formatCharacter: string = this.dateFormat.split(this.delimiter)[this.currentGroup].charAt(0);
 
     return groups[this.currentGroup].indexOf(formatCharacter) === -1 &&
       groups[this.currentGroup].length === this.groupLength[this.currentGroup];
   }
 
   private fillInCurrentGroup(): void {
-    let groups: string[] = this.elementRef.nativeElement.value.split('/');
+    let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
     let currentGroupValue = groups[this.currentGroup];
     if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
       groups[this.currentGroup] = '0'.repeat(this.groupLength[this.currentGroup] - currentGroupValue.length)
         + currentGroupValue;
-      this.elementRef.nativeElement.value = groups.join('/');
+      this.elementRef.nativeElement.value = groups.join(this.delimiter);
     }
   }
 
@@ -465,8 +467,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private allGroupsHaveData(value: string): boolean {
-    let valueGroups: string[] = value.split('/');
-    let dateFormatGroups: string[] = this.dateFormat.split('/');
+    let valueGroups: string[] = value.split(this.delimiter);
+    let dateFormatGroups: string[] = this.dateFormat.split(this.delimiter);
 
     if (valueGroups.length === dateFormatGroups.length) {
       for (let i = 0; i < valueGroups.length; ++i) {
