@@ -562,5 +562,23 @@ fdescribe('datepicker with field masker', () => {
       }));
 
     });
+
+    it('should replace empty group with placeholder text', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+      nativeElement.querySelector('input').value = '/DD/YYYY';
+      fixture.detectChanges();
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.value).toEqual('MM/DD/YYYY');
+      expect(inputElement.selectionStart).toEqual(3);
+      expect(inputElement.selectionEnd).toEqual(5);
+    }));
   });
 });
