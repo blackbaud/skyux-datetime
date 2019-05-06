@@ -10,7 +10,7 @@
 .sky-date-range-picker-form-group {
   padding-left: $sky-padding-half;
   padding-right: $sky-padding-half;
-  flex-basis: 33%;
+  flex-basis: calc(100% / 3);
 }
 
 @media (max-width: $sky-screen-xs-max) {
