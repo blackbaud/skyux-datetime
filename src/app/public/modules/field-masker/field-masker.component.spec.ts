@@ -157,8 +157,7 @@ fdescribe('datepicker with field masker', () => {
         .toHaveText('May 2017');
 
       // Click May 2nd
-      let dateButtonEl
-        = nativeElement
+      let dateButtonEl = nativeElement
         .querySelectorAll('tbody tr td .sky-btn-default').item(2) as HTMLButtonElement;
 
       dateButtonEl.click();
@@ -381,7 +380,7 @@ fdescribe('datepicker with field masker', () => {
       fixture.detectChanges();
 
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
 
@@ -390,7 +389,7 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(5);
 
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
 
@@ -418,7 +417,7 @@ fdescribe('datepicker with field masker', () => {
       nativeElement.querySelector('input').value = '1/MM/YYYY';
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
 
@@ -427,7 +426,7 @@ fdescribe('datepicker with field masker', () => {
       nativeElement.querySelector('input').value = '01/11/YYYY';
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
 
@@ -436,7 +435,7 @@ fdescribe('datepicker with field masker', () => {
       nativeElement.querySelector('input').value = '01/11/11';
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
 
@@ -506,11 +505,11 @@ fdescribe('datepicker with field masker', () => {
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: { key: 'Tab' }
+        keyboardEventInit: {key: 'Tab'}
       });
       fixture.detectChanges();
 
@@ -520,8 +519,7 @@ fdescribe('datepicker with field masker', () => {
 
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
         keyboardEventInit: {
-          key: 'Tab',
-          shiftKey: true
+          key: 'Tab', shiftKey: true
         }
       });
       fixture.detectChanges();
@@ -531,5 +529,38 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(5);
     }));
 
+
+    ['/', '\\', '-', '(', ')', '.'].forEach((delimiter) => {
+      it(`handles using ${delimiter} as a delimiter`, fakeAsync(() => {
+        component.format = `YYYY${delimiter}MM${delimiter}DD`;
+        fixture.detectChanges();
+        expect(nativeElement.querySelector('input').placeholder).toBe(component.format);
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(0);
+        expect(inputElement.selectionEnd).toEqual(4);
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {key: 'Tab'}
+        });
+        fixture.detectChanges();
+
+        inputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(5);
+        expect(inputElement.selectionEnd).toEqual(7);
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {key: 'Tab'}
+        });
+        fixture.detectChanges();
+
+        inputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(8);
+        expect(inputElement.selectionEnd).toEqual(10);
+      }));
+
+    });
   });
 });
