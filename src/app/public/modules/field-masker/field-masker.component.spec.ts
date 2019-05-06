@@ -532,7 +532,7 @@ fdescribe('datepicker with field masker', () => {
 
     ['/', '\\', '-', '(', ')', '.'].forEach((delimiter) => {
       it(`handles using ${delimiter} as a delimiter`, fakeAsync(() => {
-        component.format = `YYYY${delimiter}MM${delimiter}DD`;
+        component.format = `MM${delimiter}DD${delimiter}YYYY`;
         fixture.detectChanges();
         expect(nativeElement.querySelector('input').placeholder).toBe(component.format);
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
@@ -540,7 +540,7 @@ fdescribe('datepicker with field masker', () => {
 
         let inputElement: HTMLInputElement = nativeElement.querySelector('input');
         expect(inputElement.selectionStart).toEqual(0);
-        expect(inputElement.selectionEnd).toEqual(4);
+        expect(inputElement.selectionEnd).toEqual(2);
 
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
           keyboardEventInit: {key: 'Tab'}
@@ -548,8 +548,8 @@ fdescribe('datepicker with field masker', () => {
         fixture.detectChanges();
 
         inputElement = nativeElement.querySelector('input');
-        expect(inputElement.selectionStart).toEqual(5);
-        expect(inputElement.selectionEnd).toEqual(7);
+        expect(inputElement.selectionStart).toEqual(3);
+        expect(inputElement.selectionEnd).toEqual(5);
 
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
           keyboardEventInit: {key: 'Tab'}
@@ -557,7 +557,7 @@ fdescribe('datepicker with field masker', () => {
         fixture.detectChanges();
 
         inputElement = nativeElement.querySelector('input');
-        expect(inputElement.selectionStart).toEqual(8);
+        expect(inputElement.selectionStart).toEqual(6);
         expect(inputElement.selectionEnd).toEqual(10);
       }));
 
