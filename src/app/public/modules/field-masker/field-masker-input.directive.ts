@@ -297,6 +297,14 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
   }
 
+  @HostListener('keypress', ['$event'])
+  public onInputKeypress(event: KeyboardEvent): void {
+    console.log(event.key);
+    if (this.eventIsNotNumericInput(event)) {
+      event.preventDefault();
+    }
+  }
+
   @HostListener('keydown', ['$event'])
   public onInputKeydown(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
@@ -483,6 +491,15 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
       }
     }
 
+    return true;
+  }
+
+  private eventIsNotNumericInput(event: KeyboardEvent): boolean {
+    for (let i = 0; i < 10; ++i) {
+      if (event.key === ('Digit' + i) || event.key === ('Numpad' + i)) {
+        return false;
+      }
+    }
     return true;
   }
 
