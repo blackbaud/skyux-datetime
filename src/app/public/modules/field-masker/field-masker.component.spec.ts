@@ -580,5 +580,23 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionStart).toEqual(3);
       expect(inputElement.selectionEnd).toEqual(5);
     }));
+
+    it('should not allow non-numeric input', fakeAsync(() => {
+      let letters: string[] = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+        'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      for (let i = 0; i < letters.length; ++i) {
+        let keyPressEvent = new KeyboardEvent('keypress', { key: 'Key' + letters[0] });
+        let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
+        component.inputDirective.onInputKeypress(keyPressEvent);
+        fixture.detectChanges();
+
+        expect(keyPressSpy).toHaveBeenCalled();
+      }
+    }));
   });
 });
