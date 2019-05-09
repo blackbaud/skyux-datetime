@@ -484,7 +484,7 @@ fdescribe('datepicker with field masker', () => {
       fixture.detectChanges();
 
       nativeElement.querySelector('input').value = '01/DD/YYYY';
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup');
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
       fixture.detectChanges();
 
       let inputElement: HTMLInputElement = nativeElement.querySelector('input');
@@ -492,7 +492,7 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(5);
 
       nativeElement.querySelector('input').value = '01/20/YYYY';
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup');
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
       fixture.detectChanges();
 
       inputElement = nativeElement.querySelector('input');
