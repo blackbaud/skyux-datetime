@@ -289,17 +289,19 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
   }
 
-  @HostListener('keyup')
-  public onInputKeyup(): void {
+  @HostListener('keyup', ['$event'])
+  public onInputKeyup(event: KeyboardEvent): void {
     this.control.markAsDirty();
-    if (this.currentGroupIsFilled()) {
-      this.moveToNextGroup();
+    if (this.currentGroupIsFilled()
+      && event.key !== 'Tab'
+      && event.key !== 'Shift'
+    ) {
+        this.moveToNextGroup();
     }
   }
 
   @HostListener('keypress', ['$event'])
   public onInputKeypress(event: KeyboardEvent): void {
-    console.log(event.key);
     if (this.eventIsNotNumericInput(event)) {
       event.preventDefault();
     }
