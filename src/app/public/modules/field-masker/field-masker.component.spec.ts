@@ -598,5 +598,22 @@ fdescribe('datepicker with field masker', () => {
         expect(keyPressSpy).toHaveBeenCalled();
       }
     }));
+
+    it('should select the group that the user clicked into', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      fixture.debugElement.query(By.css('input')).triggerEventHandler('click', {
+        target: {
+          selectionStart: 4
+        }
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(3);
+      expect(inputElement.selectionEnd).toEqual(5);
+    }));
   });
 });
