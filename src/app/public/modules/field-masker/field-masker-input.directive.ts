@@ -327,6 +327,21 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     inputElement.setSelectionRange(0, this.groupLength[this.currentGroup]);
   }
 
+  @HostListener('click', ['$event'])
+  public onInputClick(event: MouseEvent): void {
+    let totalLength: number= 0;
+    let target: HTMLInputElement = <HTMLInputElement>event.target;
+    for (let i: number = 0; i < this.groupLength.length; ++i) {
+      totalLength += this.groupLength[i];
+      if (totalLength >= target.selectionStart) {
+        this.fillInCurrentGroup();
+        this.currentGroup = i;
+        this.selectCurrentGroup();
+        break;
+      }
+    }
+  }
+
   public writeValue(value: any): void {
     this.value = value;
   }
