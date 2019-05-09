@@ -496,7 +496,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   private eventIsNotNumericInput(event: KeyboardEvent): boolean {
     for (let i = 0; i < 10; ++i) {
-      if (event.key === ('Digit' + i) || event.key === ('Numpad' + i)) {
+      if (event.key === i.toString() || event.key === ('Numpad' + i)) {
         return false;
       }
     }
