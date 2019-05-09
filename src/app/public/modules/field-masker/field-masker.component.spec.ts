@@ -590,7 +590,7 @@ fdescribe('datepicker with field masker', () => {
       fixture.detectChanges();
 
       for (let i = 0; i < letters.length; ++i) {
-        let keyPressEvent = new KeyboardEvent('keypress', { key: 'Key' + letters[0] });
+        let keyPressEvent = new KeyboardEvent('keypress', { key: 'Key' + letters[i] });
         let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
         component.inputDirective.onInputKeypress(keyPressEvent);
         fixture.detectChanges();
@@ -614,6 +614,35 @@ fdescribe('datepicker with field masker', () => {
       let inputElement: HTMLInputElement = nativeElement.querySelector('input');
       expect(inputElement.selectionStart).toEqual(3);
       expect(inputElement.selectionEnd).toEqual(5);
+    }));
+
+    it('should allow you to move through the groups via Tab even if the groups are filled', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+      nativeElement.querySelector('input').value = '01/DD/YYYY';
+      fixture.detectChanges();
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {
+          key: 'Tab', shiftKey: true
+        }
+      });
+      fixture.detectChanges();
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup', { keyboardEventInit:
+        { key: 'Tab' }
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(0);
+      expect(inputElement.selectionEnd).toEqual(2);
     }));
   });
 });
