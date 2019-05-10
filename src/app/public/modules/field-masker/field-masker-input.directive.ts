@@ -434,14 +434,16 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private fillInCurrentGroup(): void {
-    let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
-    let currentGroupValue = groups[this.currentGroup];
-    if (currentGroupValue.length === 0) {
-      groups[this.currentGroup] = this.dateFormat.split(this.delimiter)[this.currentGroup];
-    } else if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
-      groups[this.currentGroup] = this.getValuePrecededByZeros(currentGroupValue);
+    if (this.currentGroup >= 0 && this.currentGroup < this.groupLength.length) {
+      let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
+      let currentGroupValue = groups[this.currentGroup];
+      if (currentGroupValue.length === 0) {
+        groups[this.currentGroup] = this.dateFormat.split(this.delimiter)[this.currentGroup];
+      } else if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
+        groups[this.currentGroup] = this.getValuePrecededByZeros(currentGroupValue);
+      }
+      this.elementRef.nativeElement.value = groups.join(this.delimiter);
     }
-    this.elementRef.nativeElement.value = groups.join(this.delimiter);
   }
 
   private getValuePrecededByZeros(value: string): string {
