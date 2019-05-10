@@ -644,5 +644,81 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionStart).toEqual(0);
       expect(inputElement.selectionEnd).toEqual(2);
     }));
+
+    it(`should not move to next section if user inputs 1 for month`, fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      nativeElement.querySelector('input').value = '1/DD/YYYY';
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.value).toEqual('1/DD/YYYY');
+      expect(inputElement.selectionStart).not.toEqual(3);
+      expect(inputElement.selectionEnd).not.toEqual(5);
+    }));
+
+    ['2', '3', '4', '5', '6', '7', '8', '9'].forEach((input) => {
+      it(`should move to next section and fill group if user inputs ${input} for month`, fakeAsync(() => {
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        nativeElement.querySelector('input').value = input + '/DD/YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.value).toEqual(`0${input}/DD/YYYY`);
+        expect(inputElement.selectionStart).toEqual(3);
+        expect(inputElement.selectionEnd).toEqual(5);
+      }));
+    });
+
+    ['1', '2', '3'].forEach((input) => {
+      it(`should not move to next section if user inputs ${input} for day`, fakeAsync(() => {
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {key: 'Tab'}
+        });
+        fixture.detectChanges();
+
+        nativeElement.querySelector('input').value = 'MM/' + input + '/YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.value).toEqual(`MM/${input}/YYYY`);
+        expect(inputElement.selectionStart).not.toEqual(6);
+        expect(inputElement.selectionEnd).not.toEqual(10);
+      }));
+    });
+
+    ['4', '5', '6', '7', '8', '9'].forEach((input) => {
+      it(`should move to next section and fill group if user inputs ${input} for day`, fakeAsync(() => {
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {key: 'Tab'}
+        });
+        fixture.detectChanges();
+
+        nativeElement.querySelector('input').value = 'MM/' + input + '/YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.value).toEqual(`MM/0${input}/YYYY`);
+        expect(inputElement.selectionStart).toEqual(6);
+        expect(inputElement.selectionEnd).toEqual(10);
+      }));
+    });
   });
 });
