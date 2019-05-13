@@ -398,6 +398,30 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(10);
     }));
 
+    it('pushing arrow right highlights next group', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'ArrowRight'}
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(3);
+      expect(inputElement.selectionEnd).toEqual(5);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'ArrowRight'}
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+    }));
+
     it('should reset value to blank if input blurs without any user input', fakeAsync(() => {
       fixture.detectChanges();
       SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
@@ -529,6 +553,32 @@ fdescribe('datepicker with field masker', () => {
       expect(inputElement.selectionEnd).toEqual(5);
     }));
 
+    it('left arrow should move selection back', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'ArrowLeft'}
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(3);
+      expect(inputElement.selectionEnd).toEqual(5);
+    }));
 
     ['/', '\\', '-', '(', ')', '.'].forEach((delimiter) => {
       it(`handles using ${delimiter} as a delimiter`, fakeAsync(() => {
@@ -720,5 +770,97 @@ fdescribe('datepicker with field masker', () => {
         expect(inputElement.selectionEnd).toEqual(10);
       }));
     });
+
+    it('up arrow should move selection to first group', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'ArrowUp'}
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(0);
+      expect(inputElement.selectionEnd).toEqual(2);
+    }));
+
+    it('home key should move selection to first group', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Tab'}
+      });
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'Home'}
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(0);
+      expect(inputElement.selectionEnd).toEqual(2);
+    }));
+
+    it('down arrow should move selection to last group', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(0);
+      expect(inputElement.selectionEnd).toEqual(2);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'ArrowDown'}
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+    }));
+
+    it('end key should move selection to last group', fakeAsync(() => {
+      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+      fixture.detectChanges();
+
+      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(0);
+      expect(inputElement.selectionEnd).toEqual(2);
+
+      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+        keyboardEventInit: {key: 'End'}
+      });
+      fixture.detectChanges();
+
+      inputElement = nativeElement.querySelector('input');
+      expect(inputElement.selectionStart).toEqual(6);
+      expect(inputElement.selectionEnd).toEqual(10);
+    }));
   });
 });
