@@ -348,519 +348,522 @@ fdescribe('datepicker with field masker', () => {
 
         expect(nativeElement.querySelector('input').value).toBe(component.inputDirective.dateFormat);
       }));
-    });
 
-    it('should not change value on focus if value is set', fakeAsync(() => {
-      fixture.detectChanges();
-      component.selectedDate = '05/12/2017';
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
-    }));
-
-    it('should highlight first section when input is focused', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(0);
-      expect(inputElement.selectionEnd).toEqual(2);
-    }));
-
-    it('pushing tab highlights next group until leaving element', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-    }));
-
-    it('pushing arrow right highlights next group', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'ArrowRight'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'ArrowRight'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-    }));
-
-    it('should reset value to blank if input blurs without any user input', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'blur');
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('');
-    }));
-
-    it('should fill in group if only partially filled and tab is pushed', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      nativeElement.querySelector('input').value = '1/MM/YYYY';
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('01/MM/YYYY');
-
-      nativeElement.querySelector('input').value = '01/11/YYYY';
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('01/11/YYYY');
-
-      nativeElement.querySelector('input').value = '01/11/11';
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('01/11/0011');
-    }));
-
-    it('should not convert to date on change event if any groups are not filled', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      nativeElement.querySelector('input').value = '01/DD/YYYY';
-      fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
-        target: {
-          value: '01/DD/YYYY'
-        }
-      });
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('01/DD/YYYY');
-
-      nativeElement.querySelector('input').value = 'MM/01/YYYY';
-      fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
-        target: {
-          value: 'MM/01/YYYY'
-        }
-      });
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('MM/01/YYYY');
-
-      nativeElement.querySelector('input').value = 'MM/DD/2019';
-      fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
-        target: {
-          value: 'MM/DD/2019'
-        }
-      });
-      fixture.detectChanges();
-
-      expect(nativeElement.querySelector('input').value).toBe('MM/DD/2019');
-    }));
-
-    it('should highlight next group once current group is filled', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      nativeElement.querySelector('input').value = '01/DD/YYYY';
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-
-      nativeElement.querySelector('input').value = '01/20/YYYY';
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-    }));
-
-    it('shift + tab should move selection back', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {
-          key: 'Tab', shiftKey: true
-        }
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-    }));
-
-    it('left arrow should move selection back', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'ArrowLeft'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-    }));
-
-    ['/', '\\', '-', '(', ')', '.'].forEach((delimiter) => {
-      it(`handles using ${delimiter} as a delimiter`, fakeAsync(() => {
-        component.format = `MM${delimiter}DD${delimiter}YYYY`;
+      it('should not change value on focus if value is set', fakeAsync(() => {
         fixture.detectChanges();
-        expect(nativeElement.querySelector('input').placeholder).toBe(component.format);
+        component.selectedDate = '05/12/2017';
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+        expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
+      }));
+
+      it('should highlight first section when input is focused', fakeAsync(() => {
+        fixture.detectChanges();
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
         fixture.detectChanges();
 
         let inputElement: HTMLInputElement = nativeElement.querySelector('input');
         expect(inputElement.selectionStart).toEqual(0);
         expect(inputElement.selectionEnd).toEqual(2);
-
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-          keyboardEventInit: {key: 'Tab'}
-        });
-        fixture.detectChanges();
-
-        inputElement = nativeElement.querySelector('input');
-        expect(inputElement.selectionStart).toEqual(3);
-        expect(inputElement.selectionEnd).toEqual(5);
-
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-          keyboardEventInit: {key: 'Tab'}
-        });
-        fixture.detectChanges();
-
-        inputElement = nativeElement.querySelector('input');
-        expect(inputElement.selectionStart).toEqual(6);
-        expect(inputElement.selectionEnd).toEqual(10);
       }));
 
-    });
-
-    it('should replace empty group with placeholder text', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-      nativeElement.querySelector('input').value = '/DD/YYYY';
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.value).toEqual('MM/DD/YYYY');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-    }));
-
-    it('should not allow non-numeric input', fakeAsync(() => {
-      let letters: string[] = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-        'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      for (let i = 0; i < letters.length; ++i) {
-        let keyPressEvent = new KeyboardEvent('keypress', { key: 'Key' + letters[i] });
-        let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
-        component.inputDirective.onInputKeypress(keyPressEvent);
-        fixture.detectChanges();
-
-        expect(keyPressSpy).toHaveBeenCalled();
-      }
-    }));
-
-    it('should select the group that the user clicked into', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      fixture.debugElement.query(By.css('input')).triggerEventHandler('click', {
-        target: {
-          selectionStart: 4
-        }
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(3);
-      expect(inputElement.selectionEnd).toEqual(5);
-    }));
-
-    it('should allow you to move through the groups via Tab even if the groups are filled', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-      nativeElement.querySelector('input').value = '01/DD/YYYY';
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {
-          key: 'Tab', shiftKey: true
-        }
-      });
-      fixture.detectChanges();
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup', { keyboardEventInit:
-        { key: 'Tab' }
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(0);
-      expect(inputElement.selectionEnd).toEqual(2);
-    }));
-
-    it(`should not move to next section if user inputs 1 for month`, fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      nativeElement.querySelector('input').value = '1/DD/YYYY';
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.value).toEqual('1/DD/YYYY');
-      expect(inputElement.selectionStart).not.toEqual(3);
-      expect(inputElement.selectionEnd).not.toEqual(5);
-    }));
-
-    ['2', '3', '4', '5', '6', '7', '8', '9'].forEach((input) => {
-      it(`should move to next section and fill group if user inputs ${input} for month`, fakeAsync(() => {
+      it('should reset value to blank if input blurs without any user input', fakeAsync(() => {
         fixture.detectChanges();
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
         fixture.detectChanges();
 
-        nativeElement.querySelector('input').value = input + '/DD/YYYY';
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        blurInput(nativeElement, fixture);
+
+        expect(nativeElement.querySelector('input').value).toBe('');
+      }));
+
+      it('should not convert to date on change event if any groups are not filled', fakeAsync(() => {
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        nativeElement.querySelector('input').value = '01/DD/YYYY';
+        fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
+          target: {
+            value: '01/DD/YYYY'
+          }
+        });
+        fixture.detectChanges();
+
+        expect(nativeElement.querySelector('input').value).toBe('01/DD/YYYY');
+
+        nativeElement.querySelector('input').value = 'MM/01/YYYY';
+        fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
+          target: {
+            value: 'MM/01/YYYY'
+          }
+        });
+        fixture.detectChanges();
+
+        expect(nativeElement.querySelector('input').value).toBe('MM/01/YYYY');
+
+        nativeElement.querySelector('input').value = 'MM/DD/2019';
+        fixture.debugElement.query(By.css('input')).triggerEventHandler('change', {
+          target: {
+            value: 'MM/DD/2019'
+          }
+        });
+        fixture.detectChanges();
+
+        expect(nativeElement.querySelector('input').value).toBe('MM/DD/2019');
+      }));
+
+      ['/', '\\', '-', '(', ')', '.'].forEach((delimiter) => {
+        it(`handles using ${delimiter} as a delimiter`, fakeAsync(() => {
+          component.format = `MM${delimiter}DD${delimiter}YYYY`;
+          fixture.detectChanges();
+          expect(nativeElement.querySelector('input').placeholder).toBe(component.format);
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(0);
+          expect(inputElement.selectionEnd).toEqual(2);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+        }));
+
+      });
+
+      it('should replace empty group with placeholder text', fakeAsync(() => {
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+        nativeElement.querySelector('input').value = '/DD/YYYY';
+        fixture.detectChanges();
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {key: 'Tab'}
+        });
         fixture.detectChanges();
 
         let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-        expect(inputElement.value).toEqual(`0${input}/DD/YYYY`);
+        expect(inputElement.value).toEqual('MM/DD/YYYY');
         expect(inputElement.selectionStart).toEqual(3);
         expect(inputElement.selectionEnd).toEqual(5);
       }));
-    });
 
-    ['1', '2', '3'].forEach((input) => {
-      it(`should not move to next section if user inputs ${input} for day`, fakeAsync(() => {
-        fixture.detectChanges();
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-        fixture.detectChanges();
+      describe('navigation keys', () => {
+        it('pushing tab highlights next group until leaving element', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
 
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-          keyboardEventInit: {key: 'Tab'}
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+        }));
+
+        it('pushing arrow right highlights next group', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'ArrowRight'}
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'ArrowRight'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+        }));
+
+        it('shift + tab should move selection back', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {
+              key: 'Tab', shiftKey: true
+            }
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+        }));
+
+        it('left arrow should move selection back', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'ArrowLeft'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+        }));
+
+        it('up arrow should move selection to first group', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'ArrowUp'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(0);
+          expect(inputElement.selectionEnd).toEqual(2);
+        }));
+
+        it('home key should move selection to first group', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Home'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(0);
+          expect(inputElement.selectionEnd).toEqual(2);
+        }));
+
+        it('down arrow should move selection to last group', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(0);
+          expect(inputElement.selectionEnd).toEqual(2);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'ArrowDown'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+        }));
+
+        it('end key should move selection to last group', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(0);
+          expect(inputElement.selectionEnd).toEqual(2);
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'End'}
+          });
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+        }));
+
+        it('should fill in group if only partially filled and tab is pushed', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = '1/MM/YYYY';
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('01/MM/YYYY');
+
+          nativeElement.querySelector('input').value = '01/11/YYYY';
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('01/11/YYYY');
+
+          nativeElement.querySelector('input').value = '01/11/11';
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('01/11/0011');
+        }));
+
+        it('should allow you to move through the groups via Tab even if the groups are filled', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+          nativeElement.querySelector('input').value = '01/DD/YYYY';
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {
+              key: 'Tab', shiftKey: true
+            }
+          });
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keyup', { keyboardEventInit:
+              { key: 'Tab' }
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(0);
+          expect(inputElement.selectionEnd).toEqual(2);
+        }));
+      });
+
+      describe('user input behavior', () => {
+        it(`should not move to next section if user inputs 1 for month`, fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = '1/DD/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.value).toEqual('1/DD/YYYY');
+          expect(inputElement.selectionStart).not.toEqual(3);
+          expect(inputElement.selectionEnd).not.toEqual(5);
+        }));
+
+        ['2', '3', '4', '5', '6', '7', '8', '9'].forEach((input) => {
+          it(`should move to next section and fill group if user inputs ${input} for month`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
+
+            nativeElement.querySelector('input').value = input + '/DD/YYYY';
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
+
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`0${input}/DD/YYYY`);
+            expect(inputElement.selectionStart).toEqual(3);
+            expect(inputElement.selectionEnd).toEqual(5);
+          }));
         });
-        fixture.detectChanges();
 
-        nativeElement.querySelector('input').value = 'MM/' + input + '/YYYY';
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
-        fixture.detectChanges();
+        ['1', '2', '3'].forEach((input) => {
+          it(`should not move to next section if user inputs ${input} for day`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
 
-        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-        expect(inputElement.value).toEqual(`MM/${input}/YYYY`);
-        expect(inputElement.selectionStart).not.toEqual(6);
-        expect(inputElement.selectionEnd).not.toEqual(10);
-      }));
-    });
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+              keyboardEventInit: {key: 'Tab'}
+            });
+            fixture.detectChanges();
 
-    ['4', '5', '6', '7', '8', '9'].forEach((input) => {
-      it(`should move to next section and fill group if user inputs ${input} for day`, fakeAsync(() => {
-        fixture.detectChanges();
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-        fixture.detectChanges();
+            nativeElement.querySelector('input').value = 'MM/' + input + '/YYYY';
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
 
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-          keyboardEventInit: {key: 'Tab'}
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`MM/${input}/YYYY`);
+            expect(inputElement.selectionStart).not.toEqual(6);
+            expect(inputElement.selectionEnd).not.toEqual(10);
+          }));
         });
-        fixture.detectChanges();
 
-        nativeElement.querySelector('input').value = 'MM/' + input + '/YYYY';
-        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
-        fixture.detectChanges();
+        ['4', '5', '6', '7', '8', '9'].forEach((input) => {
+          it(`should move to next section and fill group if user inputs ${input} for day`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
 
-        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-        expect(inputElement.value).toEqual(`MM/0${input}/YYYY`);
-        expect(inputElement.selectionStart).toEqual(6);
-        expect(inputElement.selectionEnd).toEqual(10);
-      }));
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+              keyboardEventInit: {key: 'Tab'}
+            });
+            fixture.detectChanges();
+
+            nativeElement.querySelector('input').value = 'MM/' + input + '/YYYY';
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
+
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`MM/0${input}/YYYY`);
+            expect(inputElement.selectionStart).toEqual(6);
+            expect(inputElement.selectionEnd).toEqual(10);
+          }));
+        });
+
+        it('should highlight next group once current group is filled', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = '01/DD/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+
+          nativeElement.querySelector('input').value = '01/20/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          inputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(6);
+          expect(inputElement.selectionEnd).toEqual(10);
+        }));
+
+        it('should not allow non-numeric input', fakeAsync(() => {
+          let letters: string[] = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+            'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          for (let i = 0; i < letters.length; ++i) {
+            let keyPressEvent = new KeyboardEvent('keypress', { key: 'Key' + letters[i] });
+            let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
+            component.inputDirective.onInputKeypress(keyPressEvent);
+            fixture.detectChanges();
+
+            expect(keyPressSpy).toHaveBeenCalled();
+          }
+        }));
+
+        it('should select the group that the user clicked into', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          fixture.debugElement.query(By.css('input')).triggerEventHandler('click', {
+            target: {
+              selectionStart: 4
+            }
+          });
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.selectionStart).toEqual(3);
+          expect(inputElement.selectionEnd).toEqual(5);
+        }));
+      });
     });
-
-    it('up arrow should move selection to first group', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'ArrowUp'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(0);
-      expect(inputElement.selectionEnd).toEqual(2);
-    }));
-
-    it('home key should move selection to first group', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Tab'}
-      });
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'Home'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(0);
-      expect(inputElement.selectionEnd).toEqual(2);
-    }));
-
-    it('down arrow should move selection to last group', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(0);
-      expect(inputElement.selectionEnd).toEqual(2);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'ArrowDown'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-    }));
-
-    it('end key should move selection to last group', fakeAsync(() => {
-      fixture.detectChanges();
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
-      fixture.detectChanges();
-
-      let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(0);
-      expect(inputElement.selectionEnd).toEqual(2);
-
-      SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
-        keyboardEventInit: {key: 'End'}
-      });
-      fixture.detectChanges();
-
-      inputElement = nativeElement.querySelector('input');
-      expect(inputElement.selectionStart).toEqual(6);
-      expect(inputElement.selectionEnd).toEqual(10);
-    }));
   });
 });
