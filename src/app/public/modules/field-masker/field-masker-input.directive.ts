@@ -54,7 +54,6 @@ const SKY_DATEPICKER_VALIDATOR = {
 };
 // tslint:enable
 
-
 @Directive({
   selector: '[skyFieldMaskerInput]',
   providers: [
@@ -245,7 +244,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     this.delimiter = this.dateFormat.charAt(this.groupLength[0]);
   }
 
-
   public ngAfterContentInit(): void {
     this.datepickerComponent.dateChange
       .distinctUntilChanged()
@@ -286,6 +284,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     this.onTouched();
     if (this.value === this.dateFormat) {
       this.writeValue(undefined);
+    } else if (!this.currentGroupIsFilled()) {
+      this.fillInCurrentGroup();
+      this.validateGroup();
     }
   }
 
@@ -300,6 +301,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
       if (!this.currentGroupIsFilled()) {
         this.fillInCurrentGroup();
       }
+      this.validateGroup();
       this.moveToNextGroup();
     }
   }
@@ -456,7 +458,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   private groupValueIsTooHigh(): boolean {
     let formatGroup: string = this.dateFormat.split(/[\\()-./]/g)[this.currentGroup];
-    let value: number = parseInt(this.elementRef.nativeElement.value.split(/[\\()-./]/g)[this.currentGroup]);
+    let value: number = parseInt(this.elementRef.nativeElement.value.split(/[\\()-./]/g)[this.currentGroup], 10);
 
     if ((formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm') && value > 1) {
       return true;
@@ -482,6 +484,78 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   private getValuePrecededByZeros(value: string): string {
     return '0'.repeat(this.groupLength[this.currentGroup] - value.length) + value;
+  }
+
+  private validateGroup(): void {
+    let formatGroups: string[] = this.dateFormat.split(/[\\()-./]/g);
+    let valueGroups: string[] = this.elementRef.nativeElement.value.split(/[\\()-./]/g);
+    let year: number;
+    let month: number;
+    let day: number;
+
+    for (let i = 0; i < formatGroups.length; ++i) {
+      let formatGroup: string = formatGroups[i];
+      let valueGroup: string = valueGroups[i];
+      if ((formatGroup.charAt(0) === 'Y' && valueGroup.charAt(0) !== 'Y') ||
+          (formatGroup.charAt(0) === 'y' && valueGroup.charAt(0) !== 'y')) {
+        year = parseInt(valueGroups[i], 10);
+      } else if ((formatGroup.charAt(0) === 'M' && valueGroup.charAt(0) !== 'M') ||
+          (formatGroup.charAt(0) === 'm' && valueGroup.charAt(0) !== 'm')) {
+        month = parseInt(valueGroups[i], 10);
+      } else if ((formatGroup.charAt(0) === 'D' && valueGroup.charAt(0) !== 'D') ||
+          (formatGroup.charAt(0) === 'd' && valueGroup.charAt(0) !== 'd')) {
+        day = parseInt(valueGroups[i], 10);
+      }
+    }
+
+    if (month === 0) {
+      month = 1;
+    } else if (month > 12) {
+      month = 12;
+    }
+
+    if (day === 0) {
+      day = 1;
+    } else if (day) {
+      day = this.getValidDayBasedOnMonthAndYear(day, month, year);
+    }
+
+    for (let i = 0; i < formatGroups.length; ++i) {
+      let formatGroup: string = formatGroups[i];
+      if (year && (formatGroup.charAt(0) === 'Y' || formatGroup.charAt(0) === 'y')) {
+        valueGroups[i] = '0'.repeat(this.groupLength[i] - year.toString().length) + year.toString();
+      } else if (month && (formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm')) {
+        valueGroups[i] = '0'.repeat(this.groupLength[i] - month.toString().length) + month.toString();
+      } else if (day && (formatGroup.charAt(0) === 'D' || formatGroup.charAt(0) === 'd')) {
+        valueGroups[i] = '0'.repeat(this.groupLength[i] - day.toString().length) + day.toString();
+      }
+    }
+
+    this.elementRef.nativeElement.value = valueGroups.join(this.delimiter);
+  }
+
+  private getValidDayBasedOnMonthAndYear(day: number, month: number, year: number): number {
+    if (month === 2) {
+      if ((!year || (year && this.isLeapYear(year))) && day >= 29) {
+        return 29;
+      } else if (day > 28) {
+        return 28;
+      }
+    } else if ((!month || (month && this.monthHas31Days(month))) && day >= 31) {
+      return 31;
+    } else if (day > 30) {
+      return 30;
+    }
+    return day;
+  }
+
+  private monthHas31Days(month: number): boolean {
+    return [1, 3, 5, 7, 8, 10, 12].indexOf(month) !== -1;
+  }
+
+  // https://en.wikipedia.org/wiki/Leap_year#Algorithm
+  private isLeapYear(year: number): boolean {
+    return year % 4 === 0 && !(year % 100 === 0 && year % 400 !== 0);
   }
 
   private moveToNextGroup(): void {
@@ -554,68 +628,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
     return true;
   }
-
-  // private updateValueToValidDate(value: string): string {
-  //   let formatGroups: string[] = this.dateFormat.split(/[\\()-./]/g);
-  //   let valueGroups: string[] = value.split(/[\\()-./]/g);
-  //   let year: number;
-  //   let month: number;
-  //   let day: number;
-  //
-  //   for (let i = 0; i < formatGroups.length; ++i) {
-  //     let formatGroup: string = formatGroups[i];
-  //     if (formatGroup.charAt(0) === 'Y' || formatGroup.charAt(0) === 'y') {
-  //       year = parseInt(valueGroups[i]);
-  //     } else if (formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm') {
-  //       month = parseInt(valueGroups[i]);
-  //     } else if (formatGroup.charAt(0) === 'D' || formatGroup.charAt(0) === 'd') {
-  //       day = parseInt(valueGroups[i]);
-  //     }
-  //   }
-  //
-  //   if (month === 0) {
-  //     month = 1;
-  //   } else if (month > 12) {
-  //     month = 12
-  //   }
-  //
-  //   if (day === 0) {
-  //     day = 1
-  //   }
-  //
-  //   if (month === 2) {
-  //     if (this.isLeapYear(year) && day > 29) {
-  //       day = 29
-  //     } else if (day > 28) {
-  //       day = 28
-  //     }
-  //   } else if (this.monthHas31Days(month) && day > 31) {
-  //     day = 31
-  //   } else if (day > 30) {
-  //     day = 30
-  //   }
-  //
-  //   for (let i = 0; i < formatGroups.length; ++i) {
-  //     let formatGroup: string = formatGroups[i];
-  //     if (formatGroup.charAt(0) === 'Y' || formatGroup.charAt(0) === 'y') {
-  //       valueGroups[i] = '0'.repeat(this.groupLength[i] - year.toString().length) + year.toString();
-  //     } else if (formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm') {
-  //       valueGroups[i] = '0'.repeat(this.groupLength[i] - month.toString().length) + month.toString();
-  //     } else if (formatGroup.charAt(0) === 'D' || formatGroup.charAt(0) === 'd') {
-  //       valueGroups[i] = '0'.repeat(this.groupLength[i] - day.toString().length) + day.toString();
-  //     }
-  //   }
-  //
-  //   return valueGroups.join(this.delimiter);
-  // }
-  //
-  // private isLeapYear(year: number): boolean {
-  //   return year%4 === 0
-  // }
-  //
-  // private monthHas31Days(month: number): boolean {
-  //   return [1, 3, 5, 7, 8, 10, 12].indexOf(month) !== -1;
-  // }
 
   private eventIsNotNumericInput(event: KeyboardEvent): boolean {
     for (let i = 0; i < 10; ++i) {
