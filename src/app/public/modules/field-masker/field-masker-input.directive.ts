@@ -316,10 +316,28 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     if (event.key === 'Tab') {
       this.fillInCurrentGroup();
       if (event.shiftKey) {
-        this.moveToPreviousGroup(event);
+        if (this.currentGroup > 0) {
+          event.preventDefault();
+        }
+        this.moveToPreviousGroup();
       } else {
-        this.moveToNextGroup(event);
+        if (this.currentGroup < this.groupLength.length - 1) {
+          event.preventDefault();
+        }
+        this.moveToNextGroup();
       }
+    } else if (event.key === 'ArrowDown' || event.key === 'End') {
+      this.moveToLastGroup();
+      event.preventDefault();
+    } else if (event.key === 'ArrowUp' || event.key === 'Home') {
+      this.moveToFirstGroup();
+      event.preventDefault();
+    } else if (event.key === 'ArrowLeft') {
+      this.moveToPreviousGroup();
+      event.preventDefault();
+    } else if (event.key === 'ArrowRight') {
+      this.moveToNextGroup();
+      event.preventDefault();
     }
   }
 
@@ -335,7 +353,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   @HostListener('click', ['$event'])
   public onInputClick(event: MouseEvent): void {
-    let totalLength: number= 0;
+    let totalLength: number = 0;
     let target: HTMLInputElement = <HTMLInputElement>event.target;
     for (let i: number = 0; i < this.groupLength.length; ++i) {
       totalLength += this.groupLength[i];
@@ -466,21 +484,31 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     return '0'.repeat(this.groupLength[this.currentGroup] - value.length) + value;
   }
 
-  private moveToNextGroup(event?: KeyboardEvent): void {
-    ++this.currentGroup;
-    if (this.currentGroup < this.groupLength.length) {
-      this.selectCurrentGroup(event);
+  private moveToNextGroup(): void {
+    if (this.currentGroup < this.groupLength.length - 1) {
+      ++this.currentGroup;
+      this.selectCurrentGroup();
     }
   }
 
-  private moveToPreviousGroup(event: KeyboardEvent): void {
-    --this.currentGroup;
-    if (this.currentGroup >= 0) {
-      this.selectCurrentGroup(event);
+  private moveToPreviousGroup(): void {
+    if (this.currentGroup > 0) {
+      --this.currentGroup;
+      this.selectCurrentGroup();
     }
   }
 
-  private selectCurrentGroup(event?: KeyboardEvent): void {
+  private moveToFirstGroup(): void {
+    this.currentGroup = 0;
+    this.selectCurrentGroup();
+  }
+
+  private moveToLastGroup(): void {
+    this.currentGroup = this.groupLength.length - 1;
+    this.selectCurrentGroup();
+  }
+
+  private selectCurrentGroup(): void {
     let startingIndex = 0;
     for (let i = 0; i < this.currentGroup; ++i) {
       startingIndex += this.groupLength[i] + 1;
@@ -488,9 +516,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
     const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
     inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
-    if (event) {
-      event.preventDefault();
-    }
   }
 
   private setInputElementValue(value: string): void {
