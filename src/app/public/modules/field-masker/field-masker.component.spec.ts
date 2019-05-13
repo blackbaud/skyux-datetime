@@ -864,6 +864,126 @@ fdescribe('datepicker with field masker', () => {
           expect(inputElement.selectionEnd).toEqual(5);
         }));
       });
+
+      describe('input validation', () => {
+        it('should update month of 00 to 01', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = '00/DD/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.value).toEqual('01/DD/YYYY'
+          );
+        }));
+
+        it('should update month of 13 to 12', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = '13/DD/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.value).toEqual('12/DD/YYYY');
+        }));
+
+        it('should update day of 32 to 31 if month is blank', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = 'MM/32/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.value).toEqual('MM/31/YYYY');
+        }));
+
+        ['01', '03', '05', '07', '08', '10', '12'].forEach((month) => {
+          it(`should update day of 32 to 31 if month is ${month}`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
+
+            nativeElement.querySelector('input').value = `${month}/32/YYYY`;
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
+
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`${month}/31/YYYY`);
+          }));
+        });
+
+        ['04', '06', '09', '11'].forEach((month) => {
+          it(`should update day of 32 to 30 if month is ${month}`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
+
+            nativeElement.querySelector('input').value = `${month}/32/YYYY`;
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
+
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`${month}/30/YYYY`);
+          }));
+        });
+
+        it(`should update day of 32 to 29 if month is 2 and year is blank`, fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = `02/32/YYYY`;
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.value).toEqual('02/29/YYYY');
+        }));
+
+        ['2000', '2020', '2400'].forEach((year) => {
+          it(`should update day of 32 to 29 if month is 2 and year is a leap year: ${year}`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
+
+            nativeElement.querySelector('input').value = `02/32/${year}`;
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
+
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`02/29/${year}`);
+          }));
+        });
+
+        ['2019', '2100', '2200', '2300'].forEach((year) => {
+          it(`should update day of 32 to 28 if month is 2 and year is a common year: ${year}`, fakeAsync(() => {
+            fixture.detectChanges();
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+            fixture.detectChanges();
+
+            nativeElement.querySelector('input').value = `02/32/${year}`;
+            SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+            fixture.detectChanges();
+
+            let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+            expect(inputElement.value).toEqual(`02/28/${year}`);
+          }));
+        });
+      });
     });
   });
 });
