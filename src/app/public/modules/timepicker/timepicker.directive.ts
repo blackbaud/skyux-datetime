@@ -144,13 +144,15 @@ export class SkyTimepickerInputDirective implements
   public ngAfterViewInit(): void {
     // This is needed to address a bug in Angular 4, where the value is not changed on the view.
     // See: https://github.com/angular/angular/issues/13792
+    // Of note is the the value is only set on reactive forms. Without this check there is a
+    // changed before checked error
     const control = (<NgControl>this.injector.get(NgControl)).control as FormControl;
     /* istanbul ignore else */
     if (control && this.modelValue) {
       control.setValue(this.modelValue, { emitEvent: false });
       /* istanbul ignore else */
       if (this.changeDetector) {
-        this.changeDetector.detectChanges();
+        this.changeDetector.markForCheck();
       }
     }
   }
