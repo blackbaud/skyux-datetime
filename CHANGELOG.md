@@ -1,3 +1,8 @@
+# 3.2.4 (2019-05-17)
+
+- Fixed date range picker to not resize based on the selected calculator. [#46](https://github.com/blackbaud/skyux-datetime/pull/46)
+- Fixed date picker to be able to be conditionally place inside of modals. [#50](https://github.com/blackbaud/skyux-datetime/pull/50)
+
 # 3.2.3 (2019-05-03)
 
 - Fixed date range picker component to properly represent Angular form control statuses (`dirty`, `pristine`, etc.). [#44](https://github.com/blackbaud/skyux-datetime/pull/44)
