@@ -255,10 +255,10 @@ export class SkyDatepickerInputDirective
     // This is needed to address a bug in Angular 4.
     // When a control value is set intially, its value is not represented on the view.
     // See: https://github.com/angular/angular/issues/13792
-    // Of note is the the value is only set on reactive forms. Without this check there is a
-    // changed before checked error
+    // Of note is the parent check which allows us to determine if the form is reactive.
+    // Without this check there is a changed before checked error
     /* istanbul ignore else */
-    if (this.control && this.value) {
+    if (this.control && this.control.parent) {
       this.control.setValue(this.value, {
         emitEvent: false
       });
