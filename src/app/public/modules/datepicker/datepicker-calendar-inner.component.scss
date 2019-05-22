@@ -9,7 +9,7 @@
     border-color: $sky-color-white;
   }
 
-  ::ng-deep .sky-btn-default:hover, ::ng-deep .sky-btn-active {
+  ::ng-deep .sky-btn-default:hover {
     border-color: darken($sky-border-color-neutral-light, 12%);
   }
 
@@ -17,10 +17,13 @@
     text-align: center;
   }
 
-  ::ng-deep .sky-datepicker-btn-selected {
-    color: $sky-color-white;
-    background-color: $sky-background-color-primary-dark;
-    @include sky-border(dark, top, bottom, left, right);
+  ::ng-deep .sky-datepicker-btn-selected,
+  ::ng-deep .sky-btn-default.sky-datepicker-btn-selected:hover {
+    background-color: $sky-background-color-info-light;
+    border: 1px solid $sky-highlight-color-info;
+  }
+  ::ng-deep .sky-btn.sky-btn-active {
+    box-shadow:none;
   }
 
   ::ng-deep .sky-datepicker-secondary {

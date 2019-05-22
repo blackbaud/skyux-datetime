@@ -71,11 +71,11 @@
   background-color: $sky-color-gray-10;
 }
 .sky-timepicker-column ol li button.sky-btn-active:hover {
-  background-color: $sky-background-color-primary-dark;
+  background-color: $sky-background-color-info-light;
 }
 .sky-timepicker-column ol .sky-btn-active {
-  background-color: $sky-background-color-primary-dark;
-  color: $sky-color-white;
+  background-color: $sky-background-color-info-light;
+  box-shadow: inset 0 0 0 2px $sky-highlight-color-info;
 }
 .sky-timepicker-column.sky-timepicker-24hour ol{
   columns: 4;
