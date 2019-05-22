@@ -7,10 +7,11 @@
 
   ::ng-deep .sky-btn-default {
     border-color: $sky-color-white;
+    border: 2px solid $sky-color-white;
   }
 
   ::ng-deep .sky-btn-default:hover {
-    border-color: darken($sky-border-color-neutral-light, 12%);
+    border-color: $sky-background-color-neutral-light;
   }
 
   ::ng-deep .sky-datepicker-center {
@@ -20,7 +21,7 @@
   ::ng-deep .sky-datepicker-btn-selected,
   ::ng-deep .sky-btn-default.sky-datepicker-btn-selected:hover {
     background-color: $sky-background-color-info-light;
-    border: 1px solid $sky-highlight-color-info;
+    border: 2px solid $sky-highlight-color-info;
   }
   ::ng-deep .sky-btn.sky-btn-active {
     box-shadow:none;
