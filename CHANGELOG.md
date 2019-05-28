@@ -1,6 +1,6 @@
 # 3.2.5 (2019-05-28)
 
-- Fixed the datepicker and timepicker components to use correct active button visual styles. [#52](https://github.com/blackbaud/skyux-datetime/pull/52)
+- Fixed the datepicker and timepicker components to use the correct active button visual styles. [#52](https://github.com/blackbaud/skyux-datetime/pull/52)
 
 # 3.2.4 (2019-05-17)
 
