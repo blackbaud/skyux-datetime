@@ -2,7 +2,8 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   Pipe,
-  PipeTransform
+  PipeTransform,
+  Injectable
 } from '@angular/core';
 
 import {
@@ -19,6 +20,7 @@ import {
   SkyDateFormatUtility
 } from './date-format-utility';
 
+@Injectable()
 @Pipe({
   name: 'skyDate',
   pure: false
