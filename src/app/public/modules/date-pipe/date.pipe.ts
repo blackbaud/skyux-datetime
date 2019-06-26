@@ -2,8 +2,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   Pipe,
-  PipeTransform,
-  Injectable
+  PipeTransform
 } from '@angular/core';
 
 import {
@@ -17,10 +16,9 @@ import {
 import 'rxjs/add/operator/takeUntil';
 
 import {
-  SkyDateFormatUtility
-} from './date-format-utility';
+  skyFormatDate
+} from '../shared/format-date';
 
-@Injectable()
 @Pipe({
   name: 'skyDate',
   pure: false
@@ -76,7 +74,7 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
     const locale = this.locale || this.defaultLocale;
     const format = this.format || this.defaultFormat;
 
-    this.formattedValue = SkyDateFormatUtility.format(locale, this.value, format);
+    this.formattedValue = skyFormatDate(this.value, format, locale);
 
     this.changeDetector.markForCheck();
   }

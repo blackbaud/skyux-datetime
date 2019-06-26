@@ -1,7 +1,11 @@
 import {
-  Component, OnInit
+  Component,
+  OnInit
 } from '@angular/core';
-import { SkyDatePipe } from '../../public';
+
+import {
+  skyFormatDate
+} from '../../public';
 
 @Component({
   selector: 'date-pipe-visual',
@@ -15,12 +19,8 @@ export class DatePipeVisualComponent implements OnInit {
   public format: string;
   public locale: string;
 
-  constructor(
-    private datePipe: SkyDatePipe
-  ) { }
-
   public ngOnInit(): void {
-    const result = this.datePipe.transform(this.dateValue1);
+    const result = skyFormatDate(new Date('01/01/2019'), 'short', 'en-US');
     console.log('Result:', result);
   }
 
