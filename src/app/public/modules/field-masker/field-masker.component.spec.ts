@@ -861,13 +861,13 @@ describe('datepicker with field masker', () => {
         }));
 
         [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ].forEach(
-          (number) => {
-            it(`should allow ${number} as an input`, fakeAsync(() => {
+          (numberInput: string) => {
+            it(`should allow ${numberInput} as an input`, fakeAsync(() => {
               fixture.detectChanges();
               SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
               fixture.detectChanges();
 
-              let keyPressEvent = new KeyboardEvent('keypress', { key: number });
+              let keyPressEvent = new KeyboardEvent('keypress', { key: numberInput });
               let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
               component.inputDirective.onInputKeypress(keyPressEvent);
               fixture.detectChanges();
