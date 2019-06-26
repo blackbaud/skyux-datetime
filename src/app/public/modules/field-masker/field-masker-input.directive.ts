@@ -368,6 +368,16 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
   }
 
+  @HostListener('paste', ['$event'])
+  public blockPaste(e: ClipboardEvent) {
+    e.preventDefault();
+  }
+
+  @HostListener('cut', ['$event'])
+  public blockCut(e: ClipboardEvent) {
+    e.preventDefault();
+  }
+
   public writeValue(value: any): void {
     this.value = value;
   }
