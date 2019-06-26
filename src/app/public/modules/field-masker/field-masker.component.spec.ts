@@ -863,6 +863,24 @@ fdescribe('datepicker with field masker', () => {
           expect(inputElement.selectionStart).toEqual(3);
           expect(inputElement.selectionEnd).toEqual(5);
         }));
+
+        it('should prevent paste events', fakeAsync(() => {
+          fixture.detectChanges();
+          let pasteEvent = new ClipboardEvent('paste');
+
+          let pasteSpy = spyOn(pasteEvent, 'preventDefault');
+          component.inputDirective.blockPaste(pasteEvent);
+          expect(pasteSpy).toHaveBeenCalled();
+        }));
+
+        it('should prevent cut events', fakeAsync(() => {
+          fixture.detectChanges();
+          let cutEvent = new ClipboardEvent('cut');
+
+          let cutSpy = spyOn(cutEvent, 'preventDefault');
+          component.inputDirective.blockCut(cutEvent);
+          expect(cutSpy).toHaveBeenCalled();
+        }));
       });
 
       describe('input validation', () => {
