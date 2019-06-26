@@ -282,7 +282,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   @HostListener('blur')
   public onInputBlur(): void {
     this.onTouched();
-    if (this.value === this.dateFormat) {
+    console.log(this.currentGroupIsFilled());
+    if (this.elementRef.nativeElement.value === this.dateFormat) {
       this.writeValue(undefined);
     } else if (!this.currentGroupIsFilled()) {
       this.fillInCurrentGroup();

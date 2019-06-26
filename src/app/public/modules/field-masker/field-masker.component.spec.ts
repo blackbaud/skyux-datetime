@@ -29,7 +29,7 @@ import {
 
 const moment = require('moment');
 
-fdescribe('datepicker with field masker', () => {
+describe('datepicker with field masker', () => {
 
   function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>) {
     let dropdownButtonEl = element.querySelector('.sky-dropdown-button') as HTMLElement;
@@ -698,6 +698,19 @@ fdescribe('datepicker with field masker', () => {
           fixture.detectChanges();
 
           expect(nativeElement.querySelector('input').value).toBe('01/11/0011');
+        }));
+
+        it('should fill in group if only partially filled and input is blurred', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = '1/MM/YYYY';
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'blur');
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('01/MM/YYYY');
         }));
 
         it('should allow you to move through the groups via Tab even if the groups are filled', fakeAsync(() => {
