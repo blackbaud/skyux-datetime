@@ -18,10 +18,23 @@ import {
 import {
   SkyDatepickerModule
 } from '../../datepicker';
-import { SkyFieldMaskerModule } from '../field-masker.module';
+
+import {
+  SkyFieldMaskerModule
+} from '../field-masker.module';
+
+import {
+  DatepickerFieldMaskerNoFormatTestComponent
+} from './datepicker-field-masker-noformat.component.fixture';
+
+import {
+  DatepickerFieldMaskerReactiveTestComponent
+} from './datepicker-field-masker-reactive.component.fixture';
 
 @NgModule({
   declarations: [
+    DatepickerFieldMaskerNoFormatTestComponent,
+    DatepickerFieldMaskerReactiveTestComponent,
     DatepickerFieldMaskerTestComponent
   ],
   imports: [
@@ -32,6 +45,8 @@ import { SkyFieldMaskerModule } from '../field-masker.module';
     ReactiveFormsModule
   ],
   exports: [
+    DatepickerFieldMaskerNoFormatTestComponent,
+    DatepickerFieldMaskerReactiveTestComponent,
     DatepickerFieldMaskerTestComponent
   ]
 })
