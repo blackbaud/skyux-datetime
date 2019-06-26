@@ -942,6 +942,24 @@ describe('datepicker with field masker', () => {
           expect(inputElement.value).toEqual('MM/31/YYYY');
         }));
 
+        it('should update day of 00 to 01', fakeAsync(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+            keyboardEventInit: {key: 'Tab'}
+          });
+          fixture.detectChanges();
+
+          nativeElement.querySelector('input').value = 'MM/00/YYYY';
+          SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+          fixture.detectChanges();
+
+          let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+          expect(inputElement.value).toEqual('MM/01/YYYY');
+        }));
+
         ['01', '03', '05', '07', '08', '10', '12'].forEach((month) => {
           it(`should update day of 32 to 31 if month is ${month}`, fakeAsync(() => {
             fixture.detectChanges();
