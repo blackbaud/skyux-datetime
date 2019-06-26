@@ -249,6 +249,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
       .distinctUntilChanged()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((value: Date) => {
+        this.isFirstChange = false;
         this.value = value;
         this.onTouched();
       });
