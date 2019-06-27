@@ -1354,6 +1354,9 @@ describe('datepicker with field masker', () => {
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
 
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
         setInput(nativeElement, '01/01/2000', fixture);
         blurInput(nativeElement, fixture);
         fixture.detectChanges();
@@ -1420,6 +1423,9 @@ describe('datepicker with field masker', () => {
 
         expect(component.dateControl.valid).toBe(false);
         expect(component.dateControl.touched).toBe(true);
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
 
         blurInput(fixture.nativeElement, fixture);
         expect(component.dateControl.valid).toBe(false);
