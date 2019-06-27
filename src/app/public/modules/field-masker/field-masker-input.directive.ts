@@ -183,6 +183,14 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private yearRegex: RegExp = /y/gi;
   private fillerCharacter: string = '0';
 
+  private tabKey: string = 'Tab';
+  private arrowUpKey: string = 'ArrowUp';
+  private arrowDownKey: string = 'ArrowDown';
+  private arrowLeftKey: string = 'ArrowLeft';
+  private arrowRightKey: string = 'ArrowRight';
+  private endKey: string = 'End';
+  private homeKey: string = 'Home';
+
   private _dateFormat: string;
   private _disabled = false;
   private _maxDate: Date;
@@ -307,7 +315,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   @HostListener('keydown', ['$event'])
   public onInputKeydown(event: KeyboardEvent): void {
     /* istanbul ignore else */
-    if (event.key === 'Tab') {
+    if (event.key === this.tabKey) {
       this.fillInCurrentGroup();
       /* istanbul ignore else */
       if (event.shiftKey) {
@@ -322,16 +330,16 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         }
         this.moveToNextGroup();
       }
-    } else if (event.key === 'ArrowDown' || event.key === 'End') {
+    } else if ([this.arrowDownKey, this.endKey].indexOf(event.key) !== -1) {
       this.moveToLastGroup();
       event.preventDefault();
-    } else if (event.key === 'ArrowUp' || event.key === 'Home') {
+    } else if ([this.arrowUpKey, this.homeKey].indexOf(event.key) !== -1) {
       this.moveToFirstGroup();
       event.preventDefault();
-    } else if (event.key === 'ArrowLeft') {
+    } else if (event.key === this.arrowLeftKey) {
       this.moveToPreviousGroup();
       event.preventDefault();
-    } else if (event.key === 'ArrowRight') {
+    } else if (event.key === this.arrowRightKey) {
       this.moveToNextGroup();
       event.preventDefault();
     }
