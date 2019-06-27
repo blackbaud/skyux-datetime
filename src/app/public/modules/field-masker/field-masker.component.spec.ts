@@ -525,8 +525,38 @@ describe('datepicker with field masker', () => {
           expect(inputElement.selectionStart).toEqual(6);
           expect(inputElement.selectionEnd).toEqual(10);
         }));
-
       });
+
+      it('should handle using mixed delimiters', fakeAsync(() => {
+        component.format = 'MM/DD-YYYY';
+        fixture.detectChanges();
+        expect(nativeElement.querySelector('input').placeholder).toBe(component.format);
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(0);
+        expect(inputElement.selectionEnd).toEqual(2);
+        expect(nativeElement.querySelector('input').value).toBe('MM/DD-YYYY');
+
+        nativeElement.querySelector('input').value = '4/DD-YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        inputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(3);
+        expect(inputElement.selectionEnd).toEqual(5);
+        expect(nativeElement.querySelector('input').value).toBe('04/DD-YYYY');
+
+        nativeElement.querySelector('input').value = '04/4-YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        inputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(6);
+        expect(inputElement.selectionEnd).toEqual(10);
+        expect(nativeElement.querySelector('input').value).toBe('04/04-YYYY');
+      }));
 
       it('should replace empty group with placeholder text', fakeAsync(() => {
         fixture.detectChanges();
