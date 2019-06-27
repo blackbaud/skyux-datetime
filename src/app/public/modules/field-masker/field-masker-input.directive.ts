@@ -225,17 +225,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         });
     }
 
-    let groups: string[] = this.dateFormat.split(this.validDelimiters);
-    let totalLength: number = 0;
-    for (let i = 0; i < groups.length; ++i) {
-      totalLength += groups[i].length;
-      this.groupLength[i] = groups[i].length;
-      if (i !== groups.length - 1) {
-        this.delimiters[i] = this.dateFormat.charAt(totalLength);
-        ++totalLength;
-      }
-    }
-    console.log(this.delimiters);
+    this.initializeGroupsAndDelimiters();
   }
 
   public ngAfterContentInit(): void {
@@ -457,6 +447,21 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     this.datepickerComponent.disabled = disabled;
   }
 
+  private initializeGroupsAndDelimiters(): void {
+    let groups: string[] = this.dateFormat.split(this.validDelimiters);
+    let totalLength: number = 0;
+
+    for (let i = 0; i < groups.length; ++i) {
+      totalLength += groups[i].length;
+      this.groupLength[i] = groups[i].length;
+      /* istanbul ignore else */
+      if (i !== groups.length - 1) {
+        this.delimiters[i] = this.dateFormat.charAt(totalLength);
+        ++totalLength;
+      }
+    }
+  }
+
   private currentGroupIsFilled(): boolean {
     let groups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
     let formatCharacter: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup].charAt(0);
@@ -545,16 +550,16 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private joinGroupsWithDelimiters(groups: string[]): string {
-    let result: string = '';
+    let dateWithDelimiters: string = '';
 
-    for (let i=0; i < groups.length; ++i) {
-      result += groups[i];
+    for (let i = 0; i < groups.length; ++i) {
+      dateWithDelimiters += groups[i];
       if (i < this.delimiters.length) {
-        result += this.delimiters[i];
+        dateWithDelimiters += this.delimiters[i];
       }
     }
 
-    return result;
+    return dateWithDelimiters;
   }
 
   private getValidDayBasedOnMonthAndYear(day: number, month: number, year: number): number {
