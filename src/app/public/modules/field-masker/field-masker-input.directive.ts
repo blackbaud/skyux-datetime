@@ -173,7 +173,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private control: AbstractControl;
   private currentGroup: number;
   private dateFormatter = new SkyDateFormatter();
-  private delimiter: string;
+  private delimiters: string[] = [];
   private isFirstChange = true;
   private groupLength: number[] = [];
   private ngUnsubscribe = new Subject<void>();
@@ -226,10 +226,16 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
 
     let groups: string[] = this.dateFormat.split(this.validDelimiters);
+    let totalLength: number = 0;
     for (let i = 0; i < groups.length; ++i) {
+      totalLength += groups[i].length;
       this.groupLength[i] = groups[i].length;
+      if (i !== groups.length - 1) {
+        this.delimiters[i] = this.dateFormat.charAt(totalLength);
+        ++totalLength;
+      }
     }
-    this.delimiter = this.dateFormat.charAt(this.groupLength[0]);
+    console.log(this.delimiters);
   }
 
   public ngAfterContentInit(): void {
@@ -482,7 +488,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
       } else if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
         groups[this.currentGroup] = this.getValuePrecededByZeros(currentGroupValue);
       }
-      this.elementRef.nativeElement.value = groups.join(this.delimiter);
+      this.elementRef.nativeElement.value = this.joinGroupsWithDelimiters(groups);
     }
   }
 
@@ -535,7 +541,20 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
       }
     }
 
-    this.elementRef.nativeElement.value = valueGroups.join(this.delimiter);
+    this.elementRef.nativeElement.value = this.joinGroupsWithDelimiters(valueGroups);
+  }
+
+  private joinGroupsWithDelimiters(groups: string[]): string {
+    let result: string = '';
+
+    for (let i=0; i < groups.length; ++i) {
+      result += groups[i];
+      if (i < this.delimiters.length) {
+        result += this.delimiters[i];
+      }
+    }
+
+    return result;
   }
 
   private getValidDayBasedOnMonthAndYear(day: number, month: number, year: number): number {
