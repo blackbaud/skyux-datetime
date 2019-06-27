@@ -402,6 +402,29 @@ describe('datepicker with field masker', () => {
         expect(nativeElement.querySelector('input').value).toBe(component.inputDirective.dateFormat);
       }));
 
+      it('accepts lowercase letters for date format as well as uppercase', fakeAsync(() => {
+        component.format = 'mm/dd/yyyy';
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        nativeElement.querySelector('input').value = '01/dd/yyyy';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(3);
+        expect(inputElement.selectionEnd).toEqual(5);
+
+        nativeElement.querySelector('input').value = '01/20/yyyy';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        inputElement = nativeElement.querySelector('input');
+        expect(inputElement.selectionStart).toEqual(6);
+        expect(inputElement.selectionEnd).toEqual(10);
+      }));
+
       it('should not change value on focus if value is set', fakeAsync(() => {
         fixture.detectChanges();
         component.selectedDate = '05/12/2017';
