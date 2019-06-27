@@ -169,6 +169,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
   }
 
+  private validDelimiters: RegExp = /[\\()-./]/g;
   private control: AbstractControl;
   private currentGroup: number;
   private dateFormatter = new SkyDateFormatter();
@@ -224,7 +225,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         });
     }
 
-    let groups: string[] = this.dateFormat.split(/[\\()-./]/g);
+    let groups: string[] = this.dateFormat.split(this.validDelimiters);
     for (let i = 0; i < groups.length; ++i) {
       this.groupLength[i] = groups[i].length;
     }
@@ -459,8 +460,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private groupValueIsTooHigh(): boolean {
-    let formatGroup: string = this.dateFormat.split(/[\\()-./]/g)[this.currentGroup];
-    let value: number = parseInt(this.elementRef.nativeElement.value.split(/[\\()-./]/g)[this.currentGroup], 10);
+    let formatGroup: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup];
+    let value: number = parseInt(this.elementRef.nativeElement.value.split(this.validDelimiters)[this.currentGroup], 10);
 
     if ((formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm') && value > 1) {
       return true;
@@ -490,8 +491,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private validateGroup(): void {
-    let formatGroups: string[] = this.dateFormat.split(/[\\()-./]/g);
-    let valueGroups: string[] = this.elementRef.nativeElement.value.split(/[\\()-./]/g);
+    let formatGroups: string[] = this.dateFormat.split(this.validDelimiters);
+    let valueGroups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
     let year: number;
     let month: number;
     let day: number;
