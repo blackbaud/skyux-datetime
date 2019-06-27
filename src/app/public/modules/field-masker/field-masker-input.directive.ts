@@ -452,8 +452,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private currentGroupIsFilled(): boolean {
-    let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
-    let formatCharacter: string = this.dateFormat.split(this.delimiter)[this.currentGroup].charAt(0);
+    let groups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
+    let formatCharacter: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup].charAt(0);
 
     return groups[this.currentGroup].indexOf(formatCharacter) === -1 &&
       groups[this.currentGroup].length === this.groupLength[this.currentGroup];
@@ -475,10 +475,10 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private fillInCurrentGroup(): void {
     /* istanbul ignore else */
     if (this.currentGroup >= 0 && this.currentGroup < this.groupLength.length) {
-      let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
+      let groups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
       let currentGroupValue = groups[this.currentGroup];
       if (currentGroupValue.length === 0) {
-        groups[this.currentGroup] = this.dateFormat.split(this.delimiter)[this.currentGroup];
+        groups[this.currentGroup] = this.dateFormat.split(this.validDelimiters)[this.currentGroup];
       } else if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
         groups[this.currentGroup] = this.getValuePrecededByZeros(currentGroupValue);
       }
@@ -622,8 +622,8 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private allGroupsHaveData(value: string): boolean {
-    let valueGroups: string[] = value.split(this.delimiter);
-    let dateFormatGroups: string[] = this.dateFormat.split(this.delimiter);
+    let valueGroups: string[] = value.split(this.validDelimiters);
+    let dateFormatGroups: string[] = this.dateFormat.split(this.validDelimiters);
 
     if (valueGroups.length === dateFormatGroups.length) {
       for (let i = 0; i < valueGroups.length; ++i) {
