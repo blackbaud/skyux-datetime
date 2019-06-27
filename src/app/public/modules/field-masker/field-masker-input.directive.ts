@@ -178,6 +178,10 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private groupLength: number[] = [];
   private ngUnsubscribe = new Subject<void>();
 
+  private dayRegex: RegExp = /d/gi;
+  private monthRegex: RegExp = /m/gi;
+  private yearRegex: RegExp = /y/gi;
+
   private _dateFormat: string;
   private _disabled = false;
   private _maxDate: Date;
@@ -474,9 +478,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     let formatGroup: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup];
     let value: number = parseInt(this.elementRef.nativeElement.value.split(this.validDelimiters)[this.currentGroup], 10);
 
-    if ((formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm') && value > 1) {
+    if (formatGroup.charAt(0).match(this.monthRegex) && value > 1) {
       return true;
-    } else if ((formatGroup.charAt(0) === 'D' || formatGroup.charAt(0) === 'd') && value > 3) {
+    } else if (formatGroup.charAt(0).match(this.dayRegex) && value > 3) {
       return true;
     } else {
       return false;
@@ -510,15 +514,12 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
     for (let i = 0; i < formatGroups.length; ++i) {
       let formatGroup: string = formatGroups[i];
-      let valueGroup: string = valueGroups[i];
-      if ((formatGroup.charAt(0) === 'Y' && valueGroup.charAt(0) !== 'Y') ||
-          (formatGroup.charAt(0) === 'y' && valueGroup.charAt(0) !== 'y')) {
+      /* istanbul ignore else */
+      if (formatGroup.charAt(0).match(this.yearRegex)) {
         year = parseInt(valueGroups[i], 10);
-      } else if ((formatGroup.charAt(0) === 'M' && valueGroup.charAt(0) !== 'M') ||
-          (formatGroup.charAt(0) === 'm' && valueGroup.charAt(0) !== 'm')) {
+      } else if (formatGroup.charAt(0).match(this.monthRegex)) {
         month = parseInt(valueGroups[i], 10);
-      } else if ((formatGroup.charAt(0) === 'D' && valueGroup.charAt(0) !== 'D') ||
-          (formatGroup.charAt(0) === 'd' && valueGroup.charAt(0) !== 'd')) {
+      } else if (formatGroup.charAt(0).match(this.dayRegex)) {
         day = parseInt(valueGroups[i], 10);
       }
     }
@@ -537,11 +538,12 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
     for (let i = 0; i < formatGroups.length; ++i) {
       let formatGroup: string = formatGroups[i];
-      if (year && (formatGroup.charAt(0) === 'Y' || formatGroup.charAt(0) === 'y')) {
+      /* istanbul ignore else */
+      if (year && formatGroup.charAt(0).match(this.yearRegex)) {
         valueGroups[i] = '0'.repeat(this.groupLength[i] - year.toString().length) + year.toString();
-      } else if (month && (formatGroup.charAt(0) === 'M' || formatGroup.charAt(0) === 'm')) {
+      } else if (month && formatGroup.charAt(0).match(this.monthRegex)) {
         valueGroups[i] = '0'.repeat(this.groupLength[i] - month.toString().length) + month.toString();
-      } else if (day && (formatGroup.charAt(0) === 'D' || formatGroup.charAt(0) === 'd')) {
+      } else if (day && formatGroup.charAt(0).match(this.dayRegex)) {
         valueGroups[i] = '0'.repeat(this.groupLength[i] - day.toString().length) + day.toString();
       }
     }
