@@ -181,6 +181,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private dayRegex: RegExp = /d/gi;
   private monthRegex: RegExp = /m/gi;
   private yearRegex: RegExp = /y/gi;
+  private fillerCharacter: string = '0';
 
   private _dateFormat: string;
   private _disabled = false;
@@ -502,7 +503,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private getValuePrecededByZeros(value: string): string {
-    return '0'.repeat(this.groupLength[this.currentGroup] - value.length) + value;
+    return this.fillerCharacter.repeat(this.groupLength[this.currentGroup] - value.length) + value;
   }
 
   private validateGroup(): void {
@@ -535,16 +536,15 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     } else if (day) {
       day = this.getValidDayBasedOnMonthAndYear(day, month, year);
     }
-
     for (let i = 0; i < formatGroups.length; ++i) {
       let formatGroup: string = formatGroups[i];
       /* istanbul ignore else */
       if (year && formatGroup.charAt(0).match(this.yearRegex)) {
-        valueGroups[i] = '0'.repeat(this.groupLength[i] - year.toString().length) + year.toString();
+        valueGroups[i] = this.fillerCharacter.repeat(this.groupLength[i] - year.toString().length) + year.toString();
       } else if (month && formatGroup.charAt(0).match(this.monthRegex)) {
-        valueGroups[i] = '0'.repeat(this.groupLength[i] - month.toString().length) + month.toString();
+        valueGroups[i] = this.fillerCharacter.repeat(this.groupLength[i] - month.toString().length) + month.toString();
       } else if (day && formatGroup.charAt(0).match(this.dayRegex)) {
-        valueGroups[i] = '0'.repeat(this.groupLength[i] - day.toString().length) + day.toString();
+        valueGroups[i] = this.fillerCharacter.repeat(this.groupLength[i] - day.toString().length) + day.toString();
       }
     }
 
