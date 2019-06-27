@@ -111,19 +111,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   @Input()
-  public set skyDatepickerInput(value: SkyDatepickerComponent) {
-    if (value) {
-      console.warn(
-        '[Deprecation warning] You no longer need to provide a template reference variable ' +
-        'to the `skyDatepickerInput` attribute (this will be a breaking change in the next ' +
-        'major version release).\n' +
-        'Do this instead:\n' +
-        '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
-      );
-    }
-  }
-
-  @Input()
   public skyDatepickerNoValidate = false;
 
   @Input()
@@ -283,6 +270,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   @HostListener('blur')
   public onInputBlur(): void {
     this.onTouched();
+    /* istanbul ignore else */
     if (this.elementRef.nativeElement.value === this.dateFormat) {
       this.writeValue(undefined);
     } else if (!this.currentGroupIsFilled()) {
@@ -316,9 +304,12 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   @HostListener('keydown', ['$event'])
   public onInputKeydown(event: KeyboardEvent): void {
+    /* istanbul ignore else */
     if (event.key === 'Tab') {
       this.fillInCurrentGroup();
+      /* istanbul ignore else */
       if (event.shiftKey) {
+        /* istanbul ignore else */
         if (this.currentGroup > 0) {
           event.preventDefault();
         }
@@ -481,6 +472,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private fillInCurrentGroup(): void {
+    /* istanbul ignore else */
     if (this.currentGroup >= 0 && this.currentGroup < this.groupLength.length) {
       let groups: string[] = this.elementRef.nativeElement.value.split(this.delimiter);
       let currentGroupValue = groups[this.currentGroup];
@@ -547,6 +539,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   private getValidDayBasedOnMonthAndYear(day: number, month: number, year: number): number {
     if (month === 2) {
+      /* istanbul ignore else */
       if ((!year || (year && this.isLeapYear(year))) && day >= 29) {
         return 29;
       } else if (day > 28) {
@@ -570,6 +563,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private moveToNextGroup(): void {
+    /* istanbul ignore else */
     if (this.currentGroup < this.groupLength.length - 1) {
       ++this.currentGroup;
       this.selectCurrentGroup();
@@ -577,6 +571,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private moveToPreviousGroup(): void {
+    /* istanbul ignore else */
     if (this.currentGroup > 0) {
       --this.currentGroup;
       this.selectCurrentGroup();
