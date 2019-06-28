@@ -624,25 +624,31 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   }
 
   private selectCurrentGroup(): void {
-    let startingIndex = 0;
-    for (let i = 0; i < this.currentGroup; ++i) {
-      startingIndex += this.groupLength[i] + 1;
-    }
-    let endingIndex = startingIndex + this.groupLength[this.currentGroup];
-
+    let startingIndex = this.getStartingSelectionIndex();
     const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-    inputElement.setSelectionRange(startingIndex, endingIndex);
+
+    inputElement.setSelectionRange(startingIndex, this.getEndingSelectionIndex(startingIndex));
   }
 
   private isCurrentGroupSelected(): boolean {
+    let startingIndex = this.getStartingSelectionIndex();
+    let endingIndex = this.getEndingSelectionIndex(startingIndex);
+
+    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+    return inputElement.selectionStart === startingIndex && inputElement.selectionEnd === endingIndex;
+  }
+
+  private getStartingSelectionIndex(): number {
     let startingIndex = 0;
     for (let i = 0; i < this.currentGroup; ++i) {
       startingIndex += this.groupLength[i] + 1;
     }
-    let endingIndex = startingIndex + this.groupLength[this.currentGroup];
 
-    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-    return inputElement.selectionStart === startingIndex && inputElement.selectionEnd === endingIndex;
+    return startingIndex;
+  }
+
+  private getEndingSelectionIndex(startingIndex: number): number {
+    return startingIndex + this.groupLength[this.currentGroup];
   }
 
   private setInputElementValue(value: string): void {
