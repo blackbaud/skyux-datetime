@@ -43,7 +43,7 @@ import {
 import {
   getValidDay,
   getValidMonth
-} from './date-logic.service';
+} from './date-logic-utils';
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATEPICKER_VALUE_ACCESSOR = {
