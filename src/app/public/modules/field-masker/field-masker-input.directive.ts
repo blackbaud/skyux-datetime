@@ -178,14 +178,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   private isFirstChange = true;
   private ngUnsubscribe = new Subject<void>();
 
-  private tabKey: string = 'Tab';
-  private arrowUpKey: string = 'ArrowUp';
-  private arrowDownKey: string = 'ArrowDown';
-  private arrowLeftKey: string = 'ArrowLeft';
-  private arrowRightKey: string = 'ArrowRight';
-  private endKey: string = 'End';
-  private homeKey: string = 'Home';
-
   private _dateFormat: string;
   private _disabled = false;
   private _maxDate: Date;
@@ -206,7 +198,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   public ngOnInit(): void {
     if (!this.datepickerComponent) {
       throw new Error(
-        'You must wrap the `skyDatepickerInput` directive within a ' +
+        'You must wrap the `skyFieldMaskerInput` directive within a ' +
         '`<sky-datepicker>` component!'
       );
     }
@@ -311,35 +303,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   @HostListener('keydown', ['$event'])
   public onInputKeydown(event: KeyboardEvent): void {
-    /* istanbul ignore else */
-    if (event.key === this.tabKey) {
-      this.groupLogicService.fillInCurrentGroup();
-      /* istanbul ignore else */
-      if (event.shiftKey) {
-        /* istanbul ignore else */
-        if (!this.groupLogicService.atFirstGroup()) {
-          event.preventDefault();
-        }
-        this.groupLogicService.moveToPreviousGroup();
-      } else {
-        if (!this.groupLogicService.atLastGroup()) {
-          event.preventDefault();
-        }
-        this.groupLogicService.moveToNextGroup();
-      }
-    } else if ([this.arrowDownKey, this.endKey].indexOf(event.key) !== -1) {
-      this.groupLogicService.moveToLastGroup();
-      event.preventDefault();
-    } else if ([this.arrowUpKey, this.homeKey].indexOf(event.key) !== -1) {
-      this.groupLogicService.moveToFirstGroup();
-      event.preventDefault();
-    } else if (event.key === this.arrowLeftKey) {
-      this.groupLogicService.moveToPreviousGroup();
-      event.preventDefault();
-    } else if (event.key === this.arrowRightKey) {
-      this.groupLogicService.moveToNextGroup();
-      event.preventDefault();
-    }
+    this.groupLogicService.navigateInGroupsBasedOnEvent(event);
   }
 
   @HostListener('focus')

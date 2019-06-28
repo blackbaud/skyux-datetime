@@ -21,6 +21,14 @@ export class GroupLogicService {
   private readonly monthRegex: RegExp = /m/gi;
   private readonly yearRegex: RegExp = /y/gi;
 
+  private readonly tabKey: string = 'Tab';
+  private readonly arrowUpKey: string = 'ArrowUp';
+  private readonly arrowDownKey: string = 'ArrowDown';
+  private readonly arrowLeftKey: string = 'ArrowLeft';
+  private readonly arrowRightKey: string = 'ArrowRight';
+  private readonly endKey: string = 'End';
+  private readonly homeKey: string = 'Home';
+
   constructor() {}
 
   public initialize(elementRef: ElementRef, dateFormat: string): void {
@@ -142,6 +150,38 @@ export class GroupLogicService {
         this.setAndHighlightGroup(i);
         break;
       }
+    }
+  }
+
+  public navigateInGroupsBasedOnEvent(event: KeyboardEvent) {
+    /* istanbul ignore else */
+    if (event.key === this.tabKey) {
+      this.fillInCurrentGroup();
+      /* istanbul ignore else */
+      if (event.shiftKey) {
+        /* istanbul ignore else */
+        if (!this.atFirstGroup()) {
+          event.preventDefault();
+        }
+        this.moveToPreviousGroup();
+      } else {
+        if (!this.atLastGroup()) {
+          event.preventDefault();
+        }
+        this.moveToNextGroup();
+      }
+    } else if ([this.arrowDownKey, this.endKey].indexOf(event.key) !== -1) {
+      this.moveToLastGroup();
+      event.preventDefault();
+    } else if ([this.arrowUpKey, this.homeKey].indexOf(event.key) !== -1) {
+      this.moveToFirstGroup();
+      event.preventDefault();
+    } else if (event.key === this.arrowLeftKey) {
+      this.moveToPreviousGroup();
+      event.preventDefault();
+    } else if (event.key === this.arrowRightKey) {
+      this.moveToNextGroup();
+      event.preventDefault();
     }
   }
 
