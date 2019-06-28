@@ -492,13 +492,15 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     let formatGroup: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup];
     let value: number = parseInt(this.elementRef.nativeElement.value.split(this.validDelimiters)[this.currentGroup], 10);
 
-    if (formatGroup.charAt(0).match(this.monthRegex) && value > 1) {
-      return true;
-    } else if (formatGroup.charAt(0).match(this.dayRegex) && value > 3) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.monthIsTooHigh(formatGroup, value) || this.dayIsTooHigh(formatGroup, value);
+  }
+
+  private monthIsTooHigh(formatGroup: string, value: number): boolean {
+    return formatGroup.charAt(0).match(this.monthRegex) && value > 1
+  }
+
+  private dayIsTooHigh(formatGroup: string, value: number): boolean {
+    return formatGroup.charAt(0).match(this.dayRegex) && value > 3;
   }
 
   private fillInCurrentGroup(): void {
