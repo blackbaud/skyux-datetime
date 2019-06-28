@@ -141,7 +141,7 @@ describe('datepicker with field masker', () => {
         component.showInvalidDirective = true;
         fixture.detectChanges();
       } catch (err) {
-        expect(err.message).toContain('skyDatepickerInput');
+        expect(err.message).toContain('skyFieldMaskerInput');
       }
     });
 
