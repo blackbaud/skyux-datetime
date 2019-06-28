@@ -217,4 +217,14 @@ describe('Date pipe', () => {
     const value = fixture.nativeElement.textContent.trim();
     expect(value).toEqual('1/20/2017');
   });
+
+  it('should work as an injectable', () => {
+    fixture.detectChanges();
+    const result = fixture.componentInstance.getDatePipeResult(
+      new Date(1, 1, 2001),
+      'shortDate',
+      'fr-CA'
+    );
+    expect(result).toEqual('1906-07-25');
+  });
 });
