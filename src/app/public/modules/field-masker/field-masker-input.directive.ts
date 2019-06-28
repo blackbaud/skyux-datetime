@@ -307,7 +307,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   @HostListener('keypress', ['$event'])
   public onInputKeypress(event: KeyboardEvent): void {
-    if (this.eventIsNotNumericInput(event)) {
+    if (this.eventIsNotNumericInput(event) || this.currentGroupIsFilled()) {
       event.preventDefault();
     }
   }
