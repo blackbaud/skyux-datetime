@@ -40,6 +40,11 @@ import {
   SkyDatepickerConfigService
 } from '../datepicker';
 
+import {
+  getValidDay,
+  getValidMonth
+} from './date-logic.service';
+
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -533,17 +538,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
       }
     }
 
-    if (month === 0) {
-      month = 1;
-    } else if (month > 12) {
-      month = 12;
-    }
+    month = getValidMonth(month);
+    day = getValidDay(day, month, year);
 
-    if (day === 0) {
-      day = 1;
-    } else if (day) {
-      day = this.getValidDayBasedOnMonthAndYear(day, month, year);
-    }
     for (let i = 0; i < formatGroups.length; ++i) {
       let formatGroup: string = formatGroups[i];
       /* istanbul ignore else */
@@ -570,31 +567,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
 
     return dateWithDelimiters;
-  }
-
-  private getValidDayBasedOnMonthAndYear(day: number, month: number, year: number): number {
-    if (month === 2) {
-      /* istanbul ignore else */
-      if ((!year || (year && this.isLeapYear(year))) && day >= 29) {
-        return 29;
-      } else if (day > 28) {
-        return 28;
-      }
-    } else if ((!month || (month && this.monthHas31Days(month))) && day >= 31) {
-      return 31;
-    } else if (day > 30) {
-      return 30;
-    }
-    return day;
-  }
-
-  private monthHas31Days(month: number): boolean {
-    return [1, 3, 5, 7, 8, 10, 12].indexOf(month) !== -1;
-  }
-
-  // https://en.wikipedia.org/wiki/Leap_year#Algorithm
-  private isLeapYear(year: number): boolean {
-    return year % 4 === 0 && !(year % 100 === 0 && year % 400 !== 0);
   }
 
   private moveToNextGroup(): void {
