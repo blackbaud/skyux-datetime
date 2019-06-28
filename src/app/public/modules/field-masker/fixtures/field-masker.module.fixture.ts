@@ -31,6 +31,10 @@ import {
   DatepickerFieldMaskerReactiveTestComponent
 } from './datepicker-field-masker-reactive.component.fixture';
 
+import {
+  GroupLogicService
+} from '../group-logic.service';
+
 @NgModule({
   declarations: [
     DatepickerFieldMaskerNoFormatTestComponent,
@@ -48,6 +52,9 @@ import {
     DatepickerFieldMaskerNoFormatTestComponent,
     DatepickerFieldMaskerReactiveTestComponent,
     DatepickerFieldMaskerTestComponent
+  ],
+  providers: [
+    GroupLogicService
   ]
 })
 export class FieldMaskerTestModule { }

@@ -41,9 +41,8 @@ import {
 } from '../datepicker';
 
 import {
-  getValidDay,
-  getValidMonth
-} from './date-logic-utils';
+  GroupLogicService
+} from './group-logic.service';
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATEPICKER_VALUE_ACCESSOR = {
@@ -174,19 +173,10 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
   }
 
-  private validDelimiters: RegExp = /[\\()-./]/g;
   private control: AbstractControl;
-  private currentGroup: number;
   private dateFormatter = new SkyDateFormatter();
-  private delimiters: string[] = [];
   private isFirstChange = true;
-  private groupLength: number[] = [];
   private ngUnsubscribe = new Subject<void>();
-
-  private dayRegex: RegExp = /d/gi;
-  private monthRegex: RegExp = /m/gi;
-  private yearRegex: RegExp = /y/gi;
-  private fillerCharacter: string = '0';
 
   private tabKey: string = 'Tab';
   private arrowUpKey: string = 'ArrowUp';
@@ -209,8 +199,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
+    private groupLogicService: GroupLogicService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     if (!this.datepickerComponent) {
@@ -243,7 +234,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
         });
     }
 
-    this.initializeGroupsAndDelimiters();
+    this.groupLogicService.initialize(this.elementRef, this.dateFormat);
   }
 
   public ngAfterContentInit(): void {
@@ -288,9 +279,9 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     /* istanbul ignore else */
     if (this.elementRef.nativeElement.value === this.dateFormat) {
       this.writeValue(undefined);
-    } else if (!this.currentGroupIsFilled()) {
-      this.fillInCurrentGroup();
-      this.validateGroup();
+    } else if (!this.groupLogicService.currentGroupIsFilled()) {
+      this.groupLogicService.fillInCurrentGroup();
+      this.groupLogicService.validateGroups();
     }
   }
 
@@ -301,18 +292,19 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   @HostListener('input')
   public onInputInput(): void {
-    if (this.currentGroupIsFilled() || this.groupValueIsTooHigh()) {
-      if (!this.currentGroupIsFilled()) {
-        this.fillInCurrentGroup();
+    if (this.groupLogicService.currentGroupIsFilled() || this.groupLogicService.groupValueIsTooHigh()) {
+      if (!this.groupLogicService.currentGroupIsFilled()) {
+        this.groupLogicService.fillInCurrentGroup();
       }
-      this.validateGroup();
-      this.moveToNextGroup();
+      this.groupLogicService.validateGroups();
+      this.groupLogicService.moveToNextGroup();
     }
   }
 
   @HostListener('keypress', ['$event'])
   public onInputKeypress(event: KeyboardEvent): void {
-    if (this.eventIsNotNumericInput(event) || (!this.isCurrentGroupSelected() && this.currentGroupIsFilled())) {
+    if (this.eventIsNotNumericInput(event) ||
+      (!this.groupLogicService.isCurrentGroupSelected() && this.groupLogicService.currentGroupIsFilled())) {
       event.preventDefault();
     }
   }
@@ -321,31 +313,31 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
   public onInputKeydown(event: KeyboardEvent): void {
     /* istanbul ignore else */
     if (event.key === this.tabKey) {
-      this.fillInCurrentGroup();
+      this.groupLogicService.fillInCurrentGroup();
       /* istanbul ignore else */
       if (event.shiftKey) {
         /* istanbul ignore else */
-        if (this.currentGroup > 0) {
+        if (!this.groupLogicService.atFirstGroup()) {
           event.preventDefault();
         }
-        this.moveToPreviousGroup();
+        this.groupLogicService.moveToPreviousGroup();
       } else {
-        if (this.currentGroup < this.groupLength.length - 1) {
+        if (!this.groupLogicService.atLastGroup()) {
           event.preventDefault();
         }
-        this.moveToNextGroup();
+        this.groupLogicService.moveToNextGroup();
       }
     } else if ([this.arrowDownKey, this.endKey].indexOf(event.key) !== -1) {
-      this.moveToLastGroup();
+      this.groupLogicService.moveToLastGroup();
       event.preventDefault();
     } else if ([this.arrowUpKey, this.homeKey].indexOf(event.key) !== -1) {
-      this.moveToFirstGroup();
+      this.groupLogicService.moveToFirstGroup();
       event.preventDefault();
     } else if (event.key === this.arrowLeftKey) {
-      this.moveToPreviousGroup();
+      this.groupLogicService.moveToPreviousGroup();
       event.preventDefault();
     } else if (event.key === this.arrowRightKey) {
-      this.moveToNextGroup();
+      this.groupLogicService.moveToNextGroup();
       event.preventDefault();
     }
   }
@@ -355,24 +347,12 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     if (!this.value) {
       this.writeValue(this.dateFormat);
     }
-    this.currentGroup = 0;
-    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-    inputElement.setSelectionRange(0, this.groupLength[this.currentGroup]);
+    this.groupLogicService.setAndHighlightGroup(0);
   }
 
   @HostListener('click', ['$event'])
   public onInputClick(event: MouseEvent): void {
-    let totalLength: number = 0;
-    let target: HTMLInputElement = <HTMLInputElement>event.target;
-    for (let i: number = 0; i < this.groupLength.length; ++i) {
-      totalLength += this.groupLength[i];
-      if (totalLength >= target.selectionStart) {
-        this.fillInCurrentGroup();
-        this.currentGroup = i;
-        this.selectCurrentGroup();
-        break;
-      }
-    }
+    this.groupLogicService.highlightClickedGroup(<HTMLInputElement>event.target);
   }
 
   @HostListener('paste', ['$event'])
@@ -465,166 +445,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     this.datepickerComponent.disabled = disabled;
   }
 
-  private initializeGroupsAndDelimiters(): void {
-    let groups: string[] = this.dateFormat.split(this.validDelimiters);
-    let totalLength: number = 0;
-
-    for (let i = 0; i < groups.length; ++i) {
-      totalLength += groups[i].length;
-      this.groupLength[i] = groups[i].length;
-      /* istanbul ignore else */
-      if (i !== groups.length - 1) {
-        this.delimiters[i] = this.dateFormat.charAt(totalLength);
-        ++totalLength;
-      }
-    }
-  }
-
-  private currentGroupIsFilled(): boolean {
-    let groups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
-    let formatCharacter: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup].charAt(0);
-
-    return groups[this.currentGroup].indexOf(formatCharacter) === -1 &&
-      groups[this.currentGroup].length === this.groupLength[this.currentGroup];
-  }
-
-  private groupValueIsTooHigh(): boolean {
-    let formatGroup: string = this.dateFormat.split(this.validDelimiters)[this.currentGroup];
-    let value: number = parseInt(this.elementRef.nativeElement.value.split(this.validDelimiters)[this.currentGroup], 10);
-
-    return this.monthIsTooHigh(formatGroup, value) || this.dayIsTooHigh(formatGroup, value);
-  }
-
-  private monthIsTooHigh(formatGroup: string, value: number): boolean {
-    return formatGroup.charAt(0).match(this.monthRegex) && value > 1
-  }
-
-  private dayIsTooHigh(formatGroup: string, value: number): boolean {
-    return formatGroup.charAt(0).match(this.dayRegex) && value > 3;
-  }
-
-  private fillInCurrentGroup(): void {
-    /* istanbul ignore else */
-    if (this.currentGroup >= 0 && this.currentGroup < this.groupLength.length) {
-      let groups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
-      let currentGroupValue = groups[this.currentGroup];
-      if (currentGroupValue.length === 0) {
-        groups[this.currentGroup] = this.dateFormat.split(this.validDelimiters)[this.currentGroup];
-      } else if (currentGroupValue.length < this.groupLength[this.currentGroup]) {
-        groups[this.currentGroup] = this.getValuePrecededByZeros(currentGroupValue);
-      }
-      this.elementRef.nativeElement.value = this.joinGroupsWithDelimiters(groups);
-    }
-  }
-
-  private getValuePrecededByZeros(value: string): string {
-    return this.fillerCharacter.repeat(this.groupLength[this.currentGroup] - value.length) + value;
-  }
-
-  private validateGroup(): void {
-    let formatGroups: string[] = this.dateFormat.split(this.validDelimiters);
-    let valueGroups: string[] = this.elementRef.nativeElement.value.split(this.validDelimiters);
-    let year: number;
-    let month: number;
-    let day: number;
-
-    for (let i = 0; i < formatGroups.length; ++i) {
-      let formatGroup: string = formatGroups[i];
-      /* istanbul ignore else */
-      if (formatGroup.charAt(0).match(this.yearRegex)) {
-        year = parseInt(valueGroups[i], 10);
-      } else if (formatGroup.charAt(0).match(this.monthRegex)) {
-        month = parseInt(valueGroups[i], 10);
-      } else if (formatGroup.charAt(0).match(this.dayRegex)) {
-        day = parseInt(valueGroups[i], 10);
-      }
-    }
-
-    month = getValidMonth(month);
-    day = getValidDay(day, month, year);
-
-    for (let i = 0; i < formatGroups.length; ++i) {
-      let formatGroup: string = formatGroups[i];
-      /* istanbul ignore else */
-      if (year && formatGroup.charAt(0).match(this.yearRegex)) {
-        valueGroups[i] = this.fillerCharacter.repeat(this.groupLength[i] - year.toString().length) + year.toString();
-      } else if (month && formatGroup.charAt(0).match(this.monthRegex)) {
-        valueGroups[i] = this.fillerCharacter.repeat(this.groupLength[i] - month.toString().length) + month.toString();
-      } else if (day && formatGroup.charAt(0).match(this.dayRegex)) {
-        valueGroups[i] = this.fillerCharacter.repeat(this.groupLength[i] - day.toString().length) + day.toString();
-      }
-    }
-
-    this.elementRef.nativeElement.value = this.joinGroupsWithDelimiters(valueGroups);
-  }
-
-  private joinGroupsWithDelimiters(groups: string[]): string {
-    let dateWithDelimiters: string = '';
-
-    for (let i = 0; i < groups.length; ++i) {
-      dateWithDelimiters += groups[i];
-      if (i < this.delimiters.length) {
-        dateWithDelimiters += this.delimiters[i];
-      }
-    }
-
-    return dateWithDelimiters;
-  }
-
-  private moveToNextGroup(): void {
-    /* istanbul ignore else */
-    if (this.currentGroup < this.groupLength.length - 1) {
-      ++this.currentGroup;
-      this.selectCurrentGroup();
-    }
-  }
-
-  private moveToPreviousGroup(): void {
-    /* istanbul ignore else */
-    if (this.currentGroup > 0) {
-      --this.currentGroup;
-      this.selectCurrentGroup();
-    }
-  }
-
-  private moveToFirstGroup(): void {
-    this.currentGroup = 0;
-    this.selectCurrentGroup();
-  }
-
-  private moveToLastGroup(): void {
-    this.currentGroup = this.groupLength.length - 1;
-    this.selectCurrentGroup();
-  }
-
-  private selectCurrentGroup(): void {
-    let startingIndex = this.getStartingSelectionIndex();
-    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-
-    inputElement.setSelectionRange(startingIndex, this.getEndingSelectionIndex(startingIndex));
-  }
-
-  private isCurrentGroupSelected(): boolean {
-    let startingIndex = this.getStartingSelectionIndex();
-    let endingIndex = this.getEndingSelectionIndex(startingIndex);
-
-    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-    return inputElement.selectionStart === startingIndex && inputElement.selectionEnd === endingIndex;
-  }
-
-  private getStartingSelectionIndex(): number {
-    let startingIndex = 0;
-    for (let i = 0; i < this.currentGroup; ++i) {
-      startingIndex += this.groupLength[i] + 1;
-    }
-
-    return startingIndex;
-  }
-
-  private getEndingSelectionIndex(startingIndex: number): number {
-    return startingIndex + this.groupLength[this.currentGroup];
-  }
-
   private setInputElementValue(value: string): void {
     this.renderer.setProperty(
       this.elementRef.nativeElement,
@@ -637,7 +457,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     let dateValue: Date;
     if (value instanceof Date) {
       dateValue = value;
-    } else if (typeof value === 'string' && this.allGroupsHaveData(value)) {
+    } else if (typeof value === 'string' && this.groupLogicService.allGroupsHaveData(value)) {
       const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
       if (this.dateFormatter.dateIsValid(date)) {
         dateValue = date;
@@ -645,21 +465,6 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     }
 
     return dateValue;
-  }
-
-  private allGroupsHaveData(value: string): boolean {
-    let valueGroups: string[] = value.split(this.validDelimiters);
-    let dateFormatGroups: string[] = this.dateFormat.split(this.validDelimiters);
-
-    if (valueGroups.length === dateFormatGroups.length) {
-      for (let i = 0; i < valueGroups.length; ++i) {
-        if (valueGroups[i] === dateFormatGroups[i]) {
-          return false;
-        }
-      }
-    }
-
-    return true;
   }
 
   private eventIsNotNumericInput(event: KeyboardEvent): boolean {
