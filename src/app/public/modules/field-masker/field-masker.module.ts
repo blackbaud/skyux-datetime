@@ -11,6 +11,10 @@ import {
   SkyFieldMaskerInputDirective
 } from './field-masker-input.directive';
 
+import {
+  GroupLogicService
+} from './group-logic.service';
+
 @NgModule({
   declarations: [
     SkyFieldMaskerInputDirective
@@ -21,6 +25,9 @@ import {
   ],
   exports: [
     SkyFieldMaskerInputDirective
+  ],
+  providers: [
+    GroupLogicService
   ]
 })
 export class SkyFieldMaskerModule { }
