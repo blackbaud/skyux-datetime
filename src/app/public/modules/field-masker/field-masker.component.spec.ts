@@ -1019,6 +1019,33 @@ describe('datepicker with field masker', () => {
         }));
       });
 
+      it('should not change input if group is filled', fakeAsync(() => {
+        fixture.detectChanges();
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
+        fixture.detectChanges();
+
+        nativeElement.querySelector('input').value = '11/DD/YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
+        fixture.detectChanges();
+
+        let inputElement: HTMLInputElement = nativeElement.querySelector('input');
+        expect(inputElement.value).toEqual('11/DD/YYYY');
+
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {
+            key: 'Tab', shiftKey: true
+          }
+        });
+        fixture.detectChanges();
+
+        let keyPressEvent = new KeyboardEvent('keypress', { key: '2' });
+        let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
+        component.inputDirective.onInputKeypress(keyPressEvent);
+        fixture.detectChanges();
+
+        expect(keyPressSpy).toHaveBeenCalled();
+      }));
+
       describe('input validation', () => {
         it('should update month of 00 to 01', fakeAsync(() => {
           fixture.detectChanges();
