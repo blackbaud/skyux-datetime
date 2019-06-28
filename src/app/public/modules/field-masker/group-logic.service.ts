@@ -2,6 +2,7 @@ import {
   Injectable,
   ElementRef
 } from '@angular/core';
+
 import {
   getValidDay,
   getValidMonth
@@ -9,25 +10,25 @@ import {
 
 @Injectable()
 export class GroupLogicService {
-  private elementRef: ElementRef;
+  private currentGroup: number;
   private dateFormat: string;
   private delimiters: string[] = [];
+  private elementRef: ElementRef;
   private groupLengths: number[] = [];
-  private currentGroup: number;
 
-  private readonly validDelimiters: RegExp = /[\\()-./]/g;
   private readonly fillerCharacter: string = '0';
   private readonly dayRegex: RegExp = /d/gi;
   private readonly monthRegex: RegExp = /m/gi;
   private readonly yearRegex: RegExp = /y/gi;
+  private readonly validDelimiters: RegExp = /[\\()-./]/g;
 
-  private readonly tabKey: string = 'Tab';
   private readonly arrowUpKey: string = 'ArrowUp';
   private readonly arrowDownKey: string = 'ArrowDown';
   private readonly arrowLeftKey: string = 'ArrowLeft';
   private readonly arrowRightKey: string = 'ArrowRight';
   private readonly endKey: string = 'End';
   private readonly homeKey: string = 'Home';
+  private readonly tabKey: string = 'Tab';
 
   constructor() {}
 
@@ -78,43 +79,12 @@ export class GroupLogicService {
     this.elementRef.nativeElement.value = this.joinGroupsWithDelimiters(valueGroups);
   }
 
-  public moveToNextGroup(): void {
-    /* istanbul ignore else */
-    if (this.currentGroup < this.groupLengths.length - 1) {
-      ++this.currentGroup;
-      this.selectCurrentGroup();
-    }
-  }
-
-  public moveToPreviousGroup(): void {
-    /* istanbul ignore else */
-    if (this.currentGroup > 0) {
-      --this.currentGroup;
-      this.selectCurrentGroup();
-    }
-  }
-
-  public moveToFirstGroup(): void {
-    this.currentGroup = 0;
-    this.selectCurrentGroup();
-  }
-
-  public moveToLastGroup(): void {
-    this.currentGroup = this.groupLengths.length - 1;
-    this.selectCurrentGroup();
-  }
-
   public isCurrentGroupSelected(): boolean {
     let startingIndex = this.getStartingSelectionIndex();
     let endingIndex = this.getEndingSelectionIndex(startingIndex);
 
     const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
     return inputElement.selectionStart === startingIndex && inputElement.selectionEnd === endingIndex;
-  }
-
-  public setAndHighlightGroup(group: number): void {
-    this.currentGroup = group;
-    this.selectCurrentGroup();
   }
 
   public allGroupsHaveData(value: string): boolean {
@@ -153,6 +123,11 @@ export class GroupLogicService {
     }
   }
 
+  public setAndHighlightGroup(group: number): void {
+    this.currentGroup = group;
+    this.selectCurrentGroup();
+  }
+
   public navigateInGroupsBasedOnEvent(event: KeyboardEvent) {
     /* istanbul ignore else */
     if (event.key === this.tabKey) {
@@ -185,6 +160,53 @@ export class GroupLogicService {
     }
   }
 
+  public moveToNextGroup(): void {
+    /* istanbul ignore else */
+    if (this.currentGroup < this.groupLengths.length - 1) {
+      ++this.currentGroup;
+      this.selectCurrentGroup();
+    }
+  }
+
+  public moveToPreviousGroup(): void {
+    /* istanbul ignore else */
+    if (this.currentGroup > 0) {
+      --this.currentGroup;
+      this.selectCurrentGroup();
+    }
+  }
+
+  public moveToFirstGroup(): void {
+    this.currentGroup = 0;
+    this.selectCurrentGroup();
+  }
+
+  public moveToLastGroup(): void {
+    this.currentGroup = this.groupLengths.length - 1;
+    this.selectCurrentGroup();
+  }
+
+  private dayIsTooHigh(formatGroup: string, value: number): boolean {
+    return formatGroup.charAt(0).match(this.dayRegex) && value > 3;
+  }
+
+  private getEndingSelectionIndex(startingIndex: number): number {
+    return startingIndex + this.groupLengths[this.currentGroup];
+  }
+
+  private getStartingSelectionIndex(): number {
+    let startingIndex = 0;
+    for (let i = 0; i < this.currentGroup; ++i) {
+      startingIndex += this.groupLengths[i] + 1;
+    }
+
+    return startingIndex;
+  }
+
+  private getValuePrecededByZeros(value: string, group: number): string {
+    return this.fillerCharacter.repeat(this.groupLengths[group] - value.length) + value;
+  }
+
   private initializeGroupsAndDelimiters(): void {
     let groups: string[] = this.dateFormat.split(this.validDelimiters);
     let totalLength: number = 0;
@@ -198,10 +220,6 @@ export class GroupLogicService {
         ++totalLength;
       }
     }
-  }
-
-  private getValuePrecededByZeros(value: string, group: number): string {
-    return this.fillerCharacter.repeat(this.groupLengths[group] - value.length) + value;
   }
 
   private joinGroupsWithDelimiters(groups: string[]): string {
@@ -219,10 +237,6 @@ export class GroupLogicService {
 
   private monthIsTooHigh(formatGroup: string, value: number): boolean {
     return formatGroup.charAt(0).match(this.monthRegex) && value > 1;
-  }
-
-  private dayIsTooHigh(formatGroup: string, value: number): boolean {
-    return formatGroup.charAt(0).match(this.dayRegex) && value > 3;
   }
 
   private parseDateObjectFromInput(formatGroups: string[], valueGroups: string[]): DateObject {
@@ -245,6 +259,13 @@ export class GroupLogicService {
     return createDateObject(day, month, year);
   }
 
+  private selectCurrentGroup(): void {
+    let startingIndex = this.getStartingSelectionIndex();
+    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+
+    inputElement.setSelectionRange(startingIndex, this.getEndingSelectionIndex(startingIndex));
+  }
+
   private updateValueGroupsWithUpdatedValues(formatGroups: string[], valueGroups: string[], dateObject: DateObject) {
     for (let i = 0; i < formatGroups.length; ++i) {
       let formatGroup: string = formatGroups[i];
@@ -257,26 +278,6 @@ export class GroupLogicService {
         valueGroups[i] = this.getValuePrecededByZeros(dateObject.year.toString(), i);
       }
     }
-  }
-
-  private selectCurrentGroup(): void {
-    let startingIndex = this.getStartingSelectionIndex();
-    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-
-    inputElement.setSelectionRange(startingIndex, this.getEndingSelectionIndex(startingIndex));
-  }
-
-  private getStartingSelectionIndex(): number {
-    let startingIndex = 0;
-    for (let i = 0; i < this.currentGroup; ++i) {
-      startingIndex += this.groupLengths[i] + 1;
-    }
-
-    return startingIndex;
-  }
-
-  private getEndingSelectionIndex(startingIndex: number): number {
-    return startingIndex + this.groupLengths[this.currentGroup];
   }
 }
 
