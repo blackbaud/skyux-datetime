@@ -1024,18 +1024,27 @@ describe('datepicker with field masker', () => {
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
         fixture.detectChanges();
 
-        nativeElement.querySelector('input').value = '11/DD/YYYY';
+        SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
+          keyboardEventInit: {
+            key: 'Tab'
+          }
+        });
+
+        nativeElement.querySelector('input').value = 'MM/12/YYYY';
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'input');
         fixture.detectChanges();
 
         let inputElement: HTMLInputElement = nativeElement.querySelector('input');
-        expect(inputElement.value).toEqual('11/DD/YYYY');
+        expect(inputElement.value).toEqual('MM/12/YYYY');
 
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'keydown', {
           keyboardEventInit: {
             key: 'Tab', shiftKey: true
           }
         });
+        fixture.detectChanges();
+        inputElement.selectionStart = 3;
+        inputElement.selectionEnd = 3;
         fixture.detectChanges();
 
         let keyPressEvent = new KeyboardEvent('keypress', { key: '2' });

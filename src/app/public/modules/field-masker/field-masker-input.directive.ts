@@ -307,7 +307,7 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
 
   @HostListener('keypress', ['$event'])
   public onInputKeypress(event: KeyboardEvent): void {
-    if (this.eventIsNotNumericInput(event) || this.currentGroupIsFilled()) {
+    if (this.eventIsNotNumericInput(event) || (!this.isCurrentGroupSelected() && this.currentGroupIsFilled())) {
       event.preventDefault();
     }
   }
@@ -628,9 +628,21 @@ export class SkyFieldMaskerInputDirective implements OnInit, OnDestroy, AfterVie
     for (let i = 0; i < this.currentGroup; ++i) {
       startingIndex += this.groupLength[i] + 1;
     }
+    let endingIndex = startingIndex + this.groupLength[this.currentGroup];
 
     const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
-    inputElement.setSelectionRange(startingIndex, startingIndex + this.groupLength[this.currentGroup]);
+    inputElement.setSelectionRange(startingIndex, endingIndex);
+  }
+
+  private isCurrentGroupSelected(): boolean {
+    let startingIndex = 0;
+    for (let i = 0; i < this.currentGroup; ++i) {
+      startingIndex += this.groupLength[i] + 1;
+    }
+    let endingIndex = startingIndex + this.groupLength[this.currentGroup];
+
+    const inputElement = <HTMLInputElement>this.elementRef.nativeElement;
+    return inputElement.selectionStart === startingIndex && inputElement.selectionEnd === endingIndex;
   }
 
   private setInputElementValue(value: string): void {
