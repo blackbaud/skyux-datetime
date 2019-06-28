@@ -220,11 +220,19 @@ describe('Date pipe', () => {
 
   it('should work as an injectable', () => {
     fixture.detectChanges();
+
+    const date = new Date('01/01/2000');
+    const expectedValues = [
+      '2000-01-01 00 h 00',
+      '2000-01-01 00:00' // IE 11
+    ];
+
     const result = fixture.componentInstance.getDatePipeResult(
-      new Date(1, 1, 2001),
-      'shortDate',
+      date,
+      'short',
       'fr-CA'
     );
-    expect(result).toEqual('1906-07-25');
+
+    expect(expectedValues).toContain(result);
   });
 });
