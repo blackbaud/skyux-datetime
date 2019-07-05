@@ -3,6 +3,10 @@ import {
 } from '@angular/core';
 
 import {
+  SkyAppLinkModule
+} from '@skyux/router';
+
+import {
   SkyDatePipeModule,
   SkyDatepickerModule,
   SkyDateRangePickerModule,
@@ -12,6 +16,7 @@ import {
 
 @NgModule({
   exports: [
+    SkyAppLinkModule,
     SkyDatePipeModule,
     SkyDatepickerModule,
     SkyFieldMaskerModule,
