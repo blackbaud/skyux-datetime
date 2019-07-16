@@ -293,7 +293,7 @@ describe('datepicker with field masker', () => {
         tick();
         fixture.detectChanges();
 
-        expect(nativeElement.querySelector('input').placeholder).toBe(component.inputDirective.dateFormat);
+        expect(nativeElement.querySelector('input').placeholder).toBe(component.fieldMaskerInputDirective.dateFormat);
       }));
     });
 
@@ -399,7 +399,7 @@ describe('datepicker with field masker', () => {
         SkyAppTestUtility.fireDomEvent(nativeElement.querySelector('input'), 'focus');
         fixture.detectChanges();
 
-        expect(nativeElement.querySelector('input').value).toBe(component.inputDirective.dateFormat);
+        expect(nativeElement.querySelector('input').value).toBe(component.fieldMaskerInputDirective.dateFormat);
       }));
 
       it('accepts lowercase letters for date format as well as uppercase', fakeAsync(() => {
@@ -959,7 +959,7 @@ describe('datepicker with field masker', () => {
           for (let i = 0; i < letters.length; ++i) {
             let keyPressEvent = new KeyboardEvent('keypress', { key: 'Key' + letters[i] });
             let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
-            component.inputDirective.onInputKeypress(keyPressEvent);
+            component.fieldMaskerInputDirective.onInputKeypress(keyPressEvent);
             fixture.detectChanges();
 
             expect(keyPressSpy).toHaveBeenCalled();
@@ -975,7 +975,7 @@ describe('datepicker with field masker', () => {
 
               let keyPressEvent = new KeyboardEvent('keypress', { key: numberInput });
               let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
-              component.inputDirective.onInputKeypress(keyPressEvent);
+              component.fieldMaskerInputDirective.onInputKeypress(keyPressEvent);
               fixture.detectChanges();
 
               expect(keyPressSpy).not.toHaveBeenCalled();
@@ -1005,7 +1005,7 @@ describe('datepicker with field masker', () => {
           let pasteEvent = new ClipboardEvent('paste');
 
           let pasteSpy = spyOn(pasteEvent, 'preventDefault');
-          component.inputDirective.blockPaste(pasteEvent);
+          component.fieldMaskerInputDirective.blockPaste(pasteEvent);
           expect(pasteSpy).toHaveBeenCalled();
         }));
 
@@ -1014,7 +1014,7 @@ describe('datepicker with field masker', () => {
           let cutEvent = new ClipboardEvent('cut');
 
           let cutSpy = spyOn(cutEvent, 'preventDefault');
-          component.inputDirective.blockCut(cutEvent);
+          component.fieldMaskerInputDirective.blockCut(cutEvent);
           expect(cutSpy).toHaveBeenCalled();
         }));
       });
@@ -1049,7 +1049,7 @@ describe('datepicker with field masker', () => {
 
         let keyPressEvent = new KeyboardEvent('keypress', { key: '2' });
         let keyPressSpy = spyOn(keyPressEvent, 'preventDefault');
-        component.inputDirective.onInputKeypress(keyPressEvent);
+        component.fieldMaskerInputDirective.onInputKeypress(keyPressEvent);
         fixture.detectChanges();
 
         expect(keyPressSpy).toHaveBeenCalled();
@@ -1642,7 +1642,7 @@ describe('datepicker with field masker', () => {
         component.dateControl.disable();
         fixture.detectChanges();
 
-        expect(fixture.componentInstance.inputDirective.disabled).toBeTruthy();
+        expect(fixture.componentInstance.datepickerInputDirective.disabled).toBeTruthy();
         expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeTruthy();
         expect(fixture.debugElement.query(By.css('sky-dropdown button')).nativeElement.disabled).toBeTruthy();
       });
@@ -1652,7 +1652,7 @@ describe('datepicker with field masker', () => {
         component.dateControl.enable();
         fixture.detectChanges();
 
-        expect(fixture.componentInstance.inputDirective.disabled).toBeFalsy();
+        expect(fixture.componentInstance.datepickerInputDirective.disabled).toBeFalsy();
         expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeFalsy();
         expect(fixture.debugElement.query(By.css('sky-dropdown button')).nativeElement.disabled).toBeFalsy();
       });
