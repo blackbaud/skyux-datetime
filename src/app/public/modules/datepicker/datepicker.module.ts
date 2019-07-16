@@ -58,6 +58,10 @@ import {
   SkyDatepickerInputDirective
 } from './datepicker-input.directive';
 
+import {
+  GroupLogicService
+} from '../field-masker/group-logic.service';
+
 @NgModule({
   declarations: [
     SkyDatepickerCalendarComponent,
@@ -86,6 +90,7 @@ import {
     SkyDatepickerInputDirective
   ],
   providers: [
+    GroupLogicService,
     SkyDatepickerConfigService
   ]
 })

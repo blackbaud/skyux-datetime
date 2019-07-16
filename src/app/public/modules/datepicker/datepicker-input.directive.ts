@@ -46,6 +46,10 @@ import {
   SkyDatepickerComponent
 } from './datepicker.component';
 
+import {
+  GroupLogicService
+} from '../field-masker/group-logic.service';
+
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -207,6 +211,7 @@ export class SkyDatepickerInputDirective
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
+    private groupLogicService: GroupLogicService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
   ) { }
 
@@ -381,9 +386,11 @@ export class SkyDatepickerInputDirective
     if (value instanceof Date) {
       dateValue = value;
     } else if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
-      if (this.dateFormatter.dateIsValid(date)) {
-        dateValue = date;
+      if (!this.groupLogicService.hasBeenInitialized || this.groupLogicService.allGroupsHaveData(value)) {
+        const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
+        if (this.dateFormatter.dateIsValid(date)) {
+          dateValue = date;
+        }
       }
     }
 
