@@ -10,6 +10,8 @@ import {
 
 @Injectable()
 export class GroupLogicService {
+  public hasBeenInitialized: boolean = false;
+
   private currentGroup: number;
   private dateFormat: string;
   private delimiters: string[] = [];
@@ -33,6 +35,7 @@ export class GroupLogicService {
   constructor() {}
 
   public initialize(elementRef: ElementRef, dateFormat: string): void {
+    this.hasBeenInitialized = true;
     this.elementRef = elementRef;
     this.dateFormat = dateFormat;
     this.initializeGroupsAndDelimiters();
