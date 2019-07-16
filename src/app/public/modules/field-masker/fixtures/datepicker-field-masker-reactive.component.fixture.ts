@@ -14,6 +14,10 @@ import {
   SkyFieldMaskerInputDirective
 } from '../field-masker-input.directive';
 
+import {
+  SkyDatepickerInputDirective
+} from '../../datepicker';
+
 @Component({
   selector: 'datepicker-reactive-test',
   templateUrl: './datepicker-field-masker-reactive.component.fixture.html'
@@ -21,7 +25,10 @@ import {
 export class DatepickerFieldMaskerReactiveTestComponent implements OnInit {
 
   @ViewChild(SkyFieldMaskerInputDirective)
-  public inputDirective: SkyFieldMaskerInputDirective;
+  public fieldMaskerInputDirective: SkyFieldMaskerInputDirective;
+
+  @ViewChild(SkyDatepickerInputDirective)
+  public datepickerInputDirective: SkyDatepickerInputDirective;
 
   public minDate: Date;
   public maxDate: Date;

@@ -7,13 +7,20 @@ import {
   SkyFieldMaskerInputDirective
 } from '../field-masker-input.directive';
 
+import {
+  SkyDatepickerInputDirective
+} from '../../datepicker';
+
 @Component({
   selector: 'field-masker-test',
   templateUrl: './datepicker-field-masker.component.fixture.html'
 })
 export class DatepickerFieldMaskerTestComponent {
   @ViewChild(SkyFieldMaskerInputDirective)
-  public inputDirective: SkyFieldMaskerInputDirective;
+  public fieldMaskerInputDirective: SkyFieldMaskerInputDirective;
+
+  @ViewChild(SkyDatepickerInputDirective)
+  public datepickerInputDirective: SkyDatepickerInputDirective;
 
   public minDate: Date;
 
