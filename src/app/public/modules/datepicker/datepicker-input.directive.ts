@@ -264,11 +264,13 @@ export class SkyDatepickerInputDirective
     // Without this check there is a changed before checked error
     /* istanbul ignore else */
     if (this.control && this.control.parent) {
-      this.control.setValue(this.value, {
-        emitEvent: false
-      });
+      setTimeout(() => {
+        this.control.setValue(this.value, {
+          emitEvent: false
+        });
 
-      this.changeDetector.markForCheck();
+        this.changeDetector.markForCheck();
+      });
     }
   }
 
