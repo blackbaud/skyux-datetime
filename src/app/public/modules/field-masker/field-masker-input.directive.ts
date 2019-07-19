@@ -61,7 +61,7 @@ export class SkyFieldMaskerInputDirective implements OnInit {
   public onInputBlur(): void {
     /* istanbul ignore else */
     if (this.elementRef.nativeElement.value === this.dateFormat) {
-      this.elementRef.nativeElement.value = undefined;
+      this.elementRef.nativeElement.value = '';
     } else if (!this.groupLogicService.currentGroupIsFilled()) {
       this.groupLogicService.fillInCurrentGroup();
       this.groupLogicService.validateGroups();
