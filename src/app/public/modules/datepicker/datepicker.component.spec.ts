@@ -695,7 +695,7 @@ describe('datepicker', () => {
 
     });
 
-    describe('forceOnChange', () => {
+    describe('detectInputValueChange', () => {
       it('updates selectedDate without a change event', fakeAsync(() => {
         const inputEl = nativeElement.querySelector('input');
         const initialDate = '01/01/2019';
@@ -713,7 +713,7 @@ describe('datepicker', () => {
         expect(nativeElement.querySelector('input').value).toBe(newDate);
         expect(component.selectedDate).toEqual(new Date(initialDate));
 
-        component.inputDirective.forceOnChange();
+        component.inputDirective.detectInputValueChange();
 
         expect(nativeElement.querySelector('input').value).toBe(newDate);
         expect(component.selectedDate).toEqual(new Date(newDate));

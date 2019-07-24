@@ -369,9 +369,11 @@ export class SkyDatepickerInputDirective
     this.datepickerComponent.disabled = disabled;
   }
 
-  // This allows consuming SPAs to force _value to update to the value typed in the input element
-  // without losing focus and triggering a change event. It is used by the agGrid datepicker editor.
-  public forceOnChange() {
+  /**
+   * Detects changes to the underlying input element's value and updates the ngModel accordingly.
+   * This is useful if you need to update the ngModel value before the input element loses focus.
+   */
+  public detectInputValueChange() {
     this.onValueChange(this.elementRef.nativeElement.value);
   }
 
