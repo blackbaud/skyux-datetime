@@ -276,8 +276,7 @@ export class SkyDatepickerInputDirective
 
   @HostListener('change', ['$event'])
   public onInputChange(event: any) {
-    this.isFirstChange = false;
-    this.value = event.target.value;
+    this.onValueChange(event.target.value);
   }
 
   @HostListener('blur')
@@ -368,6 +367,17 @@ export class SkyDatepickerInputDirective
   public setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
     this.datepickerComponent.disabled = disabled;
+  }
+
+  // This allows consuming SPAs to force _value to update to the value typed in the input element
+  // without losing focus and triggering a change event. It is used by the agGrid datepicker editor.
+  public forceOnChange() {
+    this.onValueChange(this.elementRef.nativeElement.value);
+  }
+
+  private onValueChange(newValue: string) {
+    this.isFirstChange = false;
+    this.value = newValue;
   }
 
   private setInputElementValue(value: string): void {
