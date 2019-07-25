@@ -150,22 +150,13 @@ export class SkyDatepickerInputDirective
   }
 
   private set value(value: any) {
-    const dateValue = this.getDateValue(value);
+    const dateValue = this.getDateValue(value) || value;
 
-    const areDatesEqual = (
-      this._value instanceof Date &&
-      dateValue &&
-      dateValue.getTime() === this._value.getTime()
-    );
+    const areDatesEqual = this.valueIsEqualTo(dateValue);
 
-    const isNewValue = (
-      dateValue !== this._value ||
-      !areDatesEqual
-    );
+    this._value = dateValue;
 
-    this._value = (dateValue || value);
-
-    if (isNewValue) {
+    if (!areDatesEqual) {
       this.onChange(this._value);
 
       // Do not mark the field as "dirty"
@@ -181,11 +172,11 @@ export class SkyDatepickerInputDirective
       this.datepickerComponent.selectedDate = this._value;
     }
 
-    if (dateValue) {
+    if (dateValue instanceof Date) {
       const formattedDate = this.dateFormatter.format(dateValue, this.dateFormat);
       this.setInputElementValue(formattedDate);
     } else {
-      this.setInputElementValue(value || '');
+      this.setInputElementValue(dateValue || '');
     }
   }
 
@@ -402,6 +393,14 @@ export class SkyDatepickerInputDirective
     }
 
     return dateValue;
+  }
+
+  private valueIsEqualTo(date: any): boolean {
+    if (this.value instanceof Date && date instanceof Date) {
+      return this.value.getTime() === date.getTime();
+    } else {
+      return this.value === date;
+    }
   }
 
   private onChange = (_: any) => {};
