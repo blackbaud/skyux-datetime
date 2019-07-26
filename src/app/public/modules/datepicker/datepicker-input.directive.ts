@@ -373,11 +373,11 @@ export class SkyDatepickerInputDirective
    * Detects changes to the underlying input element's value and updates the ngModel accordingly.
    * This is useful if you need to update the ngModel value before the input element loses focus.
    */
-  public detectInputValueChange() {
+  public detectInputValueChange(): void {
     this.onValueChange(this.elementRef.nativeElement.value);
   }
 
-  private onValueChange(newValue: string) {
+  private onValueChange(newValue: string): void {
     this.isFirstChange = false;
     this.value = newValue;
   }
