@@ -145,11 +145,15 @@ export class SkyDatepickerInputDirective
     return this._startingDay || this.configService.startingDay;
   }
 
-  private get value(): any {
+  protected get value(): any {
     return this._value;
   }
 
-  private set value(value: any) {
+  protected set value(value: any) {
+    console.log('date picker input - setting value');
+    console.log('current value: ' + this.value);
+    console.log('new value: ' + value);
+
     const dateValue = this.getDateValue(value);
 
     const areDatesEqual = (
@@ -189,25 +193,25 @@ export class SkyDatepickerInputDirective
     }
   }
 
-  private control: AbstractControl;
-  private dateFormatter = new SkyDateFormatter();
-  private isFirstChange = true;
-  private ngUnsubscribe = new Subject<void>();
+  protected control: AbstractControl;
+  protected dateFormatter = new SkyDateFormatter();
+  protected isFirstChange = true;
+  protected ngUnsubscribe = new Subject<void>();
 
-  private _dateFormat: string;
-  private _disabled = false;
-  private _maxDate: Date;
-  private _minDate: Date;
-  private _startingDay: number;
-  private _value: any;
+  protected _dateFormat: string;
+  protected _disabled = false;
+  protected _maxDate: Date;
+  protected _minDate: Date;
+  protected _startingDay: number;
+  protected _value: any;
 
   constructor(
-    private changeDetector: ChangeDetectorRef,
-    private configService: SkyDatepickerConfigService,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private resourcesService: SkyLibResourcesService,
-    @Optional() private datepickerComponent: SkyDatepickerComponent
+    protected changeDetector: ChangeDetectorRef,
+    protected configService: SkyDatepickerConfigService,
+    protected elementRef: ElementRef,
+    protected renderer: Renderer2,
+    protected resourcesService: SkyLibResourcesService,
+    @Optional() protected datepickerComponent: SkyDatepickerComponent
   ) { }
 
   public ngOnInit(): void {
@@ -258,6 +262,12 @@ export class SkyDatepickerInputDirective
     // Of note is the parent check which allows us to determine if the form is reactive.
     // Without this check there is a changed before checked error
     /* istanbul ignore else */
+
+    console.log('ngAfterViewInit - value: ' + this.value);
+    console.log('ngAfterViewInit - stringified value: ' + JSON.stringify(this.value));
+    console.log('ngAfterViewInit - control: ' + this.control);
+    console.log('ngAfterViewInit - control.parent: ' + this.control.parent);
+
     if (this.control && this.control.parent) {
       setTimeout(() => {
         this.control.setValue(this.value, {
@@ -276,7 +286,8 @@ export class SkyDatepickerInputDirective
 
   @HostListener('change', ['$event'])
   public onInputChange(event: any) {
-    this.onValueChange(event.target.value);
+    this.isFirstChange = false;
+    this.value = event.target.value;
   }
 
   @HostListener('blur')
@@ -294,6 +305,8 @@ export class SkyDatepickerInputDirective
   }
 
   public validate(control: AbstractControl): ValidationErrors {
+    console.log('sky datepicker input - validating input');
+
     if (!this.control) {
       this.control = control;
     }
@@ -369,26 +382,18 @@ export class SkyDatepickerInputDirective
     this.datepickerComponent.disabled = disabled;
   }
 
-  /**
-   * Detects changes to the underlying input element's value and updates the ngModel accordingly.
-   * This is useful if you need to update the ngModel value before the input element loses focus.
-   */
-  public detectInputValueChange(): void {
-    this.onValueChange(this.elementRef.nativeElement.value);
-  }
-
-  private onValueChange(newValue: string): void {
-    this.isFirstChange = false;
-    this.value = newValue;
-  }
-
-  private setInputElementValue(value: string): void {
+  protected setInputElementValue(value: string): void {
     this.renderer.setProperty(
       this.elementRef.nativeElement,
       'value',
       value
     );
   }
+
+  protected onChange = (_: any) => {};
+  /*istanbul ignore next */
+  protected onTouched = () => {};
+  protected onValidatorChange = () => {};
 
   private getDateValue(value: any): Date {
     let dateValue: Date;
@@ -403,9 +408,4 @@ export class SkyDatepickerInputDirective
 
     return dateValue;
   }
-
-  private onChange = (_: any) => {};
-  /*istanbul ignore next */
-  private onTouched = () => {};
-  private onValidatorChange = () => {};
 }
