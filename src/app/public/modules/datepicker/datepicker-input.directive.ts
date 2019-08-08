@@ -150,10 +150,6 @@ export class SkyDatepickerInputDirective
   }
 
   protected set value(value: any) {
-    console.log('date picker input - setting value');
-    console.log('current value: ' + this.value);
-    console.log('new value: ' + value);
-
     const dateValue = this.getDateValue(value);
 
     const areDatesEqual = (
@@ -263,11 +259,6 @@ export class SkyDatepickerInputDirective
     // Without this check there is a changed before checked error
     /* istanbul ignore else */
 
-    console.log('ngAfterViewInit - value: ' + this.value);
-    console.log('ngAfterViewInit - stringified value: ' + JSON.stringify(this.value));
-    console.log('ngAfterViewInit - control: ' + this.control);
-    console.log('ngAfterViewInit - control.parent: ' + this.control.parent);
-
     if (this.control && this.control.parent) {
       setTimeout(() => {
         this.control.setValue(this.value, {
@@ -305,8 +296,6 @@ export class SkyDatepickerInputDirective
   }
 
   public validate(control: AbstractControl): ValidationErrors {
-    console.log('sky datepicker input - validating input');
-
     if (!this.control) {
       this.control = control;
     }

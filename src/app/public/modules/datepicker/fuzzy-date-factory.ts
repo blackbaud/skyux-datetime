@@ -1,4 +1,4 @@
-import { SkyDatepickerFuzzyDate } from './datepicker-fuzzy-date';
+import { SkyFuzzyDate } from './fuzzy-date';
 
 let moment = require('moment');
 
@@ -41,8 +41,7 @@ export class SkyFuzzyDateFactory {
   public getMomentFromFuzzyDate(fuzzyDate: any): any {
       // Year to use for fuzzy dates that don't have a year.
       //    Using same value from Blackbaud.Formatting.FuzzyDate.  Needs to be a valid year for leap years.
-      // let defaultYear: number = 2000; // new Date().getFullYear();
-      let defaultYear: number = new Date().getFullYear();
+      let defaultYear: number = 2000; // new Date().getFullYear();
 
       if (!fuzzyDate) { return; }
       return moment([fuzzyDate.year || defaultYear, (fuzzyDate.month - 1) || 0, fuzzyDate.day || 1]);
@@ -89,7 +88,7 @@ export class SkyFuzzyDateFactory {
   }
 
   public getFuzzyDateFromSelectedDate(selectedDate: Date, dateFormatString: string): any {
-    let fuzzyDate: SkyDatepickerFuzzyDate = {},
+    let fuzzyDate: SkyFuzzyDate = {},
         yearIndex,
         monthIndex,
         dayIndex;
@@ -171,11 +170,9 @@ export class SkyFuzzyDateFactory {
     console.log('getFuzzyDateFromDateString - array position monthIndex: ' + monthIndex);
     console.log('getFuzzyDateFromDateString - array position dayIndex: ' + dayIndex);
 
-  /*
     console.log('factory.getFuzzyDateFromDateString - yearIndex: ' + yearIndex);
     console.log('factory.getFuzzyDateFromDateString - monthIndex: ' + monthIndex);
     console.log('factory.getFuzzyDateFromDateString - dayIndex: ' + dayIndex);
-  */
 
     // Get the date string's components based on the separator used in the string
     separator = this.getSeparatorFromDateString(dateString);
@@ -195,35 +192,45 @@ export class SkyFuzzyDateFactory {
         day = dateComponents[dayIndex];
         break;
     case 2:
-        // year = this.getYearFromDateString(dateString, separator);
-
-        console.log('getFuzzyDateFromDateString - yearIndex: ' + yearIndex);
-        console.log('getFuzzyDateFromDateString - monthIndex: ' + monthIndex);
-        console.log('getFuzzyDateFromDateString - dayIndex: ' + dayIndex);
-
-        if (yearIndex > -1) {
-          year = dateComponents[yearIndex];
-        }
-        if (monthIndex > -1) {
-          month = dateComponents[monthIndex];
-        }
-        if (dayIndex > -1) {
-          day = dateComponents[dayIndex];
-        }
-        console.log('getFuzzyDateFromDateString - year: ' + year);
-        console.log('getFuzzyDateFromDateString - month: ' + month);
-        console.log('getFuzzyDateFromDateString - day: ' + day);
+        year = this.getYearFromDateString(dateString, separator);
 
         // If a year exists in the date string, then the other component must be the month
         // Else, the  components have to be a month and a day
-    /*
+
         if (year) {
-            month = dateComponents[0] === year.toString() ? dateComponents[1] : dateComponents[0];
+          month = dateComponents[0] === year.toString() ? dateComponents[1] : dateComponents[0];
         } else {
+          if (dayIndex > -1) {
+            // mm/dd
             month = (monthIndex < dayIndex) ? dateComponents[0] : dateComponents[1];
             day = (month === dateComponents[1]) ? dateComponents[0] : dateComponents[1];
+          } else {
+            // mm/yy
+            month = (monthIndex < yearIndex) ? dateComponents[0] : dateComponents[1];
+            year = (month === dateComponents[1]) ? dateComponents[0] : dateComponents[1];
+          }
+
+        /*
+          let maxDateComponentsIndex = dateComponents.length - 1;
+
+          console.log('getFuzzyDateFromDateString - yearIndex: ' + yearIndex);
+          console.log('getFuzzyDateFromDateString - monthIndex: ' + monthIndex);
+          console.log('getFuzzyDateFromDateString - dayIndex: ' + dayIndex);
+
+          if (yearIndex > -1 && yearIndex <= maxDateComponentsIndex) {
+            year = dateComponents[yearIndex];
+          }
+          if (monthIndex > -1 && monthIndex <= maxDateComponentsIndex) {
+            month = dateComponents[monthIndex];
+          }
+          if (dayIndex > -1 && dayIndex <= maxDateComponentsIndex) {
+            day = dateComponents[dayIndex];
+          }
+        */
+
         }
-    */
+
+        console.log('getFuzzyDateFromDateString - year: ' + year);
         console.log('getFuzzyDateFromDateString - month: ' + month);
         console.log('getFuzzyDateFromDateString - day: ' + day);
 

@@ -13,6 +13,10 @@ import {
   SkyTimepickerModule
 } from './public';
 
+import {
+  SkyFuzzyDateFactory
+} from './public/modules/datepicker/fuzzy-date-factory';
+
 @NgModule({
   exports: [
     SkyAppLinkModule,
@@ -20,6 +24,9 @@ import {
     SkyDatepickerModule,
     SkyTimepickerModule,
     SkyDateRangePickerModule
+  ],
+  providers: [
+    SkyFuzzyDateFactory
   ]
 })
 export class AppExtrasModule { }

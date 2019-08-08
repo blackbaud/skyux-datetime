@@ -1,0 +1,172 @@
+<div
+  class="app-screenshot"
+  id="screenshot-datepicker-calendar"
+  style="display: inline-block;"
+>
+  <sky-datepicker-calendar
+    [selectedDate]="selectedDate"
+    (selectedDateChange)="selectedDate = $event"
+    #datepicker
+  >
+  </sky-datepicker-calendar>
+</div>
+
+<div
+  class="app-screenshot"
+  id="screenshot-datepicker"
+  style="max-width: 50%; height: 500px;"
+>
+  <sky-datepicker>
+    <input
+      [disabled]="disabled"
+      [maxFuzzyDate]="maxFuzzyDate"
+      [minFuzzyDate]="minFuzzyDate"
+      [skyFuzzyDatepickerInput]
+      [skyDatepickerNoValidate]="noValidate"
+      [startingDay]="startingDay"
+      [yearRequired]="yearRequired"
+      [cannotBeFuture]="cannotBeFuture"
+      [dateFormatErrorMessage]="dateFormatErrorMessage"
+      [yearRequiredErrorMessage]="yearRequiredErrorMessage"
+      [maxFuzzyDateErrorMessage]="maxFuzzyDateErrorMessage"
+      [minFuzzyDateErrorMessage]="minFuzzyDateErrorMessage"
+      [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
+      [(ngModel)]="selectedDate"
+      #date="ngModel"
+    />
+  </sky-datepicker>
+
+  <table>
+    <tr>
+      <th>Touched</th>
+      <td>{{ date.touched }}</td>
+    </tr>
+    <tr>
+      <th>Pristine</th>
+      <td>{{ date.pristine }}</td>
+    </tr>
+    <tr>
+      <th>Valid</th>
+      <td>{{ date.valid }}</td>
+    </tr>
+  </table>
+
+  <p *ngIf="date.errors && date.errors.skyFuzzyDate" class="sky-error-label">
+    <span *ngIf="date.errors.skyFuzzyDate?.invalid">
+      {{ date.errors.skyFuzzyDate?.validationErrorMessage }}
+    </span>
+  </p>
+
+  <p>
+    Model value: <code>{{ selectedDateForDisplay }}</code>
+  </p>
+</div>
+
+<div
+  class="app-screenshot"
+  style="max-width: 50%; height: 500px;"
+>
+  <form
+    novalidate
+    [formGroup]="reactiveForm"
+  >
+    <sky-datepicker>
+      <input
+        formControlName="selectedDate"
+        skyFuzzyDatepickerInput
+        type="text"
+        [maxFuzzyDate]="maxFuzzyDate"
+        [minFuzzyDate]="minFuzzyDate"
+        [skyDatepickerNoValidate]="noValidate"
+        [startingDay]="startingDay"
+        [yearRequired]="yearRequired"
+        [cannotBeFuture]="cannotBeFuture"
+        [dateFormatErrorMessage]="dateFormatErrorMessage"
+        [yearRequiredErrorMessage]="yearRequiredErrorMessage"
+        [maxFuzzyDateErrorMessage]="maxFuzzyDateErrorMessage"
+        [minFuzzyDateErrorMessage]="minFuzzyDateErrorMessage"
+        [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
+      />
+    </sky-datepicker>
+
+    <table>
+      <tr>
+        <th>Touched</th>
+        <td>{{ reactiveDate.touched }}</td>
+      </tr>
+      <tr>
+        <th>Pristine</th>
+        <td>{{ reactiveDate.pristine }}</td>
+      </tr>
+      <tr>
+        <th>Valid</th>
+        <td>{{ reactiveDate.valid }}</td>
+      </tr>
+    </table>
+
+    <p *ngIf="reactiveDate.errors" class="sky-error-label">
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.invalid">
+        {{ reactiveDate.errors.skyFuzzyDate?.validationErrorMessage }}
+      </span>
+    </p>
+
+    <p>
+      Model value: <code>{{ reactiveFormSelectedDateForDisplay }}</code>
+    </p>
+  </form>
+</div>
+
+<div
+  class="app-screenshot"
+>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="setMinMaxDates()"
+  >
+    Set min and max dates
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="toggleYearRequired()"
+  >
+    Toggle year required
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="toggleCannotBeFuture()"
+  >
+    Toggle cannot be in future
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="setStartingDay()"
+  >
+    Set starting day to Monday
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="toggleDisabled()"
+  >
+    Toggle disabled
+  </button>
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="setValue()"
+  >
+    Set new value
+  </button>
+  <button
+    class="sky-btn"
+    id="button-set-invalid-value"
+    type="button"
+    (click)="setInvalidValue()"
+  >
+    Set invalid value
+  </button>
+</div>

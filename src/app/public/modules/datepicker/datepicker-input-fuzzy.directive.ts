@@ -36,7 +36,7 @@ import {
 import {
   SkyDatepickerComponent
 } from './datepicker.component';
-import { SkyDatepickerFuzzyDate } from './datepicker-fuzzy-date';
+import { SkyFuzzyDate } from './fuzzy-date';
 import { SkyFuzzyDateFactory } from './fuzzy-date-factory';
 import { SkyDatepickerInputDirective } from './datepicker-input.directive';
 
@@ -64,36 +64,60 @@ const SKY_DATEPICKER_VALIDATOR = {
 export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
-  @Input() public yearRequired = false;
-  @Input() public cannotBeFuture = false;
   @Input() public dateFormatErrorMessage: any;
   @Input() public yearRequiredErrorMessage: any;
   @Input() public maxFuzzyDateErrorMessage: any;
   @Input() public minFuzzyDateErrorMessage: any;
   @Input() public cannotBeFutureErrorMessage: any;
 
-  private _maxFuzzyDate: SkyDatepickerFuzzyDate;
+  private _yearRequired: boolean = false;
 
   @Input()
-  public set maxFuzzyDate(value: SkyDatepickerFuzzyDate) {
-    console.log('setting maxFuzzyDate: ' + JSON.stringify(value));
+  public set yearRequired(value: boolean) {
+    this._yearRequired = value;
+    this.onValidatorChange();
+  }
+
+  public get yearRequired(): boolean {
+    return this._yearRequired;
+  }
+
+  private _cannotBeFuture: boolean = false;
+
+  @Input()
+  public set cannotBeFuture(value: boolean) {
+    this._cannotBeFuture = value;
+    this.onValidatorChange();
+  }
+
+  public get cannotBeFuture(): boolean {
+    return this._cannotBeFuture;
+  }
+
+  private _maxFuzzyDate: SkyFuzzyDate;
+
+  @Input()
+  public set maxFuzzyDate(value: SkyFuzzyDate) {
     this._maxFuzzyDate = value;
     this.datepickerComponent.maxDate = this.maxDate;
     this.onValidatorChange();
   }
 
-  public get maxFuzzyDate(): SkyDatepickerFuzzyDate {
+  public get maxFuzzyDate(): SkyFuzzyDate {
     return this._maxFuzzyDate;
   }
 
-  private _minFuzzyDate: SkyDatepickerFuzzyDate;
+  private _minFuzzyDate: SkyFuzzyDate;
 
   @Input()
-  public set minFuzzyDate(value: SkyDatepickerFuzzyDate) {
-    console.log('setting minFuzzyDate: ' + JSON.stringify(value));
+  public set minFuzzyDate(value: SkyFuzzyDate) {
     this._minFuzzyDate = value;
     this.datepickerComponent.minDate = this.minDate;
     this.onValidatorChange();
+  }
+
+  public get minFuzzyDate(): SkyFuzzyDate {
+    return this._minFuzzyDate;
   }
 
   @Input()
@@ -107,10 +131,6 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
         '<sky-datepicker>\n  <input skyFuzzyDatepickerInput />\n</sky-datepicker>'
       );
     }
-  }
-
-  public get minFuzzyDate(): SkyDatepickerFuzzyDate {
-    return this._minFuzzyDate;
   }
 
   public get maxDate(): Date {
@@ -136,24 +156,13 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       return this.configService.minDate;
     }
   }
-/*
-  public ngAfterViewInit(): void {
-    console.log('ngAfterViewInit - value: ' + this.value);
-    console.log('ngAfterViewInit - control: ' + this.control);
-    console.log('ngAfterViewInit - control.parent: ' + this.control.parent);
 
-    if (this.control && this.control.parent && this.control.value ) {
-      console.log('marking as touched...');
-      this.control.markAsTouched();
-    }
-  }
-*/
   protected get value(): any {
     return this._value;
   }
 
   protected set value(value: any) {
-    let fuzzyDate: SkyDatepickerFuzzyDate;
+    let fuzzyDate: SkyFuzzyDate;
     let dateValue: Date;
     let formattedDate: string;
 
@@ -175,19 +184,18 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       formattedDate = value;
       fuzzyDate = this.fuzzyDateFactory.getFuzzyDateFromDateString(value, this.dateFormat);
 
-      console.log('fuzzyDate: ' + JSON.stringify(fuzzyDate));
+      console.log('set value - fuzzyDate: ' + JSON.stringify(fuzzyDate));
       let fuzzyMoment = this.fuzzyDateFactory.getMomentFromFuzzyDate(fuzzyDate);
 
-      console.log('fuzzyMoment: ' + fuzzyMoment);
+      console.log('set value - fuzzyMoment: ' + fuzzyMoment);
 
       if (fuzzyMoment) {
         dateValue = fuzzyMoment.toDate();
       }
 
-      console.log('set value - fuzzyDate: ' + JSON.stringify(fuzzyDate));
       console.log('set value - dateValue: ' + dateValue);
     } else {
-      fuzzyDate = value as SkyDatepickerFuzzyDate;
+      fuzzyDate = value as SkyFuzzyDate;
       formattedDate = this.fuzzyDateFactory.getDateStringFromFuzzyDate(fuzzyDate, this.dateFormat);
     }
 
@@ -212,13 +220,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       !areFuzzyDatesEqual
     );
 
-    console.log('set value - areFuzzyDatesEqual: ' + areFuzzyDatesEqual);
-    console.log('set value - isNewValue: ' + isNewValue);
-
     this._value = fuzzyDate || value;
-
-    console.log('_value: ' + JSON.stringify(this._value));
-    console.log('value: ' + JSON.stringify(this.value));
 
     if (isNewValue) {
       this.onChange(this._value);
@@ -236,7 +238,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       this.datepickerComponent.selectedDate = dateValue;
     }
 
-    console.log('setting input value: ' + formattedDate);
+    console.log('set value - setting input value: ' + formattedDate);
 
     this.setInputElementValue(formattedDate || '');
   }
@@ -286,13 +288,6 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
   }
 
   public validate(control: AbstractControl): ValidationErrors {
-    console.log('fuzzy date input directive - validating');
-    if (this.control) {
-      console.log('control value: ' + this.control.value);
-    } else {
-      console.log('control is undefined');
-    }
-
     if (!this.control) {
       this.control = control;
     }
@@ -308,7 +303,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
     const value: any = control.value;
     console.log('fuzzy input validate - value: ' + JSON.stringify(value));
 
-    let fuzzyDate: SkyDatepickerFuzzyDate;
+    let fuzzyDate: SkyFuzzyDate;
     let isFuzzyDateValid = true;
     let validationErrorMessage: string;
 
@@ -319,14 +314,14 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
     }
 
     if (!fuzzyDate) {
-      this.resourcesService.getString('fuzzy_date_invalid_format')
+      this.resourcesService.getString('skyux_fuzzy_datepicker_invalid_format')
         .subscribe((resource: string) => validationErrorMessage = resource);
 
       isFuzzyDateValid = false;
     }
 
     if (isFuzzyDateValid && !fuzzyDate.year && this.yearRequired) {
-      this.resourcesService.getString('fuzzy_date_year_required')
+      this.resourcesService.getString('skyux_fuzzy_datepicker_year_required')
       .subscribe((resource: string) => validationErrorMessage = resource);
 
       isFuzzyDateValid = false;
@@ -338,12 +333,8 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       if (this.maxFuzzyDate) {
           fuzzyDateRange = this.fuzzyDateFactory.getFuzzyDateRange(fuzzyDate, this.maxFuzzyDate);
 
-          console.log('validate maxFuzzyDate - fuzzyDate: ' + JSON.stringify(fuzzyDate));
-          console.log('validate maxFuzzyDate - maxFuzzyDate: ' + JSON.stringify(this.maxFuzzyDate));
-          console.log('validate maxFuzzyDate - fuzzyDateRange: ' + JSON.stringify(fuzzyDateRange));
-
           if (!fuzzyDateRange.valid) {
-            this.resourcesService.getString('fuzzy_date_max_fuzzy_date_error')
+            this.resourcesService.getString('skyux_fuzzy_datepicker_max_fuzzy_date_error')
               .subscribe((resource: string) => validationErrorMessage = resource);
 
               isFuzzyDateValid = false;
@@ -353,7 +344,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       if (this.minFuzzyDate) {
           fuzzyDateRange = this.fuzzyDateFactory.getFuzzyDateRange(this.minFuzzyDate, fuzzyDate);
           if (!fuzzyDateRange.valid) {
-            this.resourcesService.getString('fuzzy_date_min_fuzzy_date_error')
+            this.resourcesService.getString('skyux_fuzzy_datepicker_min_fuzzy_date_error')
               .subscribe((resource: string) => validationErrorMessage = resource);
 
               isFuzzyDateValid = false;
@@ -363,7 +354,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       if (this.cannotBeFuture) {
           fuzzyDateRange = this.fuzzyDateFactory.getFuzzyDateRange(fuzzyDate, this.fuzzyDateFactory.getCurrentFuzzyDate());
           if (!fuzzyDateRange.valid) {
-            this.resourcesService.getString('fuzzy_date_cannot_be_in_the_future')
+            this.resourcesService.getString('skyux_fuzzy_datepicker_cannot_be_in_the_future')
               .subscribe((resource: string) => validationErrorMessage = resource);
 
               isFuzzyDateValid = false;
@@ -380,9 +371,9 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       this.control.markAsTouched();
 
       return {
-        'skyDate': {
+        'skyFuzzyDate': {
           invalid: value,
-          errorMessage: validationErrorMessage
+          validationErrorMessage: validationErrorMessage
         }
       };
     }
