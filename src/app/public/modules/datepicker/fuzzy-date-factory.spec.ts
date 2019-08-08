@@ -26,6 +26,68 @@ describe('SkyFuzzyDateFactory', () => {
       factory = TestBed.get(SkyFuzzyDateFactory);
     });
 
+  describe('getFuzzyDateFromSelectedDate', () => {
+
+    it('returns a fuzzy date object when provided a date object and the default date format', function() {
+      let expectedMonth = 5,
+          expectedDay = 12,
+          expectedYear = 2017,
+          selectedDate = new Date('5/12/2017');
+
+          let fuzzyDate = factory.getFuzzyDateFromSelectedDate(selectedDate, defaultDateFormat);
+
+          expect(fuzzyDate).toEqual({ year: expectedYear, month: expectedMonth, day: expectedDay });
+    });
+
+    it('returns a fuzzy date object when provided a date object and a date format excluding year', function() {
+      let expectedMonth = 5,
+          expectedDay = 12,
+          selectedDate = new Date('5/12/2017');
+
+          let fuzzyDate = factory.getFuzzyDateFromSelectedDate(selectedDate, 'mm/dd');
+
+          expect(fuzzyDate).toEqual({ month: expectedMonth, day: expectedDay });
+    });
+
+    it('returns a fuzzy date object when provided a date object and a date format excluding day', function() {
+      let expectedMonth = 5,
+          expectedYear = 2017,
+          selectedDate = new Date('5/12/2017');
+
+          let fuzzyDate = factory.getFuzzyDateFromSelectedDate(selectedDate, 'mm/yyyy');
+
+          expect(fuzzyDate).toEqual({ year: expectedYear, month: expectedMonth });
+    });
+
+    it('returns a fuzzy date object when provided a date object and a date format excluding month', function() {
+      // Unlikely scenario, though including to reach 100% coverage
+      let expectedDay = 12,
+          expectedYear = 2017,
+          selectedDate = new Date('5/12/2017');
+
+          let fuzzyDate = factory.getFuzzyDateFromSelectedDate(selectedDate, 'dd/yyyy');
+
+          expect(fuzzyDate).toEqual({ year: expectedYear, day: expectedDay });
+    });
+
+    it('returns an undefined fuzzy date object when provided an undefined date object', function() {
+          let fuzzyDate = factory.getFuzzyDateFromSelectedDate(undefined, defaultDateFormat);
+
+          expect(fuzzyDate).toBeUndefined();
+    });
+
+    it('returns an undefined fuzzy date object when provided an undefined date format', function() {
+      let expectedMonth = 5,
+          expectedDay = 12,
+          expectedYear = 2017,
+          selectedDate = new Date(expectedYear, expectedMonth, expectedDay);
+
+          let fuzzyDate = factory.getFuzzyDateFromSelectedDate(selectedDate, undefined);
+
+          expect(fuzzyDate).toBeUndefined();
+    });
+  });
+
   describe('getFuzzyDateFromDateString', () => {
     it('returns a fuzzy date object when provided with a valid full date string.', function () {
       // arrange
