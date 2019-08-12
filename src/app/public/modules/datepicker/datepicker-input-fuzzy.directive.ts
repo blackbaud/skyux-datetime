@@ -241,6 +241,12 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
    }
 
   public ngOnInit(): void {
+    if (this.yearRequired) {
+      if (this.dateFormat.toLowerCase().indexOf('y') === -1) {
+        throw new Error('You have configured conflicting settings. Year is required and dateFormat does not include year.');
+      }
+    }
+
     if (!this.datepickerComponent) {
       throw new Error(
         'You must wrap the `skyFuzzyDatepickerInput` directive within a ' +

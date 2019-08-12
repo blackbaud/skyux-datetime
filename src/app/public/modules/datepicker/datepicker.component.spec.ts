@@ -1303,6 +1303,16 @@ describe('datepicker', () => {
         }
       });
 
+      it('should throw an error if yearRequired conflicts with the dateFormat', function () {
+        try {
+          component.yearRequired = true;
+          component.dateFormat = 'mm/dd';
+          fixture.detectChanges();
+        } catch (err) {
+          expect(err.message).toEqual('You have configured conflicting settings. Year is required and dateFormat does not include year.');
+        }
+      });
+
       it('should mark the control as dirty on keyup', function () {
         fixture.detectChanges();
         const inputElement = fixture.debugElement.query(By.css('input'));
