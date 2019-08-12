@@ -1515,7 +1515,7 @@ describe('datepicker', () => {
 
       describe('formats', () => {
         it('should handle a dateFormat on the input different than the default', fakeAsync(() => {
-          component.format = 'DD/MM/YYYY';
+          component.dateFormat = 'DD/MM/YYYY';
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -1527,7 +1527,7 @@ describe('datepicker', () => {
         }));
 
         it('should handle a dateFormat excluding year on the input different than the default', fakeAsync(() => {
-          component.format = 'MM/DD';
+          component.dateFormat = 'MM/DD';
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -1539,7 +1539,7 @@ describe('datepicker', () => {
         }));
 
         it('should handle a dateFormat excluding day on the input different than the default', fakeAsync(() => {
-          component.format = 'MM/YYYY';
+          component.dateFormat = 'MM/YYYY';
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -1551,7 +1551,7 @@ describe('datepicker', () => {
         }));
 
         it('should handle a dateFormat with a 2 digit year excluding day on the input different than the default', fakeAsync(() => {
-          component.format = 'MM/YY';
+          component.dateFormat = 'MM/YY';
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -1634,20 +1634,12 @@ describe('datepicker', () => {
             setInput(nativeElement, 'abcdebf', fixture);
             fixture.detectChanges();
 
-            console.log('input value: ' + nativeElement.querySelector('input').value);
-            console.log('selectedDate: ' + component.selectedDate);
-
             expect(nativeElement.querySelector('input').value).toBe('abcdebf');
             expect(component.selectedDate).toEqual('abcdebf');
-
-            console.log('valid: ' + ngModel.valid);
-            console.log('pristine: ' + ngModel.pristine);
-            console.log('touched: ' + ngModel.touched);
 
             expect(ngModel.valid).toBe(false);
             expect(ngModel.pristine).toBe(false);
             expect(ngModel.touched).toBe(true);
-
           }));
 
         it('should validate properly when invalid date on initialization', fakeAsync(() => {
@@ -1752,6 +1744,175 @@ describe('datepicker', () => {
           expect(ngModel.valid).toBe(true);
 
         }));
+
+        it('should validate properly when an invalid date format is passed through input change',
+          fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized invalid date format message';
+            fixture.componentInstance.dateFormat = 'mm/dd/yyyy';
+            fixture.componentInstance.dateFormatErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2015/2/12', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2015/2/12');
+
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/12/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12/2015');
+
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
+
+          it('should validate properly when the fuzzy date cannot be in future'
+            + ' and a future date is passed through input change', fakeAsync(() => {
+            let expectedValidationMessage = 'Date cannot be in the future.';
+            fixture.componentInstance.cannotBeFuture = true;
+
+            fixture.detectChanges();
+            tick();
+
+            let futureDateString = moment().add(1, 'days').format('L');
+
+            setInput(nativeElement, futureDateString, fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe(futureDateString);
+
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            let todayDateString = moment().format('L');
+
+            setInput(nativeElement, todayDateString, fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe(todayDateString);
+
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+
+            expect(ngModel.errors).toBeNull();
+          }));
+
+          it('should validate properly when the fuzzy date cannot be in future'
+            + ' overriding the default error message and a future date is passed'
+            + ' through input change', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized cannot be in future message';
+            fixture.componentInstance.cannotBeFuture = true;
+            fixture.componentInstance.cannotBeFutureErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            let futureDateString = moment().add(1, 'days').format('L');
+
+            setInput(nativeElement, futureDateString, fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe(futureDateString);
+
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            let todayDateString = moment().format('L');
+
+            setInput(nativeElement, todayDateString, fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe(todayDateString);
+
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+
+            expect(ngModel.errors).toBeNull();
+          }));
+
+          it('should validate properly when year is required and values are passed through input change', fakeAsync(() => {
+            let expectedValidationMessage = 'Please select a year.';
+            fixture.componentInstance.yearRequired = true;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/12', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12');
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/12/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12/2015');
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
+
+        it('should validate properly when year is required overriding the default error message'
+          + ' and values are passed through input change', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized year required error message';
+            fixture.componentInstance.yearRequired = true;
+            fixture.componentInstance.yearRequiredErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/12', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12');
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/12/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12/2015');
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
       });
 
       describe('min max fuzzy date', () => {
@@ -1762,10 +1923,130 @@ describe('datepicker', () => {
           ngModel = <NgModel>inputElement.injector.get(NgModel);
         });
 
-        it('should handle change above max fuzzy date', fakeAsync(() => {
-          component.selectedDate = new Date('5/21/2017');
+        it('should validate properly when the date is passed through input change'
+          + ' beyond the max fuzzy date', fakeAsync(() => {
+            let expectedValidationMessage = 'The current date is beyond the maximum allowed date.';
+            fixture.componentInstance.maxFuzzyDate = { month: 2, day: 15, year: 2015 };
 
-          // component.maxDate = new Date('5/25/2017');
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/16/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/16/2015');
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/15/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/15/2015');
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
+
+        it('should validate properly when the date is passed through input change'
+          + ' beyond the max fuzzy date overriding the default error message', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized beyond max fuzzy date message';
+            fixture.componentInstance.maxFuzzyDate = { month: 2, day: 15, year: 2015 };
+            fixture.componentInstance.maxFuzzyDateErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/16/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/16/2015');
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/15/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/15/2015');
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
+
+          it('should validate properly when the date is passed through input change'
+            + ' prior to the min fuzzy date', fakeAsync(() => {
+            let expectedValidationMessage = 'The current date is before the minimum allowed date.';
+            fixture.componentInstance.minFuzzyDate = { month: 2, day: 15, year: 2015 };
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/14/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/14/2015');
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/15/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/15/2015');
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
+
+          it('should validate properly when the date is passed through input change'
+            + ' prior to the min fuzzy date overriding the default error message', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized beyond max fuzzy date message';
+            fixture.componentInstance.minFuzzyDate = { month: 2, day: 15, year: 2015 };
+            fixture.componentInstance.minFuzzyDateErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/14/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/14/2015');
+            expect(ngModel.valid).toBe(false);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(ngModel.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/15/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/15/2015');
+            expect(ngModel.valid).toBe(true);
+            expect(ngModel.touched).toBe(true);
+            expect(ngModel.errors).toBeNull();
+          }));
+
+        it('should handle change above max fuzzy fuzzy date', fakeAsync(() => {
+          component.selectedDate = new Date('5/21/2017');
           component.maxFuzzyDate = { month: 5, day: 25, year: 2017 };
           fixture.detectChanges();
           tick();
@@ -1777,9 +2058,8 @@ describe('datepicker', () => {
 
         }));
 
-        it('should handle change below min date', fakeAsync(() => {
+        it('should handle change below min fuzzy date', fakeAsync(() => {
           component.selectedDate = new Date('5/21/2017');
-          // component.minDate = new Date('5/4/2017');
           component.minFuzzyDate = { month: 5, day: 4, year: 2017 };
           fixture.detectChanges();
           tick();
@@ -1792,13 +2072,10 @@ describe('datepicker', () => {
 
         it('should pass max date to calendar', fakeAsync(() => {
           component.selectedDate = new Date('5/21/2017');
-          // component.maxDate = new Date('5/25/2017');
           component.maxFuzzyDate = { month: 5, day: 25, year: 2017 };
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
-
-          console.log('maxDate: ' + component.maxDate);
 
           openDatepicker(fixture.nativeElement, fixture);
           tick();
@@ -1812,7 +2089,6 @@ describe('datepicker', () => {
 
         it('should pass min date to calendar', fakeAsync(() => {
           component.selectedDate = new Date('5/21/2017');
-          // component.minDate = new Date('5/4/2017');
           component.minFuzzyDate = { month: 5, day: 4, year: 2017 };
           fixture.detectChanges();
           tick();
@@ -2104,9 +2380,6 @@ describe('datepicker', () => {
             setInput(nativeElement, 'abcdebf', fixture);
             fixture.detectChanges();
 
-            console.log('input value: ' + nativeElement.querySelector('input').value);
-            console.log('datecontrol value: ' + component.dateControl.value);
-
             expect(nativeElement.querySelector('input').value).toBe('abcdebf');
 
             expect(component.dateControl.value).toEqual('abcdebf');
@@ -2202,6 +2475,120 @@ describe('datepicker', () => {
           tick();
         }));
 
+        it('should validate properly when an invalid date format is passed through input change',
+          fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized invalid date format message';
+            fixture.componentInstance.dateFormat = 'mm/dd/yyyy';
+            fixture.componentInstance.dateFormatErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2015/2/12', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2015/2/12');
+
+            expect(component.dateControl.valid).toBe(false);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+
+            expect(component.dateControl.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(component.dateControl.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/12/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12/2015');
+
+            expect(component.dateControl.errors).toBeNull();
+
+            expect(component.dateControl.valid).toBe(true);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+          }));
+
+          it('should validate properly when the fuzzy date cannot be in future'
+            + 'and a future date is passed through input change', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized cannot be in future message';
+            fixture.componentInstance.cannotBeFuture = true;
+            fixture.componentInstance.cannotBeFutureErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            let futureDateString = moment().add(1, 'days').format('L');
+
+            setInput(nativeElement, futureDateString, fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe(futureDateString);
+
+            expect(component.dateControl.valid).toBe(false);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+
+            expect(component.dateControl.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(component.dateControl.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            let todayDateString = moment().format('L');
+
+            setInput(nativeElement, todayDateString, fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe(todayDateString);
+
+            expect(component.dateControl.errors).toBeNull();
+
+            expect(component.dateControl.valid).toBe(true);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+          }));
+
+        it('should validate properly when year is required and values are passed through input change', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized year required error message';
+            fixture.componentInstance.yearRequired = true;
+            fixture.componentInstance.yearRequiredErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/12', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12');
+
+            expect(component.dateControl.valid).toBe(false);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+
+            expect(component.dateControl.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(component.dateControl.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/12/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/12/2015');
+
+            expect(component.dateControl.errors).toBeNull();
+
+            expect(component.dateControl.valid).toBe(true);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+          }));
+
         it('should handle noValidate property', fakeAsync(() => {
           component.noValidate = true;
 
@@ -2222,10 +2609,81 @@ describe('datepicker', () => {
       });
 
       describe('min max fuzzy date', () => {
-        it('should handle change above max date', fakeAsync(() => {
+        it('should validate properly when the date is passed through input change beyond the max fuzzy date', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized beyond max fuzzy date message';
+            fixture.componentInstance.maxFuzzyDate = { month: 2, day: 15, year: 2015 };
+            fixture.componentInstance.maxFuzzyDateErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/16/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/16/2015');
+
+            expect(component.dateControl.valid).toBe(false);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+
+            expect(component.dateControl.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(component.dateControl.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/15/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/15/2015');
+
+            expect(component.dateControl.errors).toBeNull();
+
+            expect(component.dateControl.valid).toBe(true);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+          }));
+
+          it('should validate properly when the date is passed through input change beyond the max fuzzy date', fakeAsync(() => {
+            let expectedValidationMessage = 'Specialized beyond max fuzzy date message';
+            fixture.componentInstance.minFuzzyDate = { month: 2, day: 15, year: 2015 };
+            fixture.componentInstance.minFuzzyDateErrorMessage = expectedValidationMessage;
+
+            fixture.detectChanges();
+            tick();
+
+            setInput(nativeElement, '2/14/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/14/2015');
+
+            expect(component.dateControl.valid).toBe(false);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+
+            expect(component.dateControl.errors.skyFuzzyDate.invalid)
+              .toBeTruthy();
+            expect(component.dateControl.errors.skyFuzzyDate.validationErrorMessage)
+              .toEqual(expectedValidationMessage);
+
+            setInput(nativeElement, '2/15/2015', fixture);
+            fixture.detectChanges();
+            tick();
+
+            expect(nativeElement.querySelector('input').value).toBe('2/15/2015');
+
+            expect(component.dateControl.errors).toBeNull();
+
+            expect(component.dateControl.valid).toBe(true);
+            expect(component.dateControl.pristine).toBe(false);
+            expect(component.dateControl.touched).toBe(true);
+          }));
+
+        it('should handle change above max fuzzy date passed on model change', fakeAsync(() => {
           fixture.detectChanges();
           component.dateControl.setValue(new Date('5/21/2017'));
-          // component.maxDate = new Date('5/25/2017');
           component.maxFuzzyDate = { month: 5, day: 25, year: 2017 };
           fixture.detectChanges();
           tick();
@@ -2237,10 +2695,9 @@ describe('datepicker', () => {
 
         }));
 
-        it('should handle change below min date', fakeAsync(() => {
+        it('should handle change below min fuzzy date passed on model change', fakeAsync(() => {
           fixture.detectChanges();
           component.dateControl.setValue(new Date('5/21/2017'));
-          // component.minDate = new Date('5/4/2017');
           component.minFuzzyDate = { month: 5, day: 4, year: 2017 };
           fixture.detectChanges();
           tick();
@@ -2254,7 +2711,6 @@ describe('datepicker', () => {
         it('should pass max date to calendar', fakeAsync(() => {
           fixture.detectChanges();
           component.dateControl.setValue(new Date('5/21/2017'));
-          // component.maxDate = new Date('5/25/2017');
           component.maxFuzzyDate = { month: 5, day: 25, year: 2017 };
           fixture.detectChanges();
           tick();
@@ -2273,7 +2729,6 @@ describe('datepicker', () => {
         it('should pass min date to calendar', fakeAsync(() => {
           fixture.detectChanges();
           component.dateControl.setValue(new Date('5/21/2017'));
-          // component.minDate = new Date('5/4/2017');
           component.minFuzzyDate = { month: 5, day: 4, year: 2017 };
           fixture.detectChanges();
           tick();

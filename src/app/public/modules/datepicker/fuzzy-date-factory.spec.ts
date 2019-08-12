@@ -6,6 +6,7 @@ import { SkyAppTestModule } from '@skyux-sdk/builder/runtime/testing/browser';
 import { SkyFuzzyDateFactory } from './fuzzy-date-factory';
 
 import { SkyFuzzyDate } from './fuzzy-date';
+// import { SkyWindowRefService } from '@skyux/core';
 
 let moment = require('moment');
 
@@ -25,6 +26,58 @@ describe('SkyFuzzyDateFactory', () => {
 
       factory = TestBed.get(SkyFuzzyDateFactory);
     });
+
+  describe('getSeparatorFromDateString', () => {
+    it('should find the expected date string separators',
+      function() {
+        let separator = factory.getSeparatorFromDateString('5/12/2017');
+        expect(separator).toEqual('/');
+
+        separator = factory.getSeparatorFromDateString('5.12.2017');
+        expect(separator).toEqual('.');
+
+        separator = factory.getSeparatorFromDateString('5-12-2017');
+        expect(separator).toEqual('-');
+
+        separator = factory.getSeparatorFromDateString('5 12 2017');
+        expect(separator).toEqual(' ');
+      });
+
+      it('should return undefined for an undefined or empty date string',
+      function() {
+        let separator = factory.getSeparatorFromDateString(undefined);
+        expect(separator).toBeUndefined();
+
+        separator = factory.getSeparatorFromDateString('');
+        expect(separator).toBeUndefined();
+      });
+  });
+
+  describe('getYearFromDateString', () => {
+    it('should properly return the year from a date string',
+      function() {
+        let year = factory.getYearFromDateString('5/12/2017', '/');
+        expect(year).toEqual(2017);
+
+        year = factory.getYearFromDateString('2015/5/12', '/');
+        expect(year).toEqual(2015);
+      });
+
+    it('should return an undefined year from a date string with a 2-digit year',
+      function() {
+        let year = factory.getYearFromDateString('5/12/17', '/');
+        expect(year).toBeUndefined();
+      });
+
+    it('should return an undefined year from an undefined or empty date string',
+      function() {
+        let year = factory.getYearFromDateString(undefined, '/');
+        expect(year).toBeUndefined();
+
+        year = factory.getYearFromDateString('', '/');
+        expect(year).toBeUndefined();
+      });
+  });
 
   describe('getFuzzyDateFromSelectedDate', () => {
 
@@ -150,7 +203,6 @@ describe('SkyFuzzyDateFactory', () => {
           stringDate = '1/89',
           actual;
 
-          console.log('stringDate: ' + stringDate);
       // act
       actual = factory.getFuzzyDateFromDateString(stringDate, dateFormat);
 
@@ -243,6 +295,34 @@ describe('SkyFuzzyDateFactory', () => {
 
         // assert
         expect(actual).toBeUndefined();
+    });
+
+    it('returns a fuzzy date object if the date provided includes a string month.', function () {
+      // arrange
+      let stringDate = 'January 1 2003',
+          actual;
+
+      moment.locale('en');
+
+      // act
+      actual = factory.getFuzzyDateFromDateString(stringDate, defaultDateFormat);
+
+      // assert
+      expect(actual).toEqual({ month: 1, day: 1, year: 2003 });
+    });
+
+    it('returns null if the date provided includes an invalid string month.', function () {
+      // arrange
+      let stringDate = 'FakeMonth 1 2003',
+          actual;
+
+      moment.locale('en');
+
+      // act
+      actual = factory.getFuzzyDateFromDateString(stringDate, defaultDateFormat);
+
+      // assert
+      expect(actual).toBeUndefined();
     });
   });
 

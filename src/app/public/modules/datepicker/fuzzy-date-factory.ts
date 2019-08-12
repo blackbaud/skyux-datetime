@@ -10,8 +10,6 @@ export class SkyFuzzyDateFactory {
 
     if (!dateString) { return; }
 
-    console.log('getSeparatorFromDateString - dateString: ' + dateString);
-
     allSeparators.forEach(currentSeparator => {
       if (!separator && dateString.indexOf(currentSeparator) > 0) {
         separator = currentSeparator;
@@ -51,9 +49,6 @@ export class SkyFuzzyDateFactory {
     let dateString: string = '';
     let separator: any;
 
-    console.log('getDateStringFromFuzzyDate - fuzzyDate: ' + JSON.stringify(fuzzyDate));
-    console.log('getDateStringFromFuzzyDate - dateFormatString: ' + dateFormatString);
-
     if (!fuzzyDate || !dateFormatString) { return; }
 
     dateFormatString = dateFormatString.toLowerCase();
@@ -66,11 +61,7 @@ export class SkyFuzzyDateFactory {
     ];
     dateComponents.sort(function (a: any, b: any) { return a.index - b.index; });
 
-    console.log('getDateStringFromFuzzyDate - dateComponents: ' + JSON.stringify(dateComponents));
-
     separator = this.getSeparatorFromDateString(dateFormatString);
-
-    console.log('getDateStringFromFuzzyDate - separator: \'' + separator + '\'');
 
     dateComponents.forEach(component => {
       if (component.value > 0 && component.index > -1) {
@@ -82,8 +73,6 @@ export class SkyFuzzyDateFactory {
       }
     });
 
-    console.log('getDateStringFromFuzzyDate - dateString: ' + dateString);
-
     return dateString.trim();
   }
 
@@ -92,8 +81,6 @@ export class SkyFuzzyDateFactory {
         yearIndex,
         monthIndex,
         dayIndex;
-
-    // console.log('factory.getFuzzyDateFromDateString - dateString: ' + dateString);
 
     if (!selectedDate || !dateFormatString) { return; }
 
@@ -131,8 +118,6 @@ export class SkyFuzzyDateFactory {
         dayIndex,
         dateComponentIndexes = [];
 
-    console.log('factory.getFuzzyDateFromDateString - dateString: ' + dateString);
-
     if (!dateString || !dateFormatString) { return; }
 
     dateFormatString = dateFormatString.toLowerCase();
@@ -141,10 +126,6 @@ export class SkyFuzzyDateFactory {
     yearIndex = dateFormatString.indexOf('y');
     monthIndex = dateFormatString.indexOf('m');
     dayIndex = dateFormatString.indexOf('d');
-
-    console.log('getFuzzyDateFromDateString - actual yearIndex: ' + yearIndex);
-    console.log('getFuzzyDateFromDateString - actual monthIndex: ' + monthIndex);
-    console.log('getFuzzyDateFromDateString - actual dayIndex: ' + dayIndex);
 
     // dateComponentIndexes = [yearIndex, monthIndex, dayIndex];
 
@@ -166,19 +147,9 @@ export class SkyFuzzyDateFactory {
     monthIndex = dateComponentIndexes.indexOf(monthIndex);
     dayIndex = dateComponentIndexes.indexOf(dayIndex);
 
-    console.log('getFuzzyDateFromDateString - array position yearIndex: ' + yearIndex);
-    console.log('getFuzzyDateFromDateString - array position monthIndex: ' + monthIndex);
-    console.log('getFuzzyDateFromDateString - array position dayIndex: ' + dayIndex);
-
-    console.log('factory.getFuzzyDateFromDateString - yearIndex: ' + yearIndex);
-    console.log('factory.getFuzzyDateFromDateString - monthIndex: ' + monthIndex);
-    console.log('factory.getFuzzyDateFromDateString - dayIndex: ' + dayIndex);
-
     // Get the date string's components based on the separator used in the string
     separator = this.getSeparatorFromDateString(dateString);
     dateComponents = dateString.split(separator);
-
-    console.log('dateComponents: ' + JSON.stringify(dateComponents));
 
     // Look at the date string's component count
     // 3 indicates a full date
@@ -209,30 +180,7 @@ export class SkyFuzzyDateFactory {
             month = (monthIndex < yearIndex) ? dateComponents[0] : dateComponents[1];
             year = (month === dateComponents[1]) ? dateComponents[0] : dateComponents[1];
           }
-
-        /*
-          let maxDateComponentsIndex = dateComponents.length - 1;
-
-          console.log('getFuzzyDateFromDateString - yearIndex: ' + yearIndex);
-          console.log('getFuzzyDateFromDateString - monthIndex: ' + monthIndex);
-          console.log('getFuzzyDateFromDateString - dayIndex: ' + dayIndex);
-
-          if (yearIndex > -1 && yearIndex <= maxDateComponentsIndex) {
-            year = dateComponents[yearIndex];
-          }
-          if (monthIndex > -1 && monthIndex <= maxDateComponentsIndex) {
-            month = dateComponents[monthIndex];
-          }
-          if (dayIndex > -1 && dayIndex <= maxDateComponentsIndex) {
-            day = dateComponents[dayIndex];
-          }
-        */
-
         }
-
-        console.log('getFuzzyDateFromDateString - year: ' + year);
-        console.log('getFuzzyDateFromDateString - month: ' + month);
-        console.log('getFuzzyDateFromDateString - day: ' + day);
 
         break;
     case 1:
@@ -246,6 +194,7 @@ export class SkyFuzzyDateFactory {
         // If the month component is a string ("Janaury"), we check to see if it is a valid month
         if (isNaN(parseInt(month, 10))) {
             month = moment.localeData().monthsParse(month);
+
             if (month === undefined) { return; }
             month += 1;
         } else {
