@@ -37,7 +37,7 @@ export class FuzzyDatepickerReactiveTestComponent implements OnInit {
   public datepickerForm: FormGroup;
   public isDisabled: boolean;
   public dateControl: FormControl;
-  public initialValue: Date | string;
+  public initialValue: any;
   public noValidate: boolean = false;
   public startingDay = 0;
 

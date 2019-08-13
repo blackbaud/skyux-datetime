@@ -1402,6 +1402,36 @@ describe('datepicker', () => {
       }));
 
       describe('initialization', () => {
+        it('should handle initializing with a Fuzzy Date object', fakeAsync(() => {
+          component.selectedDate = { month: 5, day: 12, year: 2017 };
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12/2017');
+          expect(component.selectedDate).toEqual({ day: 12, month: 5, year: 2017 });
+        }));
+
+        it('should handle initializing with a Fuzzy Date object excluding year', fakeAsync(() => {
+          component.selectedDate = { month: 5, day: 12 };
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12');
+          expect(component.selectedDate).toEqual({ day: 12, month: 5 });
+        }));
+
+        it('should handle initializing with a Fuzzy Date object with a zero year', fakeAsync(() => {
+          component.selectedDate = { month: 5, day: 12, year: 0 };
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12');
+          expect(component.selectedDate).toEqual({ day: 12, month: 5, year: 0 });
+        }));
+
         it('should handle initializing with a Date object', fakeAsync(() => {
           component.selectedDate = new Date('5/12/2017');
           fixture.detectChanges();
@@ -1421,6 +1451,16 @@ describe('datepicker', () => {
 
           expect(nativeElement.querySelector('input').value).toBe('5/12/2017');
 
+          expect(component.selectedDate).toEqual({ day: 12, month: 5, year: 2017 });
+        }));
+
+        it('should handle initializing with a string with a two digit years', fakeAsync(() => {
+          component.selectedDate = '5/12/17';
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12/17');
           expect(component.selectedDate).toEqual({ day: 12, month: 5, year: 2017 });
         }));
 
@@ -1447,16 +1487,6 @@ describe('datepicker', () => {
           expect(nativeElement.querySelector('input')).toHaveCssClass('ng-invalid');
          // expect(component.selectedDate)
          //   .toEqual(moment('1994-11-05T08:15:30-05:00', 'YYYY-MM-DDThh:mm:ss.sssZ').toDate());
-        }));
-
-        it('should handle two digit years', fakeAsync(() => {
-          component.selectedDate = '5/12/17';
-          fixture.detectChanges();
-          tick();
-          fixture.detectChanges();
-
-          expect(nativeElement.querySelector('input').value).toBe('5/12/17');
-          expect(component.selectedDate).toEqual({ day: 12, month: 5, year: 2017 });
         }));
 
         it('should handle undefined initialization', fakeAsync(() => {
@@ -2227,7 +2257,37 @@ describe('datepicker', () => {
       });
 
       describe('initial value', () => {
-        it('should set the initial value correctly', fakeAsync(() => {
+        it('should set the Fuzzy Date object value correctly', fakeAsync(() => {
+          component.initialValue = { month: 5, day: 12, year: 2017 };
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12/2017');
+          expect(component.dateControl.value).toEqual({ day: 12, month: 5, year: 2017 });
+        }));
+
+        it('should hset the Fuzzy Date object excluding year value correctly', fakeAsync(() => {
+          component.initialValue = { month: 5, day: 12 };
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12');
+          expect(component.dateControl.value).toEqual({ day: 12, month: 5 });
+        }));
+
+        it('should set the Fuzzy Date object with a zero year value correctly', fakeAsync(() => {
+          component.initialValue = { month: 5, day: 12, year: 0 };
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          expect(nativeElement.querySelector('input').value).toBe('5/12');
+          expect(component.dateControl.value).toEqual({ day: 12, month: 5, year: 0 });
+        }));
+
+        it('should set the string initial value correctly', fakeAsync(() => {
           component.initialValue = '5/12/2017';
           fixture.detectChanges();
           tick();
