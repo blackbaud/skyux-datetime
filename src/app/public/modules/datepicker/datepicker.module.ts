@@ -62,6 +62,10 @@ import {
   SkyFuzzyDatepickerInputDirective
 } from './datepicker-input-fuzzy.directive';
 
+import {
+  SkyFuzzyDateFactory
+} from './fuzzy-date-factory';
+
 @NgModule({
   declarations: [
     SkyDatepickerCalendarComponent,
@@ -92,7 +96,8 @@ import {
     SkyFuzzyDatepickerInputDirective
   ],
   providers: [
-    SkyDatepickerConfigService
+    SkyDatepickerConfigService,
+    SkyFuzzyDateFactory
   ]
 })
 export class SkyDatepickerModule { }
