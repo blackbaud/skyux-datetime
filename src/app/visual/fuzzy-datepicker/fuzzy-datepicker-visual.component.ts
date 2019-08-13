@@ -17,6 +17,7 @@ import {
 })
 export class FuzzyDatepickerVisualComponent implements OnInit {
   public disabled = false;
+  public dateFormat: any = 'MM/DD/YYYY';
   public minFuzzyDate: any;
   public maxFuzzyDate: any;
   public yearRequired: boolean;

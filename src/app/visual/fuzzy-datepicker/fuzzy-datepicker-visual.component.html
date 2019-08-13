@@ -18,19 +18,20 @@
 >
   <sky-datepicker>
     <input
+      [cannotBeFuture]="cannotBeFuture"
       [disabled]="disabled"
+      [dateFormat]="dateFormat"
       [maxFuzzyDate]="maxFuzzyDate"
       [minFuzzyDate]="minFuzzyDate"
       [skyFuzzyDatepickerInput]
       [skyDatepickerNoValidate]="noValidate"
       [startingDay]="startingDay"
       [yearRequired]="yearRequired"
-      [cannotBeFuture]="cannotBeFuture"
+      [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
       [dateFormatErrorMessage]="dateFormatErrorMessage"
-      [yearRequiredErrorMessage]="yearRequiredErrorMessage"
       [maxFuzzyDateErrorMessage]="maxFuzzyDateErrorMessage"
       [minFuzzyDateErrorMessage]="minFuzzyDateErrorMessage"
-      [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
+      [yearRequiredErrorMessage]="yearRequiredErrorMessage"
       [(ngModel)]="selectedDate"
       #date="ngModel"
     />
@@ -75,17 +76,18 @@
         formControlName="selectedDate"
         skyFuzzyDatepickerInput
         type="text"
+        [cannotBeFuture]="cannotBeFuture"
+        [dateFormat]="dateFormat"
         [maxFuzzyDate]="maxFuzzyDate"
         [minFuzzyDate]="minFuzzyDate"
         [skyDatepickerNoValidate]="noValidate"
         [startingDay]="startingDay"
         [yearRequired]="yearRequired"
-        [cannotBeFuture]="cannotBeFuture"
+        [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
         [dateFormatErrorMessage]="dateFormatErrorMessage"
-        [yearRequiredErrorMessage]="yearRequiredErrorMessage"
         [maxFuzzyDateErrorMessage]="maxFuzzyDateErrorMessage"
         [minFuzzyDateErrorMessage]="minFuzzyDateErrorMessage"
-        [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
+        [yearRequiredErrorMessage]="yearRequiredErrorMessage"
       />
     </sky-datepicker>
 

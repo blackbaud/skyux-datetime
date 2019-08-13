@@ -1612,6 +1612,32 @@ describe('datepicker', () => {
           expect(nativeElement.querySelector('input').value).toBe('05/12/2017');
         }));
 
+        it('should handle model change with a Date object and a date format excluding year', fakeAsync(() => {
+          fixture.componentInstance.dateFormat = 'MM/DD';
+          fixture.detectChanges();
+          tick();
+
+          component.selectedDate = new Date('5/12/2017');
+          fixture.detectChanges();
+          tick();
+
+          expect(nativeElement.querySelector('input').value).toBe('05/12');
+          expect(component.selectedDate).toEqual({ month: 5, day: 12 });
+        }));
+
+        it('should handle model change with a Date object and a date format excluding day', fakeAsync(() => {
+          fixture.componentInstance.dateFormat = 'MM/YYYY';
+          fixture.detectChanges();
+          tick();
+
+          component.selectedDate = new Date('5/12/2017');
+          fixture.detectChanges();
+          tick();
+
+          expect(nativeElement.querySelector('input').value).toBe('05/2017');
+          expect(component.selectedDate).toEqual({ month: 5, year: 2017 });
+        }));
+
         it('should handle model change with a string with the expected format', fakeAsync(() => {
           fixture.detectChanges();
           component.selectedDate = '5/12/2017';
