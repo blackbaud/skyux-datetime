@@ -498,5 +498,10 @@ describe('SkyFuzzyDateFactory', () => {
       let leapYear = factory.getMostRecentLeapYear(undefined);
       expect(leapYear).toBeUndefined();
     });
+
+    it('should returned undefined for current year less than 4', function() {
+      let leapYear = factory.getMostRecentLeapYear(3);
+      expect(leapYear).toBeUndefined();
+    });
   });
 });

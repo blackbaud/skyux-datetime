@@ -270,13 +270,13 @@ export class SkyFuzzyDateFactory {
   }
 
   public getMostRecentLeapYear(currentYear: number): number {
-    if (!currentYear) {
+    if (!currentYear || currentYear < 4) {
       return;
     }
 
     let leapYear = currentYear;
 
-    while (leapYear >= 0 && !this.isLeapYear(leapYear)) {
+    while (!this.isLeapYear(leapYear)) {
       leapYear -= 1;
     }
 
