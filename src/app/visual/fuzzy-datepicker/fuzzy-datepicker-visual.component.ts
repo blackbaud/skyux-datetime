@@ -10,6 +10,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { SkyFuzzyDateFactory } from '../../public/modules/datepicker/fuzzy-date-factory';
 
 @Component({
   selector: 'fuzzy-datepicker-visual',
@@ -25,7 +26,7 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
 
   public noValidate = false;
   public reactiveForm: FormGroup;
-  public selectedDate: any = '4/4/2017';
+  public selectedFuzzyDate: any = { month: 4, day: 4, year: 2017 };
   public startingDay: number;
 
   public dateFormatErrorMessage: any;
@@ -35,16 +36,30 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
   public cannotBeFutureErrorMessage: any;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private fuzzyDateFactory: SkyFuzzyDateFactory
   ) { }
 
   public get reactiveDate(): AbstractControl {
-    return this.reactiveForm.get('selectedDate');
+    return this.reactiveForm.get('selectedFuzzyDate');
+  }
+
+  // This property is only necessary to support the datepicker-calendar
+  //    on the page with the fuzzy datepicker
+  public get selectedDate(): any {
+    let fuzzyMoment = this.fuzzyDateFactory.getMomentFromFuzzyDate(this.selectedFuzzyDate);
+    let selectedDate: any;
+
+    if (fuzzyMoment) {
+      selectedDate = fuzzyMoment.toDate();
+    }
+
+    return selectedDate;
   }
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      selectedDate: new FormControl('4/4/2017', Validators.required)
+      selectedFuzzyDate: new FormControl('4/4/2017', Validators.required)
     });
 
     this.reactiveDate.statusChanges
@@ -91,16 +106,16 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
 
   public setValue(): void {
     this.reactiveDate.setValue(new Date('2/2/2001'));
-    this.selectedDate = new Date('2/2/2001');
+    this.selectedFuzzyDate = new Date('2/2/2001');
   }
 
   public setInvalidValue(): void {
     this.reactiveDate.setValue('invalid');
-    this.selectedDate = 'invalid';
+    this.selectedFuzzyDate = 'invalid';
   }
 
   public get selectedDateForDisplay(): string {
-    return JSON.stringify(this.selectedDate);
+    return JSON.stringify(this.selectedFuzzyDate);
   }
 
   public get reactiveFormSelectedDateForDisplay(): string {

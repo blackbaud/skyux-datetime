@@ -261,21 +261,22 @@ describe('SkyFuzzyDateFactory', () => {
         expect(actual).toEqual(expected);
     });
 
-    it('returns null if the date provided if 2/29 is provided as a full date with a non-leap-year year date.', function () {
+    it('returns a fuzzy date object if 2/29 is provided excluding year.', function () {
+      // arrange
+      let expectedFuzzyDate: SkyFuzzyDate = { month: 2, day: 29, year: undefined };
+      let stringDate = factory.getDateStringFromFuzzyDate(expectedFuzzyDate, defaultDateFormat),
+          actual;
+
+      // act
+      actual = factory.getFuzzyDateFromDateString(stringDate, defaultDateFormat);
+
+      // assert
+      expect(actual).toEqual(expectedFuzzyDate);
+  });
+
+    it('returns null if 2/29 is provided as a full date including a non-leap-year.', function () {
         // arrange
         let stringDate = factory.getDateStringFromFuzzyDate({ month: 2, day: 29, year: 2001 }, defaultDateFormat),
-            actual;
-
-        // act
-        actual = factory.getFuzzyDateFromDateString(stringDate, defaultDateFormat);
-
-        // assert
-        expect(actual).toBeUndefined();
-    });
-
-    it('returns null if the date provided if 2/29 is provided as a month day date.', function () {
-        // arrange
-        let stringDate = factory.getDateStringFromFuzzyDate({ month: 2, day: 29 }, defaultDateFormat),
             actual;
 
         // act
@@ -394,10 +395,11 @@ describe('SkyFuzzyDateFactory', () => {
         expect(actual).toEqual(expected);
     });
 
-    it('defaults the year to 2000 with fuzzy date\'s not having a year', function () {
+    it('defaults the year to the current year with fuzzy date\'s not having a year', function () {
         // arrange
         let fuzzyDate: SkyFuzzyDate = { month: 11, day: 5 },
-            expected = moment([2000, fuzzyDate.month - 1, fuzzyDate.day]),
+            currentYear = new Date().getFullYear(),
+            expected = moment([currentYear, fuzzyDate.month - 1, fuzzyDate.day]),
             actual;
 
         // act
@@ -481,4 +483,20 @@ describe('SkyFuzzyDateFactory', () => {
     });
   });
 
+  describe('getMostRecentLeapYear', function() {
+    it('should return the current year when it is a leap year', function() {
+      let leapYear = factory.getMostRecentLeapYear(2000);
+      expect(leapYear).toEqual(2000);
+    });
+
+    it('should return the most recent leap year', function() {
+      let leapYear = factory.getMostRecentLeapYear(2019);
+      expect(leapYear).toEqual(2016);
+    });
+
+    it('should returned undefined for undefined current year', function() {
+      let leapYear = factory.getMostRecentLeapYear(undefined);
+      expect(leapYear).toBeUndefined();
+    });
+  });
 });

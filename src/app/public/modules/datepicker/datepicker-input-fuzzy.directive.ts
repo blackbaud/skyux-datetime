@@ -163,6 +163,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
 
   protected set value(value: any) {
     let fuzzyDate: SkyFuzzyDate;
+    let fuzzyMoment: any;
     let dateValue: Date;
     let formattedDate: string;
 
@@ -170,18 +171,25 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
       dateValue = value;
       formattedDate = this.dateFormatter.format(value, this.dateFormat);
       fuzzyDate = this.fuzzyDateFactory.getFuzzyDateFromSelectedDate(value, this.dateFormat);
+
     } else if (typeof value === 'string') {
       formattedDate = value;
       fuzzyDate = this.fuzzyDateFactory.getFuzzyDateFromDateString(value, this.dateFormat);
 
-      let fuzzyMoment = this.fuzzyDateFactory.getMomentFromFuzzyDate(fuzzyDate);
+      fuzzyMoment = this.fuzzyDateFactory.getMomentFromFuzzyDate(fuzzyDate);
 
       if (fuzzyMoment) {
         dateValue = fuzzyMoment.toDate();
       }
+
     } else {
       fuzzyDate = value as SkyFuzzyDate;
       formattedDate = this.fuzzyDateFactory.getDateStringFromFuzzyDate(fuzzyDate, this.dateFormat);
+      fuzzyMoment = this.fuzzyDateFactory.getMomentFromFuzzyDate(fuzzyDate);
+
+      if (fuzzyMoment) {
+        dateValue = fuzzyMoment.toDate();
+      }
     }
 
     const areFuzzyDatesEqual = (

@@ -37,12 +37,17 @@ export class SkyFuzzyDateFactory {
   }
 
   public getMomentFromFuzzyDate(fuzzyDate: any): any {
-      // Year to use for fuzzy dates that don't have a year.
-      //    Using same value from Blackbaud.Formatting.FuzzyDate.  Needs to be a valid year for leap years.
-      let defaultYear: number = 2000; // new Date().getFullYear();
+    // Year to use for fuzzy dates that don't have a year.
+    let defaultYear: number = new Date().getFullYear();
 
-      if (!fuzzyDate) { return; }
-      return moment([fuzzyDate.year || defaultYear, (fuzzyDate.month - 1) || 0, fuzzyDate.day || 1]);
+    if (!fuzzyDate) { return; }
+
+    if (fuzzyDate.month === 2 && fuzzyDate.day === 29) {
+      // Needs to be a valid year for leap years.
+      defaultYear = this.getMostRecentLeapYear(defaultYear);
+    }
+
+    return moment([fuzzyDate.year || defaultYear, (fuzzyDate.month - 1) || 0, fuzzyDate.day || 1]);
   }
 
   public getDateStringFromFuzzyDate(fuzzyDate: any, dateFormatString: any): string {
@@ -207,12 +212,12 @@ export class SkyFuzzyDateFactory {
         if (day) {
             day = parseInt(day, 10);
 
-            // Ensure that the day we have found is between 1 and the number of days in the month provided.
-            //  If a year is not provided, we use 2001 as the year because it is not a leap year
-            //    and we cannot accept February 29th as a month-day date
-            if (isNaN(day) || !(1 <= day && day <= this.getMomentFromFuzzyDate({ year: year || 2001, month: month }).daysInMonth())) {
-                return;
+            let fuzzyMoment = this.getMomentFromFuzzyDate({ month: month, day: day, year: year });
+
+            if (isNaN(day) || !fuzzyMoment.isValid()) {
+              return;
             }
+
         }
     }
 
@@ -255,7 +260,7 @@ export class SkyFuzzyDateFactory {
     };
 }
 
-public  getCurrentFuzzyDate() {
+  public  getCurrentFuzzyDate() {
     let currentDate = moment();
     return {
         day: currentDate.date(),
@@ -264,4 +269,21 @@ public  getCurrentFuzzyDate() {
     };
   }
 
+  public getMostRecentLeapYear(currentYear: number): number {
+    if (!currentYear) {
+      return;
+    }
+
+    let leapYear = currentYear;
+
+    while (leapYear >= 0 && !this.isLeapYear(leapYear)) {
+      leapYear -= 1;
+    }
+
+    return leapYear;
+  }
+
+  private isLeapYear(year: number): boolean {
+    return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
+  }
 }
