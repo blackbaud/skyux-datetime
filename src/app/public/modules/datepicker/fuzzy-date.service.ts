@@ -1,7 +1,9 @@
+import { Injectable } from '@angular/core';
 import { SkyFuzzyDate } from './fuzzy-date';
 
 let moment = require('moment');
 
+@Injectable()
 export class SkyFuzzyDateService {
 
   public getSeparatorFromDateString(dateString: string): string {
