@@ -63,8 +63,8 @@ import {
 } from './datepicker-input-fuzzy.directive';
 
 import {
-  SkyFuzzyDateFactory
-} from './fuzzy-date-factory';
+  SkyFuzzyDateService
+} from './fuzzy-date.service';
 
 @NgModule({
   declarations: [
@@ -97,7 +97,7 @@ import {
   ],
   providers: [
     SkyDatepickerConfigService,
-    SkyFuzzyDateFactory
+    SkyFuzzyDateService
   ]
 })
 export class SkyDatepickerModule { }

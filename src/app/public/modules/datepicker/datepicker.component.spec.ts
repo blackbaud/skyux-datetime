@@ -50,7 +50,7 @@ import { FuzzyDatepickerTestModule } from './fixtures/fuzzy-datepicker.module.fi
 import { FuzzyDatepickerNoFormatTestComponent } from './fixtures/fuzzy-datepicker-noformat.component.fixture';
 import { FuzzyDatepickerTestComponent } from './fixtures/fuzzy-datepicker.component.fixture';
 import { FuzzyDatepickerReactiveTestComponent } from './fixtures/fuzzy-datepicker-reactive.component.fixture';
-import { SkyFuzzyDateFactory } from './fuzzy-date-factory';
+import { SkyFuzzyDateService } from './fuzzy-date.service';
 
 const moment = require('moment');
 
@@ -1240,7 +1240,7 @@ describe('datepicker', () => {
           FuzzyDatepickerTestModule
         ],
         providers: [
-          SkyFuzzyDateFactory
+          SkyFuzzyDateService
         ]
       });
 

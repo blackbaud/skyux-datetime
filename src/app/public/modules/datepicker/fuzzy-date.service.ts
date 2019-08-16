@@ -2,7 +2,7 @@ import { SkyFuzzyDate } from './fuzzy-date';
 
 let moment = require('moment');
 
-export class SkyFuzzyDateFactory {
+export class SkyFuzzyDateService {
 
   public getSeparatorFromDateString(dateString: string): string {
     let separator: string;
