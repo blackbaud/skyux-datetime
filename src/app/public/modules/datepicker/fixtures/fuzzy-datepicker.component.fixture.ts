@@ -15,18 +15,10 @@ export class FuzzyDatepickerTestComponent {
   public inputDirective: SkyFuzzyDatepickerInputDirective;
 
   public maxFuzzyDate: any;
-  public maxFuzzyDateErrorMessage: any;
   public minFuzzyDate: any;
-  public minFuzzyDateErrorMessage: any;
   public dateFormat: any = 'MM/DD/YYYY';
-  public dateFormatErrorMessage: any;
   public yearRequired: boolean;
-  public yearRequiredErrorMessage: any;
   public cannotBeFuture: boolean;
-  public cannotBeFutureErrorMessage: any;
-
-  public minDate: Date;
-  public maxDate: Date;
 
   public selectedDate: any;
 

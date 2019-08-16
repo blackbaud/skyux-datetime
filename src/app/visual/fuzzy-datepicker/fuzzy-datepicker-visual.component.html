@@ -27,11 +27,6 @@
       [skyDatepickerNoValidate]="noValidate"
       [startingDay]="startingDay"
       [yearRequired]="yearRequired"
-      [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
-      [dateFormatErrorMessage]="dateFormatErrorMessage"
-      [maxFuzzyDateErrorMessage]="maxFuzzyDateErrorMessage"
-      [minFuzzyDateErrorMessage]="minFuzzyDateErrorMessage"
-      [yearRequiredErrorMessage]="yearRequiredErrorMessage"
       [(ngModel)]="selectedFuzzyDate"
       #date="ngModel"
     />
@@ -52,9 +47,21 @@
     </tr>
   </table>
 
-  <p *ngIf="date.errors && date.errors.skyFuzzyDate" class="sky-error-label">
+  <p *ngIf="date.errors?.skyFuzzyDate" class="sky-error-label">
     <span *ngIf="date.errors.skyFuzzyDate?.invalid">
-      {{ date.errors.skyFuzzyDate?.validationErrorMessage }}
+      Please enter a valid date.
+    </span>
+    <span *ngIf="date.errors.skyFuzzyDate?.yearRequired">
+      Please select a year.
+    </span>
+    <span *ngIf="date.errors.skyFuzzyDate?.cannotBeFuture">
+      Date cannot be in the future.
+    </span>
+    <span *ngIf="date.errors.skyFuzzyDate?.maxFuzzyDate">
+      The current date is beyond the maximum allowed date.
+    </span>
+    <span *ngIf="date.errors.skyFuzzyDate?.minFuzzyDate">
+      The current date is before the minimum allowed date.
     </span>
   </p>
 
@@ -83,11 +90,6 @@
         [skyDatepickerNoValidate]="noValidate"
         [startingDay]="startingDay"
         [yearRequired]="yearRequired"
-        [cannotBeFutureErrorMessage]="cannotBeFutureErrorMessage"
-        [dateFormatErrorMessage]="dateFormatErrorMessage"
-        [maxFuzzyDateErrorMessage]="maxFuzzyDateErrorMessage"
-        [minFuzzyDateErrorMessage]="minFuzzyDateErrorMessage"
-        [yearRequiredErrorMessage]="yearRequiredErrorMessage"
       />
     </sky-datepicker>
 
@@ -106,9 +108,21 @@
       </tr>
     </table>
 
-    <p *ngIf="reactiveDate.errors" class="sky-error-label">
+    <p *ngIf="reactiveDate.errors?.skyFuzzyDate" class="sky-error-label">
       <span *ngIf="reactiveDate.errors.skyFuzzyDate?.invalid">
-        {{ reactiveDate.errors.skyFuzzyDate?.validationErrorMessage }}
+        Please enter a valid date.
+      </span>
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.yearRequired">
+        Please select a year.
+      </span>
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.cannotBeFuture">
+        Date cannot be in the future.
+      </span>
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.maxFuzzyDate">
+        The current date is beyond the maximum allowed date.
+      </span>
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.minFuzzyDate">
+        The current date is before the minimum allowed date.
       </span>
     </p>
 

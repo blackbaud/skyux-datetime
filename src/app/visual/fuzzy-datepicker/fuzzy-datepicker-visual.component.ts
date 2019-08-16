@@ -31,12 +31,6 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
   public selectedFuzzyDate: any = { month: 4, day: 4, year: 2017 };
   public startingDay: number;
 
-  public dateFormatErrorMessage: any;
-  public yearRequiredErrorMessage: any;
-  public maxFuzzyDateErrorMessage: any;
-  public minFuzzyDateErrorMessage: any;
-  public cannotBeFutureErrorMessage: any;
-
   constructor(
     private formBuilder: FormBuilder,
     private fuzzyDateService: SkyFuzzyDateService

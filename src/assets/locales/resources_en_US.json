@@ -122,25 +122,5 @@
   "skyux_date_range_picker_after_date_label": {
     "_description": "The label for the date picker of the After format type.",
     "message": "After date"
-  },
-  "skyux_fuzzy_datepicker_invalid_format": {
-    "message": "Please enter a valid date.",
-    "_description": "Error message for an invalid fuzzy date."
-  },
-  "skyux_fuzzy_datepicker_year_required": {
-    "message": "Please select a year.",
-    "_description": "Error message for a fuzzy date missing the year when it is required."
-  },
-  "skyux_fuzzy_datepicker_cannot_be_in_the_future": {
-    "message": "Date cannot be in the future.",
-    "_description": "Error message for a fuzzy date that cannot be in the future."
-  },
-  "skyux_fuzzy_datepicker_min_fuzzy_date_error": {
-    "message": "The current date is before the minimum allowed date.",
-    "_description": "Error message for a fuzzy date less than the allowed min date."
-  },
-  "skyux_fuzzy_datepicker_max_fuzzy_date_error": {
-    "message": "The current date is beyond the maximum allowed date.",
-    "_description": "Error message for a fuzzy date greater than the allowed max date."
   }
 }

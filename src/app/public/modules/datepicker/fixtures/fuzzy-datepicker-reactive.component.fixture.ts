@@ -21,19 +21,12 @@ export class FuzzyDatepickerReactiveTestComponent implements OnInit {
   @ViewChild(SkyFuzzyDatepickerInputDirective)
   public inputDirective: SkyFuzzyDatepickerInputDirective;
 
-  public maxFuzzyDate: any;
-  public maxFuzzyDateErrorMessage: any;
-  public minFuzzyDate: any;
-  public minFuzzyDateErrorMessage: any;
-  public dateFormat: any;
-  public dateFormatErrorMessage: any;
-  public yearRequired: boolean;
-  public yearRequiredErrorMessage: any;
   public cannotBeFuture: boolean;
-  public cannotBeFutureErrorMessage: any;
+  public dateFormat: any;
+  public maxFuzzyDate: any;
+  public minFuzzyDate: any;
+  public yearRequired: boolean;
 
-  public minDate: Date;
-  public maxDate: Date;
   public datepickerForm: FormGroup;
   public isDisabled: boolean;
   public dateControl: FormControl;
