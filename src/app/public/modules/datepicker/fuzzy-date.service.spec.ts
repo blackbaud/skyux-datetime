@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { expect } from '@skyux-sdk/testing';
-import { SkyAppTestModule } from '@skyux-sdk/builder/runtime/testing/browser';
 import { SkyFuzzyDateService } from './fuzzy-date.service';
 
 import { SkyFuzzyDate } from './fuzzy-date';
@@ -14,9 +13,6 @@ describe('SkyFuzzyDateservice', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          SkyAppTestModule
-        ],
         providers: [
           SkyFuzzyDateService
         ]

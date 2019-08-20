@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { SkyFuzzyDate } from './fuzzy-date';
 
-let moment = require('moment');
+const moment = require('moment');
 
 @Injectable()
 export class SkyFuzzyDateService {
 
   public getSeparatorFromDateString(dateString: string): string {
+    if (!dateString) { return; }
+
     let separator: string;
     let allSeparators = ['/', '.', '-', ' '];
-
-    if (!dateString) { return; }
 
     allSeparators.forEach(currentSeparator => {
       if (!separator && dateString.indexOf(currentSeparator) > 0) {
@@ -22,27 +22,27 @@ export class SkyFuzzyDateService {
   }
 
   public getYearFromDateString(dateString: string, separator: string): number {
-      let year: any;
+    if (!dateString) { return; }
 
-      if (!dateString) { return; }
+    let year: any;
 
-      // Find the number value in the string that is 4 digits long.
-      dateString.split(separator).forEach(dateComponent => {
-        if (!year && parseInt(dateComponent, 10).toString().length === 4) {
-          year = dateComponent;
-        }
-      });
-
-      if (year && !isNaN(year)) {
-          return parseInt(year, 10);
+    // Find the number value in the string that is 4 digits long.
+    dateString.split(separator).forEach(dateComponent => {
+      if (!year && parseInt(dateComponent, 10).toString().length === 4) {
+        year = dateComponent;
       }
+    });
+
+    if (year && !isNaN(year)) {
+        return parseInt(year, 10);
+    }
   }
 
   public getMomentFromFuzzyDate(fuzzyDate: any): any {
+    if (!fuzzyDate) { return; }
+
     // Year to use for fuzzy dates that don't have a year.
     let defaultYear: number = new Date().getFullYear();
-
-    if (!fuzzyDate) { return; }
 
     if (fuzzyDate.month === 2 && fuzzyDate.day === 29) {
       // Needs to be a valid year for leap years.
@@ -53,10 +53,10 @@ export class SkyFuzzyDateService {
   }
 
   public getDateStringFromFuzzyDate(fuzzyDate: any, dateFormatString: any): string {
+    if (!fuzzyDate || !dateFormatString) { return; }
+
     let dateString: string = '';
     let separator: any;
-
-    if (!fuzzyDate || !dateFormatString) { return; }
 
     dateFormatString = dateFormatString.toLowerCase();
 
@@ -84,12 +84,12 @@ export class SkyFuzzyDateService {
   }
 
   public getFuzzyDateFromSelectedDate(selectedDate: Date, dateFormatString: string): any {
+    if (!selectedDate || !dateFormatString) { return; }
+
     let fuzzyDate: SkyFuzzyDate = {},
         yearIndex,
         monthIndex,
         dayIndex;
-
-    if (!selectedDate || !dateFormatString) { return; }
 
     dateFormatString = dateFormatString.toLowerCase();
 
@@ -115,6 +115,8 @@ export class SkyFuzzyDateService {
   }
 
   public getFuzzyDateFromDateString(dateString: string, dateFormatString: string): any {
+    if (!dateString || !dateFormatString) { return; }
+
     let day,
         month,
         year,
@@ -124,8 +126,6 @@ export class SkyFuzzyDateService {
         monthIndex,
         dayIndex,
         dateComponentIndexes = [];
-
-    if (!dateString || !dateFormatString) { return; }
 
     dateFormatString = dateFormatString.toLowerCase();
 
@@ -262,8 +262,9 @@ export class SkyFuzzyDateService {
     };
 }
 
-  public  getCurrentFuzzyDate() {
+  public getCurrentFuzzyDate() {
     let currentDate = moment();
+
     return {
         day: currentDate.date(),
         month: currentDate.month() + 1,

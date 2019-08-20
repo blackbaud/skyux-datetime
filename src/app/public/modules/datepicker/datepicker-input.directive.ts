@@ -277,8 +277,7 @@ export class SkyDatepickerInputDirective
 
   @HostListener('change', ['$event'])
   public onInputChange(event: any) {
-    this.isFirstChange = false;
-    this.value = event.target.value;
+    this.onValueChange(event.target.value);
   }
 
   @HostListener('blur')
