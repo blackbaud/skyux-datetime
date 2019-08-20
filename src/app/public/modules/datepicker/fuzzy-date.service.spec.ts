@@ -176,6 +176,34 @@ describe('SkyFuzzyDateservice', () => {
         expect(actual).toEqual(expected);
     });
 
+    it('returns a fuzzy date object when provided with a valid year month date string.', function () {
+      // arrange
+      let expected: SkyFuzzyDate = { day: undefined, month: 1, year: 1989 },
+          dateFormat = 'yyyy/mm',
+          stringDate = service.getDateStringFromFuzzyDate(expected, dateFormat),
+          actual;
+
+      // act
+      actual = service.getFuzzyDateFromDateString(stringDate, dateFormat);
+
+      // assert
+      expect(actual).toEqual(expected);
+    });
+
+    it('returns a fuzzy date object when provided with a valid 2-digit year month date string.', function () {
+      // arrange
+      let expected: SkyFuzzyDate = { day: undefined, month: 1, year: 1989 },
+          dateFormat = 'yy/mm',
+          stringDate = service.getDateStringFromFuzzyDate(expected, dateFormat),
+          actual;
+
+      // act
+      actual = service.getFuzzyDateFromDateString(stringDate, dateFormat);
+
+      // assert
+      expect(actual).toEqual(expected);
+    });
+
     it('returns a fuzzy date object when provided with a valid month year date string with non-US date format.', function () {
         // arrange
         let expected: SkyFuzzyDate = { day: undefined, month: 1, year: 1990 },
@@ -204,7 +232,7 @@ describe('SkyFuzzyDateservice', () => {
       expect(actual).toEqual(expected);
     });
 
-    it('returns a fuzzy date object when provided with a valid day month date string.', function () {
+    it('returns a fuzzy date object when provided with a valid month day date string.', function () {
         // arrange
         let expected: SkyFuzzyDate = { year: undefined, month: 2, day: 12 },
             stringDate = service.getDateStringFromFuzzyDate(expected, defaultDateFormat),
@@ -216,6 +244,36 @@ describe('SkyFuzzyDateservice', () => {
         // assert
         expect(actual).toEqual(expected);
     });
+
+    it('returns a fuzzy date object when provided with a valid day month date string.', function () {
+      // arrange
+      let expected: SkyFuzzyDate = { year: undefined, month: 2, day: 12 },
+          dateFormat = 'dd/mm',
+          stringDate = service.getDateStringFromFuzzyDate(expected, dateFormat),
+          actual;
+
+      // act
+      actual = service.getFuzzyDateFromDateString(stringDate, dateFormat);
+
+      // assert
+      expect(actual).toEqual(expected);
+  });
+
+    it('returns a fuzzy date object when provided with a valid year date string.', function () {
+      // arrange
+      let expected: SkyFuzzyDate = { year: 2017, month: undefined, day: undefined },
+          dateFormat = 'YYYY',
+          stringDate = service.getDateStringFromFuzzyDate(expected, dateFormat),
+          actual;
+
+      console.log('stringDate: ' + stringDate);
+
+      // act
+      actual = service.getFuzzyDateFromDateString(stringDate, dateFormat);
+
+      // assert
+      expect(actual).toEqual(expected);
+  });
 
     it('returns a fuzzy date object when provided with a valid date using words such as "January".', function () {
         // arrange
@@ -315,6 +373,30 @@ describe('SkyFuzzyDateservice', () => {
 
       // act
       actual = service.getFuzzyDateFromDateString(stringDate, defaultDateFormat);
+
+      // assert
+      expect(actual).toBeUndefined();
+    });
+
+    it('returns null if an undefined date format provided.', function () {
+      // arrange
+      let stringDate = service.getDateStringFromFuzzyDate({ month: 5, day: 12, year: 2017 }, defaultDateFormat),
+          actual;
+
+      // act
+      actual = service.getFuzzyDateFromDateString(stringDate, undefined);
+
+      // assert
+      expect(actual).toBeUndefined();
+    });
+
+    it('returns null if an empty string date format provided.', function () {
+      // arrange
+      let stringDate = service.getDateStringFromFuzzyDate({ month: 5, day: 12, year: 2017 }, defaultDateFormat),
+          actual;
+
+      // act
+      actual = service.getFuzzyDateFromDateString(stringDate, '');
 
       // assert
       expect(actual).toBeUndefined();

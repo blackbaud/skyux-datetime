@@ -265,8 +265,6 @@ export class SkyFuzzyDateService {
   }
 
   private getDateFormatIndexes(dateFormatString: string) {
-    if (!dateFormatString) { return; }
-
     dateFormatString = dateFormatString.toLowerCase();
 
     // Get the order of year, month, and day in the provided date format

@@ -1601,6 +1601,18 @@ describe('datepicker', () => {
           expect(component.selectedDate).toEqual({ day: 12, month: 5, year: undefined });
         }));
 
+        it('should handle a dateFormat with day before month excluding year on the input different than the default', fakeAsync(() => {
+          component.dateFormat = 'DD/MM';
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          setInput(nativeElement, '12/5', fixture);
+
+          expect(nativeElement.querySelector('input').value).toBe('12/5');
+          expect(component.selectedDate).toEqual({ day: 12, month: 5, year: undefined });
+        }));
+
         it('should handle a dateFormat excluding day on the input different than the default', fakeAsync(() => {
           component.dateFormat = 'MM/YYYY';
           fixture.detectChanges();
@@ -1613,6 +1625,18 @@ describe('datepicker', () => {
           expect(component.selectedDate).toEqual({ month: 5, year: 2017, day: undefined });
         }));
 
+        it('should handle a dateFormat with year before month and excluding day on the input different than the default', fakeAsync(() => {
+          component.dateFormat = 'YYYY/MM';
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          setInput(nativeElement, '2017/5', fixture);
+
+          expect(nativeElement.querySelector('input').value).toBe('2017/5');
+          expect(component.selectedDate).toEqual({ month: 5, year: 2017, day: undefined });
+        }));
+
         it('should handle a dateFormat with a 2 digit year excluding day on the input different than the default', fakeAsync(() => {
           component.dateFormat = 'MM/YY';
           fixture.detectChanges();
@@ -1622,6 +1646,19 @@ describe('datepicker', () => {
           setInput(nativeElement, '5/17', fixture);
 
           expect(nativeElement.querySelector('input').value).toBe('5/17');
+          expect(component.selectedDate).toEqual({ month: 5, year: 2017, day: undefined });
+        }));
+
+        it('should handle a dateFormat with a 2 digit year before month excluding day on the'
+          + ' input different than the default', fakeAsync(() => {
+          component.dateFormat = 'YY/MM';
+          fixture.detectChanges();
+          tick();
+          fixture.detectChanges();
+
+          setInput(nativeElement, '17/5', fixture);
+
+          expect(nativeElement.querySelector('input').value).toBe('17/5');
           expect(component.selectedDate).toEqual({ month: 5, year: 2017, day: undefined });
         }));
       });
