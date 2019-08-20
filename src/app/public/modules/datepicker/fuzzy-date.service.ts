@@ -55,16 +55,15 @@ export class SkyFuzzyDateService {
   public getDateStringFromFuzzyDate(fuzzyDate: any, dateFormatString: any): string {
     if (!fuzzyDate || !dateFormatString) { return; }
 
-    let dateString: string = '';
-    let separator: any;
-
-    dateFormatString = dateFormatString.toLowerCase();
+    let dateString: string = '',
+        separator: any,
+        dateFormatIndexes = this.getDateFormatIndexes(dateFormatString);
 
     // Get the components of the date in the order expected of the local format
     let dateComponents = [
-        { value: fuzzyDate.year || 0, index: dateFormatString.indexOf('y') },
-        { value: fuzzyDate.month || 0, index: dateFormatString.indexOf('m') },
-        { value: fuzzyDate.day || 0, index: dateFormatString.indexOf('d') }
+        { value: fuzzyDate.year || 0, index: dateFormatIndexes.yearIndex },
+        { value: fuzzyDate.month || 0, index: dateFormatIndexes.monthIndex },
+        { value: fuzzyDate.day || 0, index: dateFormatIndexes.dayIndex }
     ];
     dateComponents.sort(function (a: any, b: any) { return a.index - b.index; });
 
@@ -87,26 +86,17 @@ export class SkyFuzzyDateService {
     if (!selectedDate || !dateFormatString) { return; }
 
     let fuzzyDate: SkyFuzzyDate = {},
-        yearIndex,
-        monthIndex,
-        dayIndex;
+        dateFormatIndexes = this.getDateFormatIndexes(dateFormatString);
 
-    dateFormatString = dateFormatString.toLowerCase();
-
-    // Get the order of year, month, and day in the provided date format
-    yearIndex = dateFormatString.indexOf('y');
-    monthIndex = dateFormatString.indexOf('m');
-    dayIndex = dateFormatString.indexOf('d');
-
-    if (yearIndex > -1) {
+    if (dateFormatIndexes.yearIndex > -1) {
       fuzzyDate.year = selectedDate.getFullYear();
     }
 
-    if (dayIndex > -1) {
+    if (dateFormatIndexes.dayIndex > -1) {
       fuzzyDate.day = selectedDate.getDate();
     }
 
-    if (monthIndex > -1) {
+    if (dateFormatIndexes.monthIndex > -1) {
       // getMonth returns month 0 through 11
       fuzzyDate.month = selectedDate.getMonth() + 1;
     }
@@ -121,38 +111,30 @@ export class SkyFuzzyDateService {
         month,
         year,
         separator,
+        dateFormatIndexes = this.getDateFormatIndexes(dateFormatString),
         dateComponents,
+        dateComponentIndexes = [],
         yearIndex,
         monthIndex,
-        dayIndex,
-        dateComponentIndexes = [];
+        dayIndex;
 
-    dateFormatString = dateFormatString.toLowerCase();
-
-    // Get the order of year, month, and day in the provided date format
-    yearIndex = dateFormatString.indexOf('y');
-    monthIndex = dateFormatString.indexOf('m');
-    dayIndex = dateFormatString.indexOf('d');
-
-    // dateComponentIndexes = [yearIndex, monthIndex, dayIndex];
-
-    if (yearIndex > -1) {
-      dateComponentIndexes.push(yearIndex);
+    if (dateFormatIndexes.yearIndex > -1) {
+      dateComponentIndexes.push(dateFormatIndexes.yearIndex);
     }
 
-    if (monthIndex > -1) {
-      dateComponentIndexes.push(monthIndex);
+    if (dateFormatIndexes.monthIndex > -1) {
+      dateComponentIndexes.push(dateFormatIndexes.monthIndex);
     }
 
-    if (dayIndex > -1) {
-      dateComponentIndexes.push(dayIndex);
+    if (dateFormatIndexes.dayIndex > -1) {
+      dateComponentIndexes.push(dateFormatIndexes.dayIndex);
     }
 
     dateComponentIndexes.sort(function (a, b) { return a - b; });
 
-    yearIndex = dateComponentIndexes.indexOf(yearIndex);
-    monthIndex = dateComponentIndexes.indexOf(monthIndex);
-    dayIndex = dateComponentIndexes.indexOf(dayIndex);
+    yearIndex = dateComponentIndexes.indexOf(dateFormatIndexes.yearIndex);
+    monthIndex = dateComponentIndexes.indexOf(dateFormatIndexes.monthIndex);
+    dayIndex = dateComponentIndexes.indexOf(dateFormatIndexes.dayIndex);
 
     // Get the date string's components based on the separator used in the string
     separator = this.getSeparatorFromDateString(dateString);
@@ -284,6 +266,19 @@ export class SkyFuzzyDateService {
     }
 
     return leapYear;
+  }
+
+  private getDateFormatIndexes(dateFormatString: string) {
+    if (!dateFormatString) { return; }
+
+    dateFormatString = dateFormatString.toLowerCase();
+
+    // Get the order of year, month, and day in the provided date format
+    return {
+      yearIndex: dateFormatString.indexOf('y'),
+      monthIndex: dateFormatString.indexOf('m'),
+      dayIndex: dateFormatString.indexOf('d')
+    };
   }
 
   private isLeapYear(year: number): boolean {

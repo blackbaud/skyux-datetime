@@ -115,17 +115,7 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
   }
 
   @Input()
-  public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) {
-    if (value) {
-      console.warn(
-        '[Deprecation warning] You no longer need to provide a template reference variable ' +
-        'to the `skyFuzzyDatepickerInput` attribute (this will be a breaking change in the next ' +
-        'major version release).\n' +
-        'Do this instead:\n' +
-        '<sky-datepicker>\n  <input skyFuzzyDatepickerInput />\n</sky-datepicker>'
-      );
-    }
-  }
+  public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) { }
 
   public get maxDate(): Date {
     if (this.maxFuzzyDate) {
