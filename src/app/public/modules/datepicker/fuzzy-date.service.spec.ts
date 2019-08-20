@@ -21,58 +21,6 @@ describe('SkyFuzzyDateservice', () => {
       service = TestBed.get(SkyFuzzyDateService);
     });
 
-  describe('getSeparatorFromDateString', () => {
-    it('should find the expected date string separators',
-      function() {
-        let separator = service.getSeparatorFromDateString('5/12/2017');
-        expect(separator).toEqual('/');
-
-        separator = service.getSeparatorFromDateString('5.12.2017');
-        expect(separator).toEqual('.');
-
-        separator = service.getSeparatorFromDateString('5-12-2017');
-        expect(separator).toEqual('-');
-
-        separator = service.getSeparatorFromDateString('5 12 2017');
-        expect(separator).toEqual(' ');
-      });
-
-      it('should return undefined for an undefined or empty date string',
-      function() {
-        let separator = service.getSeparatorFromDateString(undefined);
-        expect(separator).toBeUndefined();
-
-        separator = service.getSeparatorFromDateString('');
-        expect(separator).toBeUndefined();
-      });
-  });
-
-  describe('getYearFromDateString', () => {
-    it('should properly return the year from a date string',
-      function() {
-        let year = service.getYearFromDateString('5/12/2017', '/');
-        expect(year).toEqual(2017);
-
-        year = service.getYearFromDateString('2015/5/12', '/');
-        expect(year).toEqual(2015);
-      });
-
-    it('should return an undefined year from a date string with a 2-digit year',
-      function() {
-        let year = service.getYearFromDateString('5/12/17', '/');
-        expect(year).toBeUndefined();
-      });
-
-    it('should return an undefined year from an undefined or empty date string',
-      function() {
-        let year = service.getYearFromDateString(undefined, '/');
-        expect(year).toBeUndefined();
-
-        year = service.getYearFromDateString('', '/');
-        expect(year).toBeUndefined();
-      });
-  });
-
   describe('getFuzzyDateFromSelectedDate', () => {
 
     it('returns a fuzzy date object when provided a date object and the default date format', function() {
@@ -556,28 +504,6 @@ describe('SkyFuzzyDateservice', () => {
 
         // assert
         expect(actual).toEqual(expected);
-    });
-  });
-
-  describe('getMostRecentLeapYear', function() {
-    it('should return the current year when it is a leap year', function() {
-      let leapYear = service.getMostRecentLeapYear(2000);
-      expect(leapYear).toEqual(2000);
-    });
-
-    it('should return the most recent leap year', function() {
-      let leapYear = service.getMostRecentLeapYear(2019);
-      expect(leapYear).toEqual(2016);
-    });
-
-    it('should returned undefined for undefined current year', function() {
-      let leapYear = service.getMostRecentLeapYear(undefined);
-      expect(leapYear).toBeUndefined();
-    });
-
-    it('should returned undefined for current year less than 4', function() {
-      let leapYear = service.getMostRecentLeapYear(3);
-      expect(leapYear).toBeUndefined();
     });
   });
 });

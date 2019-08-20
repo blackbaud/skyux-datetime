@@ -6,47 +6,17 @@ const moment = require('moment');
 @Injectable()
 export class SkyFuzzyDateService {
 
-  public getSeparatorFromDateString(dateString: string): string {
-    if (!dateString) { return; }
-
-    let separator: string;
-    let allSeparators = ['/', '.', '-', ' '];
-
-    allSeparators.forEach(currentSeparator => {
-      if (!separator && dateString.indexOf(currentSeparator) > 0) {
-        separator = currentSeparator;
-    }
-    });
-
-    return separator;
-  }
-
-  public getYearFromDateString(dateString: string, separator: string): number {
-    if (!dateString) { return; }
-
-    let year: any;
-
-    // Find the number value in the string that is 4 digits long.
-    dateString.split(separator).forEach(dateComponent => {
-      if (!year && parseInt(dateComponent, 10).toString().length === 4) {
-        year = dateComponent;
-      }
-    });
-
-    if (year && !isNaN(year)) {
-        return parseInt(year, 10);
-    }
-  }
-
   public getMomentFromFuzzyDate(fuzzyDate: any): any {
     if (!fuzzyDate) { return; }
 
     // Year to use for fuzzy dates that don't have a year.
-    let defaultYear: number = new Date().getFullYear();
+    let defaultYear: number;
 
     if (fuzzyDate.month === 2 && fuzzyDate.day === 29) {
-      // Needs to be a valid year for leap years.
-      defaultYear = this.getMostRecentLeapYear(defaultYear);
+      // Needs to be a valid leap year
+      defaultYear = this.getMostRecentLeapYear();
+    } else {
+      defaultYear = new Date().getFullYear();
     }
 
     return moment([fuzzyDate.year || defaultYear, (fuzzyDate.month - 1) || 0, fuzzyDate.day || 1]);
@@ -238,7 +208,7 @@ export class SkyFuzzyDateService {
         days: days,
         valid: valid
     };
-}
+  }
 
   public getCurrentFuzzyDate() {
     let currentDate = moment();
@@ -250,18 +220,42 @@ export class SkyFuzzyDateService {
     };
   }
 
-  public getMostRecentLeapYear(currentYear: number): number {
-    if (!currentYear || currentYear < 4) {
-      return;
-    }
-
-    let leapYear = currentYear;
+  private getMostRecentLeapYear(): number {
+    let leapYear = new Date().getFullYear();
 
     while (!this.isLeapYear(leapYear)) {
       leapYear -= 1;
     }
 
     return leapYear;
+  }
+
+  private getSeparatorFromDateString(dateString: string): string {
+    let separator: string;
+    let allSeparators = ['/', '.', '-', ' '];
+
+    allSeparators.forEach(currentSeparator => {
+      if (!separator && dateString.indexOf(currentSeparator) > 0) {
+        separator = currentSeparator;
+    }
+    });
+
+    return separator;
+  }
+
+  private getYearFromDateString(dateString: string, separator: string): number {
+    let year: any;
+
+    // Find the number value in the string that is 4 digits long.
+    dateString.split(separator).forEach(dateComponent => {
+      if (!year && parseInt(dateComponent, 10).toString().length === 4) {
+        year = dateComponent;
+      }
+    });
+
+    if (year && !isNaN(year)) {
+        return parseInt(year, 10);
+    }
   }
 
   private getDateFormatIndexes(dateFormatString: string) {
