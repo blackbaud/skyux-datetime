@@ -56,7 +56,7 @@ export class SkyFuzzyDateService {
     if (!fuzzyDate || !dateFormatString) { return; }
 
     let dateString: string = '',
-        separator: any,
+        separator = this.getSeparatorFromDateString(dateFormatString),
         dateFormatIndexes = this.getDateFormatIndexes(dateFormatString);
 
     // Get the components of the date in the order expected of the local format
@@ -66,8 +66,6 @@ export class SkyFuzzyDateService {
         { value: fuzzyDate.day || 0, index: dateFormatIndexes.dayIndex }
     ];
     dateComponents.sort(function (a: any, b: any) { return a.index - b.index; });
-
-    separator = this.getSeparatorFromDateString(dateFormatString);
 
     dateComponents.forEach(component => {
       if (component.value > 0 && component.index > -1) {
@@ -107,16 +105,14 @@ export class SkyFuzzyDateService {
   public getFuzzyDateFromDateString(dateString: string, dateFormatString: string): any {
     if (!dateString || !dateFormatString) { return; }
 
-    let day,
-        month,
-        year,
-        separator,
+    let day: any,
+        month: any,
+        year: any,
         dateFormatIndexes = this.getDateFormatIndexes(dateFormatString),
-        dateComponents,
         dateComponentIndexes = [],
-        yearIndex,
-        monthIndex,
-        dayIndex;
+        yearIndex: number,
+        monthIndex: number,
+        dayIndex: number;
 
     if (dateFormatIndexes.yearIndex > -1) {
       dateComponentIndexes.push(dateFormatIndexes.yearIndex);
@@ -137,8 +133,8 @@ export class SkyFuzzyDateService {
     dayIndex = dateComponentIndexes.indexOf(dateFormatIndexes.dayIndex);
 
     // Get the date string's components based on the separator used in the string
-    separator = this.getSeparatorFromDateString(dateString);
-    dateComponents = dateString.split(separator);
+    let separator = this.getSeparatorFromDateString(dateString);
+    let dateComponents = dateString.split(separator);
 
     // Look at the date string's component count
     // 3 indicates a full date
