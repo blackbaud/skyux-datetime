@@ -2110,7 +2110,7 @@ describe('datepicker', () => {
           expect(component.dateControl.value).toEqual({ day: 12, month: 5, year: 2017 });
         }));
 
-        it('should hset the Fuzzy Date object excluding year value correctly', fakeAsync(() => {
+        it('should set the Fuzzy Date object excluding year value correctly', fakeAsync(() => {
           component.initialValue = { month: 5, day: 12 };
           fixture.detectChanges();
           tick();
