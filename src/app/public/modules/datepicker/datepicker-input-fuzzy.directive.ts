@@ -5,6 +5,7 @@ import {
   Directive,
   ElementRef,
   forwardRef,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -25,9 +26,17 @@ import {
   SkyLibResourcesService
 } from '@skyux/i18n';
 
+import {
+  Subject
+} from 'rxjs/Subject';
+
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import 'rxjs/add/operator/takeUntil';
+
+import {
+  SkyDateFormatter
+} from './date-formatter';
 
 import {
   SkyDatepickerConfigService
@@ -38,16 +47,15 @@ import {
 } from './datepicker.component';
 import { SkyFuzzyDate } from './fuzzy-date';
 import { SkyFuzzyDateService } from './fuzzy-date.service';
-import { SkyDatepickerInputDirective } from './datepicker-input.directive';
 
 // tslint:disable:no-forward-ref no-use-before-declare
-const SKY_DATEPICKER_VALUE_ACCESSOR = {
+const SKY_FUZZY_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SkyFuzzyDatepickerInputDirective),
   multi: true
 };
 
-const SKY_DATEPICKER_VALIDATOR = {
+const SKY_FUZZY_DATEPICKER_VALIDATOR = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => SkyFuzzyDatepickerInputDirective),
   multi: true
@@ -57,14 +65,21 @@ const SKY_DATEPICKER_VALIDATOR = {
 @Directive({
   selector: '[skyFuzzyDatepickerInput]',
   providers: [
-    SKY_DATEPICKER_VALUE_ACCESSOR,
-    SKY_DATEPICKER_VALIDATOR
+    SKY_FUZZY_DATEPICKER_VALUE_ACCESSOR,
+    SKY_FUZZY_DATEPICKER_VALIDATOR
   ]
 })
-export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirective
+export class SkyFuzzyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
-  private _yearRequired: boolean = false;
+  @Input()
+  public set dateFormat(value: string) {
+    this._dateFormat = value;
+  }
+
+  public get dateFormat(): string {
+    return this._dateFormat || this.configService.dateFormat;
+  }
 
   @Input()
   public set yearRequired(value: boolean) {
@@ -76,8 +91,6 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
     return this._yearRequired;
   }
 
-  private _cannotBeFuture: boolean = false;
-
   @Input()
   public set cannotBeFuture(value: boolean) {
     this._cannotBeFuture = value;
@@ -87,8 +100,6 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
   public get cannotBeFuture(): boolean {
     return this._cannotBeFuture;
   }
-
-  private _maxFuzzyDate: SkyFuzzyDate;
 
   @Input()
   public set maxFuzzyDate(value: SkyFuzzyDate) {
@@ -100,8 +111,6 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
   public get maxFuzzyDate(): SkyFuzzyDate {
     return this._maxFuzzyDate;
   }
-
-  private _minFuzzyDate: SkyFuzzyDate;
 
   @Input()
   public set minFuzzyDate(value: SkyFuzzyDate) {
@@ -116,6 +125,35 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
 
   @Input()
   public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) { }
+
+  @Input()
+  public skyDatepickerNoValidate = false;
+
+  @Input()
+  public set disabled(value: boolean) {
+    this._disabled = value;
+    this.renderer.setProperty(
+      this.elementRef.nativeElement,
+      'disabled',
+      value
+    );
+  }
+
+  public get disabled(): boolean {
+    return this._disabled;
+  }
+
+  @Input()
+  public set startingDay(value: number) {
+    this._startingDay = value;
+    this.datepickerComponent.startingDay = this.startingDay;
+
+    this.onValidatorChange();
+  }
+
+  public get startingDay(): number {
+    return this._startingDay || this.configService.startingDay;
+  }
 
   public get maxDate(): Date {
     if (this.maxFuzzyDate) {
@@ -141,11 +179,11 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
     }
   }
 
-  protected get value(): any {
+  private get value(): any {
     return this._value;
   }
 
-  protected set value(value: any) {
+  private set value(value: any) {
     let fuzzyDate: SkyFuzzyDate;
     let fuzzyMoment: any;
     let dateValue: Date;
@@ -218,19 +256,29 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
     this.setInputElementValue(formattedDate || '');
   }
 
+  private control: AbstractControl;
+  private dateFormatter = new SkyDateFormatter();
+  private isFirstChange = true;
+  private ngUnsubscribe = new Subject<void>();
+
+  private _dateFormat: string;
+  private _yearRequired: boolean = false;
+  private _cannotBeFuture: boolean = false;
+  private _disabled = false;
+  private _maxFuzzyDate: SkyFuzzyDate;
+  private _minFuzzyDate: SkyFuzzyDate;
+  private _startingDay: number;
+  private _value: any;
+
   constructor(
-    protected changeDetector: ChangeDetectorRef,
-    protected configService: SkyDatepickerConfigService,
-    protected elementRef: ElementRef,
-    protected renderer: Renderer2,
-    protected resourcesService: SkyLibResourcesService,
-    @Optional() protected datepickerComponent: SkyDatepickerComponent,
+    private changeDetector: ChangeDetectorRef,
+    private configService: SkyDatepickerConfigService,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private resourcesService: SkyLibResourcesService,
+    @Optional() private datepickerComponent: SkyDatepickerComponent,
     private fuzzyDateService: SkyFuzzyDateService
-  ) {
-    super(
-      changeDetector, configService, elementRef,
-      renderer, resourcesService, datepickerComponent);
-   }
+  ) { }
 
   public ngOnInit(): void {
     if (this.yearRequired) {
@@ -266,6 +314,60 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
           );
         });
     }
+  }
+
+  public ngAfterContentInit(): void {
+    this.datepickerComponent.dateChange
+      .distinctUntilChanged()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((value: Date) => {
+        this.isFirstChange = false;
+        this.value = value;
+        this.onTouched();
+      });
+  }
+
+  public ngAfterViewInit(): void {
+    // This is needed to address a bug in Angular 4.
+    // When a control value is set intially, its value is not represented on the view.
+    // See: https://github.com/angular/angular/issues/13792
+    // Of note is the parent check which allows us to determine if the form is reactive.
+    // Without this check there is a changed before checked error
+    /* istanbul ignore else */
+
+    if (this.control && this.control.parent) {
+      setTimeout(() => {
+        this.control.setValue(this.value, {
+          emitEvent: false
+        });
+
+        this.changeDetector.markForCheck();
+      });
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  @HostListener('change', ['$event'])
+  public onInputChange(event: any) {
+    this.onValueChange(event.target.value);
+  }
+
+  @HostListener('blur')
+  public onInputBlur(): void {
+    this.onTouched();
+  }
+
+  @HostListener('keyup')
+  public onInputKeyup(): void {
+    this.control.markAsDirty();
+  }
+
+  public writeValue(value: any): void {
+    this.value = value;
   }
 
   public validate(control: AbstractControl): ValidationErrors {
@@ -354,4 +456,47 @@ export class SkyFuzzyDatepickerInputDirective extends SkyDatepickerInputDirectiv
 
     return validationError;
   }
+
+  public registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  public registerOnValidatorChange(fn: () => void): void {
+    this.onValidatorChange = fn;
+  }
+
+  public setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+    this.datepickerComponent.disabled = disabled;
+  }
+
+  /**
+   * Detects changes to the underlying input element's value and updates the ngModel accordingly.
+   * This is useful if you need to update the ngModel value before the input element loses focus.
+   */
+  public detectInputValueChange(): void {
+    this.onValueChange(this.elementRef.nativeElement.value);
+  }
+
+  private onValueChange(newValue: string): void {
+    this.isFirstChange = false;
+    this.value = newValue;
+  }
+
+  private setInputElementValue(value: string): void {
+    this.renderer.setProperty(
+      this.elementRef.nativeElement,
+      'value',
+      value
+    );
+  }
+
+  private onChange = (_: any) => {};
+  /*istanbul ignore next */
+  private onTouched = () => {};
+  private onValidatorChange = () => {};
 }

@@ -145,11 +145,11 @@ export class SkyDatepickerInputDirective
     return this._startingDay || this.configService.startingDay;
   }
 
-  protected get value(): any {
+  private get value(): any {
     return this._value;
   }
 
-  protected set value(value: any) {
+  private set value(value: any) {
     const dateValue = this.getDateValue(value);
 
     const areDatesEqual = (
@@ -189,25 +189,25 @@ export class SkyDatepickerInputDirective
     }
   }
 
-  protected control: AbstractControl;
-  protected dateFormatter = new SkyDateFormatter();
-  protected isFirstChange = true;
-  protected ngUnsubscribe = new Subject<void>();
+  private control: AbstractControl;
+  private dateFormatter = new SkyDateFormatter();
+  private isFirstChange = true;
+  private ngUnsubscribe = new Subject<void>();
 
-  protected _dateFormat: string;
-  protected _disabled = false;
-  protected _maxDate: Date;
-  protected _minDate: Date;
-  protected _startingDay: number;
-  protected _value: any;
+  private _dateFormat: string;
+  private _disabled = false;
+  private _maxDate: Date;
+  private _minDate: Date;
+  private _startingDay: number;
+  private _value: any;
 
   constructor(
-    protected changeDetector: ChangeDetectorRef,
-    protected configService: SkyDatepickerConfigService,
-    protected elementRef: ElementRef,
-    protected renderer: Renderer2,
-    protected resourcesService: SkyLibResourcesService,
-    @Optional() protected datepickerComponent: SkyDatepickerComponent
+    private changeDetector: ChangeDetectorRef,
+    private configService: SkyDatepickerConfigService,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private resourcesService: SkyLibResourcesService,
+    @Optional() private datepickerComponent: SkyDatepickerComponent
   ) { }
 
   public ngOnInit(): void {
@@ -378,12 +378,12 @@ export class SkyDatepickerInputDirective
     this.onValueChange(this.elementRef.nativeElement.value);
   }
 
-  protected onValueChange(newValue: string): void {
+  private onValueChange(newValue: string): void {
     this.isFirstChange = false;
     this.value = newValue;
   }
 
-  protected setInputElementValue(value: string): void {
+  private setInputElementValue(value: string): void {
     this.renderer.setProperty(
       this.elementRef.nativeElement,
       'value',
@@ -391,10 +391,10 @@ export class SkyDatepickerInputDirective
     );
   }
 
-  protected onChange = (_: any) => {};
+  private onChange = (_: any) => {};
   /*istanbul ignore next */
-  protected onTouched = () => {};
-  protected onValidatorChange = () => {};
+  private onTouched = () => {};
+  private onValidatorChange = () => {};
 
   private getDateValue(value: any): Date {
     let dateValue: Date;
