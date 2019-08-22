@@ -742,7 +742,7 @@ describe('datepicker', () => {
         tick();
       }
 
-      it('should reflect the state of focus', fakeAsync(() => {
+      it('should reflect the state of focus for the datepicker component', fakeAsync(() => {
         const buttonEl = nativeElement.querySelector('.sky-dropdown-button') as HTMLElement;
         const dropdownContainerEl =
           nativeElement.querySelector('.sky-popover-container') as HTMLElement;
@@ -760,8 +760,34 @@ describe('datepicker', () => {
         validateCalendarFocus(true, dropdownContainerEl);
         validateCalendarFocus(true, selectedDayEl);
       }));
+
+      it('should reflect the state of focus for the input', () => {
+        fixture.detectChanges();
+        const inputEl = nativeElement.querySelector('input') as HTMLElement;
+
+        expect(inputEl).toBeDefined();
+        expect(component.inputDirective.inputIsFocused).toBeFalsy();
+
+        inputEl.focus();
+        fixture.detectChanges();
+
+        expect(component.inputDirective.inputIsFocused).toBeTruthy();
+      });
     });
 
+    describe('calendarIsVisible property', () => {
+      it('should reflect the visibility of the calendar element', fakeAsync(() => {
+        fixture.detectChanges();
+
+        expect(component.datepicker.calendarIsVisible).toBeFalsy();
+
+        clickDatepickerButton(nativeElement, fixture);
+        tick();
+        fixture.detectChanges();
+
+        expect(component.datepicker.calendarIsVisible).toBeTruthy();
+      }));
+    });
   });
 
   describe('reactive form', () => {

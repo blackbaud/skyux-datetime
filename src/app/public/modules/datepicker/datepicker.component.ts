@@ -48,6 +48,14 @@ export class SkyDatepickerComponent implements OnDestroy {
     return this.dropdown.menuIsFocused;
   }
 
+  /**
+   * @internal
+   * Indicates if the calendar element's visiblity property is 'visible'.
+   */
+  public get calendarIsVisible(): boolean {
+    return this.calendar.isVisible;
+  }
+
   public get disabled(): boolean {
     return this._disabled;
   }
