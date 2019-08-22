@@ -721,21 +721,18 @@ describe('datepicker', () => {
         const inputEl = nativeElement.querySelector('input');
         const initialDate = '01/01/2019';
         const newDate = '12/31/2019';
-         component.selectedDate = initialDate;
+        component.selectedDate = initialDate;
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
 
         expect(nativeElement.querySelector('input').value).toBe(initialDate);
         expect(component.selectedDate).toEqual(new Date(initialDate));
-        tick();
-        fixture.detectChanges();
 
         inputEl.value = newDate;
 
         expect(nativeElement.querySelector('input').value).toBe(newDate);
         expect(component.selectedDate).toEqual(new Date(initialDate));
-          fixture.detectChanges();
 
         component.inputDirective.detectInputValueChange();
 
