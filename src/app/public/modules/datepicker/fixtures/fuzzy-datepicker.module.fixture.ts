@@ -20,14 +20,16 @@ import {
 } from './datepicker-calendar.component.fixture';
 
 import {
+  FuzzyDatepickerTestComponent
+} from './fuzzy-datepicker.component.fixture';
+
+import {
   FuzzyDatepickerNoFormatTestComponent
 } from './fuzzy-datepicker-noformat.component.fixture';
+
 import {
   FuzzyDatepickerReactiveTestComponent
 } from './fuzzy-datepicker-reactive.component.fixture';
-import {
-  FuzzyDatepickerTestComponent
-} from './fuzzy-datepicker.component.fixture';
 
 @NgModule({
   declarations: [

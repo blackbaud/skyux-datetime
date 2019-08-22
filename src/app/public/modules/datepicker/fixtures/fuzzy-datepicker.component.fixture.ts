@@ -11,19 +11,27 @@ import {
   templateUrl: './fuzzy-datepicker.component.fixture.html'
 })
 export class FuzzyDatepickerTestComponent {
-  @ViewChild(SkyFuzzyDatepickerInputDirective)
-  public inputDirective: SkyFuzzyDatepickerInputDirective;
+
+  public cannotBeFuture: boolean;
+
+  public dateFormat: any = 'MM/DD/YYYY';
+
+  public isDisabled: boolean;
 
   public maxFuzzyDate: any;
+
   public minFuzzyDate: any;
-  public dateFormat: any = 'MM/DD/YYYY';
-  public yearRequired: boolean;
-  public cannotBeFuture: boolean;
+
+  public noValidate: boolean = false;
 
   public selectedDate: any;
 
-  public noValidate: boolean = false;
-  public startingDay = 0;
-  public isDisabled: boolean;
   public showInvalidDirective = false;
+
+  public startingDay = 0;
+
+  public yearRequired: boolean;
+
+  @ViewChild(SkyFuzzyDatepickerInputDirective)
+  public inputDirective: SkyFuzzyDatepickerInputDirective;
 }

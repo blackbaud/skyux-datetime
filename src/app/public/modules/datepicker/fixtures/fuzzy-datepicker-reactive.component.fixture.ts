@@ -10,7 +10,9 @@ import {
   FormGroup
 } from '@angular/forms';
 
-import { SkyFuzzyDatepickerInputDirective } from '../datepicker-input-fuzzy.directive';
+import {
+  SkyFuzzyDatepickerInputDirective
+} from '../datepicker-input-fuzzy.directive';
 
 @Component({
   selector: 'fuzzy-datepicker-reactive-test',
@@ -18,27 +20,36 @@ import { SkyFuzzyDatepickerInputDirective } from '../datepicker-input-fuzzy.dire
 })
 export class FuzzyDatepickerReactiveTestComponent implements OnInit {
 
-  @ViewChild(SkyFuzzyDatepickerInputDirective)
-  public inputDirective: SkyFuzzyDatepickerInputDirective;
-
   public cannotBeFuture: boolean;
+
+  public dateControl: FormControl;
+
   public dateFormat: any;
-  public maxFuzzyDate: any;
-  public minFuzzyDate: any;
-  public yearRequired: boolean;
 
   public datepickerForm: FormGroup;
-  public isDisabled: boolean;
-  public dateControl: FormControl;
+
   public initialValue: any;
+
+  public isDisabled: boolean;
+
+  public maxFuzzyDate: any;
+
+  public minFuzzyDate: any;
+
   public noValidate: boolean = false;
+
   public startingDay = 0;
+
+  public yearRequired: boolean;
+
+  @ViewChild(SkyFuzzyDatepickerInputDirective)
+  public inputDirective: SkyFuzzyDatepickerInputDirective;
 
   constructor(
     private formBuilder: FormBuilder
   ) { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.dateControl = new FormControl(this.initialValue);
 
     this.datepickerForm = this.formBuilder.group({

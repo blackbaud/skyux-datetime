@@ -1,21 +1,21 @@
-<div>
-  <sky-datepicker
-    #fuzzypicker>
-    <input
-      name="myDate"
-      [(ngModel)]="selectedDate"
-      [skyFuzzyDatepickerInput]="fuzzypicker"
-      [dateFormat]="dateFormat"
-      [minFuzzyDate]="minFuzzyDate"
-      [maxFuzzyDate]="maxFuzzyDate"
-      [yearRequired]="yearRequired"
-      [cannotBeFuture]="cannotBeFuture"
-      [startingDay]="startingDay"
-      [disabled]="isDisabled"
-      [skyDatepickerNoValidate]="noValidate"
-      #date="ngModel" />
-  </sky-datepicker>
-</div>
+<sky-datepicker
+  #fuzzypicker
+>
+  <input
+    name="myDate"
+    [cannotBeFuture]="cannotBeFuture"
+    [dateFormat]="dateFormat"
+    [disabled]="isDisabled"
+    [maxFuzzyDate]="maxFuzzyDate"
+    [minFuzzyDate]="minFuzzyDate"
+    [skyFuzzyDatepickerInput]="fuzzypicker"
+    [skyDatepickerNoValidate]="noValidate"
+    [startingDay]="startingDay"
+    [yearRequired]="yearRequired"
+    [(ngModel)]="selectedDate"
+    #date="ngModel"
+  />
+</sky-datepicker>
 
 <div *ngIf="showInvalidDirective">
   <input
