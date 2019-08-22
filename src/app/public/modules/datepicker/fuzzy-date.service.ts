@@ -178,9 +178,9 @@ export class SkyFuzzyDateService {
     }
 
     return {
-        day: day,
-        month: month,
-        year: year
+      month: month,
+      day: day,
+      year: year
     };
   }
 
@@ -214,9 +214,9 @@ export class SkyFuzzyDateService {
     let currentDate = moment();
 
     return {
-        day: currentDate.date(),
-        month: currentDate.month() + 1,
-        year: currentDate.year()
+      day: currentDate.date(),
+      month: currentDate.month() + 1,
+      year: currentDate.year()
     };
   }
 

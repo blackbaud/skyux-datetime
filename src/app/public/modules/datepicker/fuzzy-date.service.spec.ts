@@ -214,8 +214,6 @@ describe('SkyFuzzyDateservice', () => {
           stringDate = service.getDateStringFromFuzzyDate(expected, dateFormat),
           actual;
 
-      console.log('stringDate: ' + stringDate);
-
       // act
       actual = service.getFuzzyDateFromDateString(stringDate, dateFormat);
 
