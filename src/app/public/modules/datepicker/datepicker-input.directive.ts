@@ -258,7 +258,6 @@ export class SkyDatepickerInputDirective
     // Of note is the parent check which allows us to determine if the form is reactive.
     // Without this check there is a changed before checked error
     /* istanbul ignore else */
-
     if (this.control && this.control.parent) {
       setTimeout(() => {
         this.control.setValue(this.value, {
@@ -391,11 +390,6 @@ export class SkyDatepickerInputDirective
     );
   }
 
-  private onChange = (_: any) => {};
-  /*istanbul ignore next */
-  private onTouched = () => {};
-  private onValidatorChange = () => {};
-
   private getDateValue(value: any): Date {
     let dateValue: Date;
     if (value instanceof Date) {
@@ -409,4 +403,9 @@ export class SkyDatepickerInputDirective
 
     return dateValue;
   }
+
+  private onChange = (_: any) => {};
+  /*istanbul ignore next */
+  private onTouched = () => {};
+  private onValidatorChange = () => {};
 }
