@@ -766,12 +766,12 @@ describe('datepicker', () => {
         const inputEl = nativeElement.querySelector('input') as HTMLElement;
 
         expect(inputEl).toBeDefined();
-        expect(component.inputDirective.inputIsFocused).toBeFalsy();
+        expect(component.inputDirective.inputIsFocused).toBe(false);
 
         inputEl.focus();
         fixture.detectChanges();
 
-        expect(component.inputDirective.inputIsFocused).toBeTruthy();
+        expect(component.inputDirective.inputIsFocused).toBe(true);
       });
     });
 
@@ -779,13 +779,13 @@ describe('datepicker', () => {
       it('should reflect the visibility of the calendar element', fakeAsync(() => {
         fixture.detectChanges();
 
-        expect(component.datepicker.calendarIsVisible).toBeFalsy();
+        expect(component.datepicker.calendarIsVisible).toBe(false);
 
         clickDatepickerButton(nativeElement, fixture);
         tick();
         fixture.detectChanges();
 
-        expect(component.datepicker.calendarIsVisible).toBeTruthy();
+        expect(component.datepicker.calendarIsVisible).toBe(true);
       }));
     });
   });

@@ -130,7 +130,7 @@ describe('datepicker calendar', () => {
 
   it('should be visible', () => {
     fixture.detectChanges();
-    expect(component.datepicker.isVisible).toBeTruthy();
+    expect(component.datepicker.isVisible).toBe(true);
   });
 
   it('should show the appropriate daypicker with the selected date', () => {
