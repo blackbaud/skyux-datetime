@@ -19,12 +19,12 @@
   <sky-datepicker>
     <input
       [cannotBeFuture]="cannotBeFuture"
-      [disabled]="disabled"
       [dateFormat]="dateFormat"
+      [disabled]="disabled"
       [maxFuzzyDate]="maxFuzzyDate"
       [minFuzzyDate]="minFuzzyDate"
-      [skyFuzzyDatepickerInput]
       [skyDatepickerNoValidate]="noValidate"
+      [skyFuzzyDatepickerInput]
       [startingDay]="startingDay"
       [yearRequired]="yearRequired"
       [(ngModel)]="selectedFuzzyDate"
@@ -47,7 +47,9 @@
     </tr>
   </table>
 
-  <p *ngIf="date.errors?.skyFuzzyDate" class="sky-error-label">
+  <p *ngIf="date.errors?.skyFuzzyDate"
+    class="sky-error-label"
+  >
     <span *ngIf="date.errors.skyFuzzyDate?.invalid">
       Please enter a valid date.
     </span>
@@ -108,7 +110,9 @@
       </tr>
     </table>
 
-    <p *ngIf="reactiveDate.errors?.skyFuzzyDate" class="sky-error-label">
+    <p *ngIf="reactiveDate.errors?.skyFuzzyDate"
+      class="sky-error-label"
+    >
       <span *ngIf="reactiveDate.errors.skyFuzzyDate?.invalid">
         Please enter a valid date.
       </span>

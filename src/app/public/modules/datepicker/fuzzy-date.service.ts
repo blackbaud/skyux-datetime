@@ -1,7 +1,25 @@
-import { Injectable } from '@angular/core';
-import { SkyFuzzyDate } from './fuzzy-date';
+import {
+  Injectable
+} from '@angular/core';
+
+import {
+  SkyFuzzyDate
+} from './fuzzy-date';
 
 const moment = require('moment');
+
+interface SkyDateFormatIndexes {
+  yearIndex: number;
+  monthIndex: number;
+  dayIndex: number;
+}
+
+interface SkyFuzzyDateRange {
+  years: string;
+  months: string;
+  days: string;
+  valid: boolean;
+}
 
 @Injectable()
 export class SkyFuzzyDateService {
@@ -72,7 +90,7 @@ export class SkyFuzzyDateService {
     return fuzzyDate;
   }
 
-  public getFuzzyDateFromDateString(dateString: string, dateFormatString: string): any {
+  public getFuzzyDateFromDateString(dateString: string, dateFormatString: string): SkyFuzzyDate {
     if (!dateString || !dateFormatString) { return; }
 
     let day: any,
@@ -184,7 +202,7 @@ export class SkyFuzzyDateService {
     };
   }
 
-  public getFuzzyDateRange(startFuzzyDate: any, endFuzzyDate: any) {
+  public getFuzzyDateRange(startFuzzyDate: any, endFuzzyDate: any): SkyFuzzyDateRange {
     let start,
         end,
         days,
@@ -210,7 +228,7 @@ export class SkyFuzzyDateService {
     };
   }
 
-  public getCurrentFuzzyDate() {
+  public getCurrentFuzzyDate(): SkyFuzzyDate {
     let currentDate = moment();
 
     return {
@@ -258,7 +276,7 @@ export class SkyFuzzyDateService {
     }
   }
 
-  private getDateFormatIndexes(dateFormatString: string) {
+  private getDateFormatIndexes(dateFormatString: string): SkyDateFormatIndexes {
     dateFormatString = dateFormatString.toLowerCase();
 
     // Get the order of year, month, and day in the provided date format

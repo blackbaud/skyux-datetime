@@ -19,17 +19,26 @@ import {
   templateUrl: './fuzzy-datepicker-visual.component.html'
 })
 export class FuzzyDatepickerVisualComponent implements OnInit {
-  public disabled = false;
-  public dateFormat: any = 'MM/DD/YYYY';
-  public minFuzzyDate: any;
-  public maxFuzzyDate: any;
-  public yearRequired: boolean;
+
   public cannotBeFuture: boolean;
 
+  public dateFormat: any = 'MM/DD/YYYY';
+
+  public disabled = false;
+
+  public maxFuzzyDate: any;
+
+  public minFuzzyDate: any;
+
   public noValidate = false;
+
   public reactiveForm: FormGroup;
+
   public selectedFuzzyDate: any = { month: 4, day: 4, year: 2017 };
+
   public startingDay: number;
+
+  public yearRequired: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
