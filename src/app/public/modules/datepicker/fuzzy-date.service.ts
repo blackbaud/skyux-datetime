@@ -24,7 +24,7 @@ interface SkyFuzzyDateRange {
 @Injectable()
 export class SkyFuzzyDateService {
 
-  public getMomentFromFuzzyDate(fuzzyDate: any): any {
+  public getMomentFromFuzzyDate(fuzzyDate: SkyFuzzyDate): any {
     if (!fuzzyDate) { return; }
 
     // Year to use for fuzzy dates that don't have a year.

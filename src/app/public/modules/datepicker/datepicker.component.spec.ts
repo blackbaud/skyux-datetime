@@ -70,10 +70,15 @@ import {
 const moment = require('moment');
 
 // #region helpers
-function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>) {
+function openDatepicker(element: HTMLElement, compFixture: ComponentFixture<any>, isfakeAsync: boolean = true) {
   let dropdownButtonEl = element.querySelector('.sky-dropdown-button') as HTMLElement;
   dropdownButtonEl.click();
-  compFixture.detectChanges();
+  if (isfakeAsync) {
+    compFixture.detectChanges();
+    tick();
+    compFixture.detectChanges();
+    tick();
+  }
 }
 
 function setInput(
@@ -224,9 +229,6 @@ describe('datepicker', () => {
       component.selectedDate = new Date('5/12/2017');
       fixture.detectChanges();
       openDatepicker(nativeElement, fixture);
-      tick();
-      fixture.detectChanges();
-      tick();
 
       expect(nativeElement.querySelector('td .sky-datepicker-btn-selected'))
         .toHaveText('12');
@@ -250,8 +252,7 @@ describe('datepicker', () => {
 
     it('should be accessible', async(() => {
       fixture.detectChanges();
-      openDatepicker(nativeElement, fixture);
-      fixture.detectChanges();
+      openDatepicker(nativeElement, fixture, false);
 
       fixture.whenStable().then(() => {
         expect(fixture.nativeElement).toBeAccessible();
@@ -393,9 +394,6 @@ describe('datepicker', () => {
         setInput(nativeElement, '5/12/2017', fixture);
 
         openDatepicker(nativeElement, fixture);
-        tick();
-        fixture.detectChanges();
-        tick();
 
         expect(nativeElement.querySelector('td .sky-datepicker-btn-selected'))
           .toHaveText('12');
@@ -587,7 +585,6 @@ describe('datepicker', () => {
         tick();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -649,7 +646,6 @@ describe('datepicker', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -666,7 +662,6 @@ describe('datepicker', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -683,7 +678,6 @@ describe('datepicker', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let firstDayCol = fixture.nativeElement
           .querySelectorAll('.sky-datepicker-center.sky-datepicker-weekdays').item(0) as HTMLElement;
@@ -837,9 +831,6 @@ describe('datepicker', () => {
         setInput(nativeElement, '5/12/2017', fixture);
 
         openDatepicker(nativeElement, fixture);
-        tick();
-        fixture.detectChanges();
-        tick();
 
         expect(nativeElement.querySelector('td .sky-datepicker-btn-selected'))
           .toHaveText('12');
@@ -957,9 +948,6 @@ describe('datepicker', () => {
         expect(component.dateControl.touched).toBe(false);
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
-        fixture.detectChanges();
-        tick();
 
         fixture.nativeElement.querySelector('.sky-datepicker-btn-selected').click();
         fixture.detectChanges();
@@ -1074,7 +1062,6 @@ describe('datepicker', () => {
         tick();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -1133,7 +1120,6 @@ describe('datepicker', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -1151,7 +1137,6 @@ describe('datepicker', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -1395,9 +1380,6 @@ describe('fuzzy datepicker input', () => {
       component.selectedDate = new Date('5/12/2017');
       fixture.detectChanges();
       openDatepicker(nativeElement, fixture);
-      tick();
-      fixture.detectChanges();
-      tick();
 
       expect(nativeElement.querySelector('td .sky-datepicker-btn-selected'))
         .toHaveText('12');
@@ -1421,8 +1403,7 @@ describe('fuzzy datepicker input', () => {
 
     it('should be accessible', async(() => {
       fixture.detectChanges();
-      openDatepicker(nativeElement, fixture);
-      fixture.detectChanges();
+      openDatepicker(nativeElement, fixture, false);
 
       fixture.whenStable().then(() => {
         expect(fixture.nativeElement).toBeAccessible();
@@ -1592,9 +1573,6 @@ describe('fuzzy datepicker input', () => {
         setInput(nativeElement, '5/12/2017', fixture);
 
         openDatepicker(nativeElement, fixture);
-        tick();
-        fixture.detectChanges();
-        tick();
 
         expect(nativeElement.querySelector('td .sky-datepicker-btn-selected'))
           .toHaveText('12');
@@ -1878,7 +1856,6 @@ describe('fuzzy datepicker input', () => {
         tick();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -1985,7 +1962,8 @@ describe('fuzzy datepicker input', () => {
           expect(ngModel.touched).toBe(true);
           expect(ngModel.errors).toBeNull();
         }));
-      });
+    });
+
     describe('min max fuzzy date', () => {
 
       let ngModel: NgModel;
@@ -2080,7 +2058,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2097,7 +2074,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2115,7 +2091,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2124,6 +2099,7 @@ describe('fuzzy datepicker input', () => {
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
       }));
 
+      // Should default to min date when minFuzzyDate is invalid.
       it('should pass min date from config service to calendar when min fuzzy date is invalid', fakeAsync(() => {
         component.selectedDate = new Date('5/21/2017');
         component.minFuzzyDate = { month: 15, day: 35, year: 2017 };
@@ -2133,7 +2109,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2382,9 +2357,6 @@ describe('fuzzy datepicker input', () => {
         setInput(nativeElement, '5/12/2017', fixture);
 
         openDatepicker(nativeElement, fixture);
-        tick();
-        fixture.detectChanges();
-        tick();
 
         expect(nativeElement.querySelector('td .sky-datepicker-btn-selected'))
           .toHaveText('12');
@@ -2500,9 +2472,6 @@ describe('fuzzy datepicker input', () => {
         expect(component.dateControl.touched).toBe(false);
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
-        fixture.detectChanges();
-        tick();
 
         fixture.nativeElement.querySelector('.sky-datepicker-btn-selected').click();
         tick();
@@ -2616,7 +2585,6 @@ describe('fuzzy datepicker input', () => {
         tick();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
       }));
 
       it('should validate properly when an invalid date format is passed through input change',
@@ -2836,7 +2804,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2854,7 +2821,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2873,7 +2839,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2892,7 +2857,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let dateButtonEl
           = fixture.nativeElement
@@ -2910,7 +2874,6 @@ describe('fuzzy datepicker input', () => {
         fixture.detectChanges();
 
         openDatepicker(fixture.nativeElement, fixture);
-        tick();
 
         let firstDayCol = fixture.nativeElement
           .querySelectorAll('.sky-datepicker-center.sky-datepicker-weekdays').item(0) as HTMLElement;

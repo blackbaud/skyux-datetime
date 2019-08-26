@@ -158,25 +158,23 @@ export class SkyFuzzyDatepickerInputDirective
   public get maxDate(): Date {
     if (this.maxFuzzyDate) {
       let maxDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.maxFuzzyDate);
-      if (maxDate) {
+      if (maxDate.isValid()) {
           return maxDate.toDate();
       }
     } else if (this.cannotBeFuture) {
         return new Date();
-    } else {
-      return this.configService.maxDate;
     }
+    return this.configService.maxDate;
   }
 
   public get minDate(): Date {
     if (this.minFuzzyDate) {
-      let minDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.minFuzzyDate);
-      if (minDate) {
-          return minDate.toDate();
+      const minDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.minFuzzyDate);
+      if (minDate.isValid()) {
+        return minDate.toDate();
       }
-    } else {
-      return this.configService.minDate;
     }
+    return this.configService.minDate;
   }
 
   private get value(): any {
@@ -257,18 +255,28 @@ export class SkyFuzzyDatepickerInputDirective
   }
 
   private control: AbstractControl;
+
   private dateFormatter = new SkyDateFormatter();
+
   private isFirstChange = true;
+
   private ngUnsubscribe = new Subject<void>();
 
-  private _dateFormat: string;
-  private _yearRequired: boolean = false;
   private _cannotBeFuture: boolean = false;
+
+  private _dateFormat: string;
+
   private _disabled = false;
+
   private _maxFuzzyDate: SkyFuzzyDate;
+
   private _minFuzzyDate: SkyFuzzyDate;
+
   private _startingDay: number;
+
   private _value: any;
+
+  private _yearRequired: boolean = false;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
