@@ -656,7 +656,8 @@ describe('datepicker', () => {
         const buttonEl = nativeElement.querySelector('.sky-dropdown-button') as HTMLElement;
         const dropdownContainerEl =
           nativeElement.querySelector('.sky-popover-container') as HTMLElement;
-        const selectedDayEl = getSelectedCalendarItem(fixture);
+        const selectedDayEl =
+          nativeElement.querySelector('td .sky-datepicker-btn-selected') as HTMLElement;
 
         expect(buttonEl).toBeDefined();
         expect(dropdownContainerEl).toBeDefined();
