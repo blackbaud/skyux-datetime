@@ -73,17 +73,16 @@ function detectChanges(fixture: ComponentFixture<any>): void {
   tick();
 }
 
-function getDatepickerDropdownButton(fixture: ComponentFixture<any>): HTMLElement {
+function getDatepickerButton(fixture: ComponentFixture<any>): HTMLElement {
   return fixture.nativeElement.querySelector('.sky-input-group .sky-input-group-btn .sky-dropdown-button');
 }
 
-function openDatepicker(fixture: ComponentFixture<any>, isfakeAsync: boolean = true): void {
-  getDatepickerDropdownButton(fixture).click();
+function clickDatepickerButton(fixture: ComponentFixture<any>, isfakeAsync: boolean = true): void {
+  getDatepickerButton(fixture).click();
   if (isfakeAsync) {
     detectChanges(fixture);
   }
 }
-
 function setInputProperty(value: any, component: any, fixture: ComponentFixture<any>): void {
   component.selectedDate = value;
   detectChanges(fixture);
@@ -226,7 +225,7 @@ describe('datepicker', () => {
       fixture.detectChanges();
 
       expect(getInputElement(fixture)).toHaveCssClass('sky-form-control');
-      expect(getDatepickerDropdownButton(fixture)).not.toBeNull();
+      expect(getDatepickerButton(fixture)).not.toBeNull();
     });
 
     it('should apply aria-label to the datepicker input when none is provided', () => {
@@ -245,7 +244,7 @@ describe('datepicker', () => {
     it('should keep the calendar open on mode change', fakeAsync(() => {
       fixture.detectChanges();
 
-      openDatepicker(fixture);
+      clickDatepickerButton(fixture);
 
       let dropdownMenuEl = nativeElement.querySelector('.sky-popover-container');
       expect(dropdownMenuEl).not.toHaveCssClass('sky-popover-hidden');
@@ -258,7 +257,7 @@ describe('datepicker', () => {
 
     it('should pass date back when date is selected in calendar', fakeAsync(() => {
       setInputProperty(new Date('5/12/2017'), component, fixture);
-      openDatepicker(fixture);
+      clickDatepickerButton(fixture);
 
       expect(getSelectedCalendarItem(fixture)).toHaveText('12');
       expect(getCalendarTitle(fixture)).toHaveText('May 2017');
@@ -272,7 +271,7 @@ describe('datepicker', () => {
 
     it('should be accessible', async(() => {
       fixture.detectChanges();
-      openDatepicker(fixture, false);
+      clickDatepickerButton(fixture, false);
 
       // Due to the nature of the calendar popup and this being an async test,
       // we need a couple when stable blocks to ensure the calendar is showing.
@@ -381,7 +380,7 @@ describe('datepicker', () => {
         detectChanges(fixture);
         setInputElementValue(nativeElement, '5/12/2017', fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         expect(getCalendarTitle(fixture)).toHaveText('May 2017');
         expect(getSelectedCalendarItem(fixture)).toHaveText('12');
@@ -509,12 +508,13 @@ describe('datepicker', () => {
         expect(ngModel.valid).toBe(true);
       }));
 
+      // TODO: Should this expect something?
       it('should handle calendar date on invalid date', fakeAsync(() => {
         detectChanges(fixture);
 
         setInputElementValue(fixture.nativeElement, 'abcdebf', fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -526,7 +526,6 @@ describe('datepicker', () => {
         expect(getInputElementValue(fixture)).toBe('abcdebf');
         expect(component.selectedDate).toBe('abcdebf');
         expect(ngModel.valid).toBe(true);
-
       }));
     });
 
@@ -562,7 +561,7 @@ describe('datepicker', () => {
         component.maxDate = new Date('5/25/2017');
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(30, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -573,7 +572,7 @@ describe('datepicker', () => {
         component.minDate = new Date('5/4/2017');
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(1, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -584,7 +583,7 @@ describe('datepicker', () => {
         component.startingDay = 5;
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const firstDayCol = getCalendarColumn(0, fixture);
         expect(firstDayCol.textContent).toContain('Fr');
@@ -632,7 +631,70 @@ describe('datepicker', () => {
         expect(component.selectedDate).toEqual(new Date(newDate));
       }));
 
-     });
+    });
+
+    describe('focus properties', () => {
+      type focusProperty = 'buttonIsFocused' | 'calendarIsFocused';
+
+      function validateFocus(hasFocus: boolean, focusedEl?: HTMLElement, focusPropertyName: focusProperty = 'buttonIsFocused'): void {
+        if (hasFocus && focusedEl) {
+          focusedEl.focus();
+        }
+
+        expect(component.datepicker[focusPropertyName]).toBe(hasFocus);
+      }
+
+      function validateCalendarFocus(hasFocus: boolean, focusedEl?: HTMLElement): void {
+        clickDatepickerButton(fixture);
+
+        validateFocus(hasFocus, focusedEl, 'calendarIsFocused');
+
+        clickDatepickerButton(fixture);
+      }
+
+      it('should reflect the state of focus for the datepicker component', fakeAsync(() => {
+        const buttonEl = nativeElement.querySelector('.sky-dropdown-button') as HTMLElement;
+        const dropdownContainerEl =
+          nativeElement.querySelector('.sky-popover-container') as HTMLElement;
+        const selectedDayEl = getSelectedCalendarItem(fixture);
+
+        expect(buttonEl).toBeDefined();
+        expect(dropdownContainerEl).toBeDefined();
+        expect(selectedDayEl).toBeDefined();
+
+        validateFocus(false);
+        validateFocus(true, buttonEl);
+
+        validateCalendarFocus(false);
+        validateCalendarFocus(true, dropdownContainerEl);
+        validateCalendarFocus(true, selectedDayEl);
+      }));
+
+      it('should reflect the state of focus for the input', () => {
+        fixture.detectChanges();
+        const inputEl = nativeElement.querySelector('input') as HTMLElement;
+
+        expect(inputEl).toBeDefined();
+        expect(component.inputDirective.inputIsFocused).toBe(false);
+
+        inputEl.focus();
+        fixture.detectChanges();
+
+        expect(component.inputDirective.inputIsFocused).toBe(true);
+      });
+    });
+
+    describe('calendarIsVisible property', () => {
+      it('should reflect the visibility of the calendar element', fakeAsync(() => {
+        fixture.detectChanges();
+
+        expect(component.datepicker.calendarIsVisible).toBe(false);
+
+        clickDatepickerButton(fixture);
+
+        expect(component.datepicker.calendarIsVisible).toBe(true);
+      }));
+    });
   });
 
   describe('reactive form', () => {
@@ -713,7 +775,7 @@ describe('datepicker', () => {
         detectChanges(fixture);
 
         setInputElementValue(nativeElement, '5/12/2017', fixture);
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         expect(getCalendarTitle(fixture)).toHaveText('May 2017');
         expect(getSelectedCalendarItem(fixture)).toHaveText('12');
@@ -804,7 +866,7 @@ describe('datepicker', () => {
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
         getSelectedCalendarItem(fixture).click();
         detectChanges(fixture);
 
@@ -815,7 +877,6 @@ describe('datepicker', () => {
     });
 
     describe('validation', () => {
-
       it('should validate properly when invalid date is passed through input change',
         fakeAsync(() => {
           detectChanges(fixture);
@@ -885,7 +946,7 @@ describe('datepicker', () => {
 
         setInputElementValue(fixture.nativeElement, 'abcdebf', fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -930,7 +991,7 @@ describe('datepicker', () => {
         component.maxDate = new Date('5/25/2017');
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(30, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -942,7 +1003,7 @@ describe('datepicker', () => {
         component.minDate = new Date('5/4/2017');
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(1, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -954,7 +1015,7 @@ describe('datepicker', () => {
         component.startingDay = 5;
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const firstDayCol = getCalendarColumn(0, fixture);
         expect(firstDayCol.textContent).toContain('Fr');
@@ -962,7 +1023,6 @@ describe('datepicker', () => {
     });
 
     describe('disabled state', () => {
-
       it('should disable the input and dropdown when disable is set to true', () => {
         fixture.detectChanges();
         component.dateControl.disable();
@@ -1128,7 +1188,7 @@ describe('fuzzy datepicker input', () => {
       fixture.detectChanges();
 
       expect(getInputElement(fixture)).toHaveCssClass('sky-form-control');
-      expect(getDatepickerDropdownButton(fixture)).not.toBeNull();
+      expect(getDatepickerButton(fixture)).not.toBeNull();
     });
 
     it('should apply aria-label to the datepicker input when none is provided', () => {
@@ -1146,7 +1206,7 @@ describe('fuzzy datepicker input', () => {
 
     it('should keep the calendar open on mode change', fakeAsync(() => {
       fixture.detectChanges();
-      openDatepicker(fixture);
+      clickDatepickerButton(fixture);
       let dropdownMenuEl = nativeElement.querySelector('.sky-popover-container');
 
       expect(dropdownMenuEl).not.toHaveCssClass('sky-popover-hidden');
@@ -1159,7 +1219,7 @@ describe('fuzzy datepicker input', () => {
 
     it('should pass date back when date is selected in calendar', fakeAsync(() => {
       setInputProperty(new Date('5/12/2017'), component, fixture);
-      openDatepicker(fixture);
+      clickDatepickerButton(fixture);
 
       expect(getSelectedCalendarItem(fixture)).toHaveText('12');
       expect(getCalendarTitle(fixture)).toHaveText('May 2017');
@@ -1173,7 +1233,7 @@ describe('fuzzy datepicker input', () => {
 
     it('should be accessible', async(() => {
       fixture.detectChanges();
-      openDatepicker(fixture, false);
+      clickDatepickerButton(fixture, false);
 
       // Due to the nature of the calendar popup and this being an async test,
       // we need a couple when stable blocks to ensure the calendar is showing.
@@ -1303,7 +1363,7 @@ describe('fuzzy datepicker input', () => {
         detectChanges(fixture);
 
         setInputElementValue(nativeElement, '5/12/2017', fixture);
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         expect(getCalendarTitle(fixture)).toHaveText('May 2017');
         expect(getSelectedCalendarItem(fixture)).toHaveText('12');
@@ -1516,7 +1576,7 @@ describe('fuzzy datepicker input', () => {
 
         setInputElementValue(fixture.nativeElement, 'abcdebf', fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -1666,7 +1726,7 @@ describe('fuzzy datepicker input', () => {
         component.maxFuzzyDate = { month: 5, day: 25, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(27, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -1677,7 +1737,7 @@ describe('fuzzy datepicker input', () => {
         component.minFuzzyDate = { month: 5, day: 4, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(3, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -1688,7 +1748,7 @@ describe('fuzzy datepicker input', () => {
         component.maxFuzzyDate = { month: 15, day: 35, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(30, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -1699,7 +1759,7 @@ describe('fuzzy datepicker input', () => {
         component.minFuzzyDate = { month: 15, day: 35, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(1, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -1710,7 +1770,7 @@ describe('fuzzy datepicker input', () => {
         component.startingDay = 5;
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const firstDayCol = getCalendarColumn(0, fixture);
         expect(firstDayCol.textContent).toContain('Fr');
@@ -1900,7 +1960,7 @@ describe('fuzzy datepicker input', () => {
         detectChanges(fixture);
 
         setInputElementValue(nativeElement, '5/12/2017', fixture);
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         expect(getCalendarTitle(fixture)).toHaveText('May 2017');
         expect(getSelectedCalendarItem(fixture)).toHaveText('12');
@@ -1990,7 +2050,7 @@ describe('fuzzy datepicker input', () => {
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
         getSelectedCalendarItem(fixture).click();
         detectChanges(fixture);
 
@@ -2068,7 +2128,7 @@ describe('fuzzy datepicker input', () => {
 
         setInputElementValue(fixture.nativeElement, 'abcdebf', fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
       }));
 
       it('should validate properly when an invalid date format is passed through input change', fakeAsync(() => {
@@ -2215,7 +2275,7 @@ describe('fuzzy datepicker input', () => {
         component.maxFuzzyDate = { month: 5, day: 25, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(27, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -2227,7 +2287,7 @@ describe('fuzzy datepicker input', () => {
         component.minFuzzyDate = { month: 5, day: 4, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(1, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -2239,7 +2299,7 @@ describe('fuzzy datepicker input', () => {
         component.maxFuzzyDate = { month: 15, day: 35, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(30, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -2251,7 +2311,7 @@ describe('fuzzy datepicker input', () => {
         component.minFuzzyDate = { month: 15, day: 35, year: 2017 };
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const dateButtonEl = getCalendarDayButton(1, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');
@@ -2263,7 +2323,7 @@ describe('fuzzy datepicker input', () => {
         component.startingDay = 5;
         detectChanges(fixture);
 
-        openDatepicker(fixture);
+        clickDatepickerButton(fixture);
 
         const firstDayCol = getCalendarColumn(0, fixture);
         expect(firstDayCol.textContent).toContain('Fr');
