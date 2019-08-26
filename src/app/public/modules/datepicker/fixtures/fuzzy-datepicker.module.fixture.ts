@@ -16,6 +16,10 @@ import {
 } from '../datepicker.module';
 
 import {
+  SkyFuzzyDateService
+} from '../fuzzy-date.service';
+
+import {
   DatepickerCalendarTestComponent
 } from './datepicker-calendar.component.fixture';
 
@@ -43,6 +47,9 @@ import {
     NoopAnimationsModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    SkyFuzzyDateService
   ],
   exports: [
     DatepickerCalendarTestComponent,
