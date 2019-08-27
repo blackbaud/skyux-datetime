@@ -653,11 +653,11 @@ describe('datepicker', () => {
       }
 
       it('should reflect the state of focus for the datepicker component', fakeAsync(() => {
-        const buttonEl = nativeElement.querySelector('.sky-dropdown-button') as HTMLElement;
+        detectChanges(fixture);
+        const buttonEl = getDatepickerButton(fixture);
+        const selectedDayEl = getSelectedCalendarItem(fixture);
         const dropdownContainerEl =
           nativeElement.querySelector('.sky-popover-container') as HTMLElement;
-        const selectedDayEl =
-          nativeElement.querySelector('td .sky-datepicker-btn-selected') as HTMLElement;
 
         expect(buttonEl).toBeDefined();
         expect(dropdownContainerEl).toBeDefined();
@@ -671,9 +671,9 @@ describe('datepicker', () => {
         validateCalendarFocus(true, selectedDayEl);
       }));
 
-      it('should reflect the state of focus for the input', () => {
-        fixture.detectChanges();
-        const inputEl = nativeElement.querySelector('input') as HTMLElement;
+      it('should reflect the state of focus for the input', fakeAsync(() => {
+        detectChanges(fixture);
+        const inputEl = getInputElement(fixture);
 
         expect(inputEl).toBeDefined();
         expect(component.inputDirective.inputIsFocused).toBe(false);
@@ -682,7 +682,7 @@ describe('datepicker', () => {
         fixture.detectChanges();
 
         expect(component.inputDirective.inputIsFocused).toBe(true);
-      });
+      }));
     });
 
     describe('calendarIsVisible property', () => {
