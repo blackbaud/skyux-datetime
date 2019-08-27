@@ -103,7 +103,7 @@ function getCalendarDayButton(index: number, fixture: ComponentFixture<any>): HT
   return fixture.nativeElement.querySelectorAll('tbody tr td .sky-btn-default').item(index) as HTMLButtonElement;
 }
 
-function clickCalednarDateButton(index: number, fixture: ComponentFixture<any>): void {
+function clickCalendarDateButton(index: number, fixture: ComponentFixture<any>): void {
   getCalendarDayButton(index, fixture).click();
   detectChanges(fixture);
 }
@@ -246,7 +246,7 @@ describe('datepicker', () => {
       expect(getCalendarTitle(fixture)).toHaveText('May 2017');
 
       // Click May 2nd
-      clickCalednarDateButton(2, fixture);
+      clickCalendarDateButton(2, fixture);
 
       expect(component.selectedDate).toEqual(new Date('5/2/2017'));
       expect(getInputElementValue(fixture)).toBe('05/02/2017');
