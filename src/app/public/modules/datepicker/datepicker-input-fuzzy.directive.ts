@@ -194,7 +194,7 @@ export class SkyFuzzyDatepickerInputDirective
 
     } else if (typeof value === 'string') {
       formattedDate = value;
-      fuzzyDate = this.fuzzyDateService.getFuzzyDateFromDateString(value, this.dateFormat);
+      fuzzyDate = this.fuzzyDateService.getFuzzyDateFromString(value, this.dateFormat);
 
       fuzzyMoment = this.fuzzyDateService.getMomentFromFuzzyDate(fuzzyDate);
 
@@ -204,7 +204,7 @@ export class SkyFuzzyDatepickerInputDirective
 
     } else {
       fuzzyDate = value as SkyFuzzyDate;
-      formattedDate = this.fuzzyDateService.getDateStringFromFuzzyDate(fuzzyDate, this.dateFormat);
+      formattedDate = this.fuzzyDateService.getStringFromFuzzyDate(fuzzyDate, this.dateFormat);
       fuzzyMoment = this.fuzzyDateService.getMomentFromFuzzyDate(fuzzyDate);
 
       if (fuzzyMoment) {
@@ -397,7 +397,7 @@ export class SkyFuzzyDatepickerInputDirective
     let validationError: any;
 
     if (typeof value === 'string') {
-      fuzzyDate = this.fuzzyDateService.getFuzzyDateFromDateString(value, this.dateFormat);
+      fuzzyDate = this.fuzzyDateService.getFuzzyDateFromString(value, this.dateFormat);
     } else {
       fuzzyDate = value;
     }
