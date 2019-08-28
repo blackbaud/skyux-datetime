@@ -36,12 +36,12 @@ import {
 } from './fixtures/datepicker.component.fixture';
 
 import {
-  DatepickerNoFormatTestComponent
-} from './fixtures/datepicker-noformat.component.fixture';
-
-import {
   DatepickerTestModule
 } from './fixtures/datepicker.module.fixture';
+
+import {
+  DatepickerNoFormatTestComponent
+} from './fixtures/datepicker-noformat.component.fixture';
 
 import {
   DatepickerReactiveTestComponent
@@ -74,7 +74,7 @@ function detectChanges(fixture: ComponentFixture<any>): void {
 }
 
 function getDatepickerButton(fixture: ComponentFixture<any>): HTMLElement {
-  return fixture.nativeElement.querySelector('.sky-input-group .sky-input-group-btn .sky-dropdown-button');
+  return fixture.nativeElement.querySelector('.sky-input-group .sky-input-group-btn .sky-dropdown-button') as HTMLElement;
 }
 
 function clickDatepickerButton(fixture: ComponentFixture<any>, isfakeAsync: boolean = true): void {
@@ -108,7 +108,7 @@ function setFormControlProperty(value: any, component: any, fixture: ComponentFi
 }
 
 function getInputElement(fixture: ComponentFixture<any>): HTMLInputElement {
-  return fixture.nativeElement.querySelector('input');
+  return fixture.nativeElement.querySelector('input') as HTMLInputElement;
 }
 
 function getInputElementValue(fixture: ComponentFixture<any>): string {
@@ -119,7 +119,7 @@ function getCalendarDayButton(index: number, fixture: ComponentFixture<any>): HT
   return fixture.nativeElement.querySelectorAll('tbody tr td .sky-btn-default').item(index) as HTMLButtonElement;
 }
 
-function clickCalednarDateButton(index: number, fixture: ComponentFixture<any>): void {
+function clickCalendarDateButton(index: number, fixture: ComponentFixture<any>): void {
   getCalendarDayButton(index, fixture).click();
   detectChanges(fixture);
 }
@@ -138,12 +138,11 @@ function clickCalendarTitle(fixture: ComponentFixture<any>): void {
 }
 
 function getSelectedCalendarItem(fixture: ComponentFixture<any>): HTMLElement {
-  return fixture.nativeElement.querySelector('td .sky-datepicker-btn-selected');
+  return fixture.nativeElement.querySelector('td .sky-datepicker-btn-selected') as HTMLElement;
 }
 // #endregion
 
 describe('datepicker', () => {
-
   beforeEach(function () {
     TestBed.configureTestingModule({
       imports: [
@@ -263,7 +262,7 @@ describe('datepicker', () => {
       expect(getCalendarTitle(fixture)).toHaveText('May 2017');
 
       // Click May 2nd
-      clickCalednarDateButton(2, fixture);
+      clickCalendarDateButton(2, fixture);
 
       expect(component.selectedDate).toEqual(new Date('5/2/2017'));
       expect(getInputElementValue(fixture)).toBe('05/02/2017');
@@ -274,7 +273,7 @@ describe('datepicker', () => {
       clickDatepickerButton(fixture, false);
 
       // Due to the nature of the calendar popup and this being an async test,
-      // we need a couple when stable blocks to ensure the calendar is showing.
+      // we need a couple whenStable() blocks to ensure the calendar is showing.
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -483,7 +482,6 @@ describe('datepicker', () => {
         expect(getInputElementValue(fixture)).toBe('abcdebf');
         expect(component.selectedDate).toBe('abcdebf');
         expect(ngModel.valid).toBe(false);
-
       }));
 
       it('should validate properly when input changed to empty string', fakeAsync(() => {
@@ -508,13 +506,15 @@ describe('datepicker', () => {
         expect(ngModel.valid).toBe(true);
       }));
 
-      // TODO: Should this expect something?
       it('should handle calendar date on invalid date', fakeAsync(() => {
         detectChanges(fixture);
 
         setInputElementValue(fixture.nativeElement, 'abcdebf', fixture);
-
         clickDatepickerButton(fixture);
+
+        // Current day should be selected.
+        const day = new Date().getDate().toString();
+        expect(getSelectedCalendarItem(fixture)).toHaveText(day);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -530,12 +530,12 @@ describe('datepicker', () => {
     });
 
     describe('min max date', () => {
-
       let ngModel: NgModel;
       beforeEach(() => {
         let inputElement = fixture.debugElement.query(By.css('input'));
         ngModel = <NgModel>inputElement.injector.get(NgModel);
       });
+
       it('should handle change above max date', fakeAsync(() => {
         setInputProperty(new Date('5/21/2017'), component, fixture);
         component.maxDate = new Date('5/25/2017');
@@ -630,10 +630,10 @@ describe('datepicker', () => {
         expect(getInputElementValue(fixture)).toBe(newDate);
         expect(component.selectedDate).toEqual(new Date(newDate));
       }));
-
     });
 
     describe('focus properties', () => {
+      // #region helpers
       type focusProperty = 'buttonIsFocused' | 'calendarIsFocused';
 
       function validateFocus(hasFocus: boolean, focusedEl?: HTMLElement, focusPropertyName: focusProperty = 'buttonIsFocused'): void {
@@ -651,6 +651,7 @@ describe('datepicker', () => {
 
         clickDatepickerButton(fixture);
       }
+      // #endregion
 
       it('should reflect the state of focus for the datepicker component', fakeAsync(() => {
         detectChanges(fixture);
@@ -878,19 +879,18 @@ describe('datepicker', () => {
     });
 
     describe('validation', () => {
-      it('should validate properly when invalid date is passed through input change',
-        fakeAsync(() => {
-          detectChanges(fixture);
+      it('should validate properly when invalid date is passed through input change', fakeAsync(() => {
+        detectChanges(fixture);
 
-          setInputElementValue(nativeElement, 'abcdebf', fixture);
+        setInputElementValue(nativeElement, 'abcdebf', fixture);
 
-          expect(getInputElementValue(fixture)).toBe('abcdebf');
-          expect(component.dateControl.value).toBe('abcdebf');
-          expect(component.dateControl.valid).toBe(false);
-          expect(component.dateControl.pristine).toBe(false);
-          expect(component.dateControl.touched).toBe(true);
+        expect(getInputElementValue(fixture)).toBe('abcdebf');
+        expect(component.dateControl.value).toBe('abcdebf');
+        expect(component.dateControl.valid).toBe(false);
+        expect(component.dateControl.pristine).toBe(false);
+        expect(component.dateControl.touched).toBe(true);
 
-        }));
+      }));
 
       it('should validate properly when invalid date on initialization', fakeAsync(() => {
         fixture.detectChanges();
@@ -941,13 +941,15 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toBe(true);
       }));
 
-      // TODO: Should this expect something?
       it('should handle calendar date on invalid date', fakeAsync(() => {
         detectChanges(fixture);
 
         setInputElementValue(fixture.nativeElement, 'abcdebf', fixture);
-
         clickDatepickerButton(fixture);
+
+        // Current day should be selected.
+        const day = new Date().getDate().toString();
+        expect(getSelectedCalendarItem(fixture)).toHaveText(day);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -972,7 +974,6 @@ describe('datepicker', () => {
         setInputElementValue(fixture.nativeElement, '5/26/2017', fixture);
 
         expect(component.dateControl.valid).toBe(false);
-
       }));
 
       it('should handle change below min date', fakeAsync(() => {
@@ -1226,7 +1227,7 @@ describe('fuzzy datepicker input', () => {
       expect(getCalendarTitle(fixture)).toHaveText('May 2017');
 
       // Click May 6th
-      clickCalednarDateButton(6, fixture);
+      clickCalendarDateButton(6, fixture);
 
       expect(component.selectedDate).toEqual({ year: 2017, day: 6, month: 5 });
       expect(getInputElementValue(fixture)).toBe('05/06/2017');
