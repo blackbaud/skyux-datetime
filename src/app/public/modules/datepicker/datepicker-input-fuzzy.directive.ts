@@ -45,8 +45,14 @@ import {
 import {
   SkyDatepickerComponent
 } from './datepicker.component';
-import { SkyFuzzyDate } from './fuzzy-date';
-import { SkyFuzzyDateService } from './fuzzy-date.service';
+
+import {
+  SkyFuzzyDate
+} from './fuzzy-date';
+
+import {
+  SkyFuzzyDateService
+} from './fuzzy-date.service';
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_FUZZY_DATEPICKER_VALUE_ACCESSOR = {
@@ -73,6 +79,16 @@ export class SkyFuzzyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
   @Input()
+  public set cannotBeFuture(value: boolean) {
+    this._cannotBeFuture = value;
+    this.onValidatorChange();
+  }
+
+  public get cannotBeFuture(): boolean {
+    return this._cannotBeFuture;
+  }
+
+  @Input()
   public set dateFormat(value: string) {
     this._dateFormat = value;
   }
@@ -82,23 +98,17 @@ export class SkyFuzzyDatepickerInputDirective
   }
 
   @Input()
-  public set yearRequired(value: boolean) {
-    this._yearRequired = value;
-    this.onValidatorChange();
+  public set disabled(value: boolean) {
+    this._disabled = value;
+    this.renderer.setProperty(
+      this.elementRef.nativeElement,
+      'disabled',
+      value
+    );
   }
 
-  public get yearRequired(): boolean {
-    return this._yearRequired;
-  }
-
-  @Input()
-  public set cannotBeFuture(value: boolean) {
-    this._cannotBeFuture = value;
-    this.onValidatorChange();
-  }
-
-  public get cannotBeFuture(): boolean {
-    return this._cannotBeFuture;
+  public get disabled(): boolean {
+    return this._disabled;
   }
 
   @Input()
@@ -124,24 +134,10 @@ export class SkyFuzzyDatepickerInputDirective
   }
 
   @Input()
-  public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) { }
-
-  @Input()
   public skyDatepickerNoValidate = false;
 
   @Input()
-  public set disabled(value: boolean) {
-    this._disabled = value;
-    this.renderer.setProperty(
-      this.elementRef.nativeElement,
-      'disabled',
-      value
-    );
-  }
-
-  public get disabled(): boolean {
-    return this._disabled;
-  }
+  public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) { }
 
   @Input()
   public set startingDay(value: number) {
@@ -153,6 +149,16 @@ export class SkyFuzzyDatepickerInputDirective
 
   public get startingDay(): number {
     return this._startingDay || this.configService.startingDay;
+  }
+
+  @Input()
+  public set yearRequired(value: boolean) {
+    this._yearRequired = value;
+    this.onValidatorChange();
+  }
+
+  public get yearRequired(): boolean {
+    return this._yearRequired;
   }
 
   public get maxDate(): Date {
@@ -280,12 +286,12 @@ export class SkyFuzzyDatepickerInputDirective
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private configService: SkyDatepickerConfigService,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent,
-    private fuzzyDateService: SkyFuzzyDateService
+    private configService: SkyDatepickerConfigService,
+    private fuzzyDateService: SkyFuzzyDateService,
+    private resourcesService: SkyLibResourcesService
   ) { }
 
   public ngOnInit(): void {

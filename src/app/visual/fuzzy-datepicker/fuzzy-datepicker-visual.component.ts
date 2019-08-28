@@ -10,6 +10,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+
 import {
   SkyFuzzyDateService
 } from '../../public/modules/datepicker/fuzzy-date.service';
@@ -50,7 +51,7 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
   }
 
   // This property is only necessary to support the datepicker-calendar
-  //    on the page with the fuzzy datepicker
+  // on the page with the fuzzy datepicker.
   public get selectedDate(): any {
     let fuzzyMoment = this.fuzzyDateService.getMomentFromFuzzyDate(this.selectedFuzzyDate);
     let selectedDate: any;
