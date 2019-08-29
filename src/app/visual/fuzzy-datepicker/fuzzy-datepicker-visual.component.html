@@ -18,7 +18,7 @@
 >
   <sky-datepicker>
     <input
-      [cannotBeFuture]="cannotBeFuture"
+      [futureDisabled]="futureDisabled"
       [dateFormat]="dateFormat"
       [disabled]="disabled"
       [maxFuzzyDate]="maxFuzzyDate"
@@ -56,7 +56,7 @@
     <span *ngIf="date.errors.skyFuzzyDate?.yearRequired">
       Please select a year.
     </span>
-    <span *ngIf="date.errors.skyFuzzyDate?.cannotBeFuture">
+    <span *ngIf="date.errors.skyFuzzyDate?.futureDisabled">
       Date cannot be in the future.
     </span>
     <span *ngIf="date.errors.skyFuzzyDate?.maxFuzzyDate">
@@ -85,7 +85,7 @@
         formControlName="selectedFuzzyDate"
         skyFuzzyDatepickerInput
         type="text"
-        [cannotBeFuture]="cannotBeFuture"
+        [futureDisabled]="futureDisabled"
         [dateFormat]="dateFormat"
         [maxFuzzyDate]="maxFuzzyDate"
         [minFuzzyDate]="minFuzzyDate"
@@ -119,7 +119,7 @@
       <span *ngIf="reactiveDate.errors.skyFuzzyDate?.yearRequired">
         Please select a year.
       </span>
-      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.cannotBeFuture">
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.futureDisabled">
         Date cannot be in the future.
       </span>
       <span *ngIf="reactiveDate.errors.skyFuzzyDate?.maxFuzzyDate">
@@ -156,7 +156,7 @@
   <button
     class="sky-btn"
     type="button"
-    (click)="toggleCannotBeFuture()"
+    (click)="toggleFutureDisabled()"
   >
     Toggle cannot be in future
   </button>

@@ -20,7 +20,7 @@ import {
 })
 export class FuzzyDatepickerReactiveTestComponent implements OnInit {
 
-  public cannotBeFuture: boolean;
+  public futureDisabled: boolean;
 
   public dateControl: FormControl;
 

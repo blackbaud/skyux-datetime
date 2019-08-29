@@ -1611,9 +1611,8 @@ describe('fuzzy datepicker input', () => {
         expect(ngModel.errors).toBeNull();
       }));
 
-      it(`should validate properly when the fuzzy date cannot be in future
-         and a future date is passed through input change`, fakeAsync(() => {
-        fixture.componentInstance.cannotBeFuture = true;
+      it(`should validate properly when futureDisabled = true and a future date is passed through input change`, fakeAsync(() => {
+        fixture.componentInstance.futureDisabled = true;
         detectChanges(fixture);
 
         const futureDateString = moment().add(1, 'days').format('L');
@@ -1622,7 +1621,7 @@ describe('fuzzy datepicker input', () => {
         expect(getInputElementValue(fixture)).toBe(futureDateString);
         expect(ngModel.valid).toBe(false);
         expect(ngModel.touched).toBe(true);
-        expect(ngModel.errors.skyFuzzyDate.cannotBeFuture).toBeTruthy();
+        expect(ngModel.errors.skyFuzzyDate.futureDisabled).toBeTruthy();
 
         const todayDateString = moment().format('L');
         setInputElementValue(nativeElement, todayDateString, fixture);
@@ -2153,9 +2152,8 @@ describe('fuzzy datepicker input', () => {
         expect(component.dateControl.touched).toBe(true);
       }));
 
-      it(`should validate properly when the fuzzy date cannot be in future
-        and a future date is passed through input change`, fakeAsync(() => {
-        fixture.componentInstance.cannotBeFuture = true;
+      it(`should validate properly when futureDisabled = true and a future date is passed through input change`, fakeAsync(() => {
+        fixture.componentInstance.futureDisabled = true;
         detectChanges(fixture);
         const futureDateString = moment().add(1, 'days').format('L');
         setInputElementValue(nativeElement, futureDateString, fixture);
@@ -2164,7 +2162,7 @@ describe('fuzzy datepicker input', () => {
         expect(component.dateControl.valid).toBe(false);
         expect(component.dateControl.pristine).toBe(false);
         expect(component.dateControl.touched).toBe(true);
-        expect(component.dateControl.errors.skyFuzzyDate.cannotBeFuture).toBeTruthy();
+        expect(component.dateControl.errors.skyFuzzyDate.futureDisabled).toBeTruthy();
 
         const todayDateString = moment().format('L');
         setInputElementValue(nativeElement, todayDateString, fixture);

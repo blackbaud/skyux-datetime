@@ -21,7 +21,7 @@ import {
 })
 export class FuzzyDatepickerVisualComponent implements OnInit {
 
-  public cannotBeFuture: boolean;
+  public futureDisabled: boolean;
 
   public dateFormat: any = 'MM/DD/YYYY';
 
@@ -95,9 +95,9 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
     console.log('year required: ' + this.yearRequired);
   }
 
-  public toggleCannotBeFuture(): void {
-    this.cannotBeFuture = !this.cannotBeFuture;
-    console.log('cannot be future: ' + this.cannotBeFuture);
+  public toggleFutureDisabled(): void {
+    this.futureDisabled = !this.futureDisabled;
+    console.log('cannot be future: ' + this.futureDisabled);
   }
 
   public toggleDisabled(): void {

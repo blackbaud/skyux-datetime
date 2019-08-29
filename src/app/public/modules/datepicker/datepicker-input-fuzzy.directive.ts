@@ -79,13 +79,13 @@ export class SkyFuzzyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
   @Input()
-  public set cannotBeFuture(value: boolean) {
-    this._cannotBeFuture = value;
+  public set futureDisabled(value: boolean) {
+    this._futureDisabled = value;
     this.onValidatorChange();
   }
 
-  public get cannotBeFuture(): boolean {
-    return this._cannotBeFuture;
+  public get futureDisabled(): boolean {
+    return this._futureDisabled;
   }
 
   @Input()
@@ -167,7 +167,7 @@ export class SkyFuzzyDatepickerInputDirective
       if (maxDate.isValid()) {
           return maxDate.toDate();
       }
-    } else if (this.cannotBeFuture) {
+    } else if (this.futureDisabled) {
         return new Date();
     }
     return this.configService.maxDate;
@@ -268,7 +268,7 @@ export class SkyFuzzyDatepickerInputDirective
 
   private ngUnsubscribe = new Subject<void>();
 
-  private _cannotBeFuture: boolean = false;
+  private _futureDisabled: boolean = false;
 
   private _dateFormat: string;
 
@@ -450,12 +450,12 @@ export class SkyFuzzyDatepickerInputDirective
           }
       }
 
-      if (!validationError && this.cannotBeFuture) {
+      if (!validationError && this.futureDisabled) {
           fuzzyDateRange = this.fuzzyDateService.getFuzzyDateRange(fuzzyDate, this.fuzzyDateService.getCurrentFuzzyDate());
           if (!fuzzyDateRange.valid) {
             validationError = {
               'skyFuzzyDate': {
-                cannotBeFuture: value
+                futureDisabled: value
               }
             };
           }

@@ -12,7 +12,7 @@ import {
 })
 export class FuzzyDatepickerTestComponent {
 
-  public cannotBeFuture: boolean;
+  public futureDisabled: boolean;
 
   public dateFormat: any = 'MM/DD/YYYY';
 
