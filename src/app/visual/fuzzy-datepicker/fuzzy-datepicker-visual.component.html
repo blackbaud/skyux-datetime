@@ -21,8 +21,8 @@
       [futureDisabled]="futureDisabled"
       [dateFormat]="dateFormat"
       [disabled]="disabled"
-      [maxFuzzyDate]="maxFuzzyDate"
-      [minFuzzyDate]="minFuzzyDate"
+      [maxDate]="maxDate"
+      [minDate]="minDate"
       [skyDatepickerNoValidate]="noValidate"
       [skyFuzzyDatepickerInput]
       [startingDay]="startingDay"
@@ -59,10 +59,10 @@
     <span *ngIf="date.errors.skyFuzzyDate?.futureDisabled">
       Date cannot be in the future.
     </span>
-    <span *ngIf="date.errors.skyFuzzyDate?.maxFuzzyDate">
+    <span *ngIf="date.errors.skyFuzzyDate?.maxDate">
       The current date is beyond the maximum allowed date.
     </span>
-    <span *ngIf="date.errors.skyFuzzyDate?.minFuzzyDate">
+    <span *ngIf="date.errors.skyFuzzyDate?.minDate">
       The current date is before the minimum allowed date.
     </span>
   </p>
@@ -87,8 +87,8 @@
         type="text"
         [futureDisabled]="futureDisabled"
         [dateFormat]="dateFormat"
-        [maxFuzzyDate]="maxFuzzyDate"
-        [minFuzzyDate]="minFuzzyDate"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
         [skyDatepickerNoValidate]="noValidate"
         [startingDay]="startingDay"
         [yearRequired]="yearRequired"
@@ -122,10 +122,10 @@
       <span *ngIf="reactiveDate.errors.skyFuzzyDate?.futureDisabled">
         Date cannot be in the future.
       </span>
-      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.maxFuzzyDate">
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.maxDate">
         The current date is beyond the maximum allowed date.
       </span>
-      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.minFuzzyDate">
+      <span *ngIf="reactiveDate.errors.skyFuzzyDate?.minDate">
         The current date is before the minimum allowed date.
       </span>
     </p>

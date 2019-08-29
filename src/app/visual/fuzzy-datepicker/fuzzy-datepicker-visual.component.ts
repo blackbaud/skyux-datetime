@@ -27,9 +27,9 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
 
   public disabled = false;
 
-  public maxFuzzyDate: any;
+  public maxDate: any;
 
-  public minFuzzyDate: any;
+  public minDate: any;
 
   public noValidate = false;
 
@@ -82,8 +82,8 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
   }
 
   public setMinMaxDates(): void {
-    this.minFuzzyDate = { day: 1, month: 1, year: 2018 };
-    this.maxFuzzyDate = { day: 1, month: 1, year: 2020 };
+    this.minDate = { day: 1, month: 1, year: 2018 };
+    this.maxDate = { day: 1, month: 1, year: 2020 };
   }
 
   public setStartingDay(): void {

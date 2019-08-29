@@ -79,16 +79,6 @@ export class SkyFuzzyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
   @Input()
-  public set futureDisabled(value: boolean) {
-    this._futureDisabled = value;
-    this.onValidatorChange();
-  }
-
-  public get futureDisabled(): boolean {
-    return this._futureDisabled;
-  }
-
-  @Input()
   public set dateFormat(value: string) {
     this._dateFormat = value;
   }
@@ -112,25 +102,35 @@ export class SkyFuzzyDatepickerInputDirective
   }
 
   @Input()
-  public set maxFuzzyDate(value: SkyFuzzyDate) {
-    this._maxFuzzyDate = value;
-    this.datepickerComponent.maxDate = this.maxDate;
+  public set futureDisabled(value: boolean) {
+    this._futureDisabled = value;
     this.onValidatorChange();
   }
 
-  public get maxFuzzyDate(): SkyFuzzyDate {
-    return this._maxFuzzyDate;
+  public get futureDisabled(): boolean {
+    return this._futureDisabled;
   }
 
   @Input()
-  public set minFuzzyDate(value: SkyFuzzyDate) {
-    this._minFuzzyDate = value;
-    this.datepickerComponent.minDate = this.minDate;
+  public set maxDate(value: SkyFuzzyDate) {
+    this._maxDate = value;
+    this.datepickerComponent.maxDate = this.getMaxDate();
     this.onValidatorChange();
   }
 
-  public get minFuzzyDate(): SkyFuzzyDate {
-    return this._minFuzzyDate;
+  public get maxDate(): SkyFuzzyDate {
+    return this._maxDate;
+  }
+
+  @Input()
+  public set minDate(value: SkyFuzzyDate) {
+    this._minDate = value;
+    this.datepickerComponent.minDate = this.getMinDate();
+    this.onValidatorChange();
+  }
+
+  public get minDate(): SkyFuzzyDate {
+    return this._minDate;
   }
 
   @Input()
@@ -159,28 +159,6 @@ export class SkyFuzzyDatepickerInputDirective
 
   public get yearRequired(): boolean {
     return this._yearRequired;
-  }
-
-  public get maxDate(): Date {
-    if (this.maxFuzzyDate) {
-      let maxDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.maxFuzzyDate);
-      if (maxDate.isValid()) {
-          return maxDate.toDate();
-      }
-    } else if (this.futureDisabled) {
-        return new Date();
-    }
-    return this.configService.maxDate;
-  }
-
-  public get minDate(): Date {
-    if (this.minFuzzyDate) {
-      const minDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.minFuzzyDate);
-      if (minDate.isValid()) {
-        return minDate.toDate();
-      }
-    }
-    return this.configService.minDate;
   }
 
   private get value(): any {
@@ -218,22 +196,7 @@ export class SkyFuzzyDatepickerInputDirective
       }
     }
 
-    const areFuzzyDatesEqual = (
-      this._value && fuzzyDate
-      && (
-        (!this._value.day && !fuzzyDate.day)
-        || this._value.day === fuzzyDate.day
-      )
-      && (
-        (!this._value.month && !fuzzyDate.month)
-        || this._value.month === fuzzyDate.month
-      )
-      && (
-        (!this._value.year && !fuzzyDate.year)
-        || this._value.year === fuzzyDate.year
-      )
-    );
-
+    const areFuzzyDatesEqual = this.fuzzyDatesEqual(this._value, fuzzyDate);
     const isNewValue = (
       fuzzyDate !== this._value ||
       !areFuzzyDatesEqual
@@ -274,9 +237,9 @@ export class SkyFuzzyDatepickerInputDirective
 
   private _disabled = false;
 
-  private _maxFuzzyDate: SkyFuzzyDate;
+  private _maxDate: SkyFuzzyDate;
 
-  private _minFuzzyDate: SkyFuzzyDate;
+  private _minDate: SkyFuzzyDate;
 
   private _startingDay: number;
 
@@ -427,24 +390,24 @@ export class SkyFuzzyDatepickerInputDirective
     if (!validationError && fuzzyDate.year) {
       let fuzzyDateRange;
 
-      if (this.maxFuzzyDate) {
-          fuzzyDateRange = this.fuzzyDateService.getFuzzyDateRange(fuzzyDate, this.maxFuzzyDate);
+      if (this.maxDate) {
+          fuzzyDateRange = this.fuzzyDateService.getFuzzyDateRange(fuzzyDate, this.maxDate);
 
           if (!fuzzyDateRange.valid) {
             validationError = {
               'skyFuzzyDate': {
-                maxFuzzyDate: value
+                maxDate: value
               }
             };
           }
       }
 
-      if (!validationError && this.minFuzzyDate) {
-          fuzzyDateRange = this.fuzzyDateService.getFuzzyDateRange(this.minFuzzyDate, fuzzyDate);
+      if (!validationError && this.minDate) {
+          fuzzyDateRange = this.fuzzyDateService.getFuzzyDateRange(this.minDate, fuzzyDate);
           if (!fuzzyDateRange.valid) {
             validationError = {
               'skyFuzzyDate': {
-                minFuzzyDate: value
+                minDate: value
               }
             };
           }
@@ -506,6 +469,44 @@ export class SkyFuzzyDatepickerInputDirective
       this.elementRef.nativeElement,
       'value',
       value
+    );
+  }
+
+  private getMaxDate(): Date {
+    if (this.maxDate) {
+      const maxDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.maxDate);
+      if (maxDate.isValid()) {
+        return maxDate.toDate();
+      }
+    } else if (this.futureDisabled) {
+      return new Date();
+    }
+    return this.configService.maxDate;
+  }
+
+  private getMinDate(): Date {
+    if (this.minDate) {
+      const minDate = this.fuzzyDateService.getMomentFromFuzzyDate(this.minDate);
+      if (minDate.isValid()) {
+        return minDate.toDate();
+      }
+    }
+    return this.configService.minDate;
+  }
+
+  private fuzzyDatesEqual(dateA: SkyFuzzyDate, dateB: SkyFuzzyDate): boolean {
+    return dateA && dateB
+    && (
+      (!dateA.day && !dateB.day)
+      || dateA.day === dateB.day
+    )
+    && (
+      (!dateA.month && !dateB.month)
+      || dateA.month === dateB.month
+    )
+    && (
+      (!dateA.year && !dateB.year)
+      || dateA.year === dateB.year
     );
   }
 

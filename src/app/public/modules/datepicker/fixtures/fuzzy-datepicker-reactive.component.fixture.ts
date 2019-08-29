@@ -32,9 +32,9 @@ export class FuzzyDatepickerReactiveTestComponent implements OnInit {
 
   public isDisabled: boolean;
 
-  public maxFuzzyDate: any;
+  public maxDate: any;
 
-  public minFuzzyDate: any;
+  public minDate: any;
 
   public noValidate: boolean = false;
 
