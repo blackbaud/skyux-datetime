@@ -1086,7 +1086,7 @@ describe('datepicker', () => {
   });
 });
 
-describe('fuzzy datepicker input', () => {
+fdescribe('fuzzy datepicker input', () => {
 
   beforeEach(function () {
     TestBed.configureTestingModule({
