@@ -321,7 +321,7 @@ describe('SkyFuzzyDateservice', () => {
 
     it('returns null if an empty string date format provided.', () => {
       // arrange
-      const stringDate = service.getStringFromFuzzyDate({ month: 5, day: 12, year: 2017 },defaultDateFormat);
+      const stringDate = service.getStringFromFuzzyDate({ month: 5, day: 12, year: 2017 }, defaultDateFormat);
 
       // act
       const actual = service.getFuzzyDateFromString(stringDate, '');
