@@ -513,8 +513,8 @@ describe('datepicker', () => {
         clickDatepickerButton(fixture);
 
         // Current day should be selected.
-        const day = new Date().getDate().toString();
-        expect(getSelectedCalendarItem(fixture)).toHaveText(day);
+        const dayOfMonth = ('0' + new Date().getDate()).slice(-2);
+        expect(getSelectedCalendarItem(fixture)).toHaveText(dayOfMonth);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
@@ -948,8 +948,8 @@ describe('datepicker', () => {
         clickDatepickerButton(fixture);
 
         // Current day should be selected.
-        const day = new Date().getDate().toString();
-        expect(getSelectedCalendarItem(fixture)).toHaveText(day);
+        const dayOfMonth = ('0' + new Date().getDate()).slice(-2);
+        expect(getSelectedCalendarItem(fixture)).toHaveText(dayOfMonth);
       }));
 
       it('should handle noValidate property', fakeAsync(() => {
