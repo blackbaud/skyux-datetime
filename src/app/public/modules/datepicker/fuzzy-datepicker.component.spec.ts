@@ -169,7 +169,7 @@ describe('fuzzy datepicker input', () => {
     }));
   });
 
-  describe('standard configuration', () => {
+  xdescribe('standard configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerTestComponent>;
     let component: FuzzyDatepickerTestComponent;
     let nativeElement: HTMLElement;
