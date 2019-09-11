@@ -1404,7 +1404,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  xdescribe('default locale configuration', () => {
+  describe('default locale configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;
 
