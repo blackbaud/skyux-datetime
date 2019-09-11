@@ -16,7 +16,7 @@ import {
 
 import * as moment from 'moment';
 
-describe('SkyFuzzyDateservice', () => {
+xdescribe('SkyFuzzyDateservice', () => {
   let service: SkyFuzzyDateService;
   const defaultDateFormat = 'mm/dd/yyyy';
 
@@ -461,7 +461,7 @@ describe('SkyFuzzyDateservice', () => {
     });
   });
 
-  xdescribe('getCurrentFuzzyDate', () => {
+  describe('getCurrentFuzzyDate', () => {
     it('returns a full fuzzy date that coincides with the date of today.', () => {
       // arrange
       const currentDate = new Date();
