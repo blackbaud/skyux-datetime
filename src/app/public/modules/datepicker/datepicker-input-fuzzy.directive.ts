@@ -336,6 +336,9 @@ export class SkyFuzzyDatepickerInputDirective
   @HostListener('blur')
   public onInputBlur(): void {
     this.onTouched();
+
+    let formattedDate = this.fuzzyDateService.getStringFromFuzzyDate(this.value, this.dateFormat);
+    this.setInputElementValue(formattedDate || '');
   }
 
   @HostListener('keyup')

@@ -410,6 +410,17 @@ describe('fuzzy datepicker input', () => {
         expect(getCalendarTitle(fixture)).toHaveText('May 2017');
         expect(getSelectedCalendarItem(fixture)).toHaveText('12');
       }));
+
+      it('should format date on blur', fakeAsync(() => {
+        detectChanges(fixture);
+        const inputElement = fixture.debugElement.query(By.css('input'));
+
+        setInputElementValue(nativeElement, 'April 4', fixture);
+        SkyAppTestUtility.fireDomEvent(inputElement.nativeElement, 'blur');
+        fixture.detectChanges();
+
+        expect(getInputElementValue(fixture)).toBe('4/4');
+      }));
     });
 
     describe('formats', () => {
