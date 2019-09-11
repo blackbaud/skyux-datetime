@@ -16,7 +16,7 @@ import {
 
 import * as moment from 'moment';
 
-xdescribe('SkyFuzzyDateservice', () => {
+describe('SkyFuzzyDateservice', () => {
   let service: SkyFuzzyDateService;
   const defaultDateFormat = 'mm/dd/yyyy';
 

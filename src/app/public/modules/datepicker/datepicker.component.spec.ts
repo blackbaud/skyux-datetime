@@ -683,7 +683,7 @@ describe('datepicker', () => {
     });
   });
 
-  describe('reactive form', () => {
+  xdescribe('reactive form', () => {
     let fixture: ComponentFixture<DatepickerReactiveTestComponent>;
     let component: DatepickerReactiveTestComponent;
     let nativeElement: HTMLElement;
