@@ -136,6 +136,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
+  // WORKS
   describe('nonstandard configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;
@@ -169,6 +170,7 @@ describe('fuzzy datepicker input', () => {
     }));
   });
 
+  // UNKOWN?
   xdescribe('standard configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerTestComponent>;
     let component: FuzzyDatepickerTestComponent;
@@ -869,6 +871,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
+  // I ADDED THIS ONE LAST!
   describe('reactive form', () => {
     let fixture: ComponentFixture<FuzzyDatepickerReactiveTestComponent>;
     let component: FuzzyDatepickerReactiveTestComponent;
@@ -1404,6 +1407,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
+  // WORKS
   describe('default locale configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;

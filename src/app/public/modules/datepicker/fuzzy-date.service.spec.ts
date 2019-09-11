@@ -461,7 +461,7 @@ describe('SkyFuzzyDateservice', () => {
     });
   });
 
-  describe('getCurrentFuzzyDate', () => {
+  xdescribe('getCurrentFuzzyDate', () => {
     it('returns a full fuzzy date that coincides with the date of today.', () => {
       // arrange
       const currentDate = new Date();
