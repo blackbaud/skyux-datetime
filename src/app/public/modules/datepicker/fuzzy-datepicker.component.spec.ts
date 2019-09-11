@@ -869,7 +869,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  xdescribe('reactive form', () => {
+  describe('reactive form', () => {
     let fixture: ComponentFixture<FuzzyDatepickerReactiveTestComponent>;
     let component: FuzzyDatepickerReactiveTestComponent;
     let nativeElement: HTMLElement;
