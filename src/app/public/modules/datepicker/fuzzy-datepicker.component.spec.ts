@@ -869,7 +869,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  describe('reactive form', () => {
+  xdescribe('reactive form', () => {
     let fixture: ComponentFixture<FuzzyDatepickerReactiveTestComponent>;
     let component: FuzzyDatepickerReactiveTestComponent;
     let nativeElement: HTMLElement;
@@ -1404,7 +1404,7 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  describe('default locale configuration', () => {
+  xdescribe('default locale configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;
 
