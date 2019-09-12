@@ -1033,7 +1033,7 @@ describe('datepicker', () => {
 
   });
 
-  xdescribe('default locale configuration', () => {
+  describe('default locale configuration', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
 
