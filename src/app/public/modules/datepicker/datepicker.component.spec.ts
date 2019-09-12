@@ -126,7 +126,7 @@ function getSelectedCalendarItem(fixture: ComponentFixture<any>): HTMLElement {
 }
 // #endregion
 
-xdescribe('datepicker', () => {
+describe('datepicker', () => {
   beforeEach(function () {
     TestBed.configureTestingModule({
       imports: [
@@ -1033,7 +1033,7 @@ xdescribe('datepicker', () => {
 
   });
 
-  describe('default locale configuration', () => {
+  xdescribe('default locale configuration', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
 
