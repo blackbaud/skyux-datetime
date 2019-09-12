@@ -170,8 +170,8 @@ describe('fuzzy datepicker input', () => {
     }));
   });
 
-  // UNKOWN?
-  describe('standard configuration', () => {
+  // TROUBLE
+  xdescribe('standard configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerTestComponent>;
     let component: FuzzyDatepickerTestComponent;
     let nativeElement: HTMLElement;
@@ -872,7 +872,7 @@ describe('fuzzy datepicker input', () => {
   });
 
   // I ADDED THIS ONE LAST!
-  xdescribe('reactive form', () => {
+  describe('reactive form', () => {
     let fixture: ComponentFixture<FuzzyDatepickerReactiveTestComponent>;
     let component: FuzzyDatepickerReactiveTestComponent;
     let nativeElement: HTMLElement;
