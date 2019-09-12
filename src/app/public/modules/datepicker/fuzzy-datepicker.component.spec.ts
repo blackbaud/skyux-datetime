@@ -704,7 +704,7 @@ describe('fuzzy datepicker input', () => {
       }));
     });
 
-    xdescribe('min max fuzzy date', () => {
+    describe('min max fuzzy date', () => {
 
       let ngModel: NgModel;
       beforeEach(() => {
@@ -830,7 +830,7 @@ describe('fuzzy datepicker input', () => {
       }));
     });
 
-    xdescribe('detectInputValueChange', () => {
+    describe('detectInputValueChange', () => {
       it('updates selectedDate without a change event', fakeAsync(() => {
         const inputEl = getInputElement(fixture);
         const initialDate = '01/01/2019';
@@ -849,7 +849,7 @@ describe('fuzzy datepicker input', () => {
       }));
     });
 
-    xdescribe('disabled state', () => {
+    describe('disabled state', () => {
       it('should disable the input and dropdown when disable is set to true', fakeAsync(() => {
         component.isDisabled = true;
         detectChanges(fixture);
