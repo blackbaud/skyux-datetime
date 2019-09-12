@@ -126,7 +126,7 @@ function getSelectedCalendarItem(fixture: ComponentFixture<any>): HTMLElement {
 }
 // #endregion
 
-describe('datepicker', () => {
+xdescribe('datepicker', () => {
   beforeEach(function () {
     TestBed.configureTestingModule({
       imports: [
