@@ -138,7 +138,7 @@ describe('datepicker', () => {
     spyOn(console, 'warn');
   });
 
-  describe('nonstandard configuration', () => {
+  xdescribe('nonstandard configuration', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
     let nativeElement: HTMLElement;
@@ -171,7 +171,7 @@ describe('datepicker', () => {
     }));
   });
 
-  xdescribe('standard configuration', () => {
+  describe('standard configuration', () => {
     let fixture: ComponentFixture<DatepickerTestComponent>;
     let component: DatepickerTestComponent;
     let nativeElement: HTMLElement;
@@ -683,7 +683,7 @@ describe('datepicker', () => {
     });
   });
 
-  describe('reactive form', () => {
+  xdescribe('reactive form', () => {
     let fixture: ComponentFixture<DatepickerReactiveTestComponent>;
     let component: DatepickerReactiveTestComponent;
     let nativeElement: HTMLElement;
@@ -1033,7 +1033,7 @@ describe('datepicker', () => {
 
   });
 
-  describe('default locale configuration', () => {
+  xdescribe('default locale configuration', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
 
