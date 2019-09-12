@@ -289,7 +289,7 @@ describe('fuzzy datepicker input', () => {
       });
     }));
 
-    describe('initialization', () => {
+    xdescribe('initialization', () => {
       it('should handle initializing with a Fuzzy Date object', fakeAsync(() => {
         setInputProperty({ month: 5, day: 12, year: 2017 }, component, fixture);
 
@@ -354,7 +354,7 @@ describe('fuzzy datepicker input', () => {
       }));
     });
 
-    describe('input change', () => {
+    xdescribe('input change', () => {
       it('should handle input change with a string with the expected format', fakeAsync(() => {
         detectChanges(fixture);
 
