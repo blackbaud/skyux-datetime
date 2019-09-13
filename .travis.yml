@@ -16,7 +16,8 @@ before_install:
   - bash <(curl -s https://blackbaud.github.io/skyux-travis/v3/library-before-install.sh)
 
 install:
-  - bash <(curl -s https://blackbaud.github.io/skyux-travis/v3/library-install.sh)
+  - npm install
+  - npm install --no-save blackbaud/skyux-builder-config blackbaud/skyux-sdk-builder-config#windows-10-ie-11
 
 script:
   - bash <(curl -s https://blackbaud.github.io/skyux-travis/v3/library-script.sh)
