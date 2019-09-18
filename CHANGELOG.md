@@ -1,6 +1,6 @@
 # 3.6.0 (2019-09-18)
 
-- Added fuzzy datepicker directive. [#79](https://github.com/blackbaud/skyux-datetime/pull/79)
+- Added the fuzzy datepicker directive. [#79](https://github.com/blackbaud/skyux-datetime/pull/79)
 
 # 3.5.0 (2019-08-23)
 
