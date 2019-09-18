@@ -39,6 +39,10 @@ import {
 } from './date-formatter';
 
 import {
+  SkyDatepickerAdapterService
+} from './datepicker-adapter.service';
+
+import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
 
@@ -66,7 +70,8 @@ const SKY_DATEPICKER_VALIDATOR = {
   selector: '[skyDatepickerInput]',
   providers: [
     SKY_DATEPICKER_VALUE_ACCESSOR,
-    SKY_DATEPICKER_VALIDATOR
+    SKY_DATEPICKER_VALIDATOR,
+    SkyDatepickerAdapterService
   ]
 })
 export class SkyDatepickerInputDirective
@@ -93,6 +98,14 @@ export class SkyDatepickerInputDirective
 
   public get disabled(): boolean {
     return this._disabled;
+  }
+
+  /**
+   * @internal
+   * Indicates if the input element or any of its children have focus.
+   */
+  public get inputIsFocused(): boolean {
+    return this.adapter.elementIsFocused();
   }
 
   @Input()
@@ -204,6 +217,7 @@ export class SkyDatepickerInputDirective
   private _value: any;
 
   constructor(
+    private adapter: SkyDatepickerAdapterService,
     private changeDetector: ChangeDetectorRef,
     private configService: SkyDatepickerConfigService,
     private elementRef: ElementRef,
@@ -269,6 +283,8 @@ export class SkyDatepickerInputDirective
         this.changeDetector.markForCheck();
       });
     }
+
+    this.adapter.init(this.elementRef);
   }
 
   public ngOnDestroy(): void {
