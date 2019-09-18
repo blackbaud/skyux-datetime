@@ -41,7 +41,7 @@ export class SkyFuzzyDateService {
     return moment([year, month, day]);
   }
 
-  public getStringFromFuzzyDate(fuzzyDate: any, dateFormat: string): string {
+  public getStringFromFuzzyDate(fuzzyDate: SkyFuzzyDate, dateFormat: string): string {
     if (!fuzzyDate || !dateFormat) {
       return;
     }
@@ -172,7 +172,7 @@ export class SkyFuzzyDateService {
     };
   }
 
-  public getFuzzyDateRange(startFuzzyDate: any, endFuzzyDate: any): SkyFuzzyDateRange {
+  public getFuzzyDateRange(startFuzzyDate: SkyFuzzyDate, endFuzzyDate: SkyFuzzyDate): SkyFuzzyDateRange {
     let start;
     let end;
     let days;
@@ -232,7 +232,7 @@ export class SkyFuzzyDateService {
   }
 
   private get4DigitYearFromDateString(date: string): number {
-    let year: any;
+    let year: string;
     const separator = this.getSeparatorFromDateString(date);
 
     // Find the number value in the string that is 4 digits long.
@@ -242,7 +242,7 @@ export class SkyFuzzyDateService {
       }
     });
 
-    if (year && !isNaN(year)) {
+    if (year && !isNaN(Number(year))) {
       return parseInt(year, 10);
     }
   }
@@ -251,7 +251,7 @@ export class SkyFuzzyDateService {
     return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
   }
 
-  private getMonthNumber(month: any): number {
+  private getMonthNumber(month: string): number {
     let returnValue: number;
     const monthAsNumber = parseInt(month, 10);
 

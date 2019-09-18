@@ -366,7 +366,7 @@ export class SkyFuzzyDatepickerInputDirective
     const value: any = control.value;
 
     let fuzzyDate: SkyFuzzyDate;
-    let validationError: any;
+    let validationError: ValidationErrors;
 
     if (typeof value === 'string') {
       fuzzyDate = this.fuzzyDateService.getFuzzyDateFromString(value, this.dateFormat);
