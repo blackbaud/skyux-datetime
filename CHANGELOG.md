@@ -1,6 +1,6 @@
 # 3.6.1 (2019-09-24)
 
-- Updated moment imports to avoid build failures. [#85](https://github.com/blackbaud/skyux-datetime/pull/85)
+- Fixed `moment` imports to support backwards compatibility with SKY UX 2 single-page applications. [#85](https://github.com/blackbaud/skyux-datetime/pull/85)
 
 # 3.6.0 (2019-09-18)
 
