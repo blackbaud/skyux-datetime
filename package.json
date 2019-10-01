@@ -1,6 +1,6 @@
 {
   "name": "@skyux/datetime",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "SKY UX DateTime",
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
@@ -69,6 +69,7 @@
     "@skyux/theme": "3.7.0",
     "@types/core-js": "2.5.2",
     "codelyzer": "4.5.0",
+    "core-js": "2.6.9",
     "rxjs": "6.5.3",
     "rxjs-compat": "6.5.3",
     "ts-node": "8.4.1",
