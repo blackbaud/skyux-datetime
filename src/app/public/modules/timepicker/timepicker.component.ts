@@ -193,16 +193,15 @@ export class SkyTimepickerComponent implements OnInit {
   }
 
   private activeTimeOrDefault() {
-    if (this.activeTime) {
-      return this.activeTime;
+    if (!this.activeTime) {
+      let momentTime = moment(this.activeTime);
+      if (momentTime.minute() !== 0) {
+        momentTime.add(1, 'hours');
+        momentTime.set('minute', 0);
+      }
+      this.activeTime = momentTime.toDate();
     }
 
-    let momentTime = moment(this.activeTime);
-    if (momentTime.minute() !== 0) {
-      momentTime.add(1, 'hours');
-      momentTime.set('minute', 0);
-    }
-    this.activeTime = momentTime.toDate();
     return this.activeTime;
   }
 }
