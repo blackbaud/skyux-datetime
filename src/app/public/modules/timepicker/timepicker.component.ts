@@ -1,10 +1,10 @@
 import {
+  ChangeDetectorRef,
   Component,
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  OnInit,
-  ChangeDetectorRef
+  OnInit
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';

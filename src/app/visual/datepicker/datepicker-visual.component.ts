@@ -60,12 +60,6 @@ export class DatepickerVisualComponent implements OnInit {
   }
 
   public toggleDisabled(): void {
-    // if (this.reactiveDate.disabled) {
-    //   this.reactiveDate.enable();
-    // } else {
-    //   this.reactiveDate.disable();
-    // }
-
     this.disabled = !this.disabled;
   }
 
