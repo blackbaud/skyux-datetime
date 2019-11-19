@@ -30,7 +30,6 @@ export class SkyTimepickerComponent implements OnInit {
     new EventEmitter<SkyTimepickerTimeOutput>();
 
   public dropdownController = new Subject<SkyDropdownMessage>();
-  public activeTime: Date;
   public returnFormat: string;
   public timeFormat: string = 'hh';
   public hours: Array<number>;
@@ -39,6 +38,7 @@ export class SkyTimepickerComponent implements OnInit {
   public minuteMultiplier: number;
   public is8601: boolean = false;
   private _disabled: boolean;
+  private _activeTime: Date;
 
   constructor(
     private changeDetector: ChangeDetectorRef
@@ -55,6 +55,23 @@ export class SkyTimepickerComponent implements OnInit {
   public set disabled(value: boolean) {
     this._disabled = value;
 
+    this.changeDetector.markForCheck();
+  }
+
+  public get activeTime(): Date {
+    if (!this._activeTime) {
+      let momentTime = moment(this._activeTime);
+      if (momentTime.minute() !== 0) {
+        momentTime.add(1, 'hours');
+        momentTime.set('minute', 0);
+      }
+      this._activeTime = momentTime.toDate();
+    }
+    return this._activeTime;
+  }
+
+  public set activeTime(value: Date) {
+    this._activeTime = value;
     this.changeDetector.markForCheck();
   }
 
@@ -114,12 +131,12 @@ export class SkyTimepickerComponent implements OnInit {
 
   public get selectedTime() {
     const time: SkyTimepickerTimeOutput = {
-      hour: moment(this.activeTimeOrDefault()).hour(),
-      minute: moment(this.activeTimeOrDefault()).minute(),
-      meridie: moment(this.activeTimeOrDefault()).format('A'),
-      timezone: parseInt(moment(this.activeTimeOrDefault()).format('Z'), 10),
+      hour: moment(this.activeTime).hour(),
+      minute: moment(this.activeTime).minute(),
+      meridie: moment(this.activeTime).format('A'),
+      timezone: parseInt(moment(this.activeTime).format('Z'), 10),
       iso8601: this.activeTime,
-      local: moment(this.activeTimeOrDefault()).format(this.localeFormat),
+      local: moment(this.activeTime).format(this.localeFormat),
       customFormat: (typeof this.returnFormat !== 'undefined')
         ? this.returnFormat : this.localeFormat
     };
@@ -137,14 +154,14 @@ export class SkyTimepickerComponent implements OnInit {
 
     this.activeTime = moment({
       'hour': hour,
-      'minute': moment(this.activeTimeOrDefault()).get('minute') + 0
+      'minute': moment(this.activeTime).get('minute') + 0
     }).toDate();
     this.selectedTimeChanged.emit(this.selectedTime);
   }
 
   public set selectedMinute(minute: number) {
     this.activeTime = moment({
-      'hour': moment(this.activeTimeOrDefault()).get('hour') + 0,
+      'hour': moment(this.activeTime).get('hour') + 0,
       'minute': minute
     }).toDate();
     this.selectedTimeChanged.emit(this.selectedTime);
@@ -154,7 +171,7 @@ export class SkyTimepickerComponent implements OnInit {
     /* istanbul ignore else */
     if (!this.is8601) {
       if (meridies !== this.selectedMeridies) {
-        this.activeTime = moment(this.activeTimeOrDefault()).add(12, 'hours').toDate();
+        this.activeTime = moment(this.activeTime).add(12, 'hours').toDate();
         this.selectedTimeChanged.emit(this.selectedTime);
       }
     }
@@ -163,21 +180,21 @@ export class SkyTimepickerComponent implements OnInit {
   public get selectedHour() {
     if (!this.is8601) {
       /* istanbul ignore next */
-      return parseInt(moment(this.activeTimeOrDefault()).format('h'), 0) || 1;
+      return parseInt(moment(this.activeTime).format('h'), 0) || 1;
     }
     /* istanbul ignore else */
     if (this.is8601) {
-      return moment(this.activeTimeOrDefault()).hour() + 0;
+      return moment(this.activeTime).hour() + 0;
     }
   }
 
   public get selectedMinute() {
-    return moment(this.activeTimeOrDefault()).minute() + 0;
+    return moment(this.activeTime).minute() + 0;
   }
 
   public get selectedMeridies() {
     if (this.activeTime) {
-      return moment(this.activeTimeOrDefault()).format('A');
+      return moment(this.activeTime).format('A');
     }
     return '';
   }
@@ -205,17 +222,5 @@ export class SkyTimepickerComponent implements OnInit {
         }
       }
     }
-  }
-  
-  private activeTimeOrDefault() {
-    if (!this.activeTime) {
-      let momentTime = moment(this.activeTime);
-      if (momentTime.minute() !== 0) {
-        momentTime.add(1, 'hours');
-        momentTime.set('minute', 0);
-      }
-      this.activeTime = momentTime.toDate();
-    }
-    return this.activeTime;
   }
 }
