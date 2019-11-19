@@ -948,7 +948,7 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toBe(true);
       }));
 
-      it('should invalidate field on keyup', fakeAsync(() => {
+      it('should invalidate field on keyup for non-date values', fakeAsync(() => {
         detectChanges(fixture);
 
         const inputElement = fixture.nativeElement.querySelector('input');
@@ -961,6 +961,23 @@ describe('datepicker', () => {
 
         expect(inputElement.value).toBe('abc 123');
         expect(component.dateControl.value).toEqual('abc 123');
+        expect(component.dateControl.valid).toBe(false);
+      }));
+
+      it('should invalidate field on keyup for dates above maxDate', fakeAsync(() => {
+        detectChanges(fixture);
+        component.maxDate = new Date('5/25/2017');
+
+        detectChanges(fixture);
+
+        const inputElement = fixture.nativeElement.querySelector('input');
+
+        setInputElementValue(fixture.nativeElement, '05/26/2017', fixture);
+        SkyAppTestUtility.fireDomEvent(inputElement, 'keyup');
+
+        fixture.detectChanges();
+        tick();
+
         expect(component.dateControl.valid).toBe(false);
       }));
 
