@@ -981,6 +981,32 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toBe(false);
       }));
 
+      it('should reset errors to null if the input is invalid and then valid again', fakeAsync(() => {
+        detectChanges(fixture);
+        component.maxDate = new Date('5/25/2017');
+
+        detectChanges(fixture);
+
+        const inputElement = fixture.nativeElement.querySelector('input');
+
+        setInputElementValue(fixture.nativeElement, '05/26/2017', fixture);
+        SkyAppTestUtility.fireDomEvent(inputElement, 'keyup');
+
+        fixture.detectChanges();
+        tick();
+
+        expect(component.dateControl.valid).toBe(false);
+
+        setInputElementValue(fixture.nativeElement, '05/24/2017', fixture);
+        SkyAppTestUtility.fireDomEvent(inputElement, 'keyup');
+
+        fixture.detectChanges();
+        tick();
+
+        expect(component.dateControl.valid).toBe(true);
+        expect(component.dateControl.errors).toBeNull();
+      }));
+
       it('should respect noValidate on keyup', fakeAsync(() => {
         fixture.componentInstance.noValidate = true;
         detectChanges(fixture);
