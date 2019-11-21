@@ -974,6 +974,7 @@ describe('datepicker', () => {
         expect(inputElement.value).toBe('/');
         expect(component.dateControl.value).toEqual('/');
         expect(component.dateControl.valid).toBe(true);
+        /*tslint:disable-next-line:no-null-keyword*/
         expect(component.dateControl.getError('skyDate')).toEqual(null);
       }));
 
