@@ -176,7 +176,8 @@ export class SkyDatepickerInputDirective
 
     const isValidDateString = this.isDateStringValid(value);
 
-    // If the string value supplied is malformed, send it immediately to be validated.
+    // If the string value supplied is malformed, do not set the value to its Date equivalent.
+    // (JavaScript's Date parser will convert poorly formatted dates to Date objects, such as "abc 123", which isn't ideal.)
     if (!isValidDateString) {
       this._value = value;
       this.notifyUpdatedValue();
