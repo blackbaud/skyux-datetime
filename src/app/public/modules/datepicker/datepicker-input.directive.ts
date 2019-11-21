@@ -333,9 +333,9 @@ export class SkyDatepickerInputDirective
 
     const value = event.target.value;
 
-    let errors = Object.assign({}, this.control.errors);
+    let errors = {...this.control.errors};
+
     if (this.isDateStringValid(value)) {
-      // Reset the invalid state.
       if (errors.skyDate) {
         delete errors.skyDate.invalid;
       }
@@ -345,11 +345,15 @@ export class SkyDatepickerInputDirective
       };
     }
 
+    // Delete the skyDate object if it's empty.
+    if (errors.skyDate && Object.keys(errors.skyDate).length === 0) {
+      delete errors.skyDate;
+    }
+
     // Set errors to null if the object is empty.
     if (Object.keys(errors).length === 0) {
-      /* tslint:disable:no-null-keyword */
+      /*tslint:disable-next-line:no-null-keyword*/
       errors = null;
-      /* tslint:enable */
     }
 
     this.control.setErrors(errors);
