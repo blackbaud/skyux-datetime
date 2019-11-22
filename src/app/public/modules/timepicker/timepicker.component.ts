@@ -30,7 +30,6 @@ export class SkyTimepickerComponent implements OnInit {
     new EventEmitter<SkyTimepickerTimeOutput>();
 
   public dropdownController = new Subject<SkyDropdownMessage>();
-  public activeTime: Date;
   public returnFormat: string;
   public timeFormat: string = 'hh';
   public hours: Array<number>;
@@ -38,6 +37,7 @@ export class SkyTimepickerComponent implements OnInit {
   public localeFormat: string;
   public minuteMultiplier: number;
   public is8601: boolean = false;
+  private _activeTime: Date;
   private _disabled: boolean;
 
   constructor(
@@ -46,6 +46,23 @@ export class SkyTimepickerComponent implements OnInit {
 
   public ngOnInit() {
     this.setFormat(this.timeFormat);
+  }
+
+  public get activeTime(): Date {
+    if (!this._activeTime) {
+      let momentTime = moment(this._activeTime);
+      if (momentTime.minute() !== 0) {
+        momentTime.add(1, 'hours');
+        momentTime.set('minute', 0);
+      }
+      this._activeTime = momentTime.toDate();
+    }
+    return this._activeTime;
+  }
+
+  public set activeTime(value: Date) {
+    this._activeTime = value;
+    this.changeDetector.markForCheck();
   }
 
   public get disabled(): boolean {
