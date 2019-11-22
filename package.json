@@ -63,7 +63,7 @@
     "@skyux/indicators": "3.1.1",
     "@skyux/modals": "3.1.0",
     "@skyux/omnibar-interop": "3.1.0",
-    "@skyux/popovers": "3.4.0",
+    "@skyux/popovers": "3.3.0",
     "@skyux/router": "3.1.1",
     "@skyux/tabs": "3.2.2",
     "@skyux/theme": "3.8.0",
