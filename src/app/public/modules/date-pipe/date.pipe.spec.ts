@@ -207,7 +207,11 @@ describe('Date pipe', () => {
     fixture.componentInstance.dateValue = '2017-01-11T09:25:14.014-0500';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    expect(value).toEqual('1/11/2017');
+    const expectedValues = [
+      '1/11/2017',
+      '1/12/2017' // Firefox
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should format invalid in Safari ISO date', () => {
