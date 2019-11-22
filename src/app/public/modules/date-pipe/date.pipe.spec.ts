@@ -215,7 +215,11 @@ describe('Date pipe', () => {
     fixture.componentInstance.dateValue = '2017-01-20T19:00:00+0000';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    expect(value).toEqual('1/20/2017');
+    const expectedValues = [
+      '1/20/2017',
+      '1/21/2017' // Firefox
+    ];
+    expect(expectedValues).toContain(value);
   });
 
   it('should work as an injectable', () => {
