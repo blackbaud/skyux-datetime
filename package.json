@@ -1,6 +1,6 @@
 {
   "name": "@skyux/datetime",
-  "version": "3.6.3",
+  "version": "3.6.4",
   "description": "SKY UX DateTime",
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
