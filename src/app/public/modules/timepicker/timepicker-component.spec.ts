@@ -30,6 +30,7 @@ import {
   TimepickerTestComponent
 } from './fixtures/timepicker-component.fixture';
 import { TimepickerReactiveTestComponent } from './fixtures/timepicker-reactive-component.fixture';
+import { SkyTimepickerComponent } from './timepicker.component';
 
 const moment = require('moment');
 
@@ -98,6 +99,45 @@ describe('Timepicker', () => {
       expect(minutes.length).toBe(4);
     }
   }
+
+  describe('general', () => {
+    let skyTimepickerComponent: SkyTimepickerComponent;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          SkyTimepickerModule,
+          NoopAnimationsModule,
+          FormsModule
+        ]
+      });
+      skyTimepickerComponent = TestBed.createComponent(SkyTimepickerComponent).componentInstance;
+    });
+
+    it('sets the default time to the next hour if in between hours', () => {
+      let mockDate = new Date(1992, 3, 25, 11, 30, 0, 0);
+      jasmine.clock().mockDate(mockDate);
+      let time = skyTimepickerComponent.activeTime;
+      expect(time.getHours()).toBe(12);
+      expect(time.getMinutes()).toBe(0);
+    });
+
+    it('does not modify the current hour if the minutes are 0', () => {
+      let mockDate = new Date(1992, 3, 25, 11, 0, 0, 0);
+      jasmine.clock().mockDate(mockDate);
+      let time = skyTimepickerComponent.activeTime;
+      expect(time.getHours()).toBe(11);
+      expect(time.getMinutes()).toBe(0);
+    });
+
+    it('does not modify the active date if it has already been set', () => {
+      skyTimepickerComponent.activeTime = new Date(1992, 3, 25, 14, 36, 0, 0);
+      let mockDate = new Date(1992, 3, 25, 11, 0, 0, 0);
+      jasmine.clock().mockDate(mockDate);
+      let time = skyTimepickerComponent.activeTime;
+      expect(time.getHours()).toBe(14);
+      expect(time.getMinutes()).toBe(36);
+    });
+  });
 
   describe('template driven', () => {
 
