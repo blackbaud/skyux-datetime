@@ -1,52 +1,33 @@
 <div
   class="app-screenshot"
 >
-  <h3>
-    Standard implementation
-  </h3>
+  <h2>
+    Date pipe with default settings
+  </h2>
 
-  <table
-    class="sky-table"
+  <p>{{ date | skyDate }}</p>
+
+  <h2>
+    Date pipe with configurable format and locale
+  </h2>
+
+  <p>{{ date | skyDate:format:locale }}</p>
+
+  Locale
+  <select
+    [(ngModel)]="locale"
   >
-    <tr>
-      <th>Result</th>
-      <th>Format</th>
-      <th>Locale</th>
-      <th></th>
-    </tr>
-    <tr>
-      <td>{{ dateValue1 | skyDate }}</td>
-      <td>short (default)</td>
-      <td>en-US (default)</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>{{ dateValue2 | skyDate:'medium':'en-GA' }}</td>
-      <td>medium</td>
-      <td>en-GA</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>{{ dateValue3 | skyDate:format:locale }}</td>
-      <td>{{ format }}</td>
-      <td>{{ locale }}</td>
-      <td>
-        <button
-          class="sky-btn"
-          type="button"
-          (click)="toggleLocale()"
-        >
-          Toggle locale
-        </button>
+    <option *ngFor="let localeItem of localeList">
+      {{localeItem}}
+    </option>
+  </select>
 
-        <button
-          class="sky-btn"
-          type="button"
-          (click)="toggleFormat()"
-        >
-          Toggle format
-        </button>
-      </td>
-    </tr>
-  </table>
+  Format
+  <select
+    [(ngModel)]="format"
+  >
+    <option *ngFor="let formatItem of formatList">
+      {{formatItem}}
+    </option>
+  </select>
 </div>

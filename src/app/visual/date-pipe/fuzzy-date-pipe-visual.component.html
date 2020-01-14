@@ -1,0 +1,31 @@
+<div
+  class="app-screenshot"
+>
+  <h2>
+    Fuzzy date pipe with default settings
+  </h2>
+
+  <p>{{ date | skyFuzzyDate }}</p>
+
+  <h2>
+    Fuzzy Date pipe with configurable format and locale
+  </h2>
+
+  <p>{{ date | skyFuzzyDate:format:locale }}</p>
+
+  Locale
+  <select
+    [(ngModel)]="locale"
+  >
+    <option *ngFor="let localeItem of localeList">
+      {{localeItem}}
+    </option>
+  </select>
+
+  Format
+  <input
+    name="format"
+    type="text"
+    [(ngModel)]="format"
+  />
+</div>

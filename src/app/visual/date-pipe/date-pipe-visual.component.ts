@@ -12,11 +12,39 @@ import {
   templateUrl: './date-pipe-visual.component.html'
 })
 export class DatePipeVisualComponent implements OnInit {
-  public dateValue1 = new Date('01/01/2019');
-  public dateValue2 = new Date('02/02/2019');
-  public dateValue3 = new Date('03/03/2019');
-  public format: string;
-  public locale: string;
+
+  public date = new Date('11/26/2020');
+
+  public format: string = 'short';
+
+  // Pre-defined format options from SkyDateFormatUtility.
+  public formatList: string[] = [
+    'medium',
+    'short',
+    'fullDate',
+    'longDate',
+    'mediumDate',
+    'shortDate',
+    'mediumTime',
+    'shortTime'
+  ];
+
+  public locale: string = 'en-US';
+
+  public localeList: string[] = [
+    'de-DE',
+    'fr-FR',
+    'en-CA',
+    'es-ES',
+    'en-GB',
+    'en-US',
+    'es-MX',
+    'it-IT',
+    'ja-JP',
+    'pt-BR',
+    'ru-RU',
+    'zh-CN'
+  ];
 
   constructor(
     private datePipe: SkyDatePipe
@@ -25,21 +53,5 @@ export class DatePipeVisualComponent implements OnInit {
   public ngOnInit(): void {
     const result = this.datePipe.transform(new Date('01/01/2019'), 'short', 'en-US');
     console.log('Result from calling pipe directly:', result);
-  }
-
-  public toggleLocale(): void {
-    if (this.locale === 'en-GB') {
-      this.locale = 'en-US';
-    } else {
-      this.locale = 'en-GB';
-    }
-  }
-
-  public toggleFormat(): void {
-    if (this.format === 'medium') {
-      this.format = 'short';
-    } else {
-      this.format = 'medium';
-    }
   }
 }
