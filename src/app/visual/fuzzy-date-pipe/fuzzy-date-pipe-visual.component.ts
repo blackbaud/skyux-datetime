@@ -22,10 +22,9 @@ export class FuzzyDatePipeVisualComponent implements OnInit {
     year: 1955
   };
 
-  // TODO: HOW SHOULD FORMAT WORK!?
-  public format: string = 'short';
+  public format: string;
 
-  public locale: string = 'en-US';
+  public locale: string;
 
   public localeList: string[] = [
     'de-DE',
@@ -47,7 +46,16 @@ export class FuzzyDatePipeVisualComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    const result = this.datePipe.transform({ month: 1, year: 2020 }, 'M/yy');
+    const result = this.datePipe.transform({ month: 11, year: 1955 }, 'MMMM y', 'en-US');
     console.log('Result from calling pipe directly:', result);
+  }
+
+  public dateForDisplay(): string {
+    return JSON.stringify(this.date);
+  }
+
+  public onResetClick(): void {
+    this.locale = undefined;
+    this.format = undefined;
   }
 }

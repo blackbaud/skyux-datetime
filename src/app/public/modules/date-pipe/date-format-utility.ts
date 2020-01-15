@@ -6,6 +6,7 @@
 import {
   SkyIntlDateFormatter
 } from '@skyux/i18n/modules/i18n/intl-date-formatter';
+import { SkyFuzzyDate } from '../datepicker/fuzzy-date';
 
 const ISO8601_DATE_REGEX =
     /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
@@ -84,6 +85,24 @@ export class SkyDateFormatUtility {
       SkyDateFormatUtility._ALIASES[pattern] || pattern
     );
   }
+
+  public static formatFuzzyDate(
+    locale: string,
+    value: SkyFuzzyDate,
+    pattern: string
+  ): string | null {
+
+    // TODO: Validation?
+
+    const date = getDateFromFuzzyDate(value);
+    const fuzzyDateFormat = getFuzzyDateFormat(pattern, value);
+
+    return SkyIntlDateFormatter.format(
+      date,
+      locale,
+      fuzzyDateFormat
+    );
+  }
 }
 
 function isBlank(obj: any): boolean {
@@ -118,4 +137,67 @@ function isoStringToDate(match: RegExpMatchArray): Date {
 /* istanbul ignore next */
 function toInt(str: string): number {
   return parseInt(str, 10);
+}
+
+/**
+ * Filters out any date components that aren't a part of the provided fuzzyDate.
+ * For example, a fuzzy date of month/year wouldn't need a day component.
+ */
+function getFuzzyDateFormat(dateFormat: string, fuzzyDate: SkyFuzzyDate): string {
+  if (!fuzzyDate.day || fuzzyDate.day === 0) {
+    dateFormat = dateFormat.replace(/D+(\/| |\.|-|, )?/gi, '');
+  }
+
+  if (!fuzzyDate.month || fuzzyDate.month === 0) {
+    dateFormat = dateFormat.replace(/M+(\/| |\.|-|, )?/gi, '');
+  }
+
+  if (!fuzzyDate.year || fuzzyDate.year === 0) {
+    dateFormat = dateFormat.replace(/Y+(\/| |\.|-|, )?/gi, '');
+  }
+
+  // Remove components that wouldn't make sense with a fuzzy date (hrs, min, sec, etc...)
+  dateFormat = dateFormat.replace(/G|j|h|H|m|s|Z|a/g, '');
+
+  return dateFormat;
+}
+
+/**
+ * If not provided, years will default to current year;
+ * months will default to January;
+ * days will default to 1st of the month.
+ */
+function getDateFromFuzzyDate(fuzzyDate: SkyFuzzyDate): Date {
+  if (!fuzzyDate) {
+    return;
+  }
+
+  const year = fuzzyDate.year || getDefaultYear(fuzzyDate);
+  const month = fuzzyDate.month - 1 || 0;
+  const day = fuzzyDate.day || 1;
+
+  return new Date(year, month, day);
+}
+
+function getDefaultYear(fuzzyDate: SkyFuzzyDate): number {
+  // Check if we need to return a leap year or the current year.
+  if (fuzzyDate.month === 2 && fuzzyDate.day === 29) {
+    return getMostRecentLeapYear();
+  } else {
+    return new Date().getFullYear();
+  }
+}
+
+function getMostRecentLeapYear(): number {
+  let leapYear = new Date().getFullYear();
+
+  while (!isLeapYear(leapYear)) {
+    leapYear -= 1;
+  }
+
+  return leapYear;
+}
+
+function isLeapYear(year: number): boolean {
+  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }

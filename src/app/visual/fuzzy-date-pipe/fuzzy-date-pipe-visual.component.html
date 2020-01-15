@@ -1,0 +1,117 @@
+<div
+  class="app-screenshot"
+  style="width:300px"
+>
+
+  <h2>Fuzzy date pipe</h2>
+  <div
+    class="sky-form-group"
+  >
+    <label
+      class="sky-control-label"
+      for="fuzzy-datepicker"
+    >
+      Choose or type in a fuzzy date
+    </label>
+    <sky-datepicker>
+      <input
+        class="sky-form-control"
+        id="fuzzy-datepicker"
+        skyFuzzyDatepickerInput
+        type="text"
+        [skyDatepickerNoValidate]="noValidate"
+        [(ngModel)]="date"
+      />
+    </sky-datepicker>
+  </div>
+
+  <div
+    class="sky-form-group"
+  >
+    <label
+      class="sky-control-label"
+      for="locale"
+    >
+      Locale
+    </label>
+    <select
+      class="sky-form-control"
+      id="locale"
+      name="locale"
+      [(ngModel)]="locale"
+    >
+      <option *ngFor="let localeItem of localeList">
+        {{localeItem}}
+      </option>
+    </select>
+    <span
+      class="sky-deemphasized"
+    >
+      Default locale based on browser's settings. Choose a locale above to override.
+    </span>
+  </div>
+
+  <div
+    class="sky-form-group"
+  >
+    <label
+      class="sky-control-label"
+      for="format"
+    >
+      Format
+    </label>
+    <input
+      class="sky-form-control"
+      id="format"
+      name="format"
+      type="text"
+      [(ngModel)]="format"
+    />
+    <span
+      class="sky-deemphasized"
+    >
+      Default format is the current locale's medium format (MMM d, y). Enter a format above to override.
+    </span>
+  </div>
+
+
+  <div
+    class="sky-form-group"
+  >
+    <p>
+      <button
+        class="sky-btn sky-btn-primary"
+        type="button"
+        (click)="onResetClick()"
+      >
+        Reset to default
+      </button>
+    </p>
+  </div>
+
+</div>
+
+<div
+  class="app-screenshot"
+  style="width:300px"
+>
+
+<hr />
+
+<h3>
+  Pipe output
+</h3>
+
+<p
+  class="sky-emphasized"
+>
+  {{ date | skyFuzzyDate:format:locale }}
+</p>
+
+<p
+  class="sky-field-label"
+>
+  SkyFuzzyDate model: <code>{{ dateForDisplay() }}</code>
+</p>
+
+</div>
