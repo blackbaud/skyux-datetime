@@ -21,6 +21,10 @@ import {
 } from '../datepicker/fuzzy-date';
 
 import {
+  SkyFuzzyDateService
+} from '../datepicker/fuzzy-date.service';
+
+import {
   FuzzyDatePipeTestModule
 } from './fixtures/fuzzy-date-pipe.module.fixture';
 
@@ -113,7 +117,7 @@ describe('Fuzzy date pipe', () => {
       year: 1955,
       month: 11
     };
-    const fuzzyDatePipe = new SkyFuzzyDatePipe(mockLocaleProvider);
+    const fuzzyDatePipe = new SkyFuzzyDatePipe(new SkyFuzzyDateService, mockLocaleProvider);
     const value = fuzzyDatePipe.transform(date, 'MMM y');
 
     expect(value).toEqual('Nov 1955');

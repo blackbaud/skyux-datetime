@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 
 import {
+  SkyFuzzyDateService
+} from '../../datepicker/fuzzy-date.service';
+
+import {
   SkyDatePipeModule
 } from '../date-pipe.module';
 
@@ -20,6 +24,9 @@ import {
   ],
   exports: [
     FuzzyDatePipeTestComponent
+  ],
+  providers: [
+    SkyFuzzyDateService
   ],
   imports: [
     CommonModule,

@@ -47,6 +47,8 @@ export class SkyFuzzyDateService {
    * days will default to 1st of the month.
    */
   public getDateFromFuzzyDate(fuzzyDate: SkyFuzzyDate): Date {
+    /* sanity check */
+    /*istanbul ignore next */
     if (!fuzzyDate) {
       return;
     }
