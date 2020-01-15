@@ -41,6 +41,23 @@ export class SkyFuzzyDateService {
     return moment([year, month, day]);
   }
 
+  /**
+   * If not provided, years will default to current year;
+   * months will default to January;
+   * days will default to 1st of the month.
+   */
+  public getDateFromFuzzyDate(fuzzyDate: SkyFuzzyDate): Date {
+    if (!fuzzyDate) {
+      return;
+    }
+
+    const year = fuzzyDate.year || this.getDefaultYear(fuzzyDate);
+    const month = fuzzyDate.month - 1 || 0;
+    const day = fuzzyDate.day || 1;
+
+    return new Date(year, month, day);
+  }
+
   public getStringFromFuzzyDate(fuzzyDate: SkyFuzzyDate, dateFormat: string): string {
     if (!fuzzyDate || !dateFormat) {
       return;

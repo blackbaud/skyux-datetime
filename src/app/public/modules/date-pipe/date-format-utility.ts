@@ -6,7 +6,6 @@
 import {
   SkyIntlDateFormatter
 } from '@skyux/i18n/modules/i18n/intl-date-formatter';
-import { SkyFuzzyDate } from '../datepicker/fuzzy-date';
 
 const ISO8601_DATE_REGEX =
     /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
@@ -85,25 +84,6 @@ export class SkyDateFormatUtility {
       SkyDateFormatUtility._ALIASES[pattern] || pattern
     );
   }
-
-  public static formatFuzzyDate(
-    locale: string,
-    value: SkyFuzzyDate,
-    pattern: string
-  ): string | null {
-
-    if (!value) {
-      return undefined;
-    }
-
-    const date = getDateFromFuzzyDate(value);
-
-    return SkyIntlDateFormatter.format(
-      date,
-      locale,
-      pattern
-    );
-  }
 }
 
 function isBlank(obj: any): boolean {
@@ -138,46 +118,4 @@ function isoStringToDate(match: RegExpMatchArray): Date {
 /* istanbul ignore next */
 function toInt(str: string): number {
   return parseInt(str, 10);
-}
-
-// TODO: Should we reuse this fuzzy date code so the service can use it as well?
-
-/**
- * If not provided, years will default to current year;
- * months will default to January;
- * days will default to 1st of the month.
- */
-function getDateFromFuzzyDate(fuzzyDate: SkyFuzzyDate): Date {
-  if (!fuzzyDate) {
-    return;
-  }
-
-  const year = fuzzyDate.year || getDefaultYear(fuzzyDate);
-  const month = fuzzyDate.month - 1 || 0;
-  const day = fuzzyDate.day || 1;
-
-  return new Date(year, month, day);
-}
-
-function getDefaultYear(fuzzyDate: SkyFuzzyDate): number {
-  // Check if we need to return a leap year or the current year.
-  if (fuzzyDate.month === 2 && fuzzyDate.day === 29) {
-    return getMostRecentLeapYear();
-  } else {
-    return new Date().getFullYear();
-  }
-}
-
-function getMostRecentLeapYear(): number {
-  let leapYear = new Date().getFullYear();
-
-  while (!isLeapYear(leapYear)) {
-    leapYear -= 1;
-  }
-
-  return leapYear;
-}
-
-function isLeapYear(year: number): boolean {
-  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }

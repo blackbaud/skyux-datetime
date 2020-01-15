@@ -9,6 +9,10 @@ import {
 } from '@skyux/i18n';
 
 import {
+  SkyIntlDateFormatter
+} from '@skyux/i18n/modules/i18n/intl-date-formatter';
+
+import {
   Subject
 } from 'rxjs/Subject';
 
@@ -19,8 +23,8 @@ import {
 } from '../datepicker/fuzzy-date';
 
 import {
-  SkyDateFormatUtility
-} from './date-format-utility';
+  SkyFuzzyDateService
+} from '../datepicker/fuzzy-date.service';
 
 @Pipe({
   name: 'skyFuzzyDate',
@@ -33,6 +37,7 @@ export class SkyFuzzyDatePipe implements OnDestroy, PipeTransform {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
+    private fuzzyDateService: SkyFuzzyDateService,
     private localeProvider: SkyAppLocaleProvider
   ) {
     this.localeProvider.getLocaleInfo()
@@ -52,13 +57,22 @@ export class SkyFuzzyDatePipe implements OnDestroy, PipeTransform {
     format: string,
     locale?: string
   ): string {
+    if (!value) {
+      return undefined;
+    }
+
     if (!format || format.length === 0) {
       console.error('You must provide a format when using the skyFuzzyDate pipe.');
       return;
     }
 
     const dateLocale = locale || this.defaultLocale;
+    const date = this.fuzzyDateService.getDateFromFuzzyDate(value);
 
-    return SkyDateFormatUtility.formatFuzzyDate(dateLocale, value, format);
+    return SkyIntlDateFormatter.format(
+      date,
+      dateLocale,
+      format
+    );
   }
 }
