@@ -20,9 +20,31 @@
         skyFuzzyDatepickerInput
         type="text"
         [skyDatepickerNoValidate]="noValidate"
-        [(ngModel)]="date"
+        [(ngModel)]="fuzzyDate"
       />
     </sky-datepicker>
+  </div>
+
+  <div
+    class="sky-form-group"
+  >
+    <label
+      class="sky-control-label sky-control-label-required"
+      for="format"
+    >
+      Format
+    </label>
+    <input
+      class="sky-form-control"
+      id="format"
+      name="format"
+      type="text"
+      [(ngModel)]="format"
+    />
+    <span
+      class="sky-deemphasized"
+    >
+    </span>
   </div>
 
   <div
@@ -54,30 +76,6 @@
   <div
     class="sky-form-group"
   >
-    <label
-      class="sky-control-label"
-      for="format"
-    >
-      Format
-    </label>
-    <input
-      class="sky-form-control"
-      id="format"
-      name="format"
-      type="text"
-      [(ngModel)]="format"
-    />
-    <span
-      class="sky-deemphasized"
-    >
-      Default format is the current locale's medium format (MMM d, y). Enter a format above to override.
-    </span>
-  </div>
-
-
-  <div
-    class="sky-form-group"
-  >
     <p>
       <button
         class="sky-btn sky-btn-primary"
@@ -91,27 +89,26 @@
 
 </div>
 
-<div
-  class="app-screenshot"
-  style="width:300px"
->
-
 <hr />
 
-<h3>
-  Pipe output
-</h3>
-
-<p
-  class="sky-emphasized"
+<div
+  class="app-screenshot"
 >
-  {{ date | skyFuzzyDate:format:locale }}
-</p>
 
-<p
-  class="sky-field-label"
->
-  SkyFuzzyDate model: <code>{{ dateForDisplay() }}</code>
-</p>
+  <h3>
+    Pipe output →
+  </h3>
+
+  <p
+    class="sky-emphasized"
+  >
+    {{ fuzzyDate | skyFuzzyDate:format:locale }}
+  </p>
+
+  <p
+    class="sky-field-label"
+  >
+    SkyFuzzyDate model: <code>{{ dateForDisplay() }}</code>
+  </p>
 
 </div>

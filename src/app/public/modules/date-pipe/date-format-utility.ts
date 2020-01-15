@@ -92,15 +92,16 @@ export class SkyDateFormatUtility {
     pattern: string
   ): string | null {
 
-    // TODO: Validation?
+    if (!value) {
+      return undefined;
+    }
 
     const date = getDateFromFuzzyDate(value);
-    const fuzzyDateFormat = getFuzzyDateFormat(pattern, value);
 
     return SkyIntlDateFormatter.format(
       date,
       locale,
-      fuzzyDateFormat
+      pattern
     );
   }
 }
@@ -137,29 +138,6 @@ function isoStringToDate(match: RegExpMatchArray): Date {
 /* istanbul ignore next */
 function toInt(str: string): number {
   return parseInt(str, 10);
-}
-
-/**
- * Filters out any date components that aren't a part of the provided fuzzyDate.
- * For example, a fuzzy date of month/year wouldn't need a day component.
- */
-function getFuzzyDateFormat(dateFormat: string, fuzzyDate: SkyFuzzyDate): string {
-  if (!fuzzyDate.day || fuzzyDate.day === 0) {
-    dateFormat = dateFormat.replace(/D+(\/| |\.|-|, )?/gi, '');
-  }
-
-  if (!fuzzyDate.month || fuzzyDate.month === 0) {
-    dateFormat = dateFormat.replace(/M+(\/| |\.|-|, )?/gi, '');
-  }
-
-  if (!fuzzyDate.year || fuzzyDate.year === 0) {
-    dateFormat = dateFormat.replace(/Y+(\/| |\.|-|, )?/gi, '');
-  }
-
-  // Remove components that wouldn't make sense with a fuzzy date (hrs, min, sec, etc...)
-  dateFormat = dateFormat.replace(/G|j|h|H|m|s|Z|a/g, '');
-
-  return dateFormat;
 }
 
 /**

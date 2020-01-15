@@ -11,8 +11,8 @@ import {
 } from '../fuzzy-date.pipe';
 
 @Component({
-  selector: 'date-pipe-test',
-  templateUrl: './date-pipe.component.fixture.html'
+  selector: 'fuzzy-date-pipe-test',
+  templateUrl: './fuzzy-date-pipe.component.fixture.html'
 })
 export class FuzzyDatePipeTestComponent {
 
@@ -21,7 +21,7 @@ export class FuzzyDatePipeTestComponent {
     month: 11
   };
 
-  public format: string;
+  public format: string = 'MMM yy';
 
   public locale: string;
 

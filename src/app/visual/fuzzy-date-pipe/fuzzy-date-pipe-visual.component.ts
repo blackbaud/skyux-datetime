@@ -17,12 +17,12 @@ import {
 })
 export class FuzzyDatePipeVisualComponent implements OnInit {
 
-  public date: SkyFuzzyDate = {
+  public fuzzyDate: SkyFuzzyDate = {
     month: 11,
     year: 1955
   };
 
-  public format: string;
+  public format: string = 'MMM y';
 
   public locale: string;
 
@@ -51,11 +51,11 @@ export class FuzzyDatePipeVisualComponent implements OnInit {
   }
 
   public dateForDisplay(): string {
-    return JSON.stringify(this.date);
+    return JSON.stringify(this.fuzzyDate);
   }
 
   public onResetClick(): void {
     this.locale = undefined;
-    this.format = undefined;
+    this.format = 'MMM y';
   }
 }
