@@ -103,11 +103,11 @@ describe('Fuzzy date pipe', () => {
       locale: 'fr-FR'
     });
     fixture.detectChanges();
+    value = getFuzzyDateText(fixture);
 
     expect(value).toEqual('nov. 1955');
   });
 
-  // TODO: shouldn't this always be current locale instead of en-US?
   it('should default to en-US locale', () => {
     const date: SkyFuzzyDate = {
       year: 1955,
@@ -133,5 +133,13 @@ describe('Fuzzy date pipe', () => {
     );
 
     expect(value).toEqual('nov. 1955');
+  });
+
+  it('should throw an error if format is not provided', () => {
+    const consoleSpy = spyOn(console, 'error').and.callThrough();
+    component.format = undefined;
+    fixture.detectChanges();
+
+    expect(consoleSpy).toHaveBeenCalledWith('You must provide a format when using the skyFuzzyDate pipe.');
   });
 });
