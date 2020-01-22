@@ -9,10 +9,6 @@ import {
 } from '@skyux/i18n';
 
 import {
-  SkyIntlDateFormatter
-} from '@skyux/i18n/modules/i18n/intl-date-formatter';
-
-import {
   Subject
 } from 'rxjs/Subject';
 
@@ -26,6 +22,26 @@ import {
   SkyFuzzyDateService
 } from '../datepicker/fuzzy-date.service';
 
+/**
+ * Formats a fuzzy date value according to locale rules.
+ * You can construct a format string using symbols to specify the components
+ * of a date-time value, as described in the following table.
+ * These fields are based on the moment.js values found here: https://momentjs.com/docs/#/displaying/
+ *
+ *  | Field type         | Token      | Output
+ *  |--------------------|------------|
+ *  | Month              | M          | 1 2 ... 11 12
+ *  |                    | Mo         | 1st 2nd ... 11th 12th
+ *  |                    | MM         | 01 02 ... 11 12
+ *  |                    | MMM        | Jan Feb ... Nov Dec
+ *  |                    | MMMM       | January February ... November December
+ *  | Day                | D          | 1 2 ... 30 31
+ *  |                    | Do         | 1st 2nd ... 30th 31st
+ *  |                    | DD         | 01 02 ... 30 31
+ *  | Year               | YY         | 70 71 ... 29 30
+ *  |                    | YYYY       | 1970 1971 ... 2029 2030
+ *  |                    | Y          | 1970 1971 ... 9999 +10000 +10001
+ */
 @Pipe({
   name: 'skyFuzzyDate',
   pure: false
@@ -67,12 +83,9 @@ export class SkyFuzzyDatePipe implements OnDestroy, PipeTransform {
     }
 
     const dateLocale = locale || this.defaultLocale;
-    const date = this.fuzzyDateService.getDateFromFuzzyDate(value);
+    const moment = this.fuzzyDateService.getMomentFromFuzzyDate(value);
 
-    return SkyIntlDateFormatter.format(
-      date,
-      dateLocale,
-      format
-    );
+    return moment.locale(dateLocale).format(format);
   }
+
 }

@@ -21,7 +21,7 @@ export class FuzzyDatePipeTestComponent {
     month: 11
   };
 
-  public format: string = 'MMM y';
+  public format: string = 'MMM Y';
 
   public locale: string;
 

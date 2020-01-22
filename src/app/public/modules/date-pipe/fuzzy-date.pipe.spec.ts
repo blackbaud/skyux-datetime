@@ -118,7 +118,7 @@ describe('Fuzzy date pipe', () => {
       month: 11
     };
     const fuzzyDatePipe = new SkyFuzzyDatePipe(new SkyFuzzyDateService, mockLocaleProvider);
-    const value = fuzzyDatePipe.transform(date, 'MMM y');
+    const value = fuzzyDatePipe.transform(date, 'MMM Y');
 
     expect(value).toEqual('Nov 1955');
     expect(fuzzyDatePipe['defaultLocale']).toEqual('en-US');
@@ -132,7 +132,7 @@ describe('Fuzzy date pipe', () => {
     };
     const value = component.getFuzzyDatePipeResult(
       fuzzyDate,
-      'MMM y',
+      'MMM Y',
       'fr-CA'
     );
 

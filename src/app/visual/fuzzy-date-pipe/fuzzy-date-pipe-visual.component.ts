@@ -22,7 +22,7 @@ export class FuzzyDatePipeVisualComponent implements OnInit {
     year: 1955
   };
 
-  public format: string = 'MMM y';
+  public format: string = 'MMM Y';
 
   public locale: string;
 
