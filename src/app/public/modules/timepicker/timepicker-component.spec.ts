@@ -23,14 +23,20 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  SkyTimepickerModule
-} from './timepicker.module';
-
-import {
   TimepickerTestComponent
 } from './fixtures/timepicker-component.fixture';
-import { TimepickerReactiveTestComponent } from './fixtures/timepicker-reactive-component.fixture';
-import { SkyTimepickerComponent } from './timepicker.component';
+
+import {
+  TimepickerReactiveTestComponent
+} from './fixtures/timepicker-reactive-component.fixture';
+
+import {
+  SkyTimepickerComponent
+} from './timepicker.component';
+
+import {
+  SkyTimepickerModule
+} from './timepicker.module';
 
 const moment = require('moment');
 

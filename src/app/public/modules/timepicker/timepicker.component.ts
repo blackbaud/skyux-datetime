@@ -50,7 +50,7 @@ export class SkyTimepickerComponent implements OnInit {
 
   public get activeTime(): Date {
     if (!this._activeTime) {
-      let momentTime = moment(this._activeTime);
+      const momentTime = moment(this._activeTime);
       if (momentTime.minute() !== 0) {
         momentTime.add(1, 'hours');
         momentTime.set('minute', 0);
