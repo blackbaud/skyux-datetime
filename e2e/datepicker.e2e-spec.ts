@@ -16,7 +16,7 @@ describe('Datepicker', () => {
 
   it('should match previous daypicker screenshot', (done) => {
     expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
-      screenshotName: 'daypicker'
+      screenshotName: 'datepicker-daypicker'
     });
   });
 
@@ -24,7 +24,7 @@ describe('Datepicker', () => {
     element(by.css('.sky-datepicker-calendar-title')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
-      screenshotName: 'monthpicker'
+      screenshotName: 'datepicker-monthpicker'
     });
   });
 
@@ -33,7 +33,7 @@ describe('Datepicker', () => {
     element(by.css('.sky-datepicker-calendar-title')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
-      screenshotName: 'yearpicker'
+      screenshotName: 'datepicker-yearpicker'
     });
   });
 
