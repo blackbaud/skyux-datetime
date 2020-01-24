@@ -26,7 +26,7 @@ import {
  * Formats a fuzzy date value according to locale rules.
  * You can construct a format string using symbols to specify the components
  * of a date-time value, as described in the following table.
- * These fields are based on the moment.js values found here: https://momentjs.com/docs/#/displaying/
+ * These fields are based on the [moment.js values](https://momentjs.com/docs/#/displaying/)
  *
  *  | Field type         | Token      | Output
  *  |--------------------|------------|
