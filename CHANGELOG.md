@@ -1,6 +1,6 @@
 # 3.7.0 (2019-01-27)
 
-- Added the fuzzy date pipe. [#100](https://github.com/blackbaud/skyux-datetime/pull/100)
+- Added the fuzzy date pipe. [#102](https://github.com/blackbaud/skyux-datetime/pull/102)
 
 # 3.6.4 (2019-11-22)
 
