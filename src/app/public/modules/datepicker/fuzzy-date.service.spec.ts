@@ -444,8 +444,6 @@ describe('SkyFuzzyDateservice', () => {
       // act
       const actual = service.getMomentFromFuzzyDate(fuzzyDate);
 
-      console.log('expected fuzzyDate: ' + JSON.stringify(expected));
-      console.log('actual fuzzyDate: ' + JSON.stringify(actual));
       // assert
       expect(actual).toEqual(expected);
     });
@@ -459,8 +457,6 @@ describe('SkyFuzzyDateservice', () => {
       // act
       const actual = service.getMomentFromFuzzyDate(fuzzyDate);
 
-      console.log('expected fuzzyDate: ' + JSON.stringify(expected));
-      console.log('actual fuzzyDate: ' + JSON.stringify(actual));
       // assert
       expect(actual).toEqual(expected);
     });
