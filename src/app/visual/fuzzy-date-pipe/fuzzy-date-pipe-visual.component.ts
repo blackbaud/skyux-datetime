@@ -1,7 +1,16 @@
 import {
   Component,
+  OnDestroy,
   OnInit
 } from '@angular/core';
+
+import {
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
+  Subject
+} from 'rxjs';
 
 import {
   SkyFuzzyDatePipe
@@ -15,7 +24,7 @@ import {
   selector: 'fuzzy-date-pipe-visual',
   templateUrl: './fuzzy-date-pipe-visual.component.html'
 })
-export class FuzzyDatePipeVisualComponent implements OnInit {
+export class FuzzyDatePipeVisualComponent implements OnInit, OnDestroy {
 
   public fuzzyDate: SkyFuzzyDate = {
     month: 11,
@@ -41,13 +50,28 @@ export class FuzzyDatePipeVisualComponent implements OnInit {
     'zh-CN'
   ];
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
-    private datePipe: SkyFuzzyDatePipe
-  ) { }
+    private datePipe: SkyFuzzyDatePipe,
+    private localeProvider: SkyAppLocaleProvider
+  ) {
+    // Update locale to the browser's current locale.
+    this.localeProvider.getLocaleInfo()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((localeInfo) => {
+        this.locale = localeInfo.locale;
+      });
+  }
 
   public ngOnInit(): void {
     const result = this.datePipe.transform({ month: 11, year: 1955 }, 'MMMM y', 'en-US');
     console.log('Result from calling pipe directly:', result);
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   public dateForDisplay(): string {
