@@ -61,7 +61,7 @@
     "@skyux/config": "3.7.0",
     "@skyux/core": "3.10.0",
     "@skyux/datetime": "3.6.4",
-    "@skyux/docs-tools": "3.0.0-alpha.36",
+    "@skyux/docs-tools": "3.0.0",
     "@skyux/errors": "3.0.0",
     "@skyux/forms": "3.6.1",
     "@skyux/http": "3.9.0",

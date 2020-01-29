@@ -18,6 +18,15 @@ import {
   SkyDateFormatUtility
 } from './date-format-utility';
 
+/**
+ * Formats a date value according to locale rules.
+ * @example
+ * ```markup
+ * {{ myDate | skyDatePipe }}
+ * {{ myDate | skyDatePipe:'short' }}
+ * {{ myDate | skyDatePipe:'short':'en-CA' }}
+ * ```
+ */
 @Pipe({
   name: 'skyDate',
   pure: false
@@ -54,6 +63,14 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
     this.ngUnsubscribe.complete();
   }
 
+  /**
+   * Transforms a date value using locale and format rules.
+   * @param value The date value to transform.
+   * @param format The format to apply to the transform. The format string is contructed by a
+   * series of symbols representing date-time values. The various symbols are identical to
+   * Angular's [`DatePipe`]().
+   * @param locale The locale code to use in the transform.
+   */
   public transform(
     value: Date,
     format?: string,
