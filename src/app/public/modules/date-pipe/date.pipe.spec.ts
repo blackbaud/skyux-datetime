@@ -62,28 +62,34 @@ describe('Date pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '12/31/1999, 7:00 PM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
 
   it('should format a timestamp', () => {
-    fixture.componentInstance.dateValue = new Date(Date.UTC(2000, 0, 1, 0)).getTime();
+    fixture.componentInstance.dateValue = new Date(2000, 0, 1, 0).getTime();
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '12/31/1999, 7:00 PM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
 
   it('should format an ISO date string', () => {
-    const isoString = new Date(Date.UTC(2000, 0, 1, 0)).toISOString();
+    const isoString = new Date(2000, 0, 1, 0).toISOString();
     fixture.componentInstance.dateValue = isoString;
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '12/31/1999, 7:00 PM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
@@ -93,7 +99,9 @@ describe('Date pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '1/1/2000, 12:00 AM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
@@ -104,7 +112,8 @@ describe('Date pipe', () => {
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
       '1/1/2000, 12:00 AM',
-      '1/1/2000 12:00 AM' // IE 11
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
@@ -133,7 +142,9 @@ describe('Date pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      'Friday, December 31, 1999'
+      'Saturday, January 1, 2000',
+      'Saturday, January 01, 2000', // IE 11
+      'Friday, December 31, 1999' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
@@ -143,7 +154,9 @@ describe('Date pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '12/31/1999, 7:00 PM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
@@ -153,7 +166,9 @@ describe('Date pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
-      '1999-12-31 19 h 00'
+      '2000-01-01 00 h 00',
+      '2000-01-01 00:00', // IE 11
+      '1999-12-31 23:00' // Safari
     ];
     expect(expectedValues).toContain(value);
   });
@@ -163,7 +178,9 @@ describe('Date pipe', () => {
 
     let value = fixture.nativeElement.textContent.trim();
     let expectedValues = [
-      '12/31/1999, 7:00 PM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
     expect(expectedValues).toContain(value);
 
@@ -175,16 +192,19 @@ describe('Date pipe', () => {
 
     value = fixture.nativeElement.textContent.trim();
     expectedValues = [
-      '1999-12-31 19 h 00'
+      '2000-01-01 00 h 00',
+      '2000-01-01 00:00' // IE 11
     ];
     expect(expectedValues).toContain(value);
   });
 
   it('should default to en-US locale', () => {
-    const date = new Date(Date.UTC(2000, 0, 1));
+    const date = new Date('01/01/2000');
     const pipe = new SkyDatePipe(mockLocaleProvider);
     const expectedValues = [
-      '12/31/1999, 7:00 PM'
+      '1/1/2000, 12:00 AM',
+      '1/1/2000 12:00 AM', // IE 11
+      '12/31/1999, 11:00 PM' // Safari
     ];
 
     const value = pipe.transform(date, 'short');
@@ -219,9 +239,11 @@ describe('Date pipe', () => {
   it('should work as an injectable', () => {
     fixture.detectChanges();
 
-    const date = new Date(Date.UTC(2000, 0, 1));
+    const date = new Date('01/01/2000');
     const expectedValues = [
-      '1999-12-31 19 h 00'
+      '2000-01-01 00 h 00',
+      '2000-01-01 00:00', // IE 11
+      '1999-12-31 23:00' // Safari
     ];
 
     const result = fixture.componentInstance.getDatePipeResult(
