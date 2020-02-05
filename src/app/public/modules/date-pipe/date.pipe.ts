@@ -22,9 +22,9 @@ import {
  * Formats a date value according to locale rules.
  * @example
  * ```markup
- * {{ myDate | skyDatePipe }}
- * {{ myDate | skyDatePipe:'short' }}
- * {{ myDate | skyDatePipe:'short':'en-CA' }}
+ * {{ myDate | skyDate }}
+ * {{ myDate | skyDate:'medium' }}
+ * {{ myDate | skyDate:'medium':'en-CA' }}
  * ```
  */
 @Pipe({

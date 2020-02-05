@@ -26,7 +26,7 @@ import {
  * Formats a fuzzy date value according to locale rules.
  * You can construct a format string using symbols to specify the components
  * of a date-time value, as described in the following table.
- * These fields are based on the [moment.js values](https://momentjs.com/docs/#/displaying/)
+ * These fields are based on the [moment.js values](https://momentjs.com/docs/#/displaying/).
  *
  *  | Field type         | Token      | Output
  *  |--------------------|------------|
@@ -41,6 +41,11 @@ import {
  *  | Year               | YY         | 70 71 ... 29 30
  *  |                    | YYYY       | 1970 1971 ... 2029 2030
  *  |                    | Y          | 1970 1971 ... 9999 +10000 +10001
+ * @example
+ * ```markup
+ * {{ myFuzzyDate | skyFuzzyDate:'MMM Y' }}
+ * {{ myFuzzyDate | skyFuzzyDate:'MMM Y':'en-CA' }}
+ * ```
  */
 @Pipe({
   name: 'skyFuzzyDate',
