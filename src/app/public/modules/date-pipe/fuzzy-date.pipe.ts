@@ -23,9 +23,8 @@ import {
 } from '../datepicker/fuzzy-date.service';
 
 /**
- * Formats fuzzy date values using two or more date tokens that represent the components of 
- * date-time values such as the day, the month, or the year. The tokens are described in the 
- * [moment.js values](https://momentjs.com/docs/#/displaying/).
+ * Formats date values using two or more date tokens that represent the day, month, 
+ * and year. The tokens are described in the [moment.js values](https://momentjs.com/docs/#/displaying/).
  * @example
  * ```markup
  * {{ myFuzzyDate | skyFuzzyDate:'MMM Y' }}
@@ -60,10 +59,10 @@ export class SkyFuzzyDatePipe implements OnDestroy, PipeTransform {
 
   /**
    * Transforms fuzzy date values using two or more date tokens that represent the day, month, 
-   * or year.
+   * and year.
    * @param value Specifies the date value to transform.
    * @param format Specifies the format to apply to the transform. You construct the format 
-   * string with a series of symbols that specify the components of date-time values. These 
+   * string with a two or more tokens that specify the components of date-time value. The 
    * tokens are described in the [moment.js values](https://momentjs.com/docs/#/displaying/).
    * @param locale Specifies the locale code to use in the transform.
    */
