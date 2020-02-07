@@ -19,7 +19,7 @@ import {
 } from './date-format-utility';
 
 /**
- * Formats a date value according to locale rules.
+ * Formats date values according to locale rules.
  * @example
  * ```markup
  * {{ myDate | skyDate }}
@@ -65,11 +65,11 @@ export class SkyDatePipe implements OnDestroy, PipeTransform {
 
   /**
    * Transforms a date value using locale and format rules.
-   * @param value The date value to transform.
-   * @param format The format to apply to the transform. The format string is contructed by a
-   * series of symbols representing date-time values. The various symbols are identical to
-   * Angular's [`DatePipe`]().
-   * @param locale The locale code to use in the transform.
+   * @param value Specifies the date value to transform.
+   * @param format Specifies the format to apply to the transform. The format string is 
+   * constructed by a series of symbols that represent date-time values. The symbols are   
+   * identical to [Angular's `DatePipe`](https://angular.io/api/common/DatePipe).
+   * @param locale Specifies the locale code to use in the transform.
    */
   public transform(
     value: Date,
