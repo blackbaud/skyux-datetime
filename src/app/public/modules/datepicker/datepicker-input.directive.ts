@@ -161,8 +161,19 @@ export class SkyDatepickerInputDirective
     return this._startingDay || this.configService.startingDay;
   }
 
+  /**
+   * Requires date value to strictly match the provided dateFormat. When set to false,
+   * if the datepicker directive cannot find an exact match, it will attempt to format the string using the ISO8601 standard format.
+   * @default false
+   */
   @Input()
-  public strictFormat: boolean;
+  public set strictFormat(value: boolean) {
+    this._strictFormat = false;
+  }
+
+  public get strictFormat(): boolean {
+    return this._strictFormat || false;
+  }
 
   private get value(): any {
     return this._value;
@@ -207,6 +218,7 @@ export class SkyDatepickerInputDirective
   private _maxDate: Date;
   private _minDate: Date;
   private _startingDay: number;
+  private _strictFormat: boolean;
   private _value: any;
 
   constructor(
