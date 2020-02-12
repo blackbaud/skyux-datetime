@@ -161,6 +161,9 @@ export class SkyDatepickerInputDirective
     return this._startingDay || this.configService.startingDay;
   }
 
+  @Input()
+  public strictFormat: boolean;
+
   private get value(): any {
     return this._value;
   }
@@ -423,7 +426,7 @@ export class SkyDatepickerInputDirective
     if (value instanceof Date) {
       dateValue = value;
     } else if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
+      const date = this.dateFormatter.getDateFromString(value, this.dateFormat, this.strictFormat);
       if (this.dateFormatter.dateIsValid(date)) {
         dateValue = date;
       }

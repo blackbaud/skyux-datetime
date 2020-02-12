@@ -38,6 +38,7 @@ export class DatepickerReactiveTestComponent implements OnInit {
   public initialValue: Date | string;
   public noValidate: boolean = false;
   public startingDay = 0;
+  public strictFormat: boolean;
 
   constructor(
     private formBuilder: FormBuilder
