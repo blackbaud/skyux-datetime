@@ -24,7 +24,7 @@
       [skyDatepickerInput]="picker"
       [skyDatepickerNoValidate]="noValidate"
       [startingDay]="startingDay"
-      [strictFormat]="strictFormat"
+      [strict]="strict"
       [(ngModel)]="selectedDate"
       #date="ngModel"
     />
@@ -167,7 +167,7 @@
     class="sky-btn"
     id="button-set-invalid-value"
     type="button"
-    (click)="strictFormat = !strictFormat"
+    (click)="strict = !strict"
   >
     Toggle strict formatting
   </button>

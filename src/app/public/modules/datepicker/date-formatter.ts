@@ -6,10 +6,10 @@ export class SkyDateFormatter {
   }
 
   public getDateFromString(dateString: string, format: string, strict: boolean = false): Date {
-    let momentValue = moment(dateString, format);
+    let momentValue = moment(dateString, format, strict);
 
-    if (!strict && !momentValue.isValid()) {
-      momentValue = moment(dateString, 'YYYY-MM-DDThh:mm:ss.sssZ');
+    if (!momentValue.isValid()) {
+      momentValue = moment(dateString, 'YYYY-MM-DDThh:mm:ss.sssZ', strict);
     }
 
     return momentValue.toDate();

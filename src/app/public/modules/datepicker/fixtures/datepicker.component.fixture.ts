@@ -33,5 +33,5 @@ export class DatepickerTestComponent {
   public startingDay = 0;
   public isDisabled: boolean;
   public showInvalidDirective = false;
-  public strictFormat: boolean;
+  public strict: boolean;
 }

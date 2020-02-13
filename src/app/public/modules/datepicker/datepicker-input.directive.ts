@@ -167,12 +167,12 @@ export class SkyDatepickerInputDirective
    * @default false
    */
   @Input()
-  public set strictFormat(value: boolean) {
-    this._strictFormat = false;
+  public set strict(value: boolean) {
+    this._strict = value;
   }
 
-  public get strictFormat(): boolean {
-    return this._strictFormat || false;
+  public get strict(): boolean {
+    return this._strict || false;
   }
 
   private get value(): any {
@@ -218,7 +218,7 @@ export class SkyDatepickerInputDirective
   private _maxDate: Date;
   private _minDate: Date;
   private _startingDay: number;
-  private _strictFormat: boolean;
+  private _strict: boolean;
   private _value: any;
 
   constructor(
@@ -438,7 +438,7 @@ export class SkyDatepickerInputDirective
     if (value instanceof Date) {
       dateValue = value;
     } else if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(value, this.dateFormat, this.strictFormat);
+      const date = this.dateFormatter.getDateFromString(value, this.dateFormat, this.strict);
       if (this.dateFormatter.dateIsValid(date)) {
         dateValue = date;
       }

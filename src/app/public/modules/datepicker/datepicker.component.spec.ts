@@ -425,7 +425,7 @@ describe('datepicker', () => {
           .toEqual(moment('1994-11-05T08:15:30-05:00', 'YYYY-MM-DDThh:mm:ss.sssZ').toDate());
       }));
 
-      it('should attempt to convert poorly formatted date to ISO when strictFormat is false', fakeAsync(() => {
+      it('should attempt to convert poorly formatted date to ISO when strict is false', fakeAsync(() => {
         fixture.detectChanges();
         const expectedISODate = moment('13/11/2019', ISOFormat).toDate();
         setInputProperty('13/11/2019', component, fixture);
@@ -436,8 +436,8 @@ describe('datepicker', () => {
         expect(ngModel.valid).toEqual(true);
       }));
 
-      it('should NOT attempt to convert poorly formatted date to ISO and be invalid when strictFormat is true', fakeAsync(() => {
-        component.strictFormat = true;
+      it('should NOT attempt to convert poorly formatted date to ISO and be invalid when strict is true', fakeAsync(() => {
+        component.strict = true;
         fixture.detectChanges();
         setInputProperty('13/11/2019', component, fixture);
 
@@ -834,7 +834,7 @@ describe('datepicker', () => {
           .toEqual(moment('1994-11-05T08:15:30-05:00', 'YYYY-MM-DDThh:mm:ss.sssZ').toDate());
       }));
 
-      it('should attempt to convert poorly formatted date to ISO when strictFormat is false', fakeAsync(() => {
+      it('should attempt to convert poorly formatted date to ISO when strict is false', fakeAsync(() => {
         fixture.detectChanges();
         const expectedISODate = moment('13/11/2019', ISOFormat).toDate();
         setFormControlProperty('13/11/2019', component, fixture);
@@ -845,8 +845,8 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toEqual(true);
       }));
 
-      it('should NOT attempt to convert poorly formatted date to ISO and be invalid when strictFormat is true', fakeAsync(() => {
-        component.strictFormat = true;
+      it('should NOT attempt to convert poorly formatted date to ISO and be invalid when strict is true', fakeAsync(() => {
+        component.strict = true;
         fixture.detectChanges();
         setFormControlProperty('13/11/2019', component, fixture);
 
