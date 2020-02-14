@@ -51,7 +51,7 @@ const moment = require('moment');
 
 // #region helpers
 
-const ISOFormat = 'YYYY-MM-DDTHH:mm:ss';
+const isoFormat = 'YYYY-MM-DDTHH:mm:ss';
 
 function detectChanges(fixture: ComponentFixture<any>): void {
   fixture.detectChanges();
@@ -289,7 +289,7 @@ describe('datepicker', () => {
 
         expect(getInputElementValue(fixture)).toBe('06/15/2009');
         expect(component.selectedDate)
-          .toEqual(moment('2009-06-15T00:00:01', ISOFormat).toDate());
+          .toEqual(moment('2009-06-15T00:00:01', isoFormat).toDate());
       }));
 
       it('should handle initializing with an ISO string with offset', fakeAsync(() => {
@@ -332,7 +332,7 @@ describe('datepicker', () => {
 
         expect(getInputElementValue(fixture)).toBe('06/15/2009');
         expect(component.selectedDate)
-          .toEqual(moment('2009-06-15T00:00:01', ISOFormat).toDate());
+          .toEqual(moment('2009-06-15T00:00:01', isoFormat).toDate());
       }));
 
       it('should handle input change with an ISO string with offset', fakeAsync(() => {
@@ -413,7 +413,7 @@ describe('datepicker', () => {
 
         expect(getInputElementValue(fixture)).toBe('06/15/2009');
         expect(component.selectedDate)
-          .toEqual(moment('2009-06-15T00:00:01', ISOFormat).toDate());
+          .toEqual(moment('2009-06-15T00:00:01', isoFormat).toDate());
       }));
 
       it('should handle model change with an ISO string with offset', fakeAsync(() => {
@@ -427,7 +427,7 @@ describe('datepicker', () => {
 
       it('should attempt to convert poorly formatted date to ISO when strict is false', fakeAsync(() => {
         fixture.detectChanges();
-        const expectedISODate = moment('13/11/2019', ISOFormat).toDate();
+        const expectedISODate = moment('13/11/2019', isoFormat).toDate();
         setInputProperty('13/11/2019', component, fixture);
 
         // '13/11/2019' should get converted to '11/20/2013'.
@@ -757,7 +757,7 @@ describe('datepicker', () => {
 
         expect(getInputElementValue(fixture)).toBe('06/15/2009');
         expect(component.dateControl.value)
-          .toEqual(moment('2009-06-15T00:00:01', ISOFormat).toDate());
+          .toEqual(moment('2009-06-15T00:00:01', isoFormat).toDate());
       }));
 
       it('should handle input change with an ISO string with offset', fakeAsync(() => {
@@ -822,7 +822,7 @@ describe('datepicker', () => {
 
         expect(getInputElementValue(fixture)).toBe('06/15/2009');
         expect(component.dateControl.value)
-          .toEqual(moment('2009-06-15T00:00:01', ISOFormat).toDate());
+          .toEqual(moment('2009-06-15T00:00:01', isoFormat).toDate());
       }));
 
       it('should handle model change with an ISO string with offset', fakeAsync(() => {
@@ -836,7 +836,7 @@ describe('datepicker', () => {
 
       it('should attempt to convert poorly formatted date to ISO when strict is false', fakeAsync(() => {
         fixture.detectChanges();
-        const expectedISODate = moment('13/11/2019', ISOFormat).toDate();
+        const expectedISODate = moment('13/11/2019', isoFormat).toDate();
         setFormControlProperty('13/11/2019', component, fixture);
 
         // '13/11/2019' should get converted to '11/20/2013'.
