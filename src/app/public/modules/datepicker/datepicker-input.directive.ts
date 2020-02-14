@@ -162,11 +162,11 @@ export class SkyDatepickerInputDirective
   }
 
   /**
-   * Indicates whether to require the date value to strictly match the provided `dateFormat` value.
+   * Indicates whether the format of the date value must match the format from the `dateFormat` value.
    * If this property is `true` and the datepicker input directive cannot find an exact match, then
-   * the form control will be marked as invalid.
-   * If this property is `false` and the datepicker input directive cannot find an exact match,
-   * it attempts to format the string based on the ISO 8601 standard format.
+   * the input is marked as invalid.
+   * If this property is `false` and the datepicker input directive cannot find an exact match, then
+   * it attempts to format the string based on the [ISO 8601 standard format](https://www.iso.org/iso-8601-date-and-time-format.html).
    * @default false
    */
   @Input()
