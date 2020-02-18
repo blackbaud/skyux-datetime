@@ -1,4 +1,4 @@
-# 3.8.0 (2020-02-14)
+# 3.8.0 (2020-02-18)
 
 - Added the `strict` property to the datepicker input directive to indicate whether the format of the date value must match the format from the `dateFormat` value.  [#114](https://github.com/blackbaud/skyux-datetime/pull/114)
 
