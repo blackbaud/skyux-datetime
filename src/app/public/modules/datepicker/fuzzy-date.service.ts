@@ -1,6 +1,15 @@
 import {
-  Injectable
+  Injectable,
+  OnDestroy
 } from '@angular/core';
+
+import {
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
+  Subject
+} from 'rxjs';
 
 import {
   SkyFuzzyDate
@@ -21,8 +30,120 @@ interface SkyFuzzyDateRange {
   valid: boolean;
 }
 
+export class FuzzyDateFormatInfo {
+
+  public monthPosition: number;
+  public dayPosition: number;
+  public yearPosition: number;
+  public monthMask: string;
+  public dayMask: string;
+  public yearMask: string;
+  public maskElements: string[];
+  public shortDateFormat: any;
+
+  constructor() {
+    this.maskElements = [];
+  }
+}
+
 @Injectable()
-export class SkyFuzzyDateService {
+export class SkyFuzzyDateService implements OnDestroy {
+
+  private currentLocale: string;
+
+  private ngUnsubscribe = new Subject<void>();
+
+  constructor(
+    private localeProvider: SkyAppLocaleProvider
+  ) {
+    this.localeProvider.getLocaleInfo()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((localeInfo) => {
+        this.currentLocale = localeInfo.locale;
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  public getCurrentLocale(): string {
+    return this.currentLocale;
+  }
+
+  public getLocaleShortFormat(): string {
+    moment.locale(this.currentLocale);
+    return moment.localeData().longDateFormat('LL');
+  }
+
+  public format(date: SkyFuzzyDate, format: string, locale: string): string {
+    const separator = this.getSeparatorFromDateString(format);
+    const _currentDateFormatInfo = this.getFuzzyDateFormatInfo(format, separator);
+
+    if (_currentDateFormatInfo.monthPosition === -1
+        || _currentDateFormatInfo.dayPosition === -1
+        || _currentDateFormatInfo.yearPosition === -1
+    ) {
+      return '';
+    }
+
+    if (_currentDateFormatInfo.maskElements.length === 0) {
+      return '';
+    }
+
+    let dateValue: string[] = [];
+    // Loop through 0,1,2.
+    for (let partNumber: number = 0; (partNumber <= 2); partNumber++) {
+      const mask = _currentDateFormatInfo.maskElements[partNumber];
+      if (mask) {
+        // tslint:disable-next-line: switch-default
+        switch (mask.substr(0, 1).toUpperCase()) {
+          case 'Y':
+            if (date.year > 0) {
+              // Support both 2-digit and 4-digit year.
+              switch (mask.length) {
+                case 2:
+                  dateValue.push(date.year.toString().slice(-2));
+                  break;
+                default:
+                  dateValue.push(date.year.toString());
+                  break;
+              }
+            }
+            break;
+          case 'M':
+            if (date.month > 0 && date.month <= 12) {
+              switch (mask.length) {
+                case 1:
+                  dateValue.push(date.month.toString());
+                  break;
+                case 2:
+                  dateValue.push(moment().month(date.month - 1).format('MM'));
+                  break;
+                case 3:
+                  dateValue.push(moment().month(date.month - 1).format('MMM'));
+                  break;
+                default:
+                  dateValue.push(moment().month(date.month - 1).format('MMMM'));
+                  break;
+              }
+
+            }
+            break;
+          case 'D':
+            if (date.day > 0) {
+              dateValue.push(moment().date(date.day).format(mask));
+            }
+
+            break;
+        }
+      }
+
+    }
+
+    return dateValue.join(separator);
+  }
 
   /**
    * If not provided, years will default to current year;
@@ -320,5 +441,61 @@ export class SkyFuzzyDateService {
       monthIndex: dateComponentIndexes.indexOf(dateFormatIndexes.monthIndex),
       dayIndex: dateComponentIndexes.indexOf(dateFormatIndexes.dayIndex)
     };
+  }
+
+  private getFuzzyDateFormatInfo(format: string, separator: string): FuzzyDateFormatInfo {
+    let dateInfo: FuzzyDateFormatInfo = new FuzzyDateFormatInfo();
+    let dateParts: string[] = format.split(separator);
+    let maskPosition: number = 0;
+    let definedparts: {
+      [key: string]: string
+     } = {};
+
+    for (let i = 0; i < dateParts.length; i++) {
+      const datePart = dateParts[i];
+      // tslint:disable-next-line: switch-default
+      switch (datePart.toLowerCase()) {
+        case 'm':
+        case 'mm':
+        case 'mmm':
+        case 'mmmm':
+          if (!definedparts.hasOwnProperty('M')) {
+            dateInfo.monthMask = datePart;
+            dateInfo.monthPosition = maskPosition + 1;
+            dateInfo.maskElements[maskPosition] = datePart;
+            definedparts['M'] = datePart;
+            maskPosition++;
+          }
+
+          break;
+        case 'd':
+        case 'dd':
+          if (!definedparts['D']) {
+            dateInfo.dayMask = datePart;
+            dateInfo.dayPosition = maskPosition + 1;
+            dateInfo.maskElements[maskPosition] = datePart;
+            definedparts['D'] = datePart;
+            maskPosition++;
+          }
+
+          break;
+        case 'y':
+        case 'yy':
+        case 'yyy':
+        case 'yyyy':
+          if (!definedparts['Y']) {
+            dateInfo.yearMask = datePart;
+            dateInfo.yearPosition = maskPosition + 1;
+            dateInfo.maskElements[maskPosition] = datePart;
+            definedparts['Y'] = datePart;
+            maskPosition++;
+          }
+
+          break;
+      }
+    }
+
+    dateInfo.shortDateFormat = dateInfo.maskElements.join(separator);
+    return dateInfo;
   }
 }
