@@ -7,6 +7,10 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
 
@@ -23,6 +27,7 @@ describe('SkyFuzzyDateservice', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        SkyAppLocaleProvider,
         SkyFuzzyDateService
       ]
     });

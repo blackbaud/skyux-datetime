@@ -69,35 +69,34 @@ export class SkyFuzzyDateService implements OnDestroy {
   }
 
   /**
-   * Returns the short
+   * Returns the short format of the provided locale.
+   * If not provided, the locale will be taken from the browser's default locale.
    */
-  public getLocaleShortFormat(locale: string): string {
-    if (locale) {
-      moment.locale(locale);
-    } else {
-      moment.locale(this.currentLocale);
-    }
-    return moment.localeData().longDateFormat('L');
+  public getLocaleShortFormat(locale?: string): string {
+    return moment.localeData(locale || this.currentLocale).longDateFormat('L');
   }
 
+  /**
+   * Formats a fuzzy date by using the provided format and locale strings.
+   * If not provided, the locale will be taken from the browser's default locale.
+   */
   public format(fuzzyDate: SkyFuzzyDate, format: string, locale: string): string {
     if (!this.isFuzzyDateValid(fuzzyDate)) {
       return '';
     }
 
-    const separator = this.getDateSeparator(format);
-    const fuzzyDateFormatInfo = this.getFuzzyDateFormatInfo(format, separator);
-
-    if (!this.isFuzzyDateFormatInfoValid(fuzzyDateFormatInfo)) {
+    if (!format) {
       return '';
     }
 
-    moment.locale(locale);
+    moment.locale(locale || this.currentLocale);
 
+    const separator = this.getDateSeparator(format);
     let dateParts: string[] = [];
-    // Loop through parts of the date that were provided in the format string (year/month/day).
-    for (let index = 0; index < fuzzyDateFormatInfo.tokens.length; index++) {
-      const token = fuzzyDateFormatInfo.tokens[index];
+    let formatTokens: string[] = format.split(separator);
+
+    for (let index = 0; index < formatTokens.length; index++) {
+      const token = formatTokens[index];
       if (token) {
         // tslint:disable-next-line: switch-default
         switch (token.substr(0, 1).toLowerCase()) {
@@ -424,56 +423,6 @@ export class SkyFuzzyDateService implements OnDestroy {
       monthIndex: dateComponentIndexes.indexOf(dateFormatIndexes.monthIndex),
       dayIndex: dateComponentIndexes.indexOf(dateFormatIndexes.dayIndex)
     };
-  }
-
-  private getFuzzyDateFormatInfo(format: string, separator: string): FuzzyDateFormatInfo {
-    let dateInfo: FuzzyDateFormatInfo = new FuzzyDateFormatInfo();
-    let dateParts: string[] = format.split(separator);
-    let maskPosition: number = 0;
-    let definedparts: {
-      [key: string]: string
-     } = {};
-
-    for (let i = 0; i < dateParts.length; i++) {
-      const datePart = dateParts[i];
-      // tslint:disable-next-line: switch-default
-      switch (datePart.substr(0, 1).toLowerCase()) {
-        case 'm':
-          if (!definedparts.hasOwnProperty('M')) {
-            dateInfo.monthToken = datePart;
-            dateInfo.tokens[maskPosition] = datePart;
-            definedparts['M'] = datePart;
-            maskPosition++;
-          }
-
-          break;
-        case 'd':
-          if (!definedparts['D']) {
-            dateInfo.dayToken = datePart;
-            dateInfo.tokens[maskPosition] = datePart;
-            definedparts['D'] = datePart;
-            maskPosition++;
-          }
-
-          break;
-        case 'y':
-          if (!definedparts['Y']) {
-            dateInfo.yearToken = datePart;
-            dateInfo.tokens[maskPosition] = datePart;
-            definedparts['Y'] = datePart;
-            maskPosition++;
-          }
-          break;
-      }
-    }
-
-    dateInfo.shortDateFormat = dateInfo.tokens.join(separator);
-    return dateInfo;
-  }
-
-  // TODO: should this be more rigid?
-  private isFuzzyDateFormatInfoValid(fuzzyDateFormatInfo: FuzzyDateFormatInfo): boolean {
-    return (fuzzyDateFormatInfo.tokens.length !== 0);
   }
 
   /**
