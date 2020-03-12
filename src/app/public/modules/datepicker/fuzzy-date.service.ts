@@ -31,18 +31,14 @@ interface SkyFuzzyDateRange {
 }
 
 export class FuzzyDateFormatInfo {
-
-  public monthPosition: number;
-  public dayPosition: number;
-  public yearPosition: number;
-  public monthMask: string;
-  public dayMask: string;
-  public yearMask: string;
-  public maskElements: string[];
+  public dayToken: string;
+  public tokens: string[];
+  public monthToken: string;
   public shortDateFormat: any;
+  public yearToken: string;
 
   constructor() {
-    this.maskElements = [];
+    this.tokens = [];
   }
 }
 
@@ -72,77 +68,59 @@ export class SkyFuzzyDateService implements OnDestroy {
     return this.currentLocale;
   }
 
-  public getLocaleShortFormat(): string {
-    moment.locale(this.currentLocale);
-    return moment.localeData().longDateFormat('LL');
+  /**
+   * Returns the short
+   */
+  public getLocaleShortFormat(locale: string): string {
+    if (locale) {
+      moment.locale(locale);
+    } else {
+      moment.locale(this.currentLocale);
+    }
+    return moment.localeData().longDateFormat('L');
   }
 
-  public format(date: SkyFuzzyDate, format: string, locale: string): string {
-    const separator = this.getSeparatorFromDateString(format);
-    const _currentDateFormatInfo = this.getFuzzyDateFormatInfo(format, separator);
-
-    if (_currentDateFormatInfo.monthPosition === -1
-        || _currentDateFormatInfo.dayPosition === -1
-        || _currentDateFormatInfo.yearPosition === -1
-    ) {
+  public format(fuzzyDate: SkyFuzzyDate, format: string, locale: string): string {
+    if (!this.isFuzzyDateValid(fuzzyDate)) {
       return '';
     }
 
-    if (_currentDateFormatInfo.maskElements.length === 0) {
+    const separator = this.getDateSeparator(format);
+    const fuzzyDateFormatInfo = this.getFuzzyDateFormatInfo(format, separator);
+
+    if (!this.isFuzzyDateFormatInfoValid(fuzzyDateFormatInfo)) {
       return '';
     }
 
-    let dateValue: string[] = [];
-    // Loop through 0,1,2.
-    for (let partNumber: number = 0; (partNumber <= 2); partNumber++) {
-      const mask = _currentDateFormatInfo.maskElements[partNumber];
-      if (mask) {
+    moment.locale(locale);
+
+    let dateParts: string[] = [];
+    // Loop through parts of the date that were provided in the format string (year/month/day).
+    for (let index = 0; index < fuzzyDateFormatInfo.tokens.length; index++) {
+      const token = fuzzyDateFormatInfo.tokens[index];
+      if (token) {
         // tslint:disable-next-line: switch-default
-        switch (mask.substr(0, 1).toUpperCase()) {
-          case 'Y':
-            if (date.year > 0) {
-              // Support both 2-digit and 4-digit year.
-              switch (mask.length) {
-                case 2:
-                  dateValue.push(date.year.toString().slice(-2));
-                  break;
-                default:
-                  dateValue.push(date.year.toString());
-                  break;
-              }
+        switch (token.substr(0, 1).toLowerCase()) {
+          case 'y':
+            if (fuzzyDate.year) {
+              dateParts.push(moment().year(fuzzyDate.year).format(token));
             }
             break;
-          case 'M':
-            if (date.month > 0 && date.month <= 12) {
-              switch (mask.length) {
-                case 1:
-                  dateValue.push(date.month.toString());
-                  break;
-                case 2:
-                  dateValue.push(moment().month(date.month - 1).format('MM'));
-                  break;
-                case 3:
-                  dateValue.push(moment().month(date.month - 1).format('MMM'));
-                  break;
-                default:
-                  dateValue.push(moment().month(date.month - 1).format('MMMM'));
-                  break;
-              }
-
+          case 'm':
+            if (fuzzyDate.month) {
+              dateParts.push(moment().month(fuzzyDate.month - 1).format(token));
             }
             break;
-          case 'D':
-            if (date.day > 0) {
-              dateValue.push(moment().date(date.day).format(mask));
+          case 'd':
+            if (fuzzyDate.day) {
+              dateParts.push(moment().date(fuzzyDate.day).format(token));
             }
-
             break;
         }
       }
-
     }
 
-    return dateValue.join(separator);
+    return dateParts.join(separator);
   }
 
   /**
@@ -167,7 +145,7 @@ export class SkyFuzzyDateService implements OnDestroy {
       return;
     }
 
-    const separator = this.getSeparatorFromDateString(dateFormat);
+    const separator = this.getDateSeparator(dateFormat);
     const dateFormatIndexes = this.getDateFormatIndexes(dateFormat);
     let dateString: string = '';
 
@@ -339,22 +317,27 @@ export class SkyFuzzyDateService implements OnDestroy {
     return leapYear;
   }
 
-  private getSeparatorFromDateString(date: string): string {
-    let separator: string;
-    let allSeparators = ['/', '.', '-', ' '];
+  /**
+   * Returns the first separator found in the provided date format string.
+   * Accepted separators: ['/', '.', '-', ' '].
+   * @param dateFormat
+   */
+  private getDateSeparator(dateFormat: string): string {
+    let returnValue: string;
+    let separators = ['/', '.', '-', ' '];
 
-    allSeparators.forEach(currentSeparator => {
-      if (!separator && date.indexOf(currentSeparator) > 0) {
-        separator = currentSeparator;
+    separators.forEach(separator => {
+      if (!returnValue && dateFormat.indexOf(separator) > 0) {
+        returnValue = separator;
       }
     });
 
-    return separator;
+    return returnValue;
   }
 
   private get4DigitYearFromDateString(date: string): number {
     let year: string;
-    const separator = this.getSeparatorFromDateString(date);
+    const separator = this.getDateSeparator(date);
 
     // Find the number value in the string that is 4 digits long.
     date.split(separator).forEach(dateComponent => {
@@ -404,7 +387,7 @@ export class SkyFuzzyDateService implements OnDestroy {
   }
 
   private getDateComponents(date: string): string[] {
-    const separator = this.getSeparatorFromDateString(date);
+    const separator = this.getDateSeparator(date);
     return date.split(separator);
   }
 
@@ -454,48 +437,74 @@ export class SkyFuzzyDateService implements OnDestroy {
     for (let i = 0; i < dateParts.length; i++) {
       const datePart = dateParts[i];
       // tslint:disable-next-line: switch-default
-      switch (datePart.toLowerCase()) {
+      switch (datePart.substr(0, 1).toLowerCase()) {
         case 'm':
-        case 'mm':
-        case 'mmm':
-        case 'mmmm':
           if (!definedparts.hasOwnProperty('M')) {
-            dateInfo.monthMask = datePart;
-            dateInfo.monthPosition = maskPosition + 1;
-            dateInfo.maskElements[maskPosition] = datePart;
+            dateInfo.monthToken = datePart;
+            dateInfo.tokens[maskPosition] = datePart;
             definedparts['M'] = datePart;
             maskPosition++;
           }
 
           break;
         case 'd':
-        case 'dd':
           if (!definedparts['D']) {
-            dateInfo.dayMask = datePart;
-            dateInfo.dayPosition = maskPosition + 1;
-            dateInfo.maskElements[maskPosition] = datePart;
+            dateInfo.dayToken = datePart;
+            dateInfo.tokens[maskPosition] = datePart;
             definedparts['D'] = datePart;
             maskPosition++;
           }
 
           break;
         case 'y':
-        case 'yy':
-        case 'yyy':
-        case 'yyyy':
           if (!definedparts['Y']) {
-            dateInfo.yearMask = datePart;
-            dateInfo.yearPosition = maskPosition + 1;
-            dateInfo.maskElements[maskPosition] = datePart;
+            dateInfo.yearToken = datePart;
+            dateInfo.tokens[maskPosition] = datePart;
             definedparts['Y'] = datePart;
             maskPosition++;
           }
-
           break;
       }
     }
 
-    dateInfo.shortDateFormat = dateInfo.maskElements.join(separator);
+    dateInfo.shortDateFormat = dateInfo.tokens.join(separator);
     return dateInfo;
+  }
+
+  // TODO: should this be more rigid?
+  private isFuzzyDateFormatInfoValid(fuzzyDateFormatInfo: FuzzyDateFormatInfo): boolean {
+    return (fuzzyDateFormatInfo.tokens.length !== 0);
+  }
+
+  /**
+   * Validates the provided SkyFuzzyDate object. Valid fuzzy dates are as follows:
+   * month, day, year
+   * month, year
+   * month, day
+   * year only
+   */
+  private isFuzzyDateValid(fuzzyDate: SkyFuzzyDate, yearRequired: boolean = false): boolean {
+
+    // If year required and missing, return false.
+    if (yearRequired && !fuzzyDate.year) {
+      return false;
+    }
+
+    // If none of the dates part are specified, return false.
+    if (!fuzzyDate.day && !fuzzyDate.month && !fuzzyDate.year) {
+      return false;
+    }
+
+    // If only month is specified, return false.
+    if (!fuzzyDate.day && fuzzyDate.month && !fuzzyDate.year) {
+      return false;
+    }
+
+    // If only day is specified, return false.
+    if (fuzzyDate.day && !fuzzyDate.month && !fuzzyDate.year) {
+      return false;
+    }
+
+    return true;
   }
 }

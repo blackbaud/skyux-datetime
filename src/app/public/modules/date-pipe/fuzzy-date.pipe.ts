@@ -49,7 +49,7 @@ export class SkyFuzzyDatePipe implements PipeTransform {
     if (!value) {
       return undefined;
     }
-    const fuzzyDateFormat = format || this.fuzzyDateService.getLocaleShortFormat();
+    const fuzzyDateFormat = format || this.fuzzyDateService.getLocaleShortFormat(locale);
     const fuzzyDateLocale = locale || this.fuzzyDateService.getCurrentLocale();
     return this.fuzzyDateService.format(value, fuzzyDateFormat, fuzzyDateLocale);
   }
