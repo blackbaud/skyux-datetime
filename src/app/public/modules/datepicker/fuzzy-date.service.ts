@@ -30,18 +30,6 @@ interface SkyFuzzyDateRange {
   valid: boolean;
 }
 
-export class FuzzyDateFormatInfo {
-  public dayToken: string;
-  public tokens: string[];
-  public monthToken: string;
-  public shortDateFormat: any;
-  public yearToken: string;
-
-  constructor() {
-    this.tokens = [];
-  }
-}
-
 @Injectable()
 export class SkyFuzzyDateService implements OnDestroy {
 
@@ -89,11 +77,10 @@ export class SkyFuzzyDateService implements OnDestroy {
       return '';
     }
 
-    moment.locale(locale || this.currentLocale);
-
     const separator = this.getDateSeparator(format);
     let dateParts: string[] = [];
     let formatTokens: string[] = format.split(separator);
+    locale = locale || this.currentLocale;
 
     for (let index = 0; index < formatTokens.length; index++) {
       const token = formatTokens[index];
@@ -102,17 +89,23 @@ export class SkyFuzzyDateService implements OnDestroy {
         switch (token.substr(0, 1).toLowerCase()) {
           case 'y':
             if (fuzzyDate.year) {
-              dateParts.push(moment().year(fuzzyDate.year).format(token));
+              dateParts.push(
+                moment().locale(locale).year(fuzzyDate.year).format(token)
+              );
             }
             break;
           case 'm':
             if (fuzzyDate.month) {
-              dateParts.push(moment().month(fuzzyDate.month - 1).format(token));
+              dateParts.push(
+                moment().locale(locale).month(fuzzyDate.month - 1).format(token)
+              );
             }
             break;
           case 'd':
             if (fuzzyDate.day) {
-              dateParts.push(moment().date(fuzzyDate.day).format(token));
+              dateParts.push(
+                moment().locale(locale).date(fuzzyDate.day).format(token)
+              );
             }
             break;
         }
