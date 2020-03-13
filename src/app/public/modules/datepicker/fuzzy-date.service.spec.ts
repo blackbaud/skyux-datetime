@@ -48,7 +48,7 @@ describe('SkyFuzzyDateservice', () => {
   });
 
   describe('getLocaleShortFormat', () => {
-    xit(`should return the browser's default locale when no locale argument is provided`, () => {
+    it(`should return the browser's default locale when no locale argument is provided`, () => {
       const actualFormat = service.getLocaleShortFormat();
       const expectedFormat = moment.localeData().longDateFormat('L');
 
