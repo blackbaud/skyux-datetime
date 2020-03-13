@@ -1,6 +1,11 @@
 import {
+  inject,
   TestBed
 } from '@angular/core/testing';
+
+import {
+  SkyAppWindowRef
+} from '@skyux/core';
 
 import {
   expect
@@ -28,6 +33,7 @@ describe('SkyFuzzyDateservice', () => {
     TestBed.configureTestingModule({
       providers: [
         SkyAppLocaleProvider,
+        SkyAppWindowRef,
         SkyFuzzyDateService
       ]
     });
@@ -40,11 +46,14 @@ describe('SkyFuzzyDateservice', () => {
   });
 
   describe('getCurrentLocale', () => {
-    it(`should return the browser's default locale`, () => {
-      const actualLocale = service.getCurrentLocale();
+    it(
+      `should return the browser's default locale`,
+      inject([SkyAppWindowRef], (windowRef: SkyAppWindowRef) => {
+        const expectedLocale = windowRef.nativeWindow.navigator.languages;
+        const actualLocale = service.getCurrentLocale();
 
-      expect(actualLocale).toEqual('en-US');
-    });
+        expect(actualLocale).toEqual(expectedLocale[0]);
+    }));
   });
 
   describe('getLocaleShortFormat', () => {
@@ -78,62 +87,72 @@ describe('SkyFuzzyDateservice', () => {
     });
 
     it(`should return an empty string if the fuzzy date is invalid`, () => {
-      expect(service.format(
-        {}, currentShortFormat, currentLocale)
-      ).toEqual('');
+      const fuzzyDateEmpty = {};
+      const fuzzyDateDayOnly = {day: 1};
+      const fuzzyDateMonthOnly = {month: 1};
+      const expected = '';
 
-      expect(service.format(
-        {day: 1}, currentShortFormat, currentLocale)
-      ).toEqual('');
+      const actualWithInvalidDate1 = service.format(fuzzyDateEmpty, currentShortFormat, currentLocale);
+      expect(actualWithInvalidDate1).toEqual(expected);
 
-      expect(service.format(
-        {month: 1}, currentShortFormat, currentLocale)
-      ).toEqual('');
+      const actualWithInvalidDate2 = service.format(fuzzyDateDayOnly, currentShortFormat, currentLocale);
+      expect(actualWithInvalidDate2).toEqual(expected);
+
+      const actualWithInvalidDate3 = service.format(fuzzyDateMonthOnly, currentShortFormat, currentLocale);
+      expect(actualWithInvalidDate3).toEqual(expected);
     });
 
     it(`should return an empty string if format is empty or undefined`, () => {
-      expect(service.format(
-        {year: 1999}, '', currentLocale)
-      ).toEqual('');
+      const fuzzyDate = {year: 1999};
+      const actual = service.format(fuzzyDate, '', currentLocale);
+      const expected = '';
 
-      expect(service.format(
-        {year: 1999}, undefined, currentLocale)
-      ).toEqual('');
+      expect(actual).toEqual(expected);
+
+      const actualWithUndefined = service.format(fuzzyDate, undefined, currentLocale);
+
+      expect(actualWithUndefined).toEqual(expected);
     });
 
     it(`should return formatted string, based on default browser locale`, () => {
+      const fuzzyDate = {month: 11, day: 5, year: 1955};
+      const actual = service.format(fuzzyDate, currentShortFormat, currentLocale);
       const expected = moment('11/5/1955').format('L');
 
-      expect(service.format(
-        {month: 11, day: 5, year: 1955}, currentShortFormat, currentLocale)
-      ).toEqual(expected);
+      expect(actual).toEqual(expected);
     });
 
     it(`should return formatted string, when providing custom format and locale`, () => {
       const frenchLongFormat = moment.localeData('fr').longDateFormat('LL');
+      const fuzzyDate = {month: 11, day: 5, year: 1955};
+      const actual = service.format(fuzzyDate, frenchLongFormat, 'fr');
       const expected = moment('11/5/1955').locale('fr').format('LL');
 
-      expect(service.format(
-        {month: 11, day: 5, year: 1955}, frenchLongFormat, 'fr')
-      ).toEqual(expected);
+      expect(actual).toEqual(expected);
     });
 
     it(`should not return years when the fuzzy date does not include a year`, () => {
-      expect(service.format(
-        {month: 11, day: 5}, 'MM/DD/YYYY', 'en-US')
-      ).toEqual('11/05');
+      const fuzzyDate = {month: 11, day: 5};
+      const actual = service.format(fuzzyDate, 'MM/DD/YYYY', 'en-US');
+      const expected = '11/05';
+
+      expect(actual).toEqual(expected);
     });
 
     it(`should not return month or days when the fuzzy date does not include a month or day`, () => {
-      expect(service.format(
-        {year: 1955}, 'MM/DD/YYYY', 'en-US')
-      ).toEqual('1955');
+      const fuzzyDate = {year: 1955};
+      const actual = service.format(fuzzyDate, 'MM/DD/YYYY', 'en-US');
+      const expected = '1955';
+
+      expect(actual).toEqual(expected);
     });
 
     it(`should not return days when the fuzzy date does not include a day`, () => {
-      expect(service.format(
-        {month: 11, year: 1955}, 'MM/DD/YYYY', 'en-US')
-      ).toEqual('11/1955');
+      const fuzzyDate = {month: 11, year: 1955};
+      const actual = service.format(fuzzyDate, 'MM/DD/YYYY', 'en-US');
+      const expected = '11/1955';
+
+      expect(actual).toEqual(expected);
     });
   });
 
