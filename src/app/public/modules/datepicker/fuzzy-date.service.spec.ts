@@ -1,6 +1,7 @@
 import {
-  inject,
-  TestBed
+  fakeAsync,
+  TestBed,
+  tick
 } from '@angular/core/testing';
 
 import {
@@ -29,7 +30,7 @@ describe('SkyFuzzyDateservice', () => {
   let service: SkyFuzzyDateService;
   const defaultDateFormat = 'mm/dd/yyyy';
 
-  beforeEach(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [
         SkyAppLocaleProvider,
@@ -39,21 +40,20 @@ describe('SkyFuzzyDateservice', () => {
     });
 
     service = TestBed.get(SkyFuzzyDateService);
-  });
+    tick();
+  }));
 
   afterEach(() => {
     service.ngOnDestroy();
   });
 
   describe('getCurrentLocale', () => {
-    it(
-      `should return the browser's default locale`,
-      inject([SkyAppWindowRef], (windowRef: SkyAppWindowRef) => {
-        const expectedLocale = windowRef.nativeWindow.navigator.languages;
+    it(`should return the browser's default locale`, () => {
+        const expectedLocale = navigator.language;
         const actualLocale = service.getCurrentLocale();
 
-        expect(actualLocale).toEqual(expectedLocale[0]);
-    }));
+        expect(actualLocale).toEqual(expectedLocale);
+    });
   });
 
   describe('getLocaleShortFormat', () => {
