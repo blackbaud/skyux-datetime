@@ -28,7 +28,9 @@ const moment = require('moment');
 
 describe('SkyFuzzyDateservice', () => {
   let service: SkyFuzzyDateService;
+  let currentLocale: string;
   const defaultDateFormat = 'mm/dd/yyyy';
+  const appProvider = new SkyAppLocaleProvider();
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -41,6 +43,12 @@ describe('SkyFuzzyDateservice', () => {
 
     service = TestBed.get(SkyFuzzyDateService);
     tick();
+
+    appProvider.getLocaleInfo()
+    .take(1)
+    .subscribe((localeInfo) => {
+      currentLocale = localeInfo.locale;
+    });
   }));
 
   afterEach(() => {
@@ -49,17 +57,15 @@ describe('SkyFuzzyDateservice', () => {
 
   describe('getCurrentLocale', () => {
     it(`should return the browser's default locale`, () => {
-        const expectedLocale = navigator.language;
-        const actualLocale = service.getCurrentLocale();
-
-        expect(actualLocale).toEqual(expectedLocale);
+      const actualLocale = service.getCurrentLocale();
+      expect(currentLocale).toEqual(actualLocale);
     });
   });
 
   describe('getLocaleShortFormat', () => {
     it(`should return the browser's default locale when no locale argument is provided`, () => {
       const actualFormat = service.getLocaleShortFormat();
-      const expectedFormat = moment.localeData().longDateFormat('L');
+      const expectedFormat = moment.localeData(currentLocale).longDateFormat('L');
 
       expect(actualFormat).toEqual(expectedFormat);
     });
@@ -78,11 +84,9 @@ describe('SkyFuzzyDateservice', () => {
   });
 
   describe('format', () => {
-    let currentLocale: string;
     let currentShortFormat: string;
 
     beforeEach(() => {
-      currentLocale = moment.locale();
       currentShortFormat = moment.localeData().longDateFormat('L');
     });
 
