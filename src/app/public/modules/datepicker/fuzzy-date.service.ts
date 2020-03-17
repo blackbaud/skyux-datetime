@@ -47,6 +47,7 @@ export class SkyFuzzyDateService implements OnDestroy {
       });
   }
 
+  /* istanbul ignore next */
   public ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
