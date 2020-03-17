@@ -425,12 +425,7 @@ export class SkyFuzzyDateService implements OnDestroy {
    * month, day
    * year only
    */
-  private isFuzzyDateValid(fuzzyDate: SkyFuzzyDate, yearRequired: boolean = false): boolean {
-
-    // If year required and missing, return false.
-    if (yearRequired && !fuzzyDate.year) {
-      return false;
-    }
+  private isFuzzyDateValid(fuzzyDate: SkyFuzzyDate): boolean {
 
     // If none of the dates part are specified, return false.
     if (!fuzzyDate.day && !fuzzyDate.month && !fuzzyDate.year) {
