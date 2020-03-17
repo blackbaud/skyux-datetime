@@ -52,6 +52,9 @@ export class SkyFuzzyDateService implements OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  /**
+   * Returns the browser's current locale string from SkyAppLocaleProvider.
+   */
   public getCurrentLocale(): string {
     return this.currentLocale;
   }

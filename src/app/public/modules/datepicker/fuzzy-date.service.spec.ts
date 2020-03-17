@@ -51,10 +51,6 @@ describe('SkyFuzzyDateservice', () => {
     });
   }));
 
-  afterEach(() => {
-    service.ngOnDestroy();
-  });
-
   describe('getCurrentLocale', () => {
     it(`should return the browser's default locale`, () => {
       const actualLocale = service.getCurrentLocale();

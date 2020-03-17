@@ -20,7 +20,8 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  SkyWindowRefService, SkyAppWindowRef
+  SkyAppWindowRef,
+  SkyWindowRefService
 } from '@skyux/core';
 
 import {
