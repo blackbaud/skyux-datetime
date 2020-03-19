@@ -201,7 +201,7 @@ describe('Date pipe', () => {
   });
 
   it('should default to en-US locale', () => {
-    const date = new Date('01/01/2000');
+    const date = new Date(2000, 0, 1);
     const pipe = new SkyDatePipe(mockLocaleProvider);
     const expectedValues = [
       '1/1/2000, 12:00 AM',
@@ -240,7 +240,7 @@ describe('Date pipe', () => {
   it('should work as an injectable', () => {
     fixture.detectChanges();
 
-    const date = new Date('01/01/2000');
+    const date = new Date(2000, 0, 1);
     const expectedValues = [
       '2000-01-01 00 h 00',
       '2000-01-01 00:00' // IE 11
