@@ -91,13 +91,24 @@ describe('Date pipe', () => {
     expect(expectedValues).toContain(value);
   });
 
-  it('should format an ISO date string without time', () => {
+  it('should format an incomplete ISO date string without time', () => {
     fixture.componentInstance.dateValue = '2000-01-01';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValues = [
       '1/1/2000, 12:00 AM',
       '1/1/2000 12:00 AM' // IE 11
+    ];
+    expect(expectedValues).toContain(value);
+  });
+
+  it('should format an incomplete ISO date string without time zone', () => {
+    fixture.componentInstance.dateValue = '2020-03-03T00:00:00';
+    fixture.detectChanges();
+    const value = fixture.nativeElement.textContent.trim();
+    const expectedValues = [
+      '3/3/2020, 12:00 AM',
+      '3/3/2020 12:00 AM' // IE 11
     ];
     expect(expectedValues).toContain(value);
   });
