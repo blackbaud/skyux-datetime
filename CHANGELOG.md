@@ -1,3 +1,9 @@
+# 3.9.0 (2020-03-20)
+
+- Fixed the datepicker component to not error when invalid numeric dates are entered. [#127](https://github.com/blackbaud/skyux-datetime/pull/127)
+- Fixed the fuzzy date picker component to not clear invalid dates from the field on blur. [#122](https://github.com/blackbaud/skyux-datetime/pull/122)
+- Updated the fuzzy date pipe to default the date format to the browser locale's short date format. [#125](https://github.com/blackbaud/skyux-datetime/pull/125)
+
 # 3.8.0 (2020-02-20)
 
 - Added the `strict` property to the datepicker input directive to indicate whether the format of the date value must match the format from the `dateFormat` value.  [#114](https://github.com/blackbaud/skyux-datetime/pull/114)
