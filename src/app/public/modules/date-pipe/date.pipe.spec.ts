@@ -68,6 +68,15 @@ describe('Date pipe', () => {
     expect(expectedValues).toContain(value);
   });
 
+  it('should throw an error when provided an invalid date', () => {
+    try {
+      fixture.componentInstance.dateValue = 'foobar';
+      fixture.detectChanges();
+    } catch (error) {
+      expect(error).not.toBeNull();
+    }
+  });
+
   it('should format a timestamp', () => {
     fixture.componentInstance.dateValue = new Date(2000, 0, 1, 0).getTime();
     fixture.detectChanges();

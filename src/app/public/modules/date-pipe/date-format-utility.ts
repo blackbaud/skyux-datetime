@@ -46,7 +46,7 @@ export class SkyDateFormatUtility {
 
     // Use moment to avoid inconsistencies between browsers interpreting the value differently.
     const momentDate = moment(value);
-    if (momentDate.isValid) {
+    if (momentDate.isValid()) {
       date = momentDate.toDate();
     } else {
       handleInvalidDate(value);
