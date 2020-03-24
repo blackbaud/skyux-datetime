@@ -1,4 +1,4 @@
-# 3.9.0 (2020-03-23)
+# 3.9.0 (2020-03-24)
 
 - Fixed the datepicker component to prevent an error when invalid numeric dates are entered. [#127](https://github.com/blackbaud/skyux-datetime/pull/127)
 - Fixed the fuzzy datepicker component to prevent it from clearing invalid dates from the field when the datepicker loses focus. [#122](https://github.com/blackbaud/skyux-datetime/pull/122)
