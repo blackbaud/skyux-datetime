@@ -2,6 +2,7 @@
 
 - Fixed the datepicker component to prevent an error when invalid numeric dates are entered. [#127](https://github.com/blackbaud/skyux-datetime/pull/127)
 - Fixed the fuzzy datepicker component to prevent it from clearing invalid dates from the field when the datepicker loses focus. [#122](https://github.com/blackbaud/skyux-datetime/pull/122)
+- Fixed the date pipe to format ISO8061 date strings consistently across different browsers. [#128](https://github.com/blackbaud/skyux-datetime/issues/128)
 - Updated the fuzzy date pipe to use a browser locale's short date format as the default format. [#125](https://github.com/blackbaud/skyux-datetime/pull/125)
 
 # 3.8.0 (2020-02-20)
