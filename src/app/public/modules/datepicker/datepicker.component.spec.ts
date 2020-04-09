@@ -718,8 +718,30 @@ fdescribe('datepicker', () => {
     });
 
     describe('focus properties', () => {
+      it('should focus on the calendar when the trigger button is clicked', fakeAsync(() => {
+        detectChanges(fixture);
+        const trigger = getTriggerButton(fixture);
 
-      it('should properly update buttonIsFocused when the buttons focused state changes', fakeAsync(() => {
+        trigger.click();
+        detectChanges(fixture);
+
+        const calendar = getCalendar();
+        expect(calendar.contains(document.activeElement)).toEqual(true);
+      }));
+
+      it('should focus back on the trigger button when a selection is made', fakeAsync(() => {
+        detectChanges(fixture);
+        clickTrigger(fixture);
+        const trigger = getTriggerButton(fixture);
+        const day = getCalendarDayButton(0, fixture);
+
+        day.click();
+        detectChanges(fixture);
+
+        expect(document.activeElement).toEqual(trigger);
+      }));
+
+      it('should properly update buttonIsFocused when the button focused state changes', fakeAsync(() => {
         detectChanges(fixture);
         const buttonEl = getTriggerButton(fixture);
 
@@ -731,7 +753,7 @@ fdescribe('datepicker', () => {
         expect(component.datepicker.buttonIsFocused).toBe(true);
       }));
 
-      it('should properly update calendarIsFocused when the calendars focused state changes', fakeAsync(() => {
+      it('should properly update calendarIsFocused when the calendar focused state changes', fakeAsync(() => {
         expect(component.datepicker.calendarIsFocused).toBe(false);
 
         clickTrigger(fixture);
@@ -754,7 +776,7 @@ fdescribe('datepicker', () => {
         expect(component.datepicker.calendarIsFocused).toBe(false);
       }));
 
-      it('should reflect the state of focus for the input', fakeAsync(() => {
+      it('should properly update inputIsFocused when the input focus state changes', fakeAsync(() => {
         detectChanges(fixture);
         const inputEl = getInputElement(fixture);
 

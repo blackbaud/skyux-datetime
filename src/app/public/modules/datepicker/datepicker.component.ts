@@ -181,6 +181,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   public onSelectedDateChange(value: Date): void {
     this.dateChange.emit(value);
+    this.closePicker();
   }
 
   public onTriggerButtonClick(): void {
