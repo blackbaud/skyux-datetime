@@ -59,7 +59,7 @@ function detectChanges(fixture: ComponentFixture<any>): void {
 }
 
 function getDatepickerButton(fixture: ComponentFixture<any>): HTMLElement {
-  return fixture.nativeElement.querySelector('.sky-input-group .sky-input-group-btn .sky-dropdown-button') as HTMLElement;
+  return fixture.nativeElement.querySelector('.sky-input-group-datepicker-btn') as HTMLElement;
 }
 
 function clickDatepickerButton(fixture: ComponentFixture<any>, isfakeAsync: boolean = true): void {
