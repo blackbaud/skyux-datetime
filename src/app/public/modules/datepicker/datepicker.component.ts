@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  OnDestroy,
-  ViewChild,
   ChangeDetectorRef,
+  Component,
   ElementRef,
+  EventEmitter,
+  TemplateRef,
+  OnDestroy,
   OnInit,
-  TemplateRef
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -42,6 +42,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   /**
    * @internal
    * Indicates if the calendar button element or any of its children have focus.
+   * @deprecated This property will be removed in the next major version release.
    */
   public get buttonIsFocused(): boolean {
     if (!this.triggerButtonRef) {
@@ -54,6 +55,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   /**
    * @internal
    * Indicates if the calendar element or any of its children have focus.
+   * @deprecated This property will be removed in the next major version release.
    */
   public get calendarIsFocused(): boolean {
     if (!this.calendarRef) {
@@ -67,6 +69,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   /**
    * @internal
    * Indicates if the calendar element's visiblity property is 'visible'.
+   * @deprecated This property will be removed in the next major version release.
    */
   public get calendarIsVisible(): boolean {
     return this.calendar ? this.calendar.isVisible : false;

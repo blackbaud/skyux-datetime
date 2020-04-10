@@ -173,12 +173,6 @@ fdescribe('datepicker', () => {
       component = fixture.componentInstance;
     });
 
-    afterEach(inject([SkyOverlayService], (overlayService: SkyOverlayService) => {
-      overlayService.closeAll();
-      fixture.detectChanges();
-      fixture.destroy();
-    }));
-
     it('should handle different format from configuration', fakeAsync(() => {
       detectChanges(fixture);
 
@@ -193,29 +187,17 @@ fdescribe('datepicker', () => {
     let fixture: ComponentFixture<DatepickerTestComponent>;
     let component: DatepickerTestComponent;
     let nativeElement: HTMLElement;
-    let closeOverlaysOnDestroy: boolean;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(DatepickerTestComponent);
       nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
-      closeOverlaysOnDestroy = true;
 
       // Default to US long date format to avoid any test runners that are using a different locale.
       component.dateFormat = 'MM/DD/YYYY';
     });
 
-    afterEach(inject([SkyOverlayService], (overlayService: SkyOverlayService) => {
-      if (closeOverlaysOnDestroy) {
-        overlayService.closeAll();
-        fixture.detectChanges();
-      }
-      fixture.destroy();
-    }));
-
     it('should throw an error if directive is added in isolation', function () {
-      closeOverlaysOnDestroy = false; // Avoids unnecessary error during afterEach execution.
-
       try {
         component.showInvalidDirective = true;
         fixture.detectChanges();
@@ -816,12 +798,6 @@ fdescribe('datepicker', () => {
       // Default to US long date format to avoid any test runners that are using a different locale.
       component.dateFormat = 'MM/DD/YYYY';
     });
-
-    afterEach(inject([SkyOverlayService], (overlayService: SkyOverlayService) => {
-      overlayService.closeAll();
-      fixture.detectChanges();
-      fixture.destroy();
-    }));
 
     describe('initial value', () => {
       it('should set the initial value correctly', fakeAsync(() => {
