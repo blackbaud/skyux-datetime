@@ -3,8 +3,7 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick,
-  inject
+  tick
 } from '@angular/core/testing';
 
 import {
@@ -22,8 +21,7 @@ import {
 
 import {
   SkyAppWindowRef,
-  SkyWindowRefService,
-  SkyOverlayService
+  SkyWindowRefService
 } from '@skyux/core';
 
 import {
@@ -138,7 +136,7 @@ function getSelectedCalendarItem(): HTMLElement {
 }
 // #endregion
 
-fdescribe('datepicker', () => {
+describe('datepicker', () => {
   beforeEach(function () {
     TestBed.configureTestingModule({
       imports: [
