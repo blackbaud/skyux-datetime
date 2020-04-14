@@ -10,11 +10,13 @@
   background-color: transparent;
   text-align: center;
 }
-.sky-input-group ::ng-deep .sky-dropdown-item{ box-shadow: 0 0 3px 0; }
+.sky-input-group ::ng-deep .sky-dropdown-item{
+  box-shadow: 0 0 3px 0;
+}
 
 .sky-timepicker-container {
+  position: fixed;
   font-size: $sky-font-size-base;
-  display: flex;
   padding: $sky-padding-half;
   background-color: $sky-color-gray-05;
 }
@@ -38,7 +40,7 @@
 }
 .sky-timepicker-column {
   margin: $sky-margin-half;
-  }
+}
 
 .sky-timepicker-column ol {
   @include sky-border(light, top, right, bottom, left);
@@ -81,6 +83,9 @@
 }
 .sky-timepicker-column.sky-timepicker-24hour ol li{
   border-bottom-width: 0px;
+}
+.sky-timepicker-content {
+  display: flex;
 }
 .sky-timepicker-footer{
   margin: 0px;
