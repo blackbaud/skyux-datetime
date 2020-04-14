@@ -31,6 +31,8 @@ import {
   SkyDatepickerCalendarComponent
 } from './datepicker-calendar.component';
 
+let nextId = 0;
+
 @Component({
   selector: 'sky-datepicker',
   templateUrl: './datepicker.component.html',
@@ -91,7 +93,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     }
   }
 
-  public calendarId: string;
+  public calendarId: string = `sky-datepicker-calendar-${++nextId}`;
 
   public dateChange = new EventEmitter<Date>();
 
@@ -223,12 +225,13 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
       .takeUntil(this.calendarUnsubscribe)
       .subscribe((change) => {
         this.isVisible = (change.placement !== null);
+        this.changeDetector.markForCheck();
       });
 
     affixer.affixTo(this.triggerButtonRef.nativeElement, {
       autoFitContext: SkyAffixAutoFitContext.Viewport,
       enableAutoFit: true,
-      horizontalAlignment: 'left',
+      horizontalAlignment: 'right',
       isSticky: true,
       placement: 'below'
     });
