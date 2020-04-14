@@ -266,6 +266,23 @@ describe('datepicker', () => {
       expect(getInputElementValue(fixture)).toBe('05/02/2017');
     }));
 
+    it('should close picker when `escape` key is pressed', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      SkyAppTestUtility.fireDomEvent(window.document, 'keydown', {
+        customEventInit: {
+          key: 'escape'
+        }
+      });
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
     it('should be accessible', async(() => {
       fixture.detectChanges();
       clickTrigger(fixture, false);

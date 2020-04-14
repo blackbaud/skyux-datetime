@@ -47,6 +47,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
    * @deprecated This property will be removed in the next major version release.
    */
   public get buttonIsFocused(): boolean {
+    /* sanity check */
+    /* istanbul ignore if */
     if (!this.triggerButtonRef) {
       return false;
     }

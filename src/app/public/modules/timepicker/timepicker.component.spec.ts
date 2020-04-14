@@ -146,7 +146,6 @@ describe('Timepicker', () => {
   describe('basic setup', () => {
     let fixture: ComponentFixture<TimepickerTestComponent>;
     let component: TimepickerTestComponent;
-    let nativeElement: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -161,7 +160,6 @@ describe('Timepicker', () => {
       });
 
       fixture = TestBed.createComponent(TimepickerTestComponent);
-      nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
     });
 
@@ -249,7 +247,7 @@ describe('Timepicker', () => {
       const minutes = getMinuteButtons();
       const meridies = getMeridieButtons();
 
-      expect(nativeElement.querySelector('input').value).toBe('2:30 AM');
+      expect(getInput(fixture).value).toBe('2:30 AM');
       expect(hours.item(1)).toHaveCssClass('sky-btn-active');
       expect(minutes.item(6)).toHaveCssClass('sky-btn-active');
       expect(meridies.item(0)).toHaveCssClass('sky-btn-active');
@@ -257,7 +255,7 @@ describe('Timepicker', () => {
       // Test 4:55 PM
       setInput('4:55 PM', fixture);
 
-      expect(nativeElement.querySelector('input').value).toBe('4:55 PM');
+      expect(getInput(fixture).value).toBe('4:55 PM');
       expect(hours.item(3)).toHaveCssClass('sky-btn-active');
       expect(minutes.item(11)).toHaveCssClass('sky-btn-active');
       expect(meridies.item(1)).toHaveCssClass('sky-btn-active');
@@ -277,14 +275,14 @@ describe('Timepicker', () => {
       const hours = getHourButtons();
       const minutes = getMinuteButtons();
 
-      expect(nativeElement.querySelector('input').value).toBe('2:30');
+      expect(getInput(fixture).value).toBe('2:30');
       expect(hours.item(2)).toHaveCssClass('sky-btn-active');
       expect(minutes.item(2)).toHaveCssClass('sky-btn-active');
 
       // Test 4:45 PM
       setInput('16:45', fixture);
 
-      expect(nativeElement.querySelector('input').value).toBe('16:45');
+      expect(getInput(fixture).value).toBe('16:45');
       expect(hours.item(16)).toHaveCssClass('sky-btn-active');
       expect(minutes.item(3)).toHaveCssClass('sky-btn-active');
 
@@ -307,14 +305,14 @@ describe('Timepicker', () => {
       minutes.item(6).click();
       meridies.item(0).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('2:30 AM');
+      expect(getInput(fixture).value).toBe('2:30 AM');
 
       // Test 4:55 PM
       hours.item(3).click();
       minutes.item(11).click();
       meridies.item(1).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('4:55 PM');
+      expect(getInput(fixture).value).toBe('4:55 PM');
 
       flushTimers();
     }));
@@ -333,13 +331,13 @@ describe('Timepicker', () => {
       hours.item(2).click();
       minutes.item(2).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('02:30');
+      expect(getInput(fixture).value).toBe('02:30');
 
       // Test 4:45 PM
       hours.item(16).click();
       minutes.item(3).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('16:45');
+      expect(getInput(fixture).value).toBe('16:45');
 
       flushTimers();
     }));
@@ -360,7 +358,7 @@ describe('Timepicker', () => {
       hours.item(16).click();
       minutes.item(3).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('16:45:00' + tz);
+      expect(getInput(fixture).value).toBe('16:45:00' + tz);
 
       flushTimers();
     }));
@@ -382,7 +380,7 @@ describe('Timepicker', () => {
       minutes.item(6).click();
       meridies.item(0).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('12:30 AM');
+      expect(getInput(fixture).value).toBe('12:30 AM');
       expect(component.selectedTime.local).toEqual('12:30 AM');
       expect(meridies.item(0)).toHaveCssClass('sky-btn-active');
 
@@ -406,7 +404,7 @@ describe('Timepicker', () => {
       minutes.item(6).click();
       meridies.item(1).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('12:30 PM');
+      expect(getInput(fixture).value).toBe('12:30 PM');
       expect(component.selectedTime.local).toEqual('12:30 PM');
       expect(meridies.item(1)).toHaveCssClass('sky-btn-active');
 
@@ -415,7 +413,7 @@ describe('Timepicker', () => {
       minutes.item(6).click();
       meridies.item(1).click();
 
-      expect(nativeElement.querySelector('input').value).toBe('1:30 PM');
+      expect(getInput(fixture).value).toBe('1:30 PM');
       expect(component.selectedTime.local).toEqual('1:30 PM');
       expect(meridies.item(1)).toHaveCssClass('sky-btn-active');
 
@@ -429,10 +427,10 @@ describe('Timepicker', () => {
     }));
 
     it('should not overwrite aria-label on the timepicker input when one is provided', fakeAsync(() => {
-      nativeElement.querySelector('input').setAttribute('aria-label', 'This is a time field.');
+      getInput(fixture).setAttribute('aria-label', 'This is a time field.');
       detectChangesAndTick(fixture);
 
-      expect(nativeElement.querySelector('input').getAttribute('aria-label')).toBe('This is a time field.');
+      expect(getInput(fixture).getAttribute('aria-label')).toBe('This is a time field.');
     }));
 
     it('should close picker when `escape` key is pressed', fakeAsync(() => {
@@ -464,7 +462,6 @@ describe('Timepicker', () => {
   describe('template-driven form', () => {
     let fixture: ComponentFixture<TimepickerTestComponent>;
     let component: TimepickerTestComponent;
-    let nativeElement: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -482,7 +479,6 @@ describe('Timepicker', () => {
       });
 
       fixture = TestBed.createComponent(TimepickerTestComponent);
-      nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
     });
 
@@ -514,7 +510,7 @@ describe('Timepicker', () => {
 
       setInput('2:55 AM', fixture);
 
-      expect(nativeElement.querySelector('input').value).toBe('2:55 AM');
+      expect(getInput(fixture).value).toBe('2:55 AM');
       expect(component.selectedTime.local).toEqual('2:55 AM');
     }));
 
@@ -524,8 +520,8 @@ describe('Timepicker', () => {
       component.selectedTime = undefined;
       fixture.detectChanges();
 
-      expect(nativeElement.querySelector('input').value).toBe('');
-      expect(nativeElement.querySelector('input')).not.toHaveCssClass('ng-invalid');
+      expect(getInput(fixture).value).toBe('');
+      expect(getInput(fixture)).not.toHaveCssClass('ng-invalid');
     }));
 
     // TODO: This should be fixed with issue https://github.com/blackbaud/skyux-datetime/issues/135
@@ -539,13 +535,13 @@ describe('Timepicker', () => {
       fixture.detectChanges();
 
       expect(ngModel.valid).toEqual(true);
-      expect(nativeElement.querySelector('input')).not.toHaveCssClass('ng-invalid');
+      expect(getInput(fixture)).not.toHaveCssClass('ng-invalid');
 
       component.selectedTime = undefined;
       fixture.detectChanges();
 
       expect(ngModel.valid).toEqual(false);
-      expect(nativeElement.querySelector('input')).toHaveCssClass('ng-invalid');
+      expect(getInput(fixture)).toHaveCssClass('ng-invalid');
     }));
 
     it('should properly set disabled state on input and trigger button', fakeAsync(() => {
@@ -570,7 +566,6 @@ describe('Timepicker', () => {
   describe('reactive form', () => {
     let fixture: ComponentFixture<TimepickerReactiveTestComponent>;
     let component: TimepickerReactiveTestComponent;
-    let nativeElement: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -586,7 +581,6 @@ describe('Timepicker', () => {
       });
 
       fixture = TestBed.createComponent(TimepickerReactiveTestComponent);
-      nativeElement = fixture.nativeElement as HTMLElement;
       component = fixture.componentInstance;
     });
 
@@ -597,7 +591,7 @@ describe('Timepicker', () => {
     it('should set the initial value correctly', fakeAsync(() => {
       detectChangesAndTick(fixture);
 
-      expect(nativeElement.querySelector('input').value).toBe('2:55 AM');
+      expect(getInput(fixture).value).toBe('2:55 AM');
       expect(component.timeControl.value.local).toEqual('2:55 AM');
     }));
 
@@ -626,8 +620,8 @@ describe('Timepicker', () => {
       component.timeControl.setValue(undefined);
       fixture.detectChanges();
 
-      expect(nativeElement.querySelector('input').value).toBe('');
-      expect(nativeElement.querySelector('input')).not.toHaveCssClass('ng-invalid');
+      expect(getInput(fixture).value).toBe('');
+      expect(getInput(fixture)).not.toHaveCssClass('ng-invalid');
       expect(component.timeControl.value).toBeUndefined();
     }));
 
@@ -637,13 +631,13 @@ describe('Timepicker', () => {
       fixture.detectChanges();
 
       expect(component.timeControl.valid).toEqual(true);
-      expect(nativeElement.querySelector('input')).not.toHaveCssClass('ng-invalid');
+      expect(getInput(fixture)).not.toHaveCssClass('ng-invalid');
 
       component.timeControl.setValue(undefined);
       fixture.detectChanges();
 
       expect(component.timeControl.valid).toEqual(false);
-      expect(nativeElement.querySelector('input')).toHaveCssClass('ng-invalid');
+      expect(getInput(fixture)).toHaveCssClass('ng-invalid');
     }));
 
     it('should properly set disabled state on input and trigger button', fakeAsync(() => {
