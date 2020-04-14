@@ -101,7 +101,16 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   public isOpen: boolean = false;
 
-  public isVisible: boolean;
+  public set isVisible(value: boolean) {
+    if (value !== this._isVisible) {
+      this._isVisible = value;
+      this.changeDetector.markForCheck();
+    }
+  }
+
+  public get isVisible(): boolean {
+    return this._isVisible;
+  }
 
   public maxDate: Date;
 
@@ -127,7 +136,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
       this.createAffixer();
       this.calendar.writeValue(this._selectedDate);
-      this.isVisible = true;
     }
   }
 
@@ -156,6 +164,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   private _calendarRef: ElementRef;
 
   private _disabled = false;
+
+  private _isVisible: boolean;
 
   private _selectedDate: Date;
 
@@ -221,14 +231,10 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   }
 
   private createAffixer(): void {
-    const affixer = this.affixService.createAffixer(this.calendarRef);
+    // Avoid flickering by hiding the calendar until placement is sorted out.
+    this.isVisible = false;
 
-    affixer.placementChange
-      .takeUntil(this.calendarUnsubscribe)
-      .subscribe((change) => {
-        this.isVisible = (change.placement !== null);
-        this.changeDetector.markForCheck();
-      });
+    const affixer = this.affixService.createAffixer(this.calendarRef);
 
     affixer.affixTo(this.triggerButtonRef.nativeElement, {
       autoFitContext: SkyAffixAutoFitContext.Viewport,
@@ -240,9 +246,16 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
     this.affixer = affixer;
 
-    // Let the calendar populate in the DOM before recalculating placement.
+    // Once calendar is populated in DOM, recalculate placement and show.
     setTimeout(() => {
       this.affixer.reaffix();
+      this.isVisible = true;
+
+      affixer.placementChange
+      .takeUntil(this.calendarUnsubscribe)
+      .subscribe((change) => {
+        this.isVisible = (change.placement !== null);
+      });
     });
   }
 

@@ -27,14 +27,14 @@ describe('timepicker', () => {
   });
 
   it('should show the timepicker correctly after clicking on the icon for 12 hr', (done) => {
-    element(by.css('#screenshot-timepicker12hr .sky-dropdown-button')).click();
+    element(by.css('#screenshot-timepicker12hr .sky-timepicker button')).click();
     expect('#screenshot-timepicker12hr').toMatchBaselineScreenshot(done, {
       screenshotName: 'timepicker-12hr-open'
     });
   });
 
   it('should show the timepicker correctly after clicking on the icon for 24 hr', (done) => {
-    element(by.css('#screenshot-timepicker24hr .sky-dropdown-button')).click();
+    element(by.css('#screenshot-timepicker24hr .sky-timepicker button')).click();
     SkyHostBrowser.scrollTo('#screenshot-timepicker24hr');
     expect('#screenshot-timepicker24hr').toMatchBaselineScreenshot(done, {
       screenshotName: 'timepicker-24hr-open'

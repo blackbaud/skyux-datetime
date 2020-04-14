@@ -21,10 +21,6 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyDropdownModule
-} from '@skyux/popovers';
-
-import {
   SkyDateTimeResourcesModule
 } from '../shared/datetime-resources.module';
 
@@ -46,7 +42,6 @@ import {
     SkyI18nModule,
     SkyIconModule,
     SkyDateTimeResourcesModule,
-    SkyDropdownModule,
     SkyAffixModule,
     SkyOverlayModule
   ],

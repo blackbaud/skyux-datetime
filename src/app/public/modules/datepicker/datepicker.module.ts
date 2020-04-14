@@ -22,10 +22,6 @@ import {
 } from '@skyux/i18n';
 
 import {
-  SkyDropdownModule
-} from '@skyux/popovers';
-
-import {
   SkyIconModule
 } from '@skyux/indicators';
 
@@ -87,7 +83,6 @@ import {
   imports: [
     CommonModule,
     SkyI18nModule,
-    SkyDropdownModule,
     FormsModule,
     SkyIconModule,
     SkyDateTimeResourcesModule,

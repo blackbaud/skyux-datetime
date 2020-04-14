@@ -28,7 +28,9 @@
     class="sky-datepicker-calendar-container sky-shadow"
     [attr.aria-labelledby]="triggerButtonId"
     [attr.id]="calendarId"
-    [hidden]="!isVisible"
+    [ngClass]="{
+      'sky-datepicker-hidden': !isVisible
+    }"
     #calendarRef
   >
     <sky-datepicker-calendar

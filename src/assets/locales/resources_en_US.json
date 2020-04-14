@@ -8,7 +8,7 @@
      "message": "Select date"
    },
   "skyux_timepicker_button_label": {
-    "_description": "Screen reader text for the timepicker component dropdown button",
+    "_description": "Screen reader text for the timepicker trigger button",
     "message": "Choose time"
   },
   "skyux_timepicker_close": {
