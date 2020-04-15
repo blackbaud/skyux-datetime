@@ -19,13 +19,6 @@ import {
 import {
   SkyIconModule
 } from '@skyux/indicators';
-<<<<<<< HEAD
-=======
-
-import {
-  SkyDropdownModule
-} from '@skyux/popovers';
->>>>>>> overlay-affix
 
 import {
   SkyDateTimeResourcesModule
@@ -49,10 +42,6 @@ import {
     SkyI18nModule,
     SkyIconModule,
     SkyDateTimeResourcesModule,
-<<<<<<< HEAD
-=======
-    SkyDropdownModule,
->>>>>>> overlay-affix
     SkyAffixModule,
     SkyOverlayModule
   ],

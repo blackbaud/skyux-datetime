@@ -48,19 +48,15 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   public selectedTimeChanged: EventEmitter<SkyTimepickerTimeOutput> =
     new EventEmitter<SkyTimepickerTimeOutput>();
 
-<<<<<<< HEAD
   public set disabled(value: boolean) {
     this._disabled = value;
     this.changeDetector.markForCheck();
   }
 
-=======
->>>>>>> overlay-affix
   public get disabled(): boolean {
     return this._disabled;
   }
 
-<<<<<<< HEAD
   public set isVisible(value: boolean) {
     if (value !== this._isVisible) {
       this._isVisible = value;
@@ -70,11 +66,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   public get isVisible(): boolean {
     return this._isVisible;
-=======
-  public set disabled(value: boolean) {
-    this._disabled = value;
-    this.changeDetector.markForCheck();
->>>>>>> overlay-affix
   }
 
   public set selectedHour(setHour: number) {
@@ -166,11 +157,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   public isOpen: boolean;
 
-<<<<<<< HEAD
-=======
-  public isVisible: boolean;
-
->>>>>>> overlay-affix
   public localeFormat: string;
 
   public minutes: Array<number>;
@@ -195,10 +181,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
       this.timepickerUnsubscribe = new Subject<void>();
 
       this.createAffixer();
-<<<<<<< HEAD
-=======
-      this.isVisible = true;
->>>>>>> overlay-affix
     }
   }
 
@@ -226,11 +208,8 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   private _disabled: boolean;
 
-<<<<<<< HEAD
   private _isVisible: boolean;
 
-=======
->>>>>>> overlay-affix
   private _timepickerRef: ElementRef;
 
   constructor(
@@ -350,21 +329,10 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   }
 
   private createAffixer(): void {
-<<<<<<< HEAD
     // Avoid flickering by hiding the timepicker until placement is sorted out.
     this.isVisible = false;
 
     const affixer = this.affixService.createAffixer(this.timepickerRef);
-=======
-    const affixer = this.affixService.createAffixer(this.timepickerRef);
-
-    affixer.placementChange
-      .takeUntil(this.timepickerUnsubscribe)
-      .subscribe((change) => {
-        this.isVisible = (change.placement !== null);
-        this.changeDetector.markForCheck();
-      });
->>>>>>> overlay-affix
 
     affixer.affixTo(this.triggerButtonRef.nativeElement, {
       autoFitContext: SkyAffixAutoFitContext.Viewport,
@@ -376,7 +344,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
     this.affixer = affixer;
 
-<<<<<<< HEAD
     // Once timepicker is populated in DOM, recalculate placement and show.
     setTimeout(() => {
       this.affixer.reaffix();
@@ -387,11 +354,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
       .subscribe((change) => {
         this.isVisible = (change.placement !== null);
       });
-=======
-    // Let the calendar populate in the DOM before recalculating placement.
-    setTimeout(() => {
-      this.affixer.reaffix();
->>>>>>> overlay-affix
     });
   }
 
