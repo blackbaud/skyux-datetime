@@ -13,5 +13,11 @@
 }
 
 .sky-datepicker-hidden {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sky-datepicker-transparent {
   opacity: 0;
 }

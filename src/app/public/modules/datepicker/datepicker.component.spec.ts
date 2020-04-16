@@ -283,6 +283,20 @@ describe('datepicker', () => {
       expect(picker).toBeNull();
     }));
 
+    it('should hide when datepicker is scrolled off screen', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      const affixer = component.datepicker['affixer'];
+      // tslint:disable-next-line: no-null-keyword
+      affixer['_placementChange'].next({ placement: null });
+      fixture.detectChanges();
+      tick();
+
+      expect(component.datepicker.isVisible).toBe(false);
+    }));
+
     it('should be accessible', async(() => {
       fixture.detectChanges();
       clickTrigger(fixture, false);

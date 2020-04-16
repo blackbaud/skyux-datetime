@@ -29,7 +29,8 @@
     [attr.aria-labelledby]="triggerButtonId"
     [attr.id]="calendarId"
     [ngClass]="{
-      'sky-datepicker-hidden': !isVisible
+      'sky-datepicker-hidden': !isVisible,
+      'sky-datepicker-transparent': isTransparent
     }"
     #calendarRef
   >

@@ -32,7 +32,8 @@
     [attr.aria-labelledby]="triggerButtonId"
     [attr.id]="timepickerId"
     [ngClass]="{
-      'sky-timepicker-hidden': !isVisible
+      'sky-timepicker-hidden': !isVisible,
+      'sky-timepicker-transparent': isTransparent
     }"
     #timepickerRef
   >

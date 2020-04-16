@@ -88,6 +88,39 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     this.changeDetector.markForCheck();
   }
 
+  /**
+   * Controls the opacity CSS value of the datepicker.
+   * This allows us to run affix calculations on the calendar before displaying.
+   * @internal
+   */
+  public set isTransparent(value: boolean) {
+    if (value !== this._isTransparent) {
+      this._isTransparent = value;
+      this.changeDetector.markForCheck();
+    }
+  }
+
+  public get isTransparent(): boolean {
+    return this._isTransparent;
+  }
+
+  /**
+   * Controls the width/height CSS values of the datepicker.
+   * This allows us to hide the datepicker and make the buttons unclickable
+   * when the affixed datepicker is scrolled offscreen.
+   * @internal
+   */
+  public set isVisible(value: boolean) {
+    if (value !== this._isVisible) {
+      this._isVisible = value;
+      this.changeDetector.markForCheck();
+    }
+  }
+
+  public get isVisible(): boolean {
+    return this._isVisible;
+  }
+
   public set selectedDate(value: Date) {
     this._selectedDate = value;
     if (this.calendar) {
@@ -100,17 +133,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   public dateChange = new EventEmitter<Date>();
 
   public isOpen: boolean = false;
-
-  public set isVisible(value: boolean) {
-    if (value !== this._isVisible) {
-      this._isVisible = value;
-      this.changeDetector.markForCheck();
-    }
-  }
-
-  public get isVisible(): boolean {
-    return this._isVisible;
-  }
 
   public maxDate: Date;
 
@@ -165,6 +187,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   private _disabled = false;
 
+  private _isTransparent: boolean;
+
   private _isVisible: boolean;
 
   private _selectedDate: Date;
@@ -214,7 +238,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   }
 
   private openPicker(): void {
-    this.isVisible = false;
     this.removePickerEventListeners();
     this.destroyOverlay();
     this.createOverlay();
@@ -232,7 +255,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   private createAffixer(): void {
     // Avoid flickering by hiding the calendar until placement is sorted out.
-    this.isVisible = false;
+    this.isTransparent = true;
+    this.isVisible = true;
 
     const affixer = this.affixService.createAffixer(this.calendarRef);
 
@@ -249,13 +273,15 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     // Once calendar is populated in DOM, recalculate placement and show.
     setTimeout(() => {
       this.affixer.reaffix();
+      this.isTransparent = false;
       this.isVisible = true;
 
+      // Hide calendar when trigger button is scrolled off screen.
       affixer.placementChange
-      .takeUntil(this.calendarUnsubscribe)
-      .subscribe((change) => {
-        this.isVisible = (change.placement !== null);
-      });
+        .takeUntil(this.calendarUnsubscribe)
+        .subscribe((change) => {
+          this.isVisible = (change.placement !== null);
+        });
     });
   }
 
@@ -291,7 +317,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((event: KeyboardEvent) => {
         const key = event.key.toLowerCase();
-        if (key === 'escape') {
+        if (key === 'escape' && this.isOpen) {
           this.closePicker();
         }
       });

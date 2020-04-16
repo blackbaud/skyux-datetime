@@ -448,6 +448,18 @@ describe('Timepicker', () => {
       expect(picker).toBeNull();
     }));
 
+    it('should hide when timepicker is scrolled off screen', fakeAsync(() => {
+      detectChangesAndTick(fixture);
+      openTimepicker(fixture);
+
+      const affixer = component.timepickerComponent['affixer'];
+      // tslint:disable-next-line: no-null-keyword
+      affixer['_placementChange'].next({ placement: null });
+      detectChangesAndTick(fixture);
+
+      expect(component.timepickerComponent.isVisible).toBe(false);
+    }));
+
     it('should be accessible', async(() => {
       fixture.detectChanges();
 

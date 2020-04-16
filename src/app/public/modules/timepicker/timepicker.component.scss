@@ -95,5 +95,11 @@
 }
 
 .sky-timepicker-hidden {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sky-timepicker-transparent {
   opacity: 0;
 }
