@@ -57,39 +57,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     return this._disabled;
   }
 
-  /**
-   * Controls the opacity CSS value of the timepicker.
-   * This allows us to run affix calculations on the timepicker before displaying.
-   * @internal
-   */
-  public set isTransparent(value: boolean) {
-    if (value !== this._isTransparent) {
-      this._isTransparent = value;
-      this.changeDetector.markForCheck();
-    }
-  }
-
-  public get isTransparent(): boolean {
-    return this._isTransparent;
-  }
-
-  /**
-   * Controls the width/height CSS values of the timepicker.
-   * This allows us to hide the timepicker and make the buttons unclickable
-   * when the affixed timepicker is scrolled offscreen.
-   * @internal
-   */
-  public set isVisible(value: boolean) {
-    if (value !== this._isVisible) {
-      this._isVisible = value;
-      this.changeDetector.markForCheck();
-    }
-  }
-
-  public get isVisible(): boolean {
-    return this._isVisible;
-  }
-
   public set selectedHour(setHour: number) {
     let hour: number;
     let hourOffset: number = 0;
@@ -179,6 +146,8 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   public isOpen: boolean;
 
+  public isVisible: boolean;
+
   public localeFormat: string;
 
   public minutes: Array<number>;
@@ -189,7 +158,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   public timeFormat: string = 'hh';
 
-  public timepickerId: string = `sky-datepicker-calendar-${++nextId}`;
+  public timepickerId: string;
 
   @ViewChild('timepickerRef', {
     read: ElementRef
@@ -197,12 +166,23 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   private set timepickerRef(value: ElementRef) {
     if (value) {
       this._timepickerRef = value;
-      this.destroyAffixer();
 
-      this.removePickerEventListeners();
-      this.timepickerUnsubscribe = new Subject<void>();
+      // Wait for the calendar component to render before guaging dimensions.
+      setTimeout(() => {
+        this.destroyAffixer();
+        this.createAffixer();
 
-      this.createAffixer();
+        setTimeout(() => {
+          this.coreAdapter.getFocusableChildrenAndApplyFocus(
+            this.timepickerRef,
+            '.sky-timepicker-content',
+            false
+          );
+
+          this.isVisible = true;
+          this.changeDetector.markForCheck();
+        });
+      });
     }
   }
 
@@ -230,10 +210,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   private _disabled: boolean;
 
-  private _isTransparent: boolean;
-
-  private _isVisible: boolean;
-
   private _timepickerRef: ElementRef;
 
   constructor(
@@ -241,7 +217,10 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private coreAdapter: SkyCoreAdapterService,
     private overlayService: SkyOverlayService
-  ) { }
+  ) {
+    const uniqueId = nextId++;
+    this.timepickerId = `sky-timepicker-${uniqueId}`;
+  }
 
   public ngOnInit(): void {
     this.setFormat(this.timeFormat);
@@ -336,27 +315,28 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   }
 
   private openPicker(): void {
+    this.isVisible = false;
+    this.changeDetector.markForCheck();
+
     this.removePickerEventListeners();
+    this.timepickerUnsubscribe = new Subject<void>();
     this.destroyOverlay();
     this.createOverlay();
-    this.isOpen = true;
 
-    // Let the timepicker populate in the DOM before applying focus.
-    setTimeout(() => {
-      this.coreAdapter.getFocusableChildrenAndApplyFocus(
-        this.timepickerRef,
-        '.sky-timepicker-content',
-        false
-      );
-    });
+    this.isOpen = true;
+    this.changeDetector.markForCheck();
   }
 
   private createAffixer(): void {
-    // Avoid flickering by hiding the timepicker until placement is sorted out.
-    this.isTransparent = true;
-    this.isVisible = true;
-
     const affixer = this.affixService.createAffixer(this.timepickerRef);
+
+    // Hide calendar when trigger button is scrolled off screen.
+    affixer.placementChange
+      .takeUntil(this.timepickerUnsubscribe)
+      .subscribe((change) => {
+        this.isVisible = (change.placement !== null);
+        this.changeDetector.markForCheck();
+      });
 
     affixer.affixTo(this.triggerButtonRef.nativeElement, {
       autoFitContext: SkyAffixAutoFitContext.Viewport,
@@ -367,20 +347,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     });
 
     this.affixer = affixer;
-
-    // Once timepicker is populated in DOM, recalculate placement and show.
-    setTimeout(() => {
-      this.affixer.reaffix();
-      this.isTransparent = false;
-      this.isVisible = true;
-
-      // Hide timepicker when trigger button is scrolled off screen.
-      affixer.placementChange
-        .takeUntil(this.timepickerUnsubscribe)
-        .subscribe((change) => {
-          this.isVisible = (change.placement !== null);
-        });
-    });
   }
 
   private destroyAffixer(): void {
@@ -393,9 +359,17 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   private createOverlay(): void {
     const overlay = this.overlayService.create({
-      enableClose: true,
-      enablePointerEvents: true
+      enableClose: false,
+      enablePointerEvents: false
     });
+
+    overlay.backdropClick
+      .takeUntil(this.timepickerUnsubscribe)
+      .subscribe(() => {
+        if (this.isOpen) {
+          this.closePicker();
+        }
+      });
 
     overlay.attachTemplate(this.timepickerTemplateRef);
 

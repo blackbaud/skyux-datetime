@@ -6,10 +6,10 @@
     class="sky-input-group-btn sky-input-group-timepicker-btn"
   >
     <button
-      aria-haspopup="true"
+      aria-haspopup="dialog"
       class="sky-btn sky-btn-default sky-input-group-btn sky-input-group-datepicker-btn"
       type="button"
-      [attr.aria-controls]="timepickerId"
+      [attr.aria-controls]="isOpen ? timepickerId : null"
       [attr.aria-expanded]="isOpen"
       [attr.aria-label]="'skyux_timepicker_button_label' | skyLibResources"
       [attr.id]="triggerButtonId"
@@ -29,12 +29,10 @@
 <ng-template #timepickerTemplateRef>
   <div
     class="sky-timepicker-container sky-shadow"
+    role="dialog"
     [attr.aria-labelledby]="triggerButtonId"
     [attr.id]="timepickerId"
-    [ngClass]="{
-      'sky-timepicker-hidden': !isVisible,
-      'sky-timepicker-transparent': isTransparent
-    }"
+    [class.sky-timepicker-hidden]="!isVisible"
     #timepickerRef
   >
     <div
