@@ -160,6 +160,8 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   public timepickerId: string;
 
+  public triggerButtonId: string;
+
   @ViewChild('timepickerRef', {
     read: ElementRef
   })
@@ -220,6 +222,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   ) {
     const uniqueId = nextId++;
     this.timepickerId = `sky-timepicker-${uniqueId}`;
+    this.triggerButtonId = `sky-datepicker-button-${uniqueId}`;
   }
 
   public ngOnInit(): void {
