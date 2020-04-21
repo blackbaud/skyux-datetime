@@ -44,7 +44,7 @@ describe('Fuzzy datepicker', () => {
   });
 
   it('should match previous fuzzy datepicker input screenshot when open', (done) => {
-    element(by.css('.sky-dropdown-button')).click();
+    element(by.css('.sky-datepicker button')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-input-open'

@@ -47,6 +47,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
    * @deprecated This property will be removed in the next major version release.
    */
   public get buttonIsFocused(): boolean {
+    /* sanity check */
+    /* istanbul ignore if */
     if (!this.triggerButtonRef) {
       return false;
     }
@@ -93,13 +95,13 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     }
   }
 
-  public calendarId: string = `sky-datepicker-calendar-${++nextId}`;
+  public calendarId: string;
 
   public dateChange = new EventEmitter<Date>();
 
   public isOpen: boolean = false;
 
-  public isVisible: boolean;
+  public isVisible: boolean = false;
 
   public maxDate: Date;
 
@@ -118,14 +120,24 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   private set calendarRef(value: ElementRef) {
     if (value) {
       this._calendarRef = value;
-      this.destroyAffixer();
-
-      this.removePickerEventListeners();
-      this.calendarUnsubscribe = new Subject<void>();
-
-      this.createAffixer();
       this.calendar.writeValue(this._selectedDate);
-      this.isVisible = true;
+
+      // Wait for the calendar component to render before guaging dimensions.
+      setTimeout(() => {
+        this.destroyAffixer();
+        this.createAffixer();
+
+        setTimeout(() => {
+          this.coreAdapter.getFocusableChildrenAndApplyFocus(
+            this.calendarRef,
+            '.sky-datepicker-calendar-inner',
+            false
+          );
+
+          this.isVisible = true;
+          this.changeDetector.markForCheck();
+        });
+      });
     }
   }
 
@@ -162,7 +174,11 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     private changeDetector: ChangeDetectorRef,
     private coreAdapter: SkyCoreAdapterService,
     private overlayService: SkyOverlayService
-  ) { }
+  ) {
+    const uniqueId = nextId++;
+    this.calendarId = `sky-datepicker-calendar-${uniqueId}`;
+    this.triggerButtonId = `sky-datepicker-button-${uniqueId}`;
+  }
 
   public ngOnInit(): void {
     this.addTriggerButtonEventListeners();
@@ -203,24 +219,21 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   private openPicker(): void {
     this.isVisible = false;
+    this.changeDetector.markForCheck();
+
     this.removePickerEventListeners();
+    this.calendarUnsubscribe = new Subject<void>();
     this.destroyOverlay();
     this.createOverlay();
-    this.isOpen = true;
 
-    // Let the calendar populate in the DOM before applying focus.
-    setTimeout(() => {
-      this.coreAdapter.getFocusableChildrenAndApplyFocus(
-        this.calendarRef,
-        '.sky-datepicker-calendar-inner',
-        false
-      );
-    });
+    this.isOpen = true;
+    this.changeDetector.markForCheck();
   }
 
   private createAffixer(): void {
     const affixer = this.affixService.createAffixer(this.calendarRef);
 
+    // Hide calendar when trigger button is scrolled off screen.
     affixer.placementChange
       .takeUntil(this.calendarUnsubscribe)
       .subscribe((change) => {
@@ -237,11 +250,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     });
 
     this.affixer = affixer;
-
-    // Let the calendar populate in the DOM before recalculating placement.
-    setTimeout(() => {
-      this.affixer.reaffix();
-    });
   }
 
   private destroyAffixer(): void {
@@ -254,9 +262,17 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   private createOverlay(): void {
     const overlay = this.overlayService.create({
-      enableClose: true,
-      enablePointerEvents: true
+      enableClose: false,
+      enablePointerEvents: false
     });
+
+    overlay.backdropClick
+      .takeUntil(this.calendarUnsubscribe)
+      .subscribe(() => {
+        if (this.isOpen) {
+          this.closePicker();
+        }
+      });
 
     overlay.attachTemplate(this.calendarTemplateRef);
 
@@ -276,7 +292,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((event: KeyboardEvent) => {
         const key = event.key.toLowerCase();
-        if (key === 'escape') {
+        if (key === 'escape' && this.isOpen) {
           this.closePicker();
         }
       });

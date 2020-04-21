@@ -48,13 +48,13 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   public selectedTimeChanged: EventEmitter<SkyTimepickerTimeOutput> =
     new EventEmitter<SkyTimepickerTimeOutput>();
 
-  public get disabled(): boolean {
-    return this._disabled;
-  }
-
   public set disabled(value: boolean) {
     this._disabled = value;
     this.changeDetector.markForCheck();
+  }
+
+  public get disabled(): boolean {
+    return this._disabled;
   }
 
   public set selectedHour(setHour: number) {
@@ -158,7 +158,9 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   public timeFormat: string = 'hh';
 
-  public timepickerId: string = `sky-datepicker-calendar-${++nextId}`;
+  public timepickerId: string;
+
+  public triggerButtonId: string;
 
   @ViewChild('timepickerRef', {
     read: ElementRef
@@ -166,13 +168,23 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   private set timepickerRef(value: ElementRef) {
     if (value) {
       this._timepickerRef = value;
-      this.destroyAffixer();
 
-      this.removePickerEventListeners();
-      this.timepickerUnsubscribe = new Subject<void>();
+      // Wait for the timepicker component to render before guaging dimensions.
+      setTimeout(() => {
+        this.destroyAffixer();
+        this.createAffixer();
 
-      this.createAffixer();
-      this.isVisible = true;
+        setTimeout(() => {
+          this.coreAdapter.getFocusableChildrenAndApplyFocus(
+            this.timepickerRef,
+            '.sky-timepicker-content',
+            false
+          );
+
+          this.isVisible = true;
+          this.changeDetector.markForCheck();
+        });
+      });
     }
   }
 
@@ -207,7 +219,11 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private coreAdapter: SkyCoreAdapterService,
     private overlayService: SkyOverlayService
-  ) { }
+  ) {
+    const uniqueId = nextId++;
+    this.timepickerId = `sky-timepicker-${uniqueId}`;
+    this.triggerButtonId = `sky-timepicker-button-${uniqueId}`;
+  }
 
   public ngOnInit(): void {
     this.setFormat(this.timeFormat);
@@ -303,24 +319,21 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   private openPicker(): void {
     this.isVisible = false;
+    this.changeDetector.markForCheck();
+
     this.removePickerEventListeners();
+    this.timepickerUnsubscribe = new Subject<void>();
     this.destroyOverlay();
     this.createOverlay();
-    this.isOpen = true;
 
-    // Let the timepicker populate in the DOM before applying focus.
-    setTimeout(() => {
-      this.coreAdapter.getFocusableChildrenAndApplyFocus(
-        this.timepickerRef,
-        '.sky-timepicker-content',
-        false
-      );
-    });
+    this.isOpen = true;
+    this.changeDetector.markForCheck();
   }
 
   private createAffixer(): void {
     const affixer = this.affixService.createAffixer(this.timepickerRef);
 
+    // Hide timepicker when trigger button is scrolled off screen.
     affixer.placementChange
       .takeUntil(this.timepickerUnsubscribe)
       .subscribe((change) => {
@@ -337,11 +350,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     });
 
     this.affixer = affixer;
-
-    // Let the calendar populate in the DOM before recalculating placement.
-    setTimeout(() => {
-      this.affixer.reaffix();
-    });
   }
 
   private destroyAffixer(): void {
@@ -354,9 +362,17 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
   private createOverlay(): void {
     const overlay = this.overlayService.create({
-      enableClose: true,
-      enablePointerEvents: true
+      enableClose: false,
+      enablePointerEvents: false
     });
+
+    overlay.backdropClick
+      .takeUntil(this.timepickerUnsubscribe)
+      .subscribe(() => {
+        if (this.isOpen) {
+          this.closePicker();
+        }
+      });
 
     overlay.attachTemplate(this.timepickerTemplateRef);
 
@@ -377,7 +393,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
       .subscribe((event: KeyboardEvent) => {
         const key = event.key.toLowerCase();
         /* istanbul ignore else */
-        if (key === 'escape') {
+        if (key === 'escape' && this.isOpen) {
           this.closePicker();
         }
       });
