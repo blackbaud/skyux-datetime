@@ -448,6 +448,17 @@ describe('Timepicker', () => {
       expect(picker).toBeNull();
     }));
 
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      detectChangesAndTick(fixture);
+      openTimepicker(fixture);
+
+      document.body.click();
+      detectChangesAndTick(fixture);
+      const picker = getTimepicker();
+
+      expect(picker).toBeNull();
+    }));
+
     it('should hide when timepicker is scrolled off screen', fakeAsync(() => {
       detectChangesAndTick(fixture);
       openTimepicker(fixture);
