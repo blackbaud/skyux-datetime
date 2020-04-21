@@ -169,7 +169,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     if (value) {
       this._timepickerRef = value;
 
-      // Wait for the calendar component to render before guaging dimensions.
+      // Wait for the timepicker component to render before guaging dimensions.
       setTimeout(() => {
         this.destroyAffixer();
         this.createAffixer();
@@ -222,7 +222,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   ) {
     const uniqueId = nextId++;
     this.timepickerId = `sky-timepicker-${uniqueId}`;
-    this.triggerButtonId = `sky-datepicker-button-${uniqueId}`;
+    this.triggerButtonId = `sky-timepicker-button-${uniqueId}`;
   }
 
   public ngOnInit(): void {
@@ -333,7 +333,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   private createAffixer(): void {
     const affixer = this.affixService.createAffixer(this.timepickerRef);
 
-    // Hide calendar when trigger button is scrolled off screen.
+    // Hide timepicker when trigger button is scrolled off screen.
     affixer.placementChange
       .takeUntil(this.timepickerUnsubscribe)
       .subscribe((change) => {
