@@ -44,7 +44,7 @@ describe('Datepicker', () => {
   });
 
   it('should match previous datepicker input screenshot when open', (done) => {
-    element(by.css('.sky-dropdown-button')).click();
+    element(by.css('.sky-datepicker button')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-datepicker').toMatchBaselineScreenshot(done, {
       screenshotName: 'datepicker-input-open'
