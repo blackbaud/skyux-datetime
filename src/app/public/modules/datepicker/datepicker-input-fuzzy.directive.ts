@@ -23,6 +23,7 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppLocaleProvider,
   SkyLibResourcesService
 } from '@skyux/i18n';
 
@@ -54,6 +55,8 @@ import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
 
+const moment = require('moment');
+
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_FUZZY_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -81,10 +84,16 @@ export class SkyFuzzyDatepickerInputDirective
   @Input()
   public set dateFormat(value: string) {
     this._dateFormat = value;
+
+    if (this.value) {
+      const formattedDate = this.fuzzyDateService.getStringFromFuzzyDate(this.value, this.dateFormat);
+      this.setInputElementValue(formattedDate);
+      this.changeDetector.markForCheck();
+    }
   }
 
   public get dateFormat(): string {
-    return this._dateFormat || this.configService.dateFormat;
+    return this._dateFormat || this.defaultFormat;
   }
 
   @Input()
@@ -229,6 +238,10 @@ export class SkyFuzzyDatepickerInputDirective
 
   private dateFormatter = new SkyDateFormatter();
 
+  private defaultFormat: string = 'MM/DD/YYYY';
+
+  private defaultLocale: string = 'en-US';
+
   private isFirstChange = true;
 
   private ngUnsubscribe = new Subject<void>();
@@ -251,13 +264,21 @@ export class SkyFuzzyDatepickerInputDirective
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() private datepickerComponent: SkyDatepickerComponent,
     private configService: SkyDatepickerConfigService,
+    private elementRef: ElementRef,
     private fuzzyDateService: SkyFuzzyDateService,
-    private resourcesService: SkyLibResourcesService
-  ) { }
+    private localeProvider: SkyAppLocaleProvider,
+    private renderer: Renderer2,
+    private resourcesService: SkyLibResourcesService,
+    @Optional() private datepickerComponent: SkyDatepickerComponent
+  ) {
+    this.localeProvider.getLocaleInfo()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((localeInfo) => {
+        moment.locale(localeInfo.locale || this.defaultLocale);
+        this.dateFormat = moment.localeData().longDateFormat('L');
+      });
+  }
 
   public ngOnInit(): void {
     if (this.yearRequired) {
