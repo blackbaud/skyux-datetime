@@ -1,37 +1,52 @@
 import {
-  Injectable
+  Injectable,
+  OnDestroy
 } from '@angular/core';
 
 import {
-  SkyWindowRefService
-} from '@skyux/core';
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
+  Subject
+} from 'rxjs';
 
 const moment = require('moment');
+
 import 'moment/min/locales.min';
 
 @Injectable()
-export class SkyDatepickerConfigService {
+export class SkyDatepickerConfigService implements OnDestroy {
+
+  private set locale(value: string) {
+    moment.locale(value || 'en-US');
+  }
+
   public dateFormat: string;
-  public minDate: Date;
+
   public maxDate: Date;
+
+  // How do max/min/stargin day work?
+  public minDate: Date;
+
   public startingDay = 0;
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
-    private windowRefService: SkyWindowRefService
+    private localeProvider: SkyAppLocaleProvider
   ) {
-    const safeNavigator: any = this.windowRefService.getWindow().navigator;
-
-    /*istanbul ignore next */
-    const userLanguage: string = (
-      safeNavigator.languages &&
-      safeNavigator.languages[0] ||
-      safeNavigator.language ||
-      safeNavigator.userLanguage ||
-      'en'
-    );
-
-    moment.locale(userLanguage);
+    this.localeProvider.getLocaleInfo()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((localeInfo) => {
+        this.locale = localeInfo.locale;
+      });
 
     this.dateFormat = moment.localeData().longDateFormat('L');
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
