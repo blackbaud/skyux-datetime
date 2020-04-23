@@ -15,6 +15,10 @@ import {
 } from '@skyux/i18n';
 
 import {
+  first
+} from 'rxjs/operators';
+
+import {
   SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
   SkyDateRangeCalculatorType,
@@ -118,7 +122,7 @@ export class DateRangePickerVisualComponent implements OnInit {
   public setCalculatorIds(): void {
     this.resourcesService
       .getString('my_resource_string')
-      .first()
+      .pipe(first())
       .subscribe((value) => {
         const calculator = this.dateRangeService.createCalculator({
           shortDescription: value,

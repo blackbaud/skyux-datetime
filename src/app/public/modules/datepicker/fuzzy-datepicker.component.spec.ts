@@ -1616,7 +1616,10 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  describe('default locale configuration', () => {
+  // TODO
+  // SkyWindowRefService is deprecated and this test will soon be replaced by the work needed
+  // for this issue: https://github.com/blackbaud/skyux-datetime/issues/139
+  xdescribe('default locale configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;
 

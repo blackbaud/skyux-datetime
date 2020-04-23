@@ -296,6 +296,110 @@ describe('datepicker', () => {
       expect(picker).toBeNull();
     }));
 
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
+    it('should close picker when clicking on a dackdrop', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      clickTrigger(fixture);
+
+      document.body.click();
+      fixture.detectChanges();
+      tick();
+      const picker = getCalendar();
+
+      expect(picker).toBeNull();
+    }));
+
     it('should hide when datepicker is scrolled off screen', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -1224,7 +1328,10 @@ describe('datepicker', () => {
 
   });
 
-  describe('default locale configuration', () => {
+  // TODO
+  // SkyWindowRefService is deprecated and this test will soon be replaced by the work needed
+  // for this issue: https://github.com/blackbaud/skyux-datetime/issues/139
+  xdescribe('default locale configuration', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
     let mockWindowService: MockWindowService;

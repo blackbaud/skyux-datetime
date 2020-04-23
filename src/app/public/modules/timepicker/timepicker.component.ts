@@ -21,11 +21,8 @@ import {
 } from '@skyux/core';
 
 import {
+  Observable,
   Subject
-} from 'rxjs/Subject';
-
-import {
-  Observable
 } from 'rxjs';
 
 import {

@@ -14,7 +14,7 @@ import {
   SkyAffixModule,
   SkyCoreAdapterService,
   SkyOverlayModule,
-  SkyWindowRefService
+  SkyAppWindowRef
 } from '@skyux/core';
 
 import {
@@ -103,7 +103,7 @@ import {
     SkyDatepickerConfigService,
     SkyFuzzyDateService,
     SkyCoreAdapterService,
-    SkyWindowRefService
+    SkyAppWindowRef
   ]
 })
 export class SkyDatepickerModule { }

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import {
-  SkyWindowRefService
+  SkyAppWindowRef
 } from '@skyux/core';
 
 const moment = require('moment');
@@ -17,9 +17,9 @@ export class SkyDatepickerConfigService {
   public startingDay = 0;
 
   constructor(
-    private windowRefService: SkyWindowRefService
+    private windowRef: SkyAppWindowRef
   ) {
-    const safeNavigator: any = this.windowRefService.getWindow().navigator;
+    const safeNavigator: any = this.windowRef.nativeWindow.navigator;
 
     /*istanbul ignore next */
     const userLanguage: string = (

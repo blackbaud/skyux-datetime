@@ -10,9 +10,7 @@ import {
 
 import {
   Subject
-} from 'rxjs/Subject';
-
-import 'rxjs/add/operator/takeUntil';
+} from 'rxjs';
 
 import {
   SkyDateFormatUtility

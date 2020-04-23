@@ -28,11 +28,11 @@ import {
 
 import {
   Subject
-} from 'rxjs/Subject';
+} from 'rxjs';
 
-import 'rxjs/add/operator/distinctUntilChanged';
-
-import 'rxjs/add/operator/takeUntil';
+import {
+  distinctUntilChanged
+} from 'rxjs/operators';
 
 import {
   SkyDateFormatter
@@ -297,7 +297,7 @@ export class SkyFuzzyDatepickerInputDirective
 
   public ngAfterContentInit(): void {
     this.datepickerComponent.dateChange
-      .distinctUntilChanged()
+      .pipe(distinctUntilChanged())
       .takeUntil(this.ngUnsubscribe)
       .subscribe((value: Date) => {
         this.isFirstChange = false;

@@ -20,12 +20,9 @@ import {
 } from '@skyux/core';
 
 import {
-  Observable
-} from 'rxjs/Observable';
-
-import {
+  Observable,
   Subject
-} from 'rxjs/Subject';
+} from 'rxjs';
 
 import {
   SkyDatepickerCalendarComponent

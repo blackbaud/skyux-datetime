@@ -27,20 +27,14 @@ import {
 } from '@skyux/core';
 
 import {
-  Observable
-} from 'rxjs/Observable';
+  combineLatest,
+  Subject
+} from 'rxjs';
 
 import {
-  Subject
-} from 'rxjs/Subject';
-
-import 'rxjs/add/observable/combineLatest';
-
-import 'rxjs/add/operator/distinctUntilChanged';
-
-import 'rxjs/add/operator/first';
-
-import 'rxjs/add/operator/takeUntil';
+  first,
+  distinctUntilChanged
+} from 'rxjs/operators';
 
 import {
   SkyDatepickerConfigService
@@ -449,12 +443,11 @@ export class SkyDateRangePickerComponent
   private addEventListeners(): void {
     // Detect errors from the date pickers
     // when control is initialized with a value.
-    Observable
-      .combineLatest(
+      combineLatest([
         this.startDateControl.statusChanges,
         this.endDateControl.statusChanges
-      )
-      .first()
+      ])
+      .pipe(first())
       .subscribe((status: string[]) => {
         if (status.indexOf('INVALID') > -1) {
           // Wait for initial validation to complete.
@@ -479,7 +472,7 @@ export class SkyDateRangePickerComponent
 
     // Watch for start date value changes.
     this.startDateControl.valueChanges
-      .distinctUntilChanged()
+      .pipe(distinctUntilChanged())
       .takeUntil(this.ngUnsubscribe)
       .subscribe((startDate) => {
         this.patchValue({ startDate });
@@ -487,7 +480,7 @@ export class SkyDateRangePickerComponent
 
     // Watch for end date value changes.
     this.endDateControl.valueChanges
-      .distinctUntilChanged()
+      .pipe(distinctUntilChanged())
       .takeUntil(this.ngUnsubscribe)
       .subscribe((endDate) => {
         this.patchValue({ endDate });
