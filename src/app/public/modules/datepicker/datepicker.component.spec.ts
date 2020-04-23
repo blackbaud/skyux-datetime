@@ -3,7 +3,8 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick
+  tick,
+  inject
 } from '@angular/core/testing';
 
 import {
@@ -47,11 +48,26 @@ import {
 import {
   DatepickerReactiveTestComponent
 } from './fixtures/datepicker-reactive.component.fixture';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { SkyAppLocaleProvider, SkyAppLocaleInfo } from '@skyux/i18n';
 
 const moment = require('moment');
 
 // #region helpers
-class MockWindowService extends SkyWindowRefService {}
+export class MyLocaleProvider extends SkyAppLocaleProvider {
+  public getLocaleInfo(): Observable<SkyAppLocaleInfo> {
+    const obs = new BehaviorSubject<any>({});
+
+    // Simulate HTTP call.
+    setTimeout(() => {
+      obs.next({
+        locale: 'es'
+      });
+    }, 1000);
+
+    return obs;
+  }
+}
 
 const isoFormat = 'YYYY-MM-DDTHH:mm:ss';
 
@@ -176,8 +192,9 @@ describe('datepicker', () => {
 
       setInputElementValue(nativeElement, '5/12/2017', fixture);
 
+      // Expect date to be December 5th (NOT May 12th).
       expect(getInputElementValue(fixture)).toBe('05/12/2017');
-      expect(component.selectedDate).toEqual(new Date('12/05/2017'));
+      expect(component.selectedDate).toEqual(new Date(2017, 11, 5));
     }));
   });
 
@@ -1224,47 +1241,29 @@ describe('datepicker', () => {
 
   });
 
-  describe('default locale configuration', () => {
+  describe('overriding SkyAppLocaleProvider', () => {
     let fixture: ComponentFixture<DatepickerNoFormatTestComponent>;
     let component: DatepickerNoFormatTestComponent;
-    let mockWindowService: MockWindowService;
-    const baselineLocales = new SkyAppWindowRef().nativeWindow.navigator.languages;
+    let localProvider: SkyAppLocaleProvider;
 
-    beforeEach(() => {
-      mockWindowService = new MockWindowService();
-      TestBed.overrideProvider(SkyWindowRefService, {useValue: mockWindowService});
-    });
+    beforeEach(inject([SkyAppLocaleProvider], (p: SkyAppLocaleProvider) => {
+      localProvider = p;
+    }));
 
     it('should display formatted date based on locale by default', fakeAsync(() => {
-      spyOn(mockWindowService, 'getWindow').and.returnValue(
-        {
-          navigator: {
-            languages: ['es'] // Spanish
-          }
-        }
+      spyOn(localProvider, 'getLocaleInfo').and.returnValue(
+        Observable.of({
+              locale: 'es' // Set locale to Spanish.
+        })
       );
       fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      const locales = mockWindowService.getWindow().navigator.languages;
 
-      setInputProperty(new Date('10/24/2017'), component, fixture);
+      setInputProperty(new Date(2017, 9, 24), component, fixture);
 
-      expect(locales).toEqual(['es']);
+      // Expect spanish default format of DD/MM/YYYY.
       expect(getInputElementValue(fixture)).toBe('24/10/2017');
-    }));
-
-    /**
-     * Sanity check: mocking the window will sometimes bleed over into other tests.
-     * This final test is to ensure the mocked window is reverted back to its baseline state.
-     */
-    it('should return baseline locale', fakeAsync(() => {
-      fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-      const locales = mockWindowService.getWindow().navigator.languages;
-
-      expect(locales).toEqual(baselineLocales);
     }));
   });
 });

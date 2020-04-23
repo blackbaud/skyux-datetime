@@ -4,7 +4,8 @@ import {
   fakeAsync,
   flush,
   TestBed,
-  tick
+  tick,
+  inject
 } from '@angular/core/testing';
 
 import {
@@ -47,6 +48,8 @@ import {
 import {
   FuzzyDatepickerReactiveTestComponent
 } from './fixtures/fuzzy-datepicker-reactive.component.fixture';
+import { SkyAppLocaleProvider } from '@skyux/i18n';
+import { Observable } from 'rxjs';
 
 const moment = require('moment');
 
@@ -1616,38 +1619,28 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  describe('default locale configuration', () => {
+  describe('overriding SkyAppLocaleProvider', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;
+    let localeProvider: SkyAppLocaleProvider;
 
-    class MockWindowService {
-      public getWindow() {
-        return {
-          navigator: {
-            languages: ['es']
-          }
-        };
-      }
-    }
-
-    let mockWindowService = new MockWindowService();
-    beforeEach(() => {
-      TestBed.overrideProvider(
-        SkyWindowRefService,
-        {
-          useValue: mockWindowService
-        }
-      );
-
-      fixture = TestBed.createComponent(FuzzyDatepickerNoFormatTestComponent);
-      component = fixture.componentInstance;
-
-      fixture.detectChanges();
-    });
+    beforeEach(inject([SkyAppLocaleProvider], (p: SkyAppLocaleProvider) => {
+      localeProvider = p;
+    }));
 
     it('should display formatted date based on locale by default', fakeAsync(() => {
-      setInputProperty(new Date('10/24/2017'), component, fixture);
+      spyOn(localeProvider, 'getLocaleInfo').and.returnValue(
+        Observable.of({
+          locale: 'es' // Set locale to Spanish.
+        })
+      );
+      fixture = TestBed.createComponent(FuzzyDatepickerNoFormatTestComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
 
+      setInputProperty(new Date(2017, 9, 24), component, fixture);
+
+      // Expect spanish default format of DD/MM/YYYY.
       expect(getInputElementValue(fixture)).toBe('24/10/2017');
 
       flush();

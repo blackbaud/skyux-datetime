@@ -23,7 +23,6 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyAppLocaleProvider,
   SkyLibResourcesService
 } from '@skyux/i18n';
 
@@ -72,7 +71,8 @@ const SKY_DATEPICKER_VALIDATOR = {
   providers: [
     SKY_DATEPICKER_VALUE_ACCESSOR,
     SKY_DATEPICKER_VALIDATOR,
-    SkyDatepickerAdapterService
+    SkyDatepickerAdapterService,
+    SkyDatepickerConfigService
   ]
 })
 export class SkyDatepickerInputDirective
@@ -80,17 +80,14 @@ export class SkyDatepickerInputDirective
 
   @Input()
   public set dateFormat(value: string) {
-    this._dateFormat = value;
-
-    if (this.value) {
-      const formattedDate = this.dateFormatter.format(this.value, this.dateFormat);
-      this.setInputElementValue(formattedDate);
-      this.changeDetector.markForCheck();
+    if (value !== this._dateFormat) {
+      this._dateFormat = value;
+      this.applyDateFormat();
     }
   }
 
   public get dateFormat(): string {
-    return this._dateFormat || this.defaultFormat;
+    return this._dateFormat || this.configService.dateFormat;
   }
 
   @Input()
@@ -220,8 +217,6 @@ export class SkyDatepickerInputDirective
 
   private control: AbstractControl;
   private dateFormatter = new SkyDateFormatter();
-  private defaultFormat: string = 'MM/DD/YYYY';
-  private defaultLocale: string = 'en-US';
   private isFirstChange = true;
   private ngUnsubscribe = new Subject<void>();
 
@@ -238,17 +233,17 @@ export class SkyDatepickerInputDirective
     private changeDetector: ChangeDetectorRef,
     private configService: SkyDatepickerConfigService,
     private elementRef: ElementRef,
-    private localeProvider: SkyAppLocaleProvider,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
   ) {
-      this.localeProvider.getLocaleInfo()
-        .takeUntil(this.ngUnsubscribe)
-        .subscribe((localeInfo) => {
-          moment.locale(localeInfo.locale || this.defaultLocale);
-          this.dateFormat = moment.localeData().longDateFormat('L');
+    // Backwards compatible.
+    if (this.configService.dateFormatChange) {
+      this.configService.dateFormatChange
+        .subscribe(() => {
+          this.applyDateFormat();
         });
+    }
   }
 
   public ngOnInit(): void {
@@ -438,6 +433,14 @@ export class SkyDatepickerInputDirective
    */
   public detectInputValueChange(): void {
     this.onValueChange(this.elementRef.nativeElement.value);
+  }
+
+  private applyDateFormat(): void {
+    if (this.value) {
+      const formattedDate = this.dateFormatter.format(this.value, this.dateFormat);
+      this.setInputElementValue(formattedDate);
+      this.changeDetector.markForCheck();
+    }
   }
 
   private onValueChange(newValue: string): void {
