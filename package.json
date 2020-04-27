@@ -56,6 +56,7 @@
     "@skyux/assets": "4.0.0-rc.1",
     "@skyux/config": "4.0.0-rc.2",
     "@skyux/core": "4.0.0-rc.4",
+    "@skyux/datetime": "3.9.0",
     "@skyux/docs-tools": "4.0.0-rc.1",
     "@skyux/forms": "4.0.0-rc.0",
     "@skyux/http": "4.0.0-rc.3",
