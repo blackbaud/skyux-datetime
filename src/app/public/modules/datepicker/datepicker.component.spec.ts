@@ -52,7 +52,7 @@ const moment = require('moment');
 
 // #region helpers
 class MockWindowService {
-  nativeWindow = {
+  public nativeWindow = {
     navigator: {
       languages: ['es'] // Spanish
     }
@@ -1239,7 +1239,7 @@ describe('datepicker', () => {
     it('should display formatted date based on locale by default', fakeAsync(() => {
       TestBed.overrideProvider(SkyAppWindowRef, {
         useValue: mockWindowRef
-      })
+      });
 
       fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);
       component = fixture.componentInstance;

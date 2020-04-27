@@ -1621,7 +1621,7 @@ describe('fuzzy datepicker input', () => {
     let component: FuzzyDatepickerNoFormatTestComponent;
 
     class MockWindowService {
-      nativeWindow = {
+      public nativeWindow = {
         navigator: {
           languages: ['es'] // Spanish
         }
