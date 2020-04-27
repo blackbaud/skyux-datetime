@@ -21,9 +21,13 @@ import {
 } from '@skyux/core';
 
 import {
-  Observable,
+  fromEvent,
   Subject
 } from 'rxjs';
+
+import {
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   SkyTimepickerTimeOutput
@@ -332,7 +336,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
     // Hide timepicker when trigger button is scrolled off screen.
     affixer.placementChange
-      .takeUntil(this.timepickerUnsubscribe)
+      .pipe(takeUntil(this.timepickerUnsubscribe))
       .subscribe((change) => {
         this.isVisible = (change.placement !== null);
         this.changeDetector.markForCheck();
@@ -364,7 +368,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     });
 
     overlay.backdropClick
-      .takeUntil(this.timepickerUnsubscribe)
+      .pipe(takeUntil(this.timepickerUnsubscribe))
       .subscribe(() => {
         if (this.isOpen) {
           this.closePicker();
@@ -385,8 +389,8 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   }
 
   private addTriggerButtonEventListeners(): void {
-    Observable.fromEvent(window.document, 'keydown')
-      .takeUntil(this.ngUnsubscribe)
+    fromEvent(window.document, 'keydown')
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((event: KeyboardEvent) => {
         const key = event.key.toLowerCase();
         /* istanbul ignore else */

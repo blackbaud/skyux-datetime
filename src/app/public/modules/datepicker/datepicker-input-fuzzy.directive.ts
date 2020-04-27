@@ -31,7 +31,8 @@ import {
 } from 'rxjs';
 
 import {
-  distinctUntilChanged
+  distinctUntilChanged,
+  takeUntil
 } from 'rxjs/operators';
 
 import {
@@ -284,7 +285,7 @@ export class SkyFuzzyDatepickerInputDirective
 
     if (!hasAriaLabel) {
       this.resourcesService.getString('skyux_date_field_default_label')
-        .takeUntil(this.ngUnsubscribe)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((value: string) => {
           this.renderer.setAttribute(
             element,
@@ -297,8 +298,10 @@ export class SkyFuzzyDatepickerInputDirective
 
   public ngAfterContentInit(): void {
     this.datepickerComponent.dateChange
-      .pipe(distinctUntilChanged())
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((value: Date) => {
         this.isFirstChange = false;
         this.value = value;

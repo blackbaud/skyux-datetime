@@ -31,7 +31,9 @@
     "@skyux/i18n": "^4.0.0-rc.3",
     "@skyux/indicators": "^4.0.0-rc.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "moment": "2.24.0"
+  },
   "devDependencies": {
     "@angular/animations": "9.1.1",
     "@angular/common": "9.1.1",

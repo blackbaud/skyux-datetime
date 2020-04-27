@@ -13,7 +13,8 @@ import {
 } from 'rxjs';
 
 import {
-  first
+  first,
+  map
 } from 'rxjs/operators';
 
 import {
@@ -103,10 +104,12 @@ export class SkyDateRangeService {
       tasks.push(
         this.resourcesService
           .getString(defaultConfig.shortDescriptionResourceKey)
-          .pipe(first())
-          .map((value) => {
-            config.shortDescription = value;
-          })
+          .pipe(
+            first(),
+            map((value) => {
+              config.shortDescription = value;
+            })
+          )
       );
 
       this.calculatorConfigs[defaultConfig.calculatorId] = config;

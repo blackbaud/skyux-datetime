@@ -33,7 +33,8 @@ import {
 
 import {
   first,
-  distinctUntilChanged
+  distinctUntilChanged,
+  takeUntil
 } from 'rxjs/operators';
 
 import {
@@ -459,7 +460,7 @@ export class SkyDateRangePickerComponent
 
     // Watch for selected calculator change.
     this.calculatorIdControl.valueChanges
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value) => {
         const id = parseInt(value, 10);
         const calculator = this.getCalculatorById(id);
@@ -472,16 +473,20 @@ export class SkyDateRangePickerComponent
 
     // Watch for start date value changes.
     this.startDateControl.valueChanges
-      .pipe(distinctUntilChanged())
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((startDate) => {
         this.patchValue({ startDate });
       });
 
     // Watch for end date value changes.
     this.endDateControl.valueChanges
-      .pipe(distinctUntilChanged())
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((endDate) => {
         this.patchValue({ endDate });
       });

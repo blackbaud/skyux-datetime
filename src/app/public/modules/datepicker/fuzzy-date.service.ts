@@ -12,6 +12,10 @@ import {
 } from 'rxjs';
 
 import {
+  takeUntil
+} from 'rxjs/operators';
+
+import {
   SkyFuzzyDate
 } from './fuzzy-date';
 
@@ -41,7 +45,7 @@ export class SkyFuzzyDateService implements OnDestroy {
     private localeProvider: SkyAppLocaleProvider
   ) {
     this.localeProvider.getLocaleInfo()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         this.currentLocale = localeInfo.locale;
       });

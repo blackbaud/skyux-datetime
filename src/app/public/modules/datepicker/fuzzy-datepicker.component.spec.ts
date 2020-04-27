@@ -16,13 +16,13 @@ import {
 } from '@angular/platform-browser';
 
 import {
+  SkyAppWindowRef
+} from '@skyux/core';
+
+import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
-
-import {
-  SkyWindowRefService
-} from '@skyux/core';
 
 import {
   SkyDatepickerConfigService
@@ -1616,27 +1616,22 @@ describe('fuzzy datepicker input', () => {
     });
   });
 
-  // TODO
-  // SkyWindowRefService is deprecated and this test will soon be replaced by the work needed
-  // for this issue: https://github.com/blackbaud/skyux-datetime/issues/139
-  xdescribe('default locale configuration', () => {
+  describe('default locale configuration', () => {
     let fixture: ComponentFixture<FuzzyDatepickerNoFormatTestComponent>;
     let component: FuzzyDatepickerNoFormatTestComponent;
 
     class MockWindowService {
-      public getWindow() {
-        return {
-          navigator: {
-            languages: ['es']
-          }
-        };
-      }
+      nativeWindow = {
+        navigator: {
+          languages: ['es'] // Spanish
+        }
+      };
     }
 
     let mockWindowService = new MockWindowService();
     beforeEach(() => {
       TestBed.overrideProvider(
-        SkyWindowRefService,
+        SkyAppWindowRef,
         {
           useValue: mockWindowService
         }

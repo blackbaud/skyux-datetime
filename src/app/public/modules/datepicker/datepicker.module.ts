@@ -12,9 +12,9 @@ import {
 
 import {
   SkyAffixModule,
+  SkyAppWindowRef,
   SkyCoreAdapterService,
-  SkyOverlayModule,
-  SkyAppWindowRef
+  SkyOverlayModule
 } from '@skyux/core';
 
 import {
@@ -100,10 +100,10 @@ import {
     SkyFuzzyDatepickerInputDirective
   ],
   providers: [
+    SkyAppWindowRef,
     SkyDatepickerConfigService,
     SkyFuzzyDateService,
-    SkyCoreAdapterService,
-    SkyAppWindowRef
+    SkyCoreAdapterService
   ]
 })
 export class SkyDatepickerModule { }
