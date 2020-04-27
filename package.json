@@ -29,11 +29,10 @@
     "@angular/router": "^9.1.1",
     "@skyux/core": "^4.0.0-rc.4",
     "@skyux/i18n": "^4.0.0-rc.3",
-    "@skyux/indicators": "^4.0.0-rc.3"
+    "@skyux/indicators": "^4.0.0-rc.3",
+    "moment": "^2.24.0"
   },
-  "dependencies": {
-    "moment": "2.24.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@angular/animations": "9.1.1",
     "@angular/common": "9.1.1",
