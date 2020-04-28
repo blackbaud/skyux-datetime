@@ -21,11 +21,6 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  SkyAppWindowRef,
-  SkyWindowRefService
-} from '@skyux/core';
-
-import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
 
@@ -454,6 +449,12 @@ describe('datepicker', () => {
         setInputElementValue(nativeElement, '5/12/2017', fixture);
 
         expect(getInputElementValue(fixture)).toBe('05/12/2017');
+        expect(component.selectedDate).toEqual(new Date('12/05/2017'));
+
+        component.dateFormat = 'MM/DD/YYYY';
+        detectChanges(fixture);
+
+        expect(getInputElementValue(fixture)).toBe('12/05/2017');
         expect(component.selectedDate).toEqual(new Date('12/05/2017'));
       }));
     });

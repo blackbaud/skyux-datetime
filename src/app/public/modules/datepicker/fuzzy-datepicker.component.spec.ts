@@ -497,6 +497,12 @@ describe('fuzzy datepicker input', () => {
         expect(getInputElementValue(fixture)).toBe('5/12/2017');
         expect(component.selectedDate).toEqual({ day: 5, month: 12, year: 2017 });
 
+        component.dateFormat = 'MM/DD/YYYY';
+        detectChanges(fixture);
+
+        expect(getInputElementValue(fixture)).toBe('12/5/2017');
+        expect(component.selectedDate).toEqual({ day: 5, month: 12, year: 2017 });
+
         flush();
       }));
 
