@@ -16,9 +16,19 @@ import {
 } from '@angular/platform-browser';
 
 import {
+  SkyAppLocaleInfo,
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
+
+import {
+  BehaviorSubject,
+  Observable
+} from 'rxjs';
 
 import {
   SkyDatepickerConfigService
@@ -43,8 +53,6 @@ import {
 import {
   DatepickerReactiveTestComponent
 } from './fixtures/datepicker-reactive.component.fixture';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { SkyAppLocaleProvider, SkyAppLocaleInfo } from '@skyux/i18n';
 
 const moment = require('moment');
 
