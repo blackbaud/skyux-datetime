@@ -10,33 +10,10 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { SkyAppLocaleProvider, SkyAppLocaleInfo } from '@skyux/i18n';
-import { BehaviorSubject, Observable } from 'rxjs';
-
-export class MyLocaleProvider extends SkyAppLocaleProvider {
-  public getLocaleInfo(): Observable<SkyAppLocaleInfo> {
-    const obs = new BehaviorSubject<any>({});
-
-    // Simulate HTTP call.
-    setTimeout(() => {
-      obs.next({
-        locale: 'fr-CA'
-      });
-    }, 1000);
-
-    return obs;
-  }
-}
 
 @Component({
   selector: 'datepicker-visual',
-  templateUrl: './datepicker-visual.component.html',
-  providers: [
-    {
-      provide: SkyAppLocaleProvider,
-      useClass: MyLocaleProvider
-    }
-  ]
+  templateUrl: './datepicker-visual.component.html'
 })
 export class DatepickerVisualComponent implements OnInit {
   public disabled = false;

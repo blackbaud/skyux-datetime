@@ -89,8 +89,7 @@ export class SkyDatepickerInputDirective
   public get dateFormat(): string {
     return this._dateFormat ||
             this.configService.dateFormat ||
-            this.preferredShortDateFormat ||
-            'MM/DD/YYYY';
+            this.preferredShortDateFormat;
   }
 
   @Input()

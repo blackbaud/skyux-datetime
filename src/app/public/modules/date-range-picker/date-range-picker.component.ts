@@ -105,9 +105,7 @@ export class SkyDateRangePickerComponent
   }
 
   public get dateFormat(): string {
-    return this._dateFormat ||
-            this.preferredShortDateFormat ||
-            'MM/DD/YYYY';
+    return this._dateFormat || this.preferredShortDateFormat;
   }
 
   @Input()
