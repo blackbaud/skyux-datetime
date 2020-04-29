@@ -55,8 +55,6 @@ import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
 
-const moment = require('moment');
-
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_FUZZY_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
