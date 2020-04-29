@@ -47,6 +47,10 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/takeUntil';
 
 import {
+  SkyDateFormatter
+} from '../datepicker/date-formatter';
+
+import {
   SkyDateRangeCalculation
 } from './types/date-range-calculation';
 
@@ -65,8 +69,6 @@ import {
 import {
   SkyDateRangeService
 } from './date-range.service';
-
-const moment = require('moment');
 
 /* tslint:disable:no-forward-ref no-use-before-declare */
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
@@ -103,9 +105,7 @@ export class SkyDateRangePickerComponent
   }
 
   public get dateFormat(): string {
-    return this._dateFormat ||
-            this.localeProviderDateFormat ||
-            'MM/DD/YYYY';
+    return this._dateFormat || this.preferredShortDateFormat;
   }
 
   @Input()
@@ -213,7 +213,7 @@ export class SkyDateRangePickerComponent
   }
 
   private control: AbstractControl;
-  private localeProviderDateFormat: string;
+  private preferredShortDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
@@ -231,8 +231,8 @@ export class SkyDateRangePickerComponent
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        moment.locale(localeInfo.locale || 'en-US');
-        this.localeProviderDateFormat = moment.localeData().longDateFormat('L');
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
       });
   }
 
