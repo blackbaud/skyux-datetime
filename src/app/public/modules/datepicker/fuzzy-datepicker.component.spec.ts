@@ -22,10 +22,6 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  SkyWindowRefService
-} from '@skyux/core';
-
-import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
 

@@ -103,7 +103,9 @@ export class SkyDateRangePickerComponent
   }
 
   public get dateFormat(): string {
-    return this._dateFormat || this.defaultFormat;
+    return this._dateFormat ||
+            this.localeProviderDateFormat ||
+            'MM/DD/YYYY';
   }
 
   @Input()
@@ -211,8 +213,7 @@ export class SkyDateRangePickerComponent
   }
 
   private control: AbstractControl;
-  private defaultFormat: string = 'MM/DD/YYYY';
-  private defaultLocale: string = 'en-US';
+  private localeProviderDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
@@ -230,8 +231,8 @@ export class SkyDateRangePickerComponent
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        moment.locale(localeInfo.locale || this.defaultLocale);
-        this.dateFormat = moment.localeData().longDateFormat('L');
+        moment.locale(localeInfo.locale || 'en-US');
+        this.localeProviderDateFormat = moment.localeData().longDateFormat('L');
       });
   }
 
