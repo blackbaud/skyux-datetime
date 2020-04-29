@@ -29,6 +29,10 @@ import {
 } from '../shared/datetime-resources.module';
 
 import {
+  SkyDateTimeService
+} from '../shared/datetime.service';
+
+import {
   SkyDatepickerCalendarComponent
 } from './datepicker-calendar.component';
 
@@ -101,7 +105,8 @@ import {
   providers: [
     SkyDatepickerConfigService,
     SkyFuzzyDateService,
-    SkyCoreAdapterService
+    SkyCoreAdapterService,
+    SkyDateTimeService
   ]
 })
 export class SkyDatepickerModule { }

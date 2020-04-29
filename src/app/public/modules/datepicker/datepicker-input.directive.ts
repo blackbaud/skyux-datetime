@@ -23,7 +23,6 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyAppLocaleProvider,
   SkyLibResourcesService
 } from '@skyux/i18n';
 
@@ -34,6 +33,10 @@ import {
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import 'rxjs/add/operator/takeUntil';
+
+import {
+  SkyDateTimeService
+} from '../shared/datetime.service';
 
 import {
   SkyDateFormatter
@@ -236,17 +239,16 @@ export class SkyDatepickerInputDirective
     private adapter: SkyDatepickerAdapterService,
     private changeDetector: ChangeDetectorRef,
     private configService: SkyDatepickerConfigService,
+    private dateTimeService: SkyDateTimeService,
     private elementRef: ElementRef,
-    private localeProvider: SkyAppLocaleProvider,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
   ) {
-    this.localeProvider.getLocaleInfo()
+    this.dateTimeService.localeInfo
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((localeInfo) => {
-        moment.locale(localeInfo.locale || 'en-US');
-        this.localeProviderDateFormat = moment.localeData().longDateFormat('L');
+      .subscribe((info) => {
+        this.localeProviderDateFormat = info.dateFormat;
         this.applyDateFormat();
       });
   }
