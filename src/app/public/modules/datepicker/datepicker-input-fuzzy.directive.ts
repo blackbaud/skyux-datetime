@@ -276,8 +276,7 @@ export class SkyFuzzyDatepickerInputDirective
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        moment.locale(localeInfo.locale || 'en-US');
-        this.localeProviderDateFormat = moment.localeData().longDateFormat('L');
+        this.localeProviderDateFormat = SkyDateFormatter.getDateFormat(localeInfo.locale);
       });
   }
 

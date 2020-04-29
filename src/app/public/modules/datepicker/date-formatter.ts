@@ -1,6 +1,12 @@
 const moment = require('moment');
 
 export class SkyDateFormatter {
+
+  public static getDateFormat(locale: string): string {
+    moment.locale(locale || 'en-US');
+    return moment.localeData().longDateFormat('L');
+  }
+
   public format(date: Date, format: string): string {
     return moment(date.getTime()).format(format);
   }
