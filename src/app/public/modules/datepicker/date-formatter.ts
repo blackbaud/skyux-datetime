@@ -2,9 +2,22 @@ const moment = require('moment');
 
 export class SkyDateFormatter {
 
-  public static getDateFormat(locale: string): string {
-    moment.locale(locale || 'en-US');
-    return moment.localeData().longDateFormat('L');
+  private static defaultLocale: string = 'en-US';
+
+  private static defaultShortDateFormat: string = 'MM/DD/YYYY';
+
+  /**
+   * Sets moment's global locale.
+   */
+  public static setLocale(locale: string): void {
+    moment.locale(locale || SkyDateFormatter.defaultLocale);
+  }
+
+  /**
+   * Returns the preferred short date format for the current locale.
+   */
+  public static getPreferredShortDateFormat(): string {
+    return moment.localeData().longDateFormat('L') || SkyDateFormatter.defaultShortDateFormat;
   }
 
   public format(date: Date, format: string): string {

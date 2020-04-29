@@ -106,7 +106,7 @@ export class SkyDateRangePickerComponent
 
   public get dateFormat(): string {
     return this._dateFormat ||
-            this.localeProviderDateFormat ||
+            this.preferredShortDateFormat ||
             'MM/DD/YYYY';
   }
 
@@ -215,7 +215,7 @@ export class SkyDateRangePickerComponent
   }
 
   private control: AbstractControl;
-  private localeProviderDateFormat: string;
+  private preferredShortDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
@@ -233,7 +233,8 @@ export class SkyDateRangePickerComponent
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        this.localeProviderDateFormat = SkyDateFormatter.getDateFormat(localeInfo.locale);
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
       });
   }
 

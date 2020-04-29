@@ -95,7 +95,7 @@ export class SkyFuzzyDatepickerInputDirective
   public get dateFormat(): string {
     return this._dateFormat ||
             this.configService.dateFormat ||
-            this.localeProviderDateFormat ||
+            this.preferredShortDateFormat ||
             'MM/DD/YYYY';
   }
 
@@ -243,7 +243,7 @@ export class SkyFuzzyDatepickerInputDirective
 
   private isFirstChange = true;
 
-  private localeProviderDateFormat: string;
+  private preferredShortDateFormat: string;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -276,7 +276,8 @@ export class SkyFuzzyDatepickerInputDirective
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        this.localeProviderDateFormat = SkyDateFormatter.getDateFormat(localeInfo.locale);
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
       });
   }
 

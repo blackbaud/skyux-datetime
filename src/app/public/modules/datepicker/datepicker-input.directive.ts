@@ -89,7 +89,7 @@ export class SkyDatepickerInputDirective
   public get dateFormat(): string {
     return this._dateFormat ||
             this.configService.dateFormat ||
-            this.localeProviderDateFormat ||
+            this.preferredShortDateFormat ||
             'MM/DD/YYYY';
   }
 
@@ -221,7 +221,7 @@ export class SkyDatepickerInputDirective
   private control: AbstractControl;
   private dateFormatter = new SkyDateFormatter();
   private isFirstChange = true;
-  private localeProviderDateFormat: string;
+  private preferredShortDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
   private _dateFormat: string;
@@ -245,7 +245,8 @@ export class SkyDatepickerInputDirective
     this.localeProvider.getLocaleInfo()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((localeInfo) => {
-        this.localeProviderDateFormat = SkyDateFormatter.getDateFormat(localeInfo.locale);
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
         this.applyDateFormat();
       });
   }
