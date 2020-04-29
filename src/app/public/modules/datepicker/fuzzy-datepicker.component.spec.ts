@@ -3,9 +3,9 @@ import {
   ComponentFixture,
   fakeAsync,
   flush,
+  inject,
   TestBed,
-  tick,
-  inject
+  tick
 } from '@angular/core/testing';
 
 import {
@@ -17,9 +17,17 @@ import {
 } from '@angular/platform-browser';
 
 import {
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
+
+import {
+  Observable
+} from 'rxjs';
 
 import {
   SkyDatepickerConfigService
@@ -44,8 +52,6 @@ import {
 import {
   FuzzyDatepickerReactiveTestComponent
 } from './fixtures/fuzzy-datepicker-reactive.component.fixture';
-import { SkyAppLocaleProvider } from '@skyux/i18n';
-import { Observable } from 'rxjs';
 
 const moment = require('moment');
 

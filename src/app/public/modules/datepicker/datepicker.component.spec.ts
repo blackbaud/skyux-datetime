@@ -2,9 +2,9 @@ import {
   async,
   ComponentFixture,
   fakeAsync,
+  inject,
   TestBed,
-  tick,
-  inject
+  tick
 } from '@angular/core/testing';
 
 import {
@@ -1262,7 +1262,7 @@ describe('datepicker', () => {
     it('should display formatted date based on locale by default', fakeAsync(() => {
       spyOn(localProvider, 'getLocaleInfo').and.returnValue(
         Observable.of({
-              locale: 'es' // Set locale to Spanish.
+          locale: 'es' // Set locale to Spanish.
         })
       );
       fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);
