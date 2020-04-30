@@ -4,12 +4,9 @@ import {
 } from '@angular/core';
 
 import {
+  SkyFuzzyDate,
   SkyFuzzyDatePipe
 } from '../../public/public_api';
-
-import {
-  SkyFuzzyDate
-} from '../../public/modules/datepicker/fuzzy-date';
 
 @Component({
   selector: 'fuzzy-date-pipe-visual',
