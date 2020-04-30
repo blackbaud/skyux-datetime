@@ -27,7 +27,8 @@ import {
 
 import {
   BehaviorSubject,
-  Observable
+  Observable,
+  of
 } from 'rxjs';
 
 import {
@@ -54,7 +55,8 @@ import {
   DatepickerReactiveTestComponent
 } from './fixtures/datepicker-reactive.component.fixture';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // #region helpers
 export class MyLocaleProvider extends SkyAppLocaleProvider {
@@ -1261,7 +1263,7 @@ describe('datepicker', () => {
 
     it('should display formatted date based on locale by default', fakeAsync(() => {
       spyOn(localProvider, 'getLocaleInfo').and.returnValue(
-        Observable.of({
+        of({
           locale: 'es' // Set locale to Spanish.
         })
       );

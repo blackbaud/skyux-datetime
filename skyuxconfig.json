@@ -7,11 +7,12 @@
     "@skyux-sdk/builder-plugin-skyux"
   ],
   "host": {
-    "url": "https://developer.blackbaud.com"
+    "url": "https://developer.blackbaud.com",
+    "frameOptions": {
+      "none": true
+    }
   },
-  "omnibar": {
-    "experimental": true
-  },
+  "omnibar": {},
   "params": {
     "svcid": {
       "value": "skyux"
@@ -20,6 +21,11 @@
   "app": {
     "styles": [
       "@skyux/docs-tools/css/docs-tools.css"
+    ]
+  },
+  "librarySettings": {
+    "whitelistedNonPeerDependencies": [
+      "moment"
     ]
   },
   "testSettings": {
