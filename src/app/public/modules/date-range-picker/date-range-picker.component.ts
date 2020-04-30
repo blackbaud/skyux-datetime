@@ -36,8 +36,8 @@ import {
 } from 'rxjs';
 
 import {
-  first,
   distinctUntilChanged,
+  first,
   takeUntil
 } from 'rxjs/operators';
 
