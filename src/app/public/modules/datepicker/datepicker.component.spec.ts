@@ -55,7 +55,8 @@ import {
   DatepickerReactiveTestComponent
 } from './fixtures/datepicker-reactive.component.fixture';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // #region helpers
 export class MyLocaleProvider extends SkyAppLocaleProvider {

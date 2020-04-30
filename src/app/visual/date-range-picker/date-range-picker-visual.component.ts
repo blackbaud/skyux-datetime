@@ -23,7 +23,7 @@ import {
   SkyDateRangeCalculatorId,
   SkyDateRangeCalculatorType,
   SkyDateRangeService
-} from '../../public';
+} from '../../public/public_api';
 
 @Component({
   selector: 'date-range-picker-visual',

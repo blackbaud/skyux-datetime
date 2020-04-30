@@ -5,7 +5,7 @@ import {
 
 import {
   SkyFuzzyDatePipe
-} from '../../public';
+} from '../../public/public_api';
 
 import {
   SkyFuzzyDate

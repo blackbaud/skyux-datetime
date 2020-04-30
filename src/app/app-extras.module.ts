@@ -20,7 +20,7 @@ import {
   SkyDatepickerModule,
   SkyDateRangePickerModule,
   SkyTimepickerModule
-} from './public';
+} from './public/public_api';
 
 @NgModule({
   exports: [

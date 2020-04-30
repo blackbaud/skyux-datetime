@@ -19,7 +19,8 @@ import {
   SkyFuzzyDate
 } from './fuzzy-date';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 interface SkyDateIndexes {
   yearIndex: number;

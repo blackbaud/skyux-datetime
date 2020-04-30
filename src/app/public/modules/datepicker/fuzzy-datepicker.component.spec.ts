@@ -53,7 +53,8 @@ import {
   FuzzyDatepickerReactiveTestComponent
 } from './fixtures/fuzzy-datepicker-reactive.component.fixture';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // #region helpers
 function detectChanges(fixture: ComponentFixture<any>): void {

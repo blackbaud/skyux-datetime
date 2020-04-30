@@ -36,7 +36,8 @@ import {
   SkyTimepickerTimeOutput
 } from './timepicker.interface';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_TIMEPICKER_VALUE_ACCESSOR = {

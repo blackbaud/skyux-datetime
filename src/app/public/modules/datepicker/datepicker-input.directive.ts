@@ -52,7 +52,8 @@ import {
   SkyDatepickerComponent
 } from './datepicker.component';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATEPICKER_VALUE_ACCESSOR = {
