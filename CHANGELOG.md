@@ -1,3 +1,13 @@
+# 4.0.0-rc.0 (2020-04-30)
+
+### New features
+
+- Updated the pipeline to transpile to the [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview). [#150](https://github.com/blackbaud/skyux-datetime/pull/150)
+
+### Breaking changes
+
+- Dropped support for `rxjs@5`. Consumers may install `rxjs-compat@^6` to support older versions of `rxjs`. [#150](https://github.com/blackbaud/skyux-datetime/pull/150)
+
 # 3.10.0 (2020-04-30)
 
 - Updated the datepicker, date range picker, timepicker, and fuzzy datepicker components to implement the affix and overlay services. [#140](https://github.com/blackbaud/skyux-datetime/pull/140)
