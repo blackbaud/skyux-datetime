@@ -3,9 +3,6 @@
   "name": "skyux-datetime",
   "mode": "easy",
   "compileMode": "aot",
-  "skyuxModules": [
-    "SkyErrorModule"
-  ],
   "plugins": [
     "@skyux-sdk/builder-plugin-skyux"
   ],
@@ -20,8 +17,7 @@
   },
   "app": {
     "styles": [
-      "@skyux/docs-tools/css/docs-tools.css",
-      "src/app/visual-styles.scss"
+      "@skyux/docs-tools/css/docs-tools.css"
     ]
   },
   "testSettings": {
