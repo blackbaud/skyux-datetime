@@ -272,7 +272,7 @@ export class SkyFuzzyDatepickerInputDirective
     @Optional() private datepickerComponent: SkyDatepickerComponent
   ) {
     this.localeProvider.getLocaleInfo()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         SkyDateFormatter.setLocale(localeInfo.locale);
         this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();

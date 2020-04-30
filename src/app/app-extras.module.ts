@@ -8,6 +8,10 @@ import {
 } from '@skyux/docs-tools';
 
 import {
+  SkyPageModule
+} from '@skyux/layout';
+
+import {
   SkyAppLinkModule
 } from '@skyux/router';
 
@@ -23,9 +27,10 @@ import {
     SkyAppLinkModule,
     SkyDatePipeModule,
     SkyDatepickerModule,
+    SkyDateRangePickerModule,
     SkyDocsToolsModule,
-    SkyTimepickerModule,
-    SkyDateRangePickerModule
+    SkyPageModule,
+    SkyTimepickerModule
   ],
   providers: [
     {

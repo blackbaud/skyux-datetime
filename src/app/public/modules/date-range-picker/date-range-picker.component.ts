@@ -27,6 +27,10 @@ import {
 } from '@skyux/core';
 
 import {
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
   combineLatest,
   Subject
 } from 'rxjs';
@@ -220,7 +224,7 @@ export class SkyDateRangePickerComponent
     private windowRef: SkyAppWindowRef
   ) {
     this.localeProvider.getLocaleInfo()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         SkyDateFormatter.setLocale(localeInfo.locale);
         this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
