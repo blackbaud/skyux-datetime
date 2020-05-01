@@ -1,3 +1,8 @@
+# 4.0.0-rc-1 (2020-05-01)
+
+- Removed a deep import from `moment/min/locales.min`. [#152](https://github.com/blackbaud/skyux-datetime/pull/152)
+- Upgraded the package dependencies. [#152](https://github.com/blackbaud/skyux-datetime/pull/152)
+
 # 4.0.0-rc.0 (2020-04-30)
 
 ### New features
