@@ -1,3 +1,9 @@
+# 4.0.0-rc.2 (2020-05-06)
+
+### New features
+
+- Added a test fixture for the datepicker component to be used in consumer unit tests. [#155](https://github.com/blackbaud/skyux-datetime/pull/155)
+
 # 3.11.0 (2020-05-05)
 
 - Added `moment` as a dependency. [#153](https://github.com/blackbaud/skyux-datetime/pull/153)
