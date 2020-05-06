@@ -1,3 +1,7 @@
+# 3.11.0 (2020-05-05)
+
+- Added `moment` as a dependency. [#153](https://github.com/blackbaud/skyux-datetime/pull/153)
+
 # 4.0.0-rc-1 (2020-05-01)
 
 - Removed a deep import from `moment/min/locales.min`. [#152](https://github.com/blackbaud/skyux-datetime/pull/152)

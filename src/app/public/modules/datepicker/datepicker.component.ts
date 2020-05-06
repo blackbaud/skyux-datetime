@@ -207,7 +207,11 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   }
 
   public onTriggerButtonClick(): void {
-    this.openPicker();
+    if (this.isOpen) {
+      this.closePicker();
+    } else {
+      this.openPicker();
+    }
   }
 
   private closePicker() {
