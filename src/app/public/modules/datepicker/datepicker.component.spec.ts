@@ -318,6 +318,21 @@ describe('datepicker', () => {
       expect(picker).toBeNull();
     }));
 
+    it('should close picker when clicking trigger button again', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+
+      clickTrigger(fixture);
+
+      let picker = getCalendar();
+      expect(picker).toBeTruthy();
+
+      clickTrigger(fixture);
+
+      picker = getCalendar();
+      expect(picker).toBeNull();
+    }));
+
     it('should hide when datepicker is scrolled off screen', fakeAsync(() => {
       fixture.detectChanges();
       tick();
