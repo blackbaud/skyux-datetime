@@ -1,13 +1,13 @@
 <div
-  class="sky-timepicker sky-input-group"
+  class="sky-timepicker"
 >
-  <ng-content></ng-content>
   <div
-    class="sky-input-group-btn sky-input-group-timepicker-btn"
+    class="sky-input-group"
   >
+    <ng-content></ng-content>
     <button
       aria-haspopup="dialog"
-      class="sky-btn sky-btn-default sky-input-group-btn sky-input-group-datepicker-btn"
+      class="sky-btn sky-btn-default sky-input-group-timepicker-btn"
       type="button"
       [attr.aria-controls]="isOpen ? timepickerId : null"
       [attr.aria-expanded]="isOpen"

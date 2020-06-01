@@ -2,10 +2,6 @@
 
 .sky-input-group-datepicker-btn {
   border-radius: 0;
-  border-left-color: transparent;
-  &:hover{
-    @include sky-border(dark, left);
-  }
 }
 
 .sky-datepicker-calendar-container {
