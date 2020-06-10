@@ -7,6 +7,7 @@ import {
   TemplateRef,
   OnDestroy,
   OnInit,
+  Optional,
   ViewChild
 } from '@angular/core';
 
@@ -18,6 +19,10 @@ import {
   SkyOverlayInstance,
   SkyOverlayService
 } from '@skyux/core';
+
+import {
+  SkyInputBoxHostService
+} from '@skyux/forms';
 
 import {
   fromEvent,
@@ -156,6 +161,18 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   })
   private triggerButtonRef: ElementRef;
 
+  @ViewChild('inputTemplateRef', {
+    read: TemplateRef,
+    static: true
+  })
+  private inputTemplateRef: TemplateRef<any>;
+
+  @ViewChild('triggerButtonTemplateRef', {
+    read: TemplateRef,
+    static: true
+  })
+  private triggerButtonTemplateRef: TemplateRef<any>;
+
   private affixer: SkyAffixer;
 
   private calendarUnsubscribe: Subject<void>;
@@ -174,7 +191,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     private affixService: SkyAffixService,
     private changeDetector: ChangeDetectorRef,
     private coreAdapter: SkyCoreAdapterService,
-    private overlayService: SkyOverlayService
+    private overlayService: SkyOverlayService,
+    @Optional() public inputBoxHostService?: SkyInputBoxHostService
   ) {
     const uniqueId = nextId++;
     this.calendarId = `sky-datepicker-calendar-${uniqueId}`;
@@ -183,6 +201,15 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   public ngOnInit(): void {
     this.addTriggerButtonEventListeners();
+
+    if (this.inputBoxHostService) {
+      this.inputBoxHostService.populate(
+        {
+          inputTemplate: this.inputTemplateRef,
+          buttonsTemplate: this.triggerButtonTemplateRef
+        }
+      );
+    }
   }
 
   public ngOnDestroy(): void {

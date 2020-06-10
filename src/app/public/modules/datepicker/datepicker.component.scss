@@ -1,8 +1,9 @@
 @import "~@skyux/theme/scss/mixins";
+@import "~@skyux/theme/scss/variables";
 
 .sky-input-group-datepicker-btn {
   border-radius: 0;
-  border-left-color: transparent;
+  margin-left: -1px;
   &:hover{
     @include sky-border(dark, left);
   }
