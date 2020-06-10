@@ -186,7 +186,7 @@ describe('fuzzy datepicker input', () => {
     let component: FuzzyDatepickerTestComponent;
     let nativeElement: HTMLElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.overrideComponent(SkyDatepickerComponent, {
         add: {
           providers: [
@@ -207,7 +207,9 @@ describe('fuzzy datepicker input', () => {
 
       // Default to US long date format to avoid any test runners that are using a different locale.
       component.dateFormat = 'MM/DD/YYYY';
-    });
+
+      detectChanges(fixture);
+    }));
 
     it('should throw an error if directive is added in isolation', () => {
       try {

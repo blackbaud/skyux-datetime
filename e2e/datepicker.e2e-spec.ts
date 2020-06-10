@@ -1,6 +1,7 @@
 import {
   expect,
-  SkyHostBrowser
+  SkyHostBrowser,
+  SkyVisualThemeSelector
 } from '@skyux-sdk/e2e';
 
 import {
@@ -9,9 +10,39 @@ import {
 } from 'protractor';
 
 describe('Datepicker', () => {
-  beforeEach(() => {
-    SkyHostBrowser.get('visual/datepicker');
-    SkyHostBrowser.setWindowBreakpoint('lg');
+  let currentTheme: string;
+  let currentThemeMode: string;
+
+  async function selectTheme(theme: string, mode: string): Promise<void> {
+    currentTheme = theme;
+    currentThemeMode = mode;
+
+    return SkyVisualThemeSelector.selectTheme(theme, mode);
+  }
+
+  function getScreenshotName(name: string): string {
+    if (currentTheme) {
+      name += '-' + currentTheme;
+    }
+
+    if (currentThemeMode) {
+      name += '-' + currentThemeMode;
+    }
+
+    return name;
+  }
+
+  async function validateInputBox(done: DoneFn): Promise<void> {
+    await SkyHostBrowser.scrollTo('#screenshot-datepicker-input-box');
+
+    expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
+      screenshotName: getScreenshotName('datepicker-input-box')
+    });
+  }
+
+  beforeEach(async () => {
+    await SkyHostBrowser.get('visual/datepicker');
+    await SkyHostBrowser.setWindowBreakpoint('lg');
   });
 
   it('should match previous daypicker screenshot', (done) => {
@@ -59,4 +90,33 @@ describe('Datepicker', () => {
       screenshotName: 'datepicker-input-invalid'
     });
   });
+
+  it('should match previous datepicker input screenshot', (done) => {
+    validateInputBox(done);
+  });
+
+  describe('when modern theme', () => {
+
+    beforeEach(async () => {
+      await selectTheme('modern', 'light');
+    });
+
+    it('should match previous datepicker input screenshot', (done) => {
+      validateInputBox(done);
+    });
+
+  });
+
+  describe('when modern theme in dark mode', () => {
+
+    beforeEach(async () => {
+      await selectTheme('modern', 'dark');
+    });
+
+    it('should match previous datepicker input screenshot', (done) => {
+      validateInputBox(done);
+    });
+
+  });
+
 });

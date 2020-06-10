@@ -20,22 +20,19 @@
   id="screenshot-datepicker"
   style="max-width: 50%; height: 500px;"
 >
-  <sky-input-box>
-    <label>With label</label>
-    <sky-datepicker #picker>
-      <input
-        skyDatepickerInput
-        [disabled]="disabled"
-        [maxDate]="maxDate"
-        [minDate]="minDate"
-        [skyDatepickerNoValidate]="noValidate"
-        [startingDay]="startingDay"
-        [strict]="strict"
-        [(ngModel)]="selectedDate"
-        #date="ngModel"
-      />
-    </sky-datepicker>
-  </sky-input-box>
+  <sky-datepicker #picker>
+    <input
+      skyDatepickerInput
+      [disabled]="disabled"
+      [maxDate]="maxDate"
+      [minDate]="minDate"
+      [skyDatepickerNoValidate]="noValidate"
+      [startingDay]="startingDay"
+      [strict]="strict"
+      [(ngModel)]="selectedDate"
+      #date="ngModel"
+    />
+  </sky-datepicker>
 
   <table>
     <tr>
@@ -81,19 +78,17 @@
     novalidate
     [formGroup]="reactiveForm"
   >
-    <sky-input-box>
-      <sky-datepicker>
-        <input
-          formControlName="selectedDate"
-          skyDatepickerInput
-          type="text"
-          [maxDate]="maxDate"
-          [minDate]="minDate"
-          [skyDatepickerNoValidate]="noValidate"
-          [startingDay]="startingDay"
-        />
-      </sky-datepicker>
-    </sky-input-box>
+    <sky-datepicker>
+      <input
+        formControlName="selectedDate"
+        skyDatepickerInput
+        type="text"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
+        [skyDatepickerNoValidate]="noValidate"
+        [startingDay]="startingDay"
+      />
+    </sky-datepicker>
 
     <table>
       <tr>
@@ -179,4 +174,31 @@
   >
     Toggle strict formatting
   </button>
+</div>
+
+<div
+  class="app-screenshot"
+  id="screenshot-datepicker-input-box"
+  style="max-width: 50%; height: 500px;"
+>
+  <sky-input-box>
+    <label
+      class="sky-control-label"
+    >
+      Input box
+    </label>
+    <sky-datepicker #inputBoxPicker>
+      <input
+        skyDatepickerInput
+        [disabled]="disabled"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
+        [skyDatepickerNoValidate]="noValidate"
+        [startingDay]="startingDay"
+        [strict]="strict"
+        [(ngModel)]="selectedDate"
+        #date="ngModel"
+      />
+    </sky-datepicker>
+  </sky-input-box>
 </div>
