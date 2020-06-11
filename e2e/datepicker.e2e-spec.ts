@@ -46,12 +46,14 @@ describe('Datepicker', () => {
   });
 
   it('should match previous daypicker screenshot', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-datepicker-calendar');
     expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
       screenshotName: 'datepicker-daypicker'
     });
   });
 
   it('should match previous monthpicker screenshot', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-datepicker-calendar');
     element(by.css('.sky-datepicker-calendar-title')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
@@ -60,6 +62,7 @@ describe('Datepicker', () => {
   });
 
   it('should match previous yearpicker screenshot', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-datepicker-calendar');
     element(by.css('.sky-datepicker-calendar-title')).click();
     element(by.css('.sky-datepicker-calendar-title')).click();
     SkyHostBrowser.moveCursorOffScreen();
@@ -69,12 +72,14 @@ describe('Datepicker', () => {
   });
 
   it('should match previous datepicker input screenshot', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-datepicker');
     expect('#screenshot-datepicker').toMatchBaselineScreenshot(done, {
       screenshotName: 'datepicker-input'
     });
   });
 
   it('should match previous datepicker input screenshot when open', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-datepicker');
     element(by.css('.sky-datepicker button')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-datepicker').toMatchBaselineScreenshot(done, {
@@ -83,6 +88,7 @@ describe('Datepicker', () => {
   });
 
   it('should match previous datepicker input screenshot when invalid', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-datepicker');
     element(by.css('#button-set-invalid-value')).click();
     SkyHostBrowser.moveCursorOffScreen();
     SkyHostBrowser.scrollTo('#screenshot-datepicker');
