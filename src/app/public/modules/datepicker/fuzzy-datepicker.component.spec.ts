@@ -212,22 +212,17 @@ describe('fuzzy datepicker input', () => {
     }));
 
     it('should throw an error if directive is added in isolation', () => {
+      let errorThrown = false;
+
       try {
         component.showInvalidDirective = true;
         fixture.detectChanges();
       } catch (err) {
         expect(err.message).toContain('skyFuzzyDatepickerInput');
+        errorThrown = true;
       }
-    });
 
-    it('should throw an error if yearRequired conflicts with the dateFormat', () => {
-      try {
-        component.yearRequired = true;
-        component.dateFormat = 'mm/dd';
-        fixture.detectChanges();
-      } catch (err) {
-        expect(err.message).toEqual('You have configured conflicting settings. Year is required and dateFormat does not include year.');
-      }
+      expect(errorThrown).toBeTrue();
     });
 
     it('should mark the control as dirty on keyup', () => {
@@ -1657,4 +1652,25 @@ describe('fuzzy datepicker input', () => {
       flush();
     }));
   });
+
+  describe('invalid date format/year required configuration', () => {
+    it('should throw an error if yearRequired conflicts with the dateFormat', fakeAsync(() => {
+      let errorThrown = false;
+
+      const fixture = TestBed.createComponent(FuzzyDatepickerTestComponent);
+      const component = fixture.componentInstance;
+
+      try {
+        component.yearRequired = true;
+        component.dateFormat = 'mm/dd';
+        detectChanges(fixture);
+      } catch (err) {
+        expect(err.message).toEqual('You have configured conflicting settings. Year is required and dateFormat does not include year.');
+        errorThrown = true;
+      }
+
+      expect(errorThrown).toBeTrue();
+    }));
+  });
+
 });
