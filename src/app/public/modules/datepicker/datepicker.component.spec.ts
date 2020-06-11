@@ -399,6 +399,26 @@ describe('datepicker', () => {
       });
     }));
 
+    it('should display the expected calendar icon in the calendar button', fakeAsync(() => {
+      const iconEl = fixture.nativeElement.querySelector(
+        '.sky-input-group-datepicker-btn .sky-icon'
+      );
+
+      expect(iconEl).toHaveCssClass('fa-calendar');
+
+      mockThemeSvc.settingsChange.next({
+        currentSettings: new SkyThemeSettings(
+          SkyTheme.presets.modern,
+          SkyThemeMode.presets.light
+        ),
+        previousSettings: mockThemeSvc.settingsChange.getValue().currentSettings
+      });
+
+      detectChanges(fixture);
+
+      expect(iconEl).toHaveCssClass('sky-i-calendar');
+    }));
+
     describe('initialization', () => {
       it('should handle initializing with a Date object', fakeAsync(() => {
         setInputProperty(new Date('5/12/2017'), component, fixture);

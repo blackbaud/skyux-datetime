@@ -25,6 +25,10 @@ import {
 } from '@skyux/forms';
 
 import {
+  SkyThemeService
+} from '@skyux/theme';
+
+import {
   fromEvent,
   Subject
 } from 'rxjs';
@@ -192,7 +196,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     private changeDetector: ChangeDetectorRef,
     private coreAdapter: SkyCoreAdapterService,
     private overlayService: SkyOverlayService,
-    @Optional() public inputBoxHostService?: SkyInputBoxHostService
+    @Optional() public inputBoxHostService?: SkyInputBoxHostService,
+    @Optional() public themeSvc?: SkyThemeService
   ) {
     const uniqueId = nextId++;
     this.calendarId = `sky-datepicker-calendar-${uniqueId}`;

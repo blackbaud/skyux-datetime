@@ -31,6 +31,11 @@
       <sky-icon
         icon="calendar"
         size="lg"
+        [iconType]="
+          (themeSvc?.settingsChange | async)?.currentSettings?.theme?.name === 'modern' ?
+            'skyux' :
+            'fa'
+        "
       ></sky-icon>
     </button>
   </div>
