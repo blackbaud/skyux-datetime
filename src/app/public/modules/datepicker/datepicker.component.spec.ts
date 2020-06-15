@@ -242,6 +242,9 @@ describe('datepicker', () => {
     let component: DatepickerTestComponent;
     let nativeElement: HTMLElement;
 
+    // After implementing input box, it was necessary to use `tick()` to force the datepicker
+    // elements to render, which is why `fakeAsync()` and the call to the custom `detectChanges()`
+    // function are used here.
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(DatepickerTestComponent);
       nativeElement = fixture.nativeElement as HTMLElement;

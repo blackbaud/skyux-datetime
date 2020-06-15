@@ -186,6 +186,9 @@ describe('fuzzy datepicker input', () => {
     let component: FuzzyDatepickerTestComponent;
     let nativeElement: HTMLElement;
 
+    // After implementing input box, it was necessary to use `tick()` to force the datepicker
+    // elements to render, which is why `fakeAsync()` and the call to the custom `detectChanges()`
+    // function are used here.
     beforeEach(fakeAsync(() => {
       fixture = TestBed.overrideComponent(SkyDatepickerComponent, {
         add: {

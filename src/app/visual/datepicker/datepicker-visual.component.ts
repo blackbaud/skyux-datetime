@@ -90,7 +90,7 @@ export class DatepickerVisualComponent implements OnInit {
     (this.selectedDate as any) = 'invalid';
   }
 
-  public themeSettingsChange(themeSettings: SkyThemeSettings) {
+  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
     this.themeSvc.setTheme(themeSettings);
   }
 }
