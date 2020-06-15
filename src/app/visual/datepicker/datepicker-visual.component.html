@@ -146,6 +146,7 @@
   </button>
   <button
     class="sky-btn"
+    id="toggle-disabled-btn"
     type="button"
     (click)="toggleDisabled()"
   >
@@ -181,7 +182,9 @@
   id="screenshot-datepicker-input-box"
   style="max-width: 50%; height: 500px;"
 >
-  <sky-input-box>
+  <sky-input-box
+    [disabled]="disabled"
+  >
     <label
       class="sky-control-label"
     >

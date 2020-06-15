@@ -40,6 +40,15 @@ describe('Datepicker', () => {
     });
   }
 
+  async function validateInputBoxDisabled(done: DoneFn): Promise<void> {
+    await element(by.css('#toggle-disabled-btn')).click();
+    await SkyHostBrowser.scrollTo('#screenshot-datepicker-input-box');
+
+    expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
+      screenshotName: getScreenshotName('datepicker-input-box-disabled')
+    });
+  }
+
   beforeEach(async () => {
     await SkyHostBrowser.get('visual/datepicker');
     await SkyHostBrowser.setWindowBreakpoint('lg');
@@ -111,6 +120,10 @@ describe('Datepicker', () => {
       validateInputBox(done);
     });
 
+    it('should match previous datepicker input screenshot when disabled', (done) => {
+      validateInputBoxDisabled(done);
+    });
+
   });
 
   describe('when modern theme in dark mode', () => {
@@ -121,6 +134,10 @@ describe('Datepicker', () => {
 
     it('should match previous datepicker input screenshot', (done) => {
       validateInputBox(done);
+    });
+
+    it('should match previous datepicker input screenshot when disabled', (done) => {
+      validateInputBoxDisabled(done);
     });
 
   });
