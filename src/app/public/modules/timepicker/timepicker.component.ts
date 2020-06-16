@@ -8,7 +8,8 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  Input
 } from '@angular/core';
 
 import {
@@ -38,6 +39,10 @@ const moment = moment_;
 
 let nextId = 0;
 
+/**
+ * Creates the timepicker button and picker.
+ * You must wrap this component around an input with the `skyTimepickerInput` applied.
+ */
 @Component({
   selector: 'sky-timepicker',
   templateUrl: './timepicker.component.html',
@@ -46,6 +51,9 @@ let nextId = 0;
 })
 export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
+  /**
+   * Fires when the value in the timepicker input changes.
+   */
   @Output()
   public selectedTimeChanged: EventEmitter<SkyTimepickerTimeOutput> =
     new EventEmitter<SkyTimepickerTimeOutput>();
