@@ -8,8 +8,7 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
-  Input
+  ViewChild
 } from '@angular/core';
 
 import {
