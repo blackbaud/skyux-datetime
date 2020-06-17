@@ -82,7 +82,7 @@ export class SkyDatepickerInputDirective
 
   /**
    * Specifies the date format for the input. Place this attribute on the `input` element
-   * to override the default date format in the `SkyDatepickerConfigService`.
+   * to override the default in the `SkyDatepickerConfigService`.
    * @default MM/DD/YYYY
    */
   @Input()
@@ -186,7 +186,7 @@ export class SkyDatepickerInputDirective
 
   /**
    * Specifies the starting day of the week in the calendar, where `0` sets the starting day
-   * to Sunday. Place this attribute on the `input` element to override the default starting day
+   * to Sunday. Place this attribute on the `input` element to override the default
    * in `SkyDatepickerConfigService`.
    * @default 0
    */

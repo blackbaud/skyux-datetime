@@ -45,7 +45,7 @@ let nextId = 0;
 
 /**
  * Creates the datepicker button and calendar.
- * You must wrap this component around an input with the `skyDatepickerInput` applied.
+ * You must wrap this component around an input with the `skyDatepickerInput` directive.
  */
 @Component({
   selector: 'sky-datepicker',

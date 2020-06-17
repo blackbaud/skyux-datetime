@@ -82,7 +82,7 @@ export class SkyFuzzyDatepickerInputDirective
 
   /**
    * Specifies the date format for the input. Place this attribute on the `input` element
-   * to override the default date format in `SkyDatepickerConfigService`.
+   * to override the default in `SkyDatepickerConfigService`.
    * @default MM/DD/YYYY
    */
   @Input()
@@ -181,8 +181,9 @@ export class SkyFuzzyDatepickerInputDirective
   /**
    * Creates the fuzzy datepicker input and calendar to let users specify dates that are
    * not complete. For example, if users know the year but not the month or day, they can
-   * enter just the year. Place this directive on an `input` element,
-   * and wrap the `input` in a `sky-datepicker` component.
+   * enter just the year. Place this directive on an `input` element, and wrap the `input`
+   * in a `sky-datepicker` component. The value that users select is driven
+   * through the `ngModel` attribute specified on the `input` element.
    * @required
    */
   @Input()
@@ -190,7 +191,7 @@ export class SkyFuzzyDatepickerInputDirective
 
   /**
    * Specifies the starting day of the week in the calendar, where `0` sets the starting day
-   * to Sunday. Place this attribute on the `input` element to override the default starting day
+   * to Sunday. Place this attribute on the `input` element to override the default
    * in `SkyDatepickerConfigService`.
    * @default 0
    */
