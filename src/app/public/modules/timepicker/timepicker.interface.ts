@@ -11,7 +11,7 @@ export interface SkyTimepickerTimeOutput {
   minute: number;
 
   /**
-   * Specifies the meridian.
+   * Specifies the meridian (`AM` or `PM`).
    */
   meridie: string;
 
