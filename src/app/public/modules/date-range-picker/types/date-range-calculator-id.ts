@@ -63,7 +63,7 @@ export enum SkyDateRangeCalculatorId {
 
   /**
    * Sets the start date to the first day of the month before the current month and
-   * the end date to the final day of that month.
+   * the end date to the last day of that month.
    */
   LastMonth,
 

@@ -39,8 +39,10 @@ const moment = moment_;
 let nextId = 0;
 
 /**
- * Creates the timepicker button and picker.
- * You must wrap this component around an input with the `skyTimepickerInput` applied.
+ * Creates a SKY UX-themed replacement for the HTML `input` element with `type="time"`.
+ * The value that users select is driven through the `ngModel` attribute
+ * specified on the `input` element. You must wrap this component around an `input`
+ * with the `skyTimepickerInput` directive.
  */
 @Component({
   selector: 'sky-timepicker',
