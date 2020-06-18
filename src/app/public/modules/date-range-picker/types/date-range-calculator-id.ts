@@ -1,12 +1,11 @@
 /**
  * `SkyDateRangeCalculatorId` values specify calculator objects that return
- * two `Date` objects to represent date ranges. The `SkyDateRangeCalculatorId` values
- * are used to populate the options in the date range picker's dropdown.
- * SKY UX uses the `SkyDateRangeService` to create calculators and configures each one
- * with a `validate` function to confirm that the dates users select are compatible. For example,
- * `validate` functions ensure that start dates are before end dates. SKY UX also
- * configures calculators to call a `getValue` function after the `validate` function and return
- * a range of two `Date` objects.
+ * two `Date` objects to represent date ranges. The values populate the options
+ * in the date range picker's dropdown. SKY UX uses the `SkyDateRangeService` to create
+ * calculators and configures each one with a `validate` function to confirm that dates
+ * are compatible. For example, `validate` functions ensure that start dates are before
+ * end dates. SKY UX also configures calculators to call a `getValue` function after
+ * the `validate` function and return a range of two `Date` objects.
  */
 export enum SkyDateRangeCalculatorId {
 
