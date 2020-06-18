@@ -76,7 +76,7 @@ export class SkyTimepickerInputDirective implements
   public skyTimepickerInput: SkyTimepickerComponent;
 
   /**
-   * Specifies the 12-hour hh or 24-hour HH time format for the input.
+   * Specifies the 12-hour `hh` or 24-hour `HH` time format for the input.
    * @default hh
    */
   @Input()

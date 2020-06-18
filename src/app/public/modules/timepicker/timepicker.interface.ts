@@ -16,12 +16,12 @@ export interface SkyTimepickerTimeOutput {
   meridie: string;
 
   /**
-   * Specifies the timezone.
+   * Specifies the time zone.
    */
   timezone: number;
 
   /**
-   * Specifies the date in iso8601 format.
+   * Specifies the date in [iso8601 format](https://www.iso.org/iso-8601-date-and-time-format.html).
    */
   iso8601: Date;
 
