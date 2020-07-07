@@ -1,5 +1,5 @@
 # 4.1.1 (2020-07-07)
-- Fixed issue where fuzzy date could return incorrect data when sending in a day value of the 31st. [#181](https://github.com/blackbaud/skyux-datetime/pull/181) (Thanks [@Blackbaud-CoreyArcher](https://github.com/Blackbaud-CoreyArcher)!)
+- Fixed an issue where the fuzzy date pipe returned incorrect data when the day value was 31. [#181](https://github.com/blackbaud/skyux-datetime/pull/181) (Thanks [@Blackbaud-CoreyArcher](https://github.com/Blackbaud-CoreyArcher)!)
 
 # 4.1.0 (2020-06-16)
 
