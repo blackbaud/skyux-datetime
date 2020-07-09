@@ -1,6 +1,6 @@
 # 4.1.2 (2020-07-07)
 
-- Fixed an issue where the SkyDatePipe `transform` signature reuiqred a `Date` object when other data such as `string` types are supported. This fixes AoT compiler errors when the pipe is used in a template. 
+- Fixed an issue where the SkyDatePipe `transform` signature required a `Date` object when other data such as `string` types are supported. This fixes AoT compiler errors when the pipe is used in a template. 
 
 # 4.1.1 (2020-07-07)
 
