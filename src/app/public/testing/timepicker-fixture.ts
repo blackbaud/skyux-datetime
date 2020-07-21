@@ -118,7 +118,7 @@ export class SkyTimepickerFixture {
     this.fixture.detectChanges();
 
     const timepickerButton = this.debugEl.query(
-      By.css('.sky-timepicker .sky-input-group-timepicker-btn button')
+      By.css('.sky-timepicker .sky-input-group-btn button')
     ).nativeElement;
 
     timepickerButton.click();
