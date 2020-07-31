@@ -33,6 +33,9 @@ import {
   SKY_DEFAULT_CALCULATOR_CONFIGS
 } from './types/date-range-default-calculator-configs';
 
+/**
+ * This service creates and manages `SkyDateRangeCalculator` instances.
+ */
 @Injectable()
 export class SkyDateRangeService {
 
