@@ -19,10 +19,6 @@ import {
 } from '@skyux/datetime';
 
 import {
-  SkyPopoverModule
-} from '@skyux/popovers';
-
-import {
   SkyTimepickerFixture
 } from './timepicker-fixture';
 
@@ -30,20 +26,21 @@ import {
   selector: 'timepicker-test',
   template: `
   <div>
-<sky-timepicker
-data-sky-id="test-timepicker"
-(selectedTimeChanged)="onTimeChange()"
-#timepickerTest>
-  <input
-    type="text"
-    [disabled]="disabled"
-    [skyTimepickerInput]="timepickerTest"
-    [timeFormat]="format12"
-    [(ngModel)]="selectedTime"
-    #time="ngModel"
-  />
-</sky-timepicker>
-</div>
+    <sky-timepicker
+      data-sky-id="test-timepicker"
+      (selectedTimeChanged)="onTimeChange()"
+      #timepickerTest
+    >
+      <input
+        type="text"
+        [disabled]="disabled"
+        [skyTimepickerInput]="timepickerTest"
+        [timeFormat]="format12"
+        [(ngModel)]="selectedTime"
+        #time="ngModel"
+      />
+    </sky-timepicker>
+  </div>
 `
 })
 class TestComponent {
@@ -74,8 +71,7 @@ describe('Timepicker fixture', () => {
       ],
       imports: [
         FormsModule,
-        SkyTimepickerModule,
-        SkyPopoverModule
+        SkyTimepickerModule
       ]
     });
   });
@@ -93,8 +89,8 @@ describe('Timepicker fixture', () => {
     );
 
     await fixture.whenStable();
-    expect(timepicker.disabled).toBe(false);
-    expect(timepicker.time).toEqual(fixture.componentInstance.selectedTime.local);
+    expect(timepicker.isDisabled).toBe(false);
+    expect(timepicker.value).toEqual(fixture.componentInstance.selectedTime.local);
   });
 
   it('should set the timepicker time', async () => {
@@ -111,11 +107,11 @@ describe('Timepicker fixture', () => {
     );
 
     await fixture.whenStable();
-    expect(timepicker.time).toEqual(fixture.componentInstance.selectedTime.local);
+    expect(timepicker.value).toEqual(fixture.componentInstance.selectedTime.local);
 
-    timepicker.time = newTime;
+    timepicker.value = newTime;
 
-    expect(timepicker.time).toEqual(newTime);
+    expect(timepicker.value).toEqual(newTime);
   });
 
   it('should set the timepicker disabled state', async () => {
@@ -132,11 +128,11 @@ describe('Timepicker fixture', () => {
 
     await fixture.whenStable();
 
-    expect(timepicker.disabled).toBeFalse();
+    expect(timepicker.isDisabled).toBeFalse();
 
-    timepicker.disabled = true;
+    timepicker.isDisabled = true;
 
-    expect(timepicker.disabled).toBeTrue();
+    expect(timepicker.isDisabled).toBeTrue();
   });
 
   it('should indicate if the timepicker input is valid', async () => {
@@ -151,11 +147,11 @@ describe('Timepicker fixture', () => {
 
     await fixture.whenStable();
 
-    expect(timepicker.valid).toBeTrue();
+    expect(timepicker.isValid).toBeTrue();
 
-    timepicker.time = 'badValue';
+    timepicker.value = 'badValue';
 
-    expect(timepicker.valid).toBeFalse();
+    expect(timepicker.isValid).toBeFalse();
   });
 
   it('should select the time from the dropdown and emit selectedTimeChanged', async () => {
@@ -172,11 +168,11 @@ describe('Timepicker fixture', () => {
 
     await fixture.whenStable();
 
-    expect(timepicker.time).toEqual(fixture.componentInstance.selectedTime.local);
+    expect(timepicker.value).toEqual(fixture.componentInstance.selectedTime.local);
 
     await timepicker.selectTime(2, 2, 1);
 
-    expect(timepicker.time).toEqual('3:10 PM');
+    expect(timepicker.value).toEqual('3:10 PM');
     expect(fixture.componentInstance.onTimeChange).toHaveBeenCalled();
   });
 });

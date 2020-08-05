@@ -31,14 +31,14 @@ export class SkyTimepickerFixture {
   /**
    * The timepicker's currently selected time.
    */
-  public get time(): string {
+  public get value(): string {
     return this.getTimepickerInputEl().nativeElement.value;
   }
 
   /**
    * Set the timepicker's selected time.
    */
-  public set time(value: string) {
+  public set value(value: string) {
     const timepickerInputEl = this.getTimepickerInputEl().nativeElement;
     timepickerInputEl.value = value;
     this.fixture.detectChanges();
@@ -50,21 +50,21 @@ export class SkyTimepickerFixture {
   /**
    * Flag indicating if timepicker input is disabled.
    */
-  public get disabled(): boolean {
+  public get isDisabled(): boolean {
     return this.getTimepickerInputEl().nativeElement.disabled;
   }
 
   /**
    * Set the timepicker's disabled value
    */
-  public set disabled(value: boolean) {
+  public set isDisabled(value: boolean) {
     this.getTimepickerInputEl().nativeElement.disabled = value;
   }
 
   /**
    * Flag indicating if timepicker input is valid.
    */
-  public get valid(): boolean {
+  public get isValid(): boolean {
     return !this.getTimepickerInputEl().nativeElement.classList.contains('ng-invalid');
   }
 
