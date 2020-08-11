@@ -495,4 +495,17 @@ describe('Date range picker', function () {
       expect(fixture.elementRef.nativeElement).toBeAccessible();
     });
   }));
+
+  it('should allow for disabling the control', fakeAsync(function () {
+    component.initialValue = {
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange
+    };
+    component.initialDisabled = true;
+
+    detectChanges();
+
+    const control = component.dateRange;
+
+    expect(control.disabled).toBe(true);
+  }));
 });
