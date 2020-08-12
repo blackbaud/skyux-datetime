@@ -280,6 +280,20 @@ describe('Date range picker', function () {
     verifyFormFieldsDisabledStatus(false);
   }));
 
+  it('should allow for disabling the control on initialization', fakeAsync(function () {
+    component.initialValue = {
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange
+    };
+    component.initialDisabled = true;
+
+    detectChanges();
+
+    const control = component.dateRange;
+
+    expect(control.disabled).toBe(true);
+    verifyFormFieldsDisabledStatus(true);
+  }));
+
   it('should mark the control as touched when select is blurred', fakeAsync(function () {
     detectChanges();
 
@@ -494,18 +508,5 @@ describe('Date range picker', function () {
     fixture.whenStable().then(() => {
       expect(fixture.elementRef.nativeElement).toBeAccessible();
     });
-  }));
-
-  it('should allow for disabling the control', fakeAsync(function () {
-    component.initialValue = {
-      calculatorId: SkyDateRangeCalculatorId.SpecificRange
-    };
-    component.initialDisabled = true;
-
-    detectChanges();
-
-    const control = component.dateRange;
-
-    expect(control.disabled).toBe(true);
   }));
 });

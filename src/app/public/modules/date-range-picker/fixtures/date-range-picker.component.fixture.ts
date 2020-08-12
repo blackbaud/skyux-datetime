@@ -47,8 +47,8 @@ export class DateRangePickerTestComponent implements OnInit, OnDestroy {
 
   public calculatorIds: SkyDateRangeCalculatorId[];
   public dateFormat: string;
+  public initialDisabled: boolean = false;
   public initialValue: SkyDateRangeCalculation;
-  public initialDisabled: boolean;
   public label: string;
   public numValueChangeNotifications = 0;
   public reactiveForm: FormGroup;
@@ -57,10 +57,7 @@ export class DateRangePickerTestComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder
-  ) {
-    // the control is enable by default for testing
-    this.initialDisabled = false;
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
