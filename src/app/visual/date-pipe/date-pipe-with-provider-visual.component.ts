@@ -8,22 +8,15 @@ import {
 } from '@skyux/i18n';
 
 import {
-  BehaviorSubject,
+  of,
   Observable
 } from 'rxjs';
 
 export class MyLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo(): Observable<SkyAppLocaleInfo> {
-    const obs = new BehaviorSubject<any>({});
-
-    // Simulate HTTP call.
-    setTimeout(() => {
-      obs.next({
-        locale: 'fr-CA'
-      });
-    }, 1000);
-
-    return obs;
+    return of({
+      locale: 'zh-CN'
+    });
   }
 }
 

@@ -24,7 +24,8 @@ export class DatePipeVisualComponent implements OnInit {
     'mediumDate',
     'shortDate',
     'mediumTime',
-    'shortTime'
+    'shortTime',
+    'MM/dd/yyyy'
   ];
 
   public locale: string = 'en-US';
