@@ -153,26 +153,4 @@ describe('Timepicker fixture', () => {
 
     expect(timepicker.isValid).toBeFalse();
   });
-
-  it('should select the time from the dropdown and emit selectedTimeChanged', async () => {
-    const fixture = TestBed.createComponent(
-      TestComponent
-    );
-
-    const timepicker = new SkyTimepickerFixture(
-      fixture,
-      'test-timepicker'
-    );
-    spyOn(fixture.componentInstance, 'onTimeChange');
-    fixture.detectChanges();
-
-    await fixture.whenStable();
-
-    expect(timepicker.value).toEqual(fixture.componentInstance.selectedTime.local);
-
-    await timepicker.selectTime(2, 2, 1);
-
-    expect(timepicker.value).toEqual('3:10 PM');
-    expect(fixture.componentInstance.onTimeChange).toHaveBeenCalled();
-  });
 });
