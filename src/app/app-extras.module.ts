@@ -8,6 +8,14 @@ import {
 } from '@skyux/docs-tools';
 
 import {
+  SkyInputBoxModule
+} from '@skyux/forms';
+
+import {
+  SkyPageModule
+} from '@skyux/layout';
+
+import {
   SkyAppLinkModule
 } from '@skyux/router';
 
@@ -16,16 +24,18 @@ import {
   SkyDatepickerModule,
   SkyDateRangePickerModule,
   SkyTimepickerModule
-} from './public';
+} from './public/public_api';
 
 @NgModule({
   exports: [
     SkyAppLinkModule,
     SkyDatePipeModule,
     SkyDatepickerModule,
+    SkyDateRangePickerModule,
     SkyDocsToolsModule,
-    SkyTimepickerModule,
-    SkyDateRangePickerModule
+    SkyInputBoxModule,
+    SkyPageModule,
+    SkyTimepickerModule
   ],
   providers: [
     {

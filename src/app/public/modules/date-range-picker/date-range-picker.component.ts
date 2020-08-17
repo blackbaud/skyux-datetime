@@ -27,24 +27,23 @@ import {
 } from '@skyux/core';
 
 import {
-  Observable
-} from 'rxjs/Observable';
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
 
 import {
+  combineLatest,
   Subject
-} from 'rxjs/Subject';
-
-import 'rxjs/add/observable/combineLatest';
-
-import 'rxjs/add/operator/distinctUntilChanged';
-
-import 'rxjs/add/operator/first';
-
-import 'rxjs/add/operator/takeUntil';
+} from 'rxjs';
 
 import {
-  SkyDatepickerConfigService
-} from '../datepicker/datepicker-config.service';
+  distinctUntilChanged,
+  first,
+  takeUntil
+} from 'rxjs/operators';
+
+import {
+  SkyDateFormatter
+} from '../datepicker/date-formatter';
 
 import {
   SkyDateRangeCalculation
@@ -82,6 +81,16 @@ const SKY_DATE_RANGE_PICKER_VALIDATOR = {
 
 let uniqueId = 0;
 
+/**
+ * This component acts as a form control with a form model of type `SkyDateRangeCalculation`.
+ * @example
+ * ```
+ * <sky-date-range-picker
+ *   formControlName="myPicker"
+ * >
+ * </sky-date-range-picker>
+ * ```
+ */
 @Component({
   selector: 'sky-date-range-picker',
   templateUrl: './date-range-picker.component.html',
@@ -95,25 +104,11 @@ let uniqueId = 0;
 export class SkyDateRangePickerComponent
   implements OnInit, OnChanges, OnDestroy, ControlValueAccessor, Validator {
 
-  @Input()
-  public set dateFormat(value: string) {
-    this._dateFormat = value;
-  }
-
-  public get dateFormat(): string {
-    return this._dateFormat || this.datePickerConfigService.dateFormat;
-  }
-
-  @Input()
-  public set disabled(value: boolean) {
-    this._disabled = value;
-    this.changeDetector.markForCheck();
-  }
-
-  public get disabled(): boolean {
-    return this._disabled;
-  }
-
+  /**
+   * Specifies IDs for the date range options to include in the picker's dropdown.
+   * The options specify calculator objects that return two `Date` objects to represent date ranges.
+   * By default, this property includes all `SkyDateRangeCalculatorId` values.
+   */
   @Input()
   public set calculatorIds(value: SkyDateRangeCalculatorId[]) {
     this._calculatorIds = value;
@@ -146,6 +141,40 @@ export class SkyDateRangePickerComponent
     ];
   }
 
+  /**
+   * Specifies a date format for
+   * [the `sky-datepicker` components](https://developer.blackbaud.com/skyux/components/datepicker)
+   * that make up the date range picker. The text input is a composite component of
+   * up to two `sky-datepicker` components.
+   * @default MM/DD/YYYY
+   */
+  @Input()
+  public set dateFormat(value: string) {
+    this._dateFormat = value;
+  }
+
+  public get dateFormat(): string {
+    return this._dateFormat || this.preferredShortDateFormat;
+  }
+
+  /**
+   * Indicates whether to disable the date range picker.
+   * @default false
+   */
+  @Input()
+  public set disabled(value: boolean) {
+    this._disabled = value;
+    this.changeDetector.markForCheck();
+  }
+
+  public get disabled(): boolean {
+    return this._disabled;
+  }
+
+  /**
+   * Specifies a label for the date range picker.
+   * @required
+   */
   @Input()
   public label: string;
 
@@ -209,6 +238,7 @@ export class SkyDateRangePickerComponent
   }
 
   private control: AbstractControl;
+  private preferredShortDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
   private _calculatorIds: SkyDateRangeCalculatorId[];
@@ -218,11 +248,18 @@ export class SkyDateRangePickerComponent
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private datePickerConfigService: SkyDatepickerConfigService,
     private dateRangeService: SkyDateRangeService,
     private formBuilder: FormBuilder,
+    private localeProvider: SkyAppLocaleProvider,
     private windowRef: SkyAppWindowRef
-  ) { }
+  ) {
+    this.localeProvider.getLocaleInfo()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((localeInfo) => {
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
+      });
+  }
 
   public ngOnInit(): void {
     this.createForm();
@@ -449,12 +486,11 @@ export class SkyDateRangePickerComponent
   private addEventListeners(): void {
     // Detect errors from the date pickers
     // when control is initialized with a value.
-    Observable
-      .combineLatest(
+      combineLatest([
         this.startDateControl.statusChanges,
         this.endDateControl.statusChanges
-      )
-      .first()
+      ])
+      .pipe(first())
       .subscribe((status: string[]) => {
         if (status.indexOf('INVALID') > -1) {
           // Wait for initial validation to complete.
@@ -466,29 +502,38 @@ export class SkyDateRangePickerComponent
 
     // Watch for selected calculator change.
     this.calculatorIdControl.valueChanges
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value) => {
         const id = parseInt(value, 10);
-        const calculator = this.getCalculatorById(id);
-        const newValue = calculator.getValue();
+        // if the component is disabled during form creation, null is passed
+        // as the value of the calculator id control
+        // only handle the value changes if the calculator id is a number
+        if (!isNaN(id)) {
+          const calculator = this.getCalculatorById(id);
+          const newValue = calculator.getValue();
 
-        this.setValue(newValue);
-        this.resetFormGroupValue(newValue);
-        this.showRelevantFormFields();
+          this.setValue(newValue);
+          this.resetFormGroupValue(newValue);
+          this.showRelevantFormFields();
+        }
       });
 
     // Watch for start date value changes.
     this.startDateControl.valueChanges
-      .distinctUntilChanged()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((startDate) => {
         this.patchValue({ startDate });
       });
 
     // Watch for end date value changes.
     this.endDateControl.valueChanges
-      .distinctUntilChanged()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((endDate) => {
         this.patchValue({ endDate });
       });
@@ -517,9 +562,9 @@ export class SkyDateRangePickerComponent
   }
 
   /* istanbul ignore next */
-  private onChange = (_: SkyDateRangeCalculation) => {};
+  private onChange = (_: SkyDateRangeCalculation) => { };
   /* istanbul ignore next */
-  private onTouched = () => {};
+  private onTouched = () => { };
   /* istanbul ignore next */
-  private onValidatorChange = () => {};
+  private onValidatorChange = () => { };
 }

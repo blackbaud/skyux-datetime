@@ -11,12 +11,15 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyI18nModule
-} from '@skyux/i18n';
+  SkyAffixModule,
+  SkyAppWindowRef,
+  SkyCoreAdapterService,
+  SkyOverlayModule
+} from '@skyux/core';
 
 import {
-  SkyDropdownModule
-} from '@skyux/popovers';
+  SkyI18nModule
+} from '@skyux/i18n';
 
 import {
   SkyIconModule
@@ -80,10 +83,11 @@ import {
   imports: [
     CommonModule,
     SkyI18nModule,
-    SkyDropdownModule,
     FormsModule,
     SkyIconModule,
-    SkyDateTimeResourcesModule
+    SkyDateTimeResourcesModule,
+    SkyAffixModule,
+    SkyOverlayModule
   ],
   exports: [
     SkyDatepickerCalendarComponent,
@@ -96,8 +100,10 @@ import {
     SkyFuzzyDatepickerInputDirective
   ],
   providers: [
+    SkyAppWindowRef,
     SkyDatepickerConfigService,
-    SkyFuzzyDateService
+    SkyFuzzyDateService,
+    SkyCoreAdapterService
   ]
 })
 export class SkyDatepickerModule { }

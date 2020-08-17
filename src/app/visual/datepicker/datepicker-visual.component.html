@@ -1,3 +1,7 @@
+<sky-docs-demo-control-panel-theme
+  (themeSettingsChange)="themeSettingsChange($event)"
+></sky-docs-demo-control-panel-theme>
+
 <div
   class="app-screenshot"
   id="screenshot-datepicker-calendar"
@@ -18,12 +22,13 @@
 >
   <sky-datepicker #picker>
     <input
+      skyDatepickerInput
       [disabled]="disabled"
       [maxDate]="maxDate"
       [minDate]="minDate"
-      [skyDatepickerInput]="picker"
       [skyDatepickerNoValidate]="noValidate"
       [startingDay]="startingDay"
+      [strict]="strict"
       [(ngModel)]="selectedDate"
       #date="ngModel"
     />
@@ -82,7 +87,6 @@
         [minDate]="minDate"
         [skyDatepickerNoValidate]="noValidate"
         [startingDay]="startingDay"
-        [disabled]="disabled"
       />
     </sky-datepicker>
 
@@ -142,6 +146,7 @@
   </button>
   <button
     class="sky-btn"
+    id="toggle-disabled-btn"
     type="button"
     (click)="toggleDisabled()"
   >
@@ -162,4 +167,41 @@
   >
     Set invalid value
   </button>
+  <button
+    class="sky-btn"
+    id="button-set-invalid-value"
+    type="button"
+    (click)="strict = !strict"
+  >
+    Toggle strict formatting
+  </button>
+</div>
+
+<div
+  class="app-screenshot"
+  id="screenshot-datepicker-input-box"
+  style="max-width: 50%; height: 500px;"
+>
+  <sky-input-box
+    [disabled]="disabled"
+  >
+    <label
+      class="sky-control-label"
+    >
+      Input box
+    </label>
+    <sky-datepicker #inputBoxPicker>
+      <input
+        skyDatepickerInput
+        [disabled]="disabled"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
+        [skyDatepickerNoValidate]="noValidate"
+        [startingDay]="startingDay"
+        [strict]="strict"
+        [(ngModel)]="selectedDate"
+        #date="ngModel"
+      />
+    </sky-datepicker>
+  </sky-input-box>
 </div>

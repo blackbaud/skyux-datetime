@@ -7,16 +7,15 @@ import {
 } from '@skyux/i18n';
 
 import {
-  BehaviorSubject
-} from 'rxjs/BehaviorSubject';
+  BehaviorSubject,
+  forkJoin,
+  Observable
+} from 'rxjs';
 
 import {
-  Observable
-} from 'rxjs/Observable';
-
-import 'rxjs/add/observable/forkJoin';
-
-import 'rxjs/add/operator/first';
+  first,
+  map
+} from 'rxjs/operators';
 
 import {
   SkyDateRangeCalculatorConfig
@@ -34,6 +33,9 @@ import {
   SKY_DEFAULT_CALCULATOR_CONFIGS
 } from './types/date-range-default-calculator-configs';
 
+/**
+ * This service creates and manages `SkyDateRangeCalculator` instances.
+ */
 @Injectable()
 export class SkyDateRangeService {
 
@@ -42,7 +44,9 @@ export class SkyDateRangeService {
   private static lastId = 1000;
 
   private calculatorReadyStream = new BehaviorSubject<boolean>(false);
+
   private calculatorConfigs: {[id: number]: SkyDateRangeCalculatorConfig} = {};
+
   private calculators: SkyDateRangeCalculator[] = [];
 
   constructor(
@@ -51,6 +55,10 @@ export class SkyDateRangeService {
     this.createDefaultCalculators();
   }
 
+  /**
+   * Creates a custom date range calculator.
+   * @param config The calculator config.
+   */
   public createCalculator(config: SkyDateRangeCalculatorConfig): SkyDateRangeCalculator {
     const newId = SkyDateRangeService.lastId++;
     const calculator = new SkyDateRangeCalculator(newId, config);
@@ -60,6 +68,10 @@ export class SkyDateRangeService {
     return calculator;
   }
 
+  /**
+   * Returns calculators from an array of calculator IDs.
+   * @param ids The array of calculator IDs.
+   */
   public getCalculators(ids: SkyDateRangeCalculatorId[]): Promise<SkyDateRangeCalculator[]> {
     const promises = ids.map((id) => {
       return this.getCalculatorById(id);
@@ -68,6 +80,10 @@ export class SkyDateRangeService {
     return Promise.all(promises);
   }
 
+  /**
+   * Returns a calculator from a calculator ID.
+   * @param id The calculator ID.
+   */
   public getCalculatorById(id: SkyDateRangeCalculatorId): Promise<SkyDateRangeCalculator> {
     const calculatorId = parseInt(id as any, 10);
     const found = this.calculators.find((calculator) => {
@@ -83,7 +99,7 @@ export class SkyDateRangeService {
       }
 
       this.calculatorReadyStream
-        .first()
+        .pipe(first())
         .subscribe(() => {
           resolve(found);
         });
@@ -105,24 +121,28 @@ export class SkyDateRangeService {
       tasks.push(
         this.resourcesService
           .getString(defaultConfig.shortDescriptionResourceKey)
-          .first()
-          .map((value) => {
-            config.shortDescription = value;
-          })
+          .pipe(
+            first(),
+            map((value) => {
+              config.shortDescription = value;
+            })
+          )
       );
 
       this.calculatorConfigs[defaultConfig.calculatorId] = config;
     });
 
-    Observable.forkJoin(tasks).first().subscribe(() => {
-      const calculatorIds = Object.keys(this.calculatorConfigs);
-      const calculators = calculatorIds.map((calculatorId) => {
-        const id = parseInt(calculatorId, 10);
-        return new SkyDateRangeCalculator(id, this.calculatorConfigs[id]);
-      });
+    forkJoin(tasks)
+      .pipe(first())
+      .subscribe(() => {
+        const calculatorIds = Object.keys(this.calculatorConfigs);
+        const calculators = calculatorIds.map((calculatorId) => {
+          const id = parseInt(calculatorId, 10);
+          return new SkyDateRangeCalculator(id, this.calculatorConfigs[id]);
+        });
 
-      this.calculators = calculators;
-      this.calculatorReadyStream.next(true);
-    });
+        this.calculators = calculators;
+        this.calculatorReadyStream.next(true);
+      });
   }
 }

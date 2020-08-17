@@ -11,6 +11,15 @@ import {
   Validators
 } from '@angular/forms';
 
+import {
+  distinctUntilChanged
+} from 'rxjs/operators';
+
+import {
+  SkyThemeService,
+  SkyThemeSettings
+} from '@skyux/theme';
+
 @Component({
   selector: 'datepicker-visual',
   templateUrl: './datepicker-visual.component.html'
@@ -21,11 +30,13 @@ export class DatepickerVisualComponent implements OnInit {
   public maxDate: Date;
   public noValidate = false;
   public reactiveForm: FormGroup;
-  public selectedDate: any = '4/4/2017';
+  public selectedDate: Date = new Date(1955, 10, 5);
   public startingDay: number;
+  public strict: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private themeSvc: SkyThemeService
   ) { }
 
   public get reactiveDate(): AbstractControl {
@@ -34,17 +45,17 @@ export class DatepickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      selectedDate: new FormControl('4/4/2017', Validators.required)
+      selectedDate: new FormControl(new Date(1955, 10, 5), Validators.required)
     });
 
     this.reactiveDate.statusChanges
-      .distinctUntilChanged()
+      .pipe(distinctUntilChanged())
       .subscribe((status: any) => {
         console.log('Status changed:', status);
       });
 
     this.reactiveDate.valueChanges
-      .distinctUntilChanged()
+      .pipe(distinctUntilChanged())
       .subscribe((value: any) => {
         console.log('Value changed:', value);
       });
@@ -76,6 +87,10 @@ export class DatepickerVisualComponent implements OnInit {
 
   public setInvalidValue(): void {
     this.reactiveDate.setValue('invalid');
-    this.selectedDate = 'invalid';
+    (this.selectedDate as any) = 'invalid';
+  }
+
+  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
+    this.themeSvc.setTheme(themeSettings);
   }
 }

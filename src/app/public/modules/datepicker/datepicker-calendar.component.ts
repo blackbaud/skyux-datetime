@@ -24,6 +24,9 @@ import {
   SkyDateFormatter
 } from './date-formatter';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'sky-datepicker-calendar',
   templateUrl: './datepicker-calendar.component.html',
@@ -66,11 +69,13 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
     return this.adapter.elementIsVisible();
   }
 
-  @ViewChild(SkyDatepickerCalendarInnerComponent)
+  @ViewChild(SkyDatepickerCalendarInnerComponent, {
+    read: SkyDatepickerCalendarInnerComponent,
+    static: true
+  })
   public _datepicker: SkyDatepickerCalendarInnerComponent;
 
   protected _now: Date = new Date();
-  protected config: SkyDatepickerConfigService;
 
   private formatter = new SkyDateFormatter();
 
@@ -78,9 +83,8 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
 
   public constructor(
     private adapter: SkyDatepickerAdapterService,
-    config: SkyDatepickerConfigService,
+    private config: SkyDatepickerConfigService,
     private elementRef: ElementRef) {
-    this.config = config;
     this.configureOptions();
   }
 

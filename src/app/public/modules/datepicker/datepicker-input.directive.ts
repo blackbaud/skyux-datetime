@@ -23,16 +23,18 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppLocaleProvider,
   SkyLibResourcesService
 } from '@skyux/i18n';
 
 import {
   Subject
-} from 'rxjs/Subject';
+} from 'rxjs';
 
-import 'rxjs/add/operator/distinctUntilChanged';
-
-import 'rxjs/add/operator/takeUntil';
+import {
+  distinctUntilChanged,
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   SkyDateFormatter
@@ -50,7 +52,8 @@ import {
   SkyDatepickerComponent
 } from './datepicker.component';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_DATEPICKER_VALUE_ACCESSOR = {
@@ -77,15 +80,29 @@ const SKY_DATEPICKER_VALIDATOR = {
 export class SkyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
+  /**
+   * Specifies the date format for the input. Place this attribute on the `input` element
+   * to override the default in the `SkyDatepickerConfigService`.
+   * @default MM/DD/YYYY
+   */
   @Input()
   public set dateFormat(value: string) {
-    this._dateFormat = value;
+    if (value !== this._dateFormat) {
+      this._dateFormat = value;
+      this.applyDateFormat();
+    }
   }
 
   public get dateFormat(): string {
-    return this._dateFormat || this.configService.dateFormat;
+    return this._dateFormat ||
+            this.configService.dateFormat ||
+            this.preferredShortDateFormat;
   }
 
+  /**
+   * Indicates whether to disable the datepicker.
+   * @default false
+   */
   @Input()
   public set disabled(value: boolean) {
     this._disabled = value;
@@ -98,7 +115,7 @@ export class SkyDatepickerInputDirective
   }
 
   public get disabled(): boolean {
-    return this._disabled;
+    return this._disabled || false;
   }
 
   /**
@@ -109,6 +126,10 @@ export class SkyDatepickerInputDirective
     return this.adapter.elementIsFocused();
   }
 
+  /**
+   * Specifies the latest date that is available in the calendar. Place this attribute on
+   * the `input` element to override the default in `SkyDatepickerConfigService`.
+   */
   @Input()
   public set maxDate(value: Date) {
     this._maxDate = value;
@@ -121,6 +142,10 @@ export class SkyDatepickerInputDirective
     return this._maxDate || this.configService.maxDate;
   }
 
+  /**
+   * Specifies the earliest date that is available in the calendar. Place this attribute on
+   * the `input` element to override the default in `SkyDatepickerConfigService`.
+   */
   @Input()
   public set minDate(value: Date) {
     this._minDate = value;
@@ -133,6 +158,12 @@ export class SkyDatepickerInputDirective
     return this._minDate || this.configService.minDate;
   }
 
+  /**
+   * Creates the datepicker input and calendar. Place this directive on an `input` element,
+   * and wrap the input in a `sky-datepicker` component. The value that users select is driven
+   * through the `ngModel` attribute specified on the `input` element.
+   * @required
+   */
   @Input()
   public set skyDatepickerInput(value: SkyDatepickerComponent) {
     if (value) {
@@ -146,9 +177,19 @@ export class SkyDatepickerInputDirective
     }
   }
 
+  /**
+   * Indicates whether to disable date validation on the datepicker input.
+   * @default false
+   */
   @Input()
   public skyDatepickerNoValidate = false;
 
+  /**
+   * Specifies the starting day of the week in the calendar, where `0` sets the starting day
+   * to Sunday. Place this attribute on the `input` element to override the default
+   * in `SkyDatepickerConfigService`.
+   * @default 0
+   */
   @Input()
   public set startingDay(value: number) {
     this._startingDay = value;
@@ -159,6 +200,23 @@ export class SkyDatepickerInputDirective
 
   public get startingDay(): number {
     return this._startingDay || this.configService.startingDay;
+  }
+
+  /**
+   * Indicates whether the format of the date value must match the format from the `dateFormat` value.
+   * If this property is `true` and the datepicker input directive cannot find an exact match, then
+   * the input is marked as invalid.
+   * If this property is `false` and the datepicker input directive cannot find an exact match, then
+   * it attempts to format the string based on the [ISO 8601 standard format](https://www.iso.org/iso-8601-date-and-time-format.html).
+   * @default false
+   */
+  @Input()
+  public set strict(value: boolean) {
+    this._strict = value;
+  }
+
+  public get strict(): boolean {
+    return this._strict || false;
   }
 
   private get value(): any {
@@ -197,13 +255,15 @@ export class SkyDatepickerInputDirective
   private control: AbstractControl;
   private dateFormatter = new SkyDateFormatter();
   private isFirstChange = true;
+  private preferredShortDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
   private _dateFormat: string;
-  private _disabled = false;
+  private _disabled: boolean;
   private _maxDate: Date;
   private _minDate: Date;
   private _startingDay: number;
+  private _strict: boolean;
   private _value: any;
 
   constructor(
@@ -211,10 +271,19 @@ export class SkyDatepickerInputDirective
     private changeDetector: ChangeDetectorRef,
     private configService: SkyDatepickerConfigService,
     private elementRef: ElementRef,
+    private localeProvider: SkyAppLocaleProvider,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
-  ) { }
+  ) {
+    this.localeProvider.getLocaleInfo()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((localeInfo) => {
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
+        this.applyDateFormat();
+      });
+  }
 
   public ngOnInit(): void {
     if (!this.datepickerComponent) {
@@ -235,7 +304,7 @@ export class SkyDatepickerInputDirective
 
     if (!hasAriaLabel) {
       this.resourcesService.getString('skyux_date_field_default_label')
-        .takeUntil(this.ngUnsubscribe)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((value: string) => {
           this.renderer.setAttribute(
             element,
@@ -248,8 +317,8 @@ export class SkyDatepickerInputDirective
 
   public ngAfterContentInit(): void {
     this.datepickerComponent.dateChange
-      .distinctUntilChanged()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(distinctUntilChanged())
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value: Date) => {
         this.isFirstChange = false;
         this.value = value;
@@ -405,6 +474,14 @@ export class SkyDatepickerInputDirective
     this.onValueChange(this.elementRef.nativeElement.value);
   }
 
+  private applyDateFormat(): void {
+    if (this.value) {
+      const formattedDate = this.dateFormatter.format(this.value, this.dateFormat);
+      this.setInputElementValue(formattedDate);
+      this.changeDetector.markForCheck();
+    }
+  }
+
   private onValueChange(newValue: string): void {
     this.isFirstChange = false;
     this.value = newValue;
@@ -423,7 +500,7 @@ export class SkyDatepickerInputDirective
     if (value instanceof Date) {
       dateValue = value;
     } else if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(value, this.dateFormat);
+      const date = this.dateFormatter.getDateFromString(value, this.dateFormat, this.strict);
       if (this.dateFormatter.dateIsValid(date)) {
         dateValue = date;
       }

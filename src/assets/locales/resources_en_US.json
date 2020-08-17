@@ -1,10 +1,14 @@
 {
   "skyux_date_field_default_label": {
     "_description": "The label for the datepicker component's input field for screen readers when the consumer has not specified a label.",
-    "message": "Date input field"
+    "message": "Date"
   },
+  "skyux_datepicker_trigger_button_label": {
+     "_description": "Label for the trigger button of the datepicker",
+     "message": "Select date"
+   },
   "skyux_timepicker_button_label": {
-    "_description": "Screen reader text for the timepicker component dropdown button",
+    "_description": "Screen reader text for the timepicker trigger button",
     "message": "Choose time"
   },
   "skyux_timepicker_close": {
@@ -13,7 +17,7 @@
   },
   "skyux_timepicker_input_default_label": {
     "_description": "The label for the timepicker component's input field for screen readers when the consumer has not specified a label.",
-    "message": "Time input field"
+    "message": "Time"
   },
   "skyux_date_range_picker_default_label": {
     "_description": "The default label for the date range picker.",

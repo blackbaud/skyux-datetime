@@ -1,3 +1,91 @@
+# 4.2.1 (2020-08-12)
+
+- Fixed the date range component to allow the component to be disabled when initialized. [#207](https://github.com/blackbaud/skyux-datetime/pull/207) (Thanks [@d4nleonard](https://github.com/d4nleonard)!)
+
+# 4.2.0 (2020-08-12)
+
+- Added the `SkyDatepickerConfigService` to the public exports. [#205](https://github.com/blackbaud/skyux-datetime/pull/205)
+
+# 4.1.3 (2020-07-17)
+
+- Fixed the datepicker component to assign a date value after the component has rendered. [#193](https://github.com/blackbaud/skyux-datetime/pull/193) (Thanks [@Blackbaud-ScottFreeman](https://github.com/Blackbaud-ScottFreeman)!)
+
+# 4.1.2 (2020-07-16)
+
+- Fixed the date pipe to allow all data types. [#186](https://github.com/blackbaud/skyux-datetime/pull/186)  (Thanks [@Blackbaud-NickGlyder](https://github.com/Blackbaud-NickGlyder)!)
+
+# 4.1.1 (2020-07-07)
+- Fixed an issue where the fuzzy date pipe returned incorrect data when the day value was 31. [#181](https://github.com/blackbaud/skyux-datetime/pull/181) (Thanks [@Blackbaud-CoreyArcher](https://github.com/Blackbaud-CoreyArcher)!)
+
+# 4.1.0 (2020-06-16)
+
+- Added input box support to the datepicker component. [#166](https://github.com/blackbaud/skyux-datetime/pull/166)
+
+# 4.0.1 (2020-06-11)
+
+- Fixed the datepicker and timepicker components to properly render in Chrome 83. [#163](https://github.com/blackbaud/skyux-datetime/pull/163)
+- Updated the default `aria-label` property for the datepicker and timepicker components to improve the experience when using assistive technology. [#162](https://github.com/blackbaud/skyux-datetime/pull/162)
+
+# 4.0.0 (2020-05-15)
+
+### New features
+
+- Added a test fixture for the datepicker component to use in consumer unit tests. [#155](https://github.com/blackbaud/skyux-datetime/pull/155)
+- Updated the pipeline to transpile to the [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview). [#150](https://github.com/blackbaud/skyux-datetime/pull/150)
+
+### Breaking changes
+
+- Dropped support for `rxjs@5`. Consumers can install `rxjs-compat@^6` to support older versions of `rxjs`. [#150](https://github.com/blackbaud/skyux-datetime/pull/150)
+
+# 4.0.0-rc.2 (2020-05-06)
+
+### New features
+
+- Added a test fixture for the datepicker component to use in consumer unit tests. [#155](https://github.com/blackbaud/skyux-datetime/pull/155)
+
+# 3.11.0 (2020-05-05)
+
+- Added `moment` as a dependency. [#153](https://github.com/blackbaud/skyux-datetime/pull/153)
+
+# 4.0.0-rc-1 (2020-05-01)
+
+- Removed a deep import from `moment/min/locales.min`. [#152](https://github.com/blackbaud/skyux-datetime/pull/152)
+- Upgraded the package dependencies. [#152](https://github.com/blackbaud/skyux-datetime/pull/152)
+
+# 4.0.0-rc.0 (2020-04-30)
+
+### New features
+
+- Updated the pipeline to transpile to the [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview). [#150](https://github.com/blackbaud/skyux-datetime/pull/150)
+
+### Breaking changes
+
+- Dropped support for `rxjs@5`. Consumers can install `rxjs-compat@^6` to support older versions of `rxjs`. [#150](https://github.com/blackbaud/skyux-datetime/pull/150)
+
+# 3.10.0 (2020-04-30)
+
+- Updated the datepicker, date range picker, timepicker, and fuzzy datepicker components to implement the affix and overlay services. [#140](https://github.com/blackbaud/skyux-datetime/pull/140)
+- Updated the datepicker, date range picker, and fuzzy datepicker components to respect locale overrides on the `SkyAppLocaleProvider`. [#144](https://github.com/blackbaud/skyux-datetime/pull/144)
+
+# 3.9.0 (2020-03-24)
+
+- Fixed the datepicker component to prevent an error when invalid numeric dates are entered. [#127](https://github.com/blackbaud/skyux-datetime/pull/127)
+- Fixed the fuzzy datepicker component to prevent it from clearing invalid dates from the field when the datepicker loses focus. [#122](https://github.com/blackbaud/skyux-datetime/pull/122)
+- Fixed the date pipe to format ISO8061 date strings consistently across different browsers. [#128](https://github.com/blackbaud/skyux-datetime/issues/128)
+- Updated the fuzzy date pipe to use a browser locale's short date format as the default format. [#125](https://github.com/blackbaud/skyux-datetime/pull/125)
+
+# 3.8.0 (2020-02-20)
+
+- Added the `strict` property to the datepicker input directive to indicate whether the format of the date value must match the format from the `dateFormat` value.  [#114](https://github.com/blackbaud/skyux-datetime/pull/114)
+
+# 3.7.1 (2020-02-04)
+
+- Fixed the fuzzy date service's `getMomentFromFuzzyDate` function to properly support fuzzy dates when `month` is `0`. [#112](https://github.com/blackbaud/skyux-datetime/pull/112) (Thanks [@Blackbaud-JeffreyAaron](https://github.com/Blackbaud-JeffreyAaron)!)
+
+# 3.7.0 (2019-01-27)
+
+- Added the fuzzy date pipe. [#102](https://github.com/blackbaud/skyux-datetime/pull/102)
+
 # 3.6.4 (2019-11-22)
 
 - Fixed the datepicker input directive to validate on blur and to properly handle required validation. [#96](https://github.com/blackbaud/skyux-datetime/pull/96)

@@ -2,36 +2,30 @@ import {
   Injectable
 } from '@angular/core';
 
-import {
-  SkyWindowRefService
-} from '@skyux/core';
-
-const moment = require('moment');
-import 'moment/min/locales.min';
-
 @Injectable()
 export class SkyDatepickerConfigService {
+
+  /**
+   * Specifies the date format for the input.
+   * @default MM/DD/YYYY
+   */
   public dateFormat: string;
-  public minDate: Date;
+
+  /**
+   * Specifies the latest selectable date that is available in the calendar.
+   */
   public maxDate: Date;
+
+  /**
+   * Specifies the earliest selectable date that is available in the calendar.
+   */
+  public minDate: Date;
+
+  /**
+   * Specifies the starting day of the week in the calendar,
+   * where `0` sets the starting day to Sunday.
+   * @default 0
+   */
   public startingDay = 0;
 
-  constructor(
-    private windowRefService: SkyWindowRefService
-  ) {
-    const safeNavigator: any = this.windowRefService.getWindow().navigator;
-
-    /*istanbul ignore next */
-    const userLanguage: string = (
-      safeNavigator.languages &&
-      safeNavigator.languages[0] ||
-      safeNavigator.language ||
-      safeNavigator.userLanguage ||
-      'en'
-    );
-
-    moment.locale(userLanguage);
-
-    this.dateFormat = moment.localeData().longDateFormat('L');
-  }
 }

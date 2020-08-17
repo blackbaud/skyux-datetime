@@ -26,7 +26,7 @@ import {
 
 import {
   Subscription
-} from 'rxjs/Subscription';
+} from 'rxjs';
 
 import {
   SkyTimepickerComponent
@@ -36,7 +36,8 @@ import {
   SkyTimepickerTimeOutput
 } from './timepicker.interface';
 
-const moment = require('moment');
+import * as moment_ from 'moment';
+const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
 const SKY_TIMEPICKER_VALUE_ACCESSOR = {
@@ -65,9 +66,19 @@ export class SkyTimepickerInputDirective implements
   public pickerChangedSubscription: Subscription;
   private _timeFormat: string = 'hh';
 
+  /**
+   * Creates the timepicker input field and picker. Place this attribute on an `input` element,
+   * and wrap the input in a `sky-timepicker` component.
+   * This attribute must be set to the instance of the `sky-timepicker`.
+   * @required
+   */
   @Input()
   public skyTimepickerInput: SkyTimepickerComponent;
 
+  /**
+   * Specifies the 12-hour `hh` or 24-hour `HH` time format for the input.
+   * @default hh
+   */
   @Input()
   public set timeFormat(value: string) {
     this._timeFormat = value;
@@ -76,9 +87,17 @@ export class SkyTimepickerInputDirective implements
     return this._timeFormat || 'hh';
   }
 
+  /**
+   * Specifies a custom time format. For examples,
+   * see the [moment.js](https://momentjs.com/docs/#/displaying/format/) docs.
+   */
   @Input()
   public returnFormat: string;
 
+  /**
+   * Indicates whether to disable the timepicker.
+   * @default false
+   */
   @Input()
   public get disabled(): boolean {
     return this._disabled || false;

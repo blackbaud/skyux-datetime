@@ -23,16 +23,18 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppLocaleProvider,
   SkyLibResourcesService
 } from '@skyux/i18n';
 
 import {
   Subject
-} from 'rxjs/Subject';
+} from 'rxjs';
 
-import 'rxjs/add/operator/distinctUntilChanged';
-
-import 'rxjs/add/operator/takeUntil';
+import {
+  distinctUntilChanged,
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   SkyDateFormatter
@@ -78,15 +80,32 @@ const SKY_FUZZY_DATEPICKER_VALIDATOR = {
 export class SkyFuzzyDatepickerInputDirective
   implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
 
+  /**
+   * Specifies the date format for the input. Place this attribute on the `input` element
+   * to override the default in `SkyDatepickerConfigService`.
+   * @default MM/DD/YYYY
+   */
   @Input()
   public set dateFormat(value: string) {
     this._dateFormat = value;
+
+    if (this.value) {
+      const formattedDate = this.fuzzyDateService.getStringFromFuzzyDate(this.value, this.dateFormat);
+      this.setInputElementValue(formattedDate);
+      this.changeDetector.markForCheck();
+    }
   }
 
   public get dateFormat(): string {
-    return this._dateFormat || this.configService.dateFormat;
+    return this._dateFormat ||
+            this.configService.dateFormat ||
+            this.preferredShortDateFormat;
   }
 
+  /**
+   * Indicates whether to disable the datepicker.
+   * @default false
+   */
   @Input()
   public set disabled(value: boolean) {
     this._disabled = value;
@@ -103,6 +122,11 @@ export class SkyFuzzyDatepickerInputDirective
     return this._disabled;
   }
 
+  /**
+   * Indicates whether to prevent users from specifying dates that are in the future.
+   * Place this attribute on the `input` element.
+   * @default false
+   */
   @Input()
   public set futureDisabled(value: boolean) {
     this._futureDisabled = value;
@@ -113,6 +137,12 @@ export class SkyFuzzyDatepickerInputDirective
     return this._futureDisabled;
   }
 
+  /**
+   * Specifies the latest fuzzy date allowed. Place this attribute on the `input` element
+   * to prevent fuzzy dates after a specified date. This property accepts
+   * a `SkyFuzzyDate` value that includes numeric month, day, and year values.
+   * For example: `{ month: 1, day: 1, year: 2027 }`.
+   */
   @Input()
   public set maxDate(value: SkyFuzzyDate) {
     this._maxDate = value;
@@ -124,6 +154,12 @@ export class SkyFuzzyDatepickerInputDirective
     return this._maxDate;
   }
 
+  /**
+   * Specifies the earliest fuzzy date allowed. Place this attribute on the `input` element
+   * to prevent fuzzy dates before a specified date. This property accepts a `SkyFuzzyDate` value
+   * that includes numeric month, day, and year values.
+   * For example: `{ month: 1, day: 1, year: 2007 }`.
+   */
   @Input()
   public set minDate(value: SkyFuzzyDate) {
     this._minDate = value;
@@ -135,12 +171,30 @@ export class SkyFuzzyDatepickerInputDirective
     return this._minDate;
   }
 
+  /**
+   * Indicates whether to disable date validation on the fuzzy datepicker input.
+   * @default false
+   */
   @Input()
   public skyDatepickerNoValidate = false;
 
+  /**
+   * Creates the fuzzy datepicker input and calendar to let users specify dates that are
+   * not complete. For example, if users know the year but not the month or day, they can
+   * enter just the year. Place this directive on an `input` element, and wrap the `input`
+   * in a `sky-datepicker` component. The value that users select is driven
+   * through the `ngModel` attribute specified on the `input` element.
+   * @required
+   */
   @Input()
   public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) { }
 
+  /**
+   * Specifies the starting day of the week in the calendar, where `0` sets the starting day
+   * to Sunday. Place this attribute on the `input` element to override the default
+   * in `SkyDatepickerConfigService`.
+   * @default 0
+   */
   @Input()
   public set startingDay(value: number) {
     this._startingDay = value;
@@ -153,6 +207,10 @@ export class SkyFuzzyDatepickerInputDirective
     return this._startingDay || this.configService.startingDay;
   }
 
+  /**
+   * Indicates whether to require the year in fuzzy dates.
+   * @default false
+   */
   @Input()
   public set yearRequired(value: boolean) {
     this._yearRequired = value;
@@ -231,6 +289,8 @@ export class SkyFuzzyDatepickerInputDirective
 
   private isFirstChange = true;
 
+  private preferredShortDateFormat: string;
+
   private ngUnsubscribe = new Subject<void>();
 
   private _futureDisabled: boolean = false;
@@ -251,13 +311,21 @@ export class SkyFuzzyDatepickerInputDirective
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() private datepickerComponent: SkyDatepickerComponent,
     private configService: SkyDatepickerConfigService,
+    private elementRef: ElementRef,
     private fuzzyDateService: SkyFuzzyDateService,
-    private resourcesService: SkyLibResourcesService
-  ) { }
+    private localeProvider: SkyAppLocaleProvider,
+    private renderer: Renderer2,
+    private resourcesService: SkyLibResourcesService,
+    @Optional() private datepickerComponent: SkyDatepickerComponent
+  ) {
+    this.localeProvider.getLocaleInfo()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((localeInfo) => {
+        SkyDateFormatter.setLocale(localeInfo.locale);
+        this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
+      });
+  }
 
   public ngOnInit(): void {
     if (this.yearRequired) {
@@ -284,7 +352,7 @@ export class SkyFuzzyDatepickerInputDirective
 
     if (!hasAriaLabel) {
       this.resourcesService.getString('skyux_date_field_default_label')
-        .takeUntil(this.ngUnsubscribe)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((value: string) => {
           this.renderer.setAttribute(
             element,
@@ -297,8 +365,10 @@ export class SkyFuzzyDatepickerInputDirective
 
   public ngAfterContentInit(): void {
     this.datepickerComponent.dateChange
-      .distinctUntilChanged()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((value: Date) => {
         this.isFirstChange = false;
         this.value = value;
@@ -340,7 +410,9 @@ export class SkyFuzzyDatepickerInputDirective
     this.onTouched();
 
     let formattedDate = this.fuzzyDateService.getStringFromFuzzyDate(this.value, this.dateFormat);
-    this.setInputElementValue(formattedDate || '');
+    if (this.control.valid) {
+      this.setInputElementValue(formattedDate || '');
+    }
   }
 
   @HostListener('keyup')

@@ -31,6 +31,9 @@ import {
   SkyDateRangeCalculatorType
 } from './types/date-range-calculator-type';
 
+import * as moment_ from 'moment';
+const moment = moment_;
+
 const defaultCalculatorIds = [
   SkyDateRangeCalculatorId.AnyTime,
   SkyDateRangeCalculatorId.Before,
@@ -65,6 +68,10 @@ describe('Date range picker', function () {
     tick();
     fixture.detectChanges();
     tick();
+  }
+
+  function getLocaleLongDateFormat(): string {
+    return moment.localeData().longDateFormat('L');
   }
 
   function selectCalculator(id: SkyDateRangeCalculatorId): void {
@@ -157,7 +164,8 @@ describe('Date range picker', function () {
     expect(labelElement.textContent).toContain('Select a date range');
 
     const picker = component.dateRangePicker;
-    expect(picker.dateFormat).toEqual('MM/DD/YYYY');
+    const defaultFormat = getLocaleLongDateFormat();
+    expect(picker.dateFormat).toEqual(defaultFormat);
     expect(picker.label).toEqual(undefined);
     expect(picker.calculatorIds).toEqual(defaultCalculatorIds);
   }));
@@ -270,6 +278,20 @@ describe('Date range picker', function () {
     detectChanges();
 
     verifyFormFieldsDisabledStatus(false);
+  }));
+
+  it('should allow for disabling the control on initialization', fakeAsync(function () {
+    component.initialValue = {
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange
+    };
+    component.initialDisabled = true;
+
+    detectChanges();
+
+    const control = component.dateRange;
+
+    expect(control.disabled).toBe(true);
+    verifyFormFieldsDisabledStatus(true);
   }));
 
   it('should mark the control as touched when select is blurred', fakeAsync(function () {

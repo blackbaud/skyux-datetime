@@ -13,7 +13,11 @@ import {
 
 import {
   Subject
-} from 'rxjs/Subject';
+} from 'rxjs';
+
+import {
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   SkyDateRangeCalculation
@@ -43,6 +47,7 @@ export class DateRangePickerTestComponent implements OnInit, OnDestroy {
 
   public calculatorIds: SkyDateRangeCalculatorId[];
   public dateFormat: string;
+  public initialDisabled: boolean = false;
   public initialValue: SkyDateRangeCalculation;
   public label: string;
   public numValueChangeNotifications = 0;
@@ -52,15 +57,15 @@ export class DateRangePickerTestComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      dateRange: this.initialValue
+      dateRange: [{ value: this.initialValue, disabled: this.initialDisabled }, []]
     });
 
     this.dateRange.valueChanges
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.numValueChangeNotifications++;
       });
