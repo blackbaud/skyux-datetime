@@ -59,6 +59,23 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   public selectedTimeChanged: EventEmitter<SkyTimepickerTimeOutput> =
     new EventEmitter<SkyTimepickerTimeOutput>();
 
+  public get activeTime(): Date {
+    if (!this._activeTime) {
+      const momentTime = moment(this._activeTime);
+      if (momentTime.minute() !== 0) {
+        momentTime.add(1, 'hours');
+        momentTime.set('minute', 0);
+      }
+      this._activeTime = momentTime.toDate();
+    }
+    return this._activeTime;
+  }
+
+  public set activeTime(value: Date) {
+    this._activeTime = value;
+    this.changeDetector.markForCheck();
+  }
+
   public set disabled(value: boolean) {
     this._disabled = value;
     this.changeDetector.markForCheck();
@@ -149,8 +166,6 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     return time;
   }
 
-  public activeTime: Date;
-
   public hours: Array<number>;
 
   public is8601: boolean = false;
@@ -220,6 +235,8 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject();
 
   private overlay: SkyOverlayInstance;
+
+  private _activeTime: Date;
 
   private _disabled: boolean;
 
