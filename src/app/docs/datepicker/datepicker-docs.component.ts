@@ -38,9 +38,9 @@ export class DatepickerDocsComponent implements OnInit {
 
   public standardForm: FormGroup;
 
-  public standardMaxDate: Date = new Date(2020, 0, 31);
+  public standardMaxDate: Date;
 
-  public standardMinDate: Date = new Date(2020, 0, 1);
+  public standardMinDate: Date;
 
   constructor(
     private changeRef: ChangeDetectorRef,
@@ -61,8 +61,8 @@ export class DatepickerDocsComponent implements OnInit {
       this.standardMaxDate = new Date(2020, 0, 31);
       this.standardMinDate = new Date(2020, 0, 1);
     } else if (change.standardValidation === false) {
-      // this.standardMaxDate = undefined;
-      // this.standardMinDate = undefined;
+      this.standardMaxDate = undefined;
+      this.standardMinDate = undefined;
     }
 
     if (change.fuzzyValidation === true) {
@@ -81,7 +81,7 @@ export class DatepickerDocsComponent implements OnInit {
       this.fuzzyYearRequired = change.fuzzyYearRequired;
     }
 
-    this.changeRef.detectChanges();
+    this.changeRef.markForCheck();
   }
 
 }
