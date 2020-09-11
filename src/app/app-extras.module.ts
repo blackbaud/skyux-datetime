@@ -16,10 +16,6 @@ import {
 } from '@skyux/forms';
 
 import {
-  SkyAuthHttpClientModule
-} from '@skyux/http';
-
-import {
   SkyPageModule
 } from '@skyux/layout';
 
@@ -37,7 +33,6 @@ import {
 @NgModule({
   exports: [
     SkyAppLinkModule,
-    SkyAuthHttpClientModule, // Supports docs pages with `svcid` param.
     SkyDatePipeModule,
     SkyDatepickerModule,
     SkyDateRangePickerModule,
