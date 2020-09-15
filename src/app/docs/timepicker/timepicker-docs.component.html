@@ -7,9 +7,7 @@
     The timepicker module creates a SKY UX-themed input field and picker for users to enter or select times.
   </sky-docs-demo-page-summary>
 
-  <sky-docs-demo
-    alignContents="center"
-  >
+  <sky-docs-demo>
     <sky-docs-demo-control-panel
       (selectionChange)="onDemoSelectionChange($event)"
     >
@@ -23,14 +21,17 @@
         </sky-docs-demo-control-panel-radio-group>
       </sky-docs-demo-control-panel-section>
     </sky-docs-demo-control-panel>
-    <sky-timepicker #timepicker>
-      <input
-        [disabled]="demoSettings.disabled"
-        [skyTimepickerInput]="timepicker"
-        [timeFormat]="demoSettings.timeFormat"
-        [(ngModel)]="demoModel.selectedTime"
-      />
-    </sky-timepicker>
+
+    <div style="max-width: 50%;">
+      <sky-timepicker #timepicker>
+        <input
+          [disabled]="demoSettings.disabled"
+          [skyTimepickerInput]="timepicker"
+          [timeFormat]="demoSettings.timeFormat"
+          [(ngModel)]="demoModel.selectedTime"
+        />
+      </sky-timepicker>
+    </div>
   </sky-docs-demo>
 
   <sky-docs-design-guidelines>
@@ -242,7 +243,6 @@
     }"
   >
     <sky-docs-code-example
-      heading="Basic setup"
       sourceCodePath="src/app/public/plugin-resources/code-examples/timepicker/basic/"
     ></sky-docs-code-example>
   </sky-docs-code-examples>
