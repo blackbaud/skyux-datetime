@@ -1,6 +1,6 @@
 {
   "name": "@skyux/datetime",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "SKY UX DateTime",
   "scripts": {
     "build": "skyux build-public-library",
