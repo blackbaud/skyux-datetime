@@ -31,7 +31,6 @@
     "@skyux/indicators": "^4.0.0"
   },
   "dependencies": {
-    "lodash.orderby": "4.6.0",
     "moment": "2.29.0"
   },
   "devDependencies": {
