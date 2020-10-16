@@ -1,6 +1,6 @@
 # 4.6.0 (2020-10-15)
 
-- Adjusted various datepicker component calendar button sizes for the modern theme. [#235](https://github.com/blackbaud/skyux-datetime/pull/235)
+- Updated the datepicker component's calendar button sizes for the modern theme. [#235](https://github.com/blackbaud/skyux-datetime/pull/235)
 
 # 4.5.2 (2020-09-28)
 
