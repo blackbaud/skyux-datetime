@@ -30,7 +30,7 @@ export class SkyDateRangeCalculator {
   public readonly shortDescription: string;
 
   /**
-   * Indicates the calculator type.
+   * Specifies the type of calculations available for the date range.
    */
   public readonly type: SkyDateRangeCalculatorType;
 
