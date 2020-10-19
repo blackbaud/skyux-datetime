@@ -25,18 +25,18 @@ import {
 export class SkyDateRangeCalculator {
 
   /**
-   * Indicates the text displayed within the calculator select menu.
+   * Specifies the text to display in the calculator select menu.
    */
   public readonly shortDescription: string;
 
   /**
-   * Indicates the calculator type.
+   * Specifies the type of calculations available for the date range.
    */
   public readonly type: SkyDateRangeCalculatorType;
 
   constructor(
     /**
-     * Indicates the calculator id.
+     * Provides a calculator ID to specify calculator objects that represent date ranges.
      */
     public readonly calculatorId: SkyDateRangeCalculatorId,
     private config: SkyDateRangeCalculatorConfig
@@ -47,8 +47,8 @@ export class SkyDateRangeCalculator {
 
   /**
    * Gets the current value of the calculator.
-   * @param startDateInput Indicates the start date value.
-   * @param endDateInput Indicates the end date value.
+   * @param startDateInput The start date.
+   * @param endDateInput The end date.
    */
   public getValue(startDateInput?: Date, endDateInput?: Date): SkyDateRangeCalculation {
 
