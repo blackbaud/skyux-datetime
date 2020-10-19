@@ -78,7 +78,6 @@ export class SkyDateRangeCalculator {
 
   /**
    * Performs synchronous validation against the control.
-   * @param value
    */
   public validate(value?: SkyDateRange): ValidationErrors {
     if (!this.config.validate) {
