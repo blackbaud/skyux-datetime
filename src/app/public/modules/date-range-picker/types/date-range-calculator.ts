@@ -25,7 +25,7 @@ import {
 export class SkyDateRangeCalculator {
 
   /**
-   * Indicates the text displayed within the calculator select menu.
+   * Specifies the text to display in the calculator select menu.
    */
   public readonly shortDescription: string;
 
