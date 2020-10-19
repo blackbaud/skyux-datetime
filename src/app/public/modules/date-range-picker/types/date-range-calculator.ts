@@ -48,7 +48,7 @@ export class SkyDateRangeCalculator {
   /**
    * Gets the current value of the calculator.
    * @param startDateInput The start date.
-   * @param endDateInput Indicates the end date value.
+   * @param endDateInput The end date.
    */
   public getValue(startDateInput?: Date, endDateInput?: Date): SkyDateRangeCalculation {
 
