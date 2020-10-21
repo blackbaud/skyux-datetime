@@ -1,0 +1,14 @@
+{
+  "skyux_date_range_picker_format_label_last_fiscal_year": {
+    "_description": "The label for the date range picker component's select field Last Financial Year format type.",
+    "message": "Last financial year"
+  },
+  "skyux_date_range_picker_format_label_this_fiscal_year": {
+    "_description": "The label for the date range picker component's select field This Financial Year format type.",
+    "message": "This financial year"
+  },
+  "skyux_date_range_picker_format_label_next_fiscal_year": {
+    "_description": "The label for the date range picker component's select field Next Financial Year format type.",
+    "message": "Next financial year"
+  }
+}
