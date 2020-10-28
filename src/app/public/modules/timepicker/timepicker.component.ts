@@ -43,8 +43,7 @@ import {
   SkyTimepickerTimeOutput
 } from './timepicker.interface';
 
-import * as moment_ from 'moment';
-const moment = moment_;
+import moment from 'moment';
 
 let nextId = 0;
 
