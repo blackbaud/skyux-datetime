@@ -22,6 +22,9 @@ import {
   SkyDateRange
 } from './date-range';
 
+/**
+ * Represents the calculator.
+ */
 export class SkyDateRangeCalculator {
 
   /**
