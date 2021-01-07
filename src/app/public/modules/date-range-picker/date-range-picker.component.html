@@ -57,6 +57,7 @@
     class="sky-date-range-picker-form-group"
     [hidden]="!showEndDatePicker"
   >
+    <sky-input-box>
       <label
         class="sky-control-label"
         [attr.for]="dateRangePickerId + '-end-date'"
@@ -75,5 +76,6 @@
           (blur)="onFieldBlur()"
         />
       </sky-datepicker>
+    </sky-input-box>
   </div>
 </div>
