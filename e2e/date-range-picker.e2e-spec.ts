@@ -1,9 +1,4 @@
 import {
-  element,
-  by
-} from 'protractor';
-
-import {
   expect,
   SkyHostBrowser,
   SkyVisualThemeSelector
@@ -12,6 +7,11 @@ import {
 import {
   SkyHostBrowserBreakpoint
 } from '@skyux-sdk/e2e/host-browser/host-browser-breakpoint';
+
+import {
+  by,
+  element
+} from 'protractor';
 
 describe('Date range picker', () => {
 
