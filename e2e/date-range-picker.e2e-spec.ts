@@ -1,80 +1,172 @@
 import {
+  element,
+  by
+} from 'protractor';
+
+import {
   expect,
-  SkyHostBrowser
+  SkyHostBrowser,
+  SkyVisualThemeSelector
 } from '@skyux-sdk/e2e';
 
 import {
-  by,
-  element
-} from 'protractor';
+  SkyHostBrowserBreakpoint
+} from '@skyux-sdk/e2e/host-browser/host-browser-breakpoint';
 
 describe('Date range picker', () => {
-  beforeEach(() => {
-    SkyHostBrowser.get('visual/date-range-picker');
-    SkyHostBrowser.setWindowBreakpoint('lg');
-  });
 
-  it('should match previous date range picker specific range screenshot', (done) => {
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-specific-range'
+  //#region helpers
+  let browserSize: SkyHostBrowserBreakpoint;
+  let currentTheme: string;
+  let currentThemeMode: string;
+
+  async function selectTheme(theme: string, mode: string): Promise<void> {
+    currentTheme = theme;
+    currentThemeMode = mode;
+
+    return SkyVisualThemeSelector.selectTheme(theme, mode);
+  }
+
+  async function setBrowserSize(size: SkyHostBrowserBreakpoint): Promise<void> {
+    browserSize = size;
+
+    return SkyHostBrowser.setWindowBreakpoint(size);
+  }
+
+  function getScreenshotName(name: string): string {
+    if (browserSize) {
+      name += '-' + browserSize;
+    }
+
+    if (currentTheme) {
+      name += '-' + currentTheme;
+    }
+
+    if (currentThemeMode) {
+      name += '-' + currentThemeMode;
+    }
+
+    return name;
+  }
+
+  function runTests(): void {
+    it('should match previous date range picker specific range screenshot', (done) => {
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-specific-range')
+      });
+    });
+
+    it('should match previous `SpecificRange` screenshot (xs screen)', (done) => {
+      SkyHostBrowser.setWindowBreakpoint('xs');
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-specific-range-xs')
+      });
+    });
+
+    it('should match previous `Before` screenshot', (done) => {
+      element(by.css('select')).click();
+      element.all(by.css('select option')).get(1).click();
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-before')
+      });
+    });
+
+    it('should match previous `Before` screenshot (xs screen)', (done) => {
+      SkyHostBrowser.setWindowBreakpoint('xs');
+      element(by.css('select')).click();
+      element.all(by.css('select option')).get(1).click();
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-before-xs')
+      });
+    });
+
+    it('should match previous `After` screenshot', (done) => {
+      element(by.css('select')).click();
+      element.all(by.css('select option')).get(2).click();
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-after')
+      });
+    });
+
+    it('should match previous `After` screenshot (xs screen)', (done) => {
+      SkyHostBrowser.setWindowBreakpoint('xs');
+      element(by.css('select')).click();
+      element.all(by.css('select option')).get(2).click();
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-after-xs')
+      });
+    });
+
+    it('should match previous default value screenshot', (done) => {
+      element(by.css('select')).click();
+      element.all(by.css('select option')).get(3).click();
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-default-value')
+      });
+    });
+
+    it('should match previous default value screenshot (xs screen)', (done) => {
+      SkyHostBrowser.setWindowBreakpoint('xs');
+      element(by.css('select')).click();
+      element.all(by.css('select option')).get(3).click();
+      expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('date-range-picker-default-value-xs')
+      });
+    });
+  }
+  //#endregion
+
+  describe('(size: lg)', () => {
+    beforeEach( async() => {
+      currentTheme = undefined;
+      currentThemeMode = undefined;
+      await SkyHostBrowser.get('visual/date-range-picker');
+      await setBrowserSize('lg');
+    });
+
+    runTests();
+
+    describe('when modern theme', () => {
+      beforeEach(async () => {
+        await selectTheme('modern', 'light');
+      });
+
+      runTests();
+    });
+
+    describe('when modern theme in dark mode', () => {
+      beforeEach(async () => {
+        await selectTheme('modern', 'dark');
+      });
+
+      runTests();
     });
   });
 
-  it('should match previous `SpecificRange` screenshot (xs screen)', (done) => {
-    SkyHostBrowser.setWindowBreakpoint('xs');
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-specific-range-xs'
+  describe('(size: xs)', () => {
+    beforeEach( async() => {
+      currentTheme = undefined;
+      currentThemeMode = undefined;
+      await SkyHostBrowser.get('visual/date-range-picker');
+      await setBrowserSize('xs');
     });
-  });
 
-  it('should match previous `Before` screenshot', (done) => {
-    element(by.css('select')).click();
-    element.all(by.css('select option')).get(1).click();
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-before'
+    runTests();
+
+    describe('when modern theme', () => {
+      beforeEach(async () => {
+        await selectTheme('modern', 'light');
+      });
+
+      runTests();
     });
-  });
 
-  it('should match previous `Before` screenshot (xs screen)', (done) => {
-    SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).click();
-    element.all(by.css('select option')).get(1).click();
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-before-xs'
-    });
-  });
+    describe('when modern theme in dark mode', () => {
+      beforeEach(async () => {
+        await selectTheme('modern', 'dark');
+      });
 
-  it('should match previous `After` screenshot', (done) => {
-    element(by.css('select')).click();
-    element.all(by.css('select option')).get(2).click();
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-after'
-    });
-  });
-
-  it('should match previous `After` screenshot (xs screen)', (done) => {
-    SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).click();
-    element.all(by.css('select option')).get(2).click();
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-after-xs'
-    });
-  });
-
-  it('should match previous default value screenshot', (done) => {
-    element(by.css('select')).click();
-    element.all(by.css('select option')).get(3).click();
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-default-value'
-    });
-  });
-
-  it('should match previous default value screenshot (xs screen)', (done) => {
-    SkyHostBrowser.setWindowBreakpoint('xs');
-    element(by.css('select')).click();
-    element.all(by.css('select option')).get(3).click();
-    expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'date-range-picker-default-value-xs'
+      runTests();
     });
   });
 });
