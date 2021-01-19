@@ -1,4 +1,4 @@
-# 4.8.0 (2021-01-15)
+# 4.8.0 (2021-01-19)
 
 - Added modern theme styles to the date range picker component. [#246](https://github.com/blackbaud/skyux-datetime/pull/246)
 
