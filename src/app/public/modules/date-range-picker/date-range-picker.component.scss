@@ -36,7 +36,19 @@
     margin: 0 0 $sky-theme-modern-margin-stacked-lg 0;
   }
 
-  @include sky-host-responsive-container-sm-min() {
+  // NOTE: This would normally use our responsive mixins. However, they do not yet support modern
+  // theme (host context issue). This should be updated once the mixin adds modern theme support.
+  @media (min-width: $sky-screen-sm-min) {
+    :host {
+      .sky-date-range-picker-form-group {
+        margin: 0 $sky-theme-modern-margin-inline-lg 0 0;
+      }
+    };
+  }
+
+  :host-context(.sky-responsive-container-sm),
+  :host-context(.sky-responsive-container-md),
+  :host-context(.sky-responsive-container-lg) {
     .sky-date-range-picker-form-group {
       margin: 0 $sky-theme-modern-margin-inline-lg 0 0;
     }
