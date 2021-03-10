@@ -21,6 +21,10 @@ import {
 } from '@skyux/indicators';
 
 import {
+  SkyThemeModule
+} from '@skyux/theme';
+
+import {
   SkyDateTimeResourcesModule
 } from '../shared/datetime-resources.module';
 
@@ -37,14 +41,15 @@ import {
     SkyTimepickerInputDirective,
     SkyTimepickerComponent
   ],
-  imports: [
-    CommonModule,
-    SkyI18nModule,
-    SkyIconModule,
-    SkyDateTimeResourcesModule,
-    SkyAffixModule,
-    SkyOverlayModule
-  ],
+    imports: [
+        CommonModule,
+        SkyI18nModule,
+        SkyIconModule,
+        SkyDateTimeResourcesModule,
+        SkyAffixModule,
+        SkyOverlayModule,
+        SkyThemeModule
+    ],
   providers: [
     SkyCoreAdapterService
   ],
