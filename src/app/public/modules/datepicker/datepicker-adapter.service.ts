@@ -26,4 +26,12 @@ export class SkyDatepickerAdapterService {
 
     return styles && styles.visibility === 'visible';
   }
+
+  public getPlaceholder(elementRef: ElementRef): string {
+    return elementRef.nativeElement.getAttribute('placeholder');
+  }
+
+  public setPlaceholder(elementRef: ElementRef, value: string): void {
+    elementRef.nativeElement.setAttribute('placeholder', value);
+  }
 }
