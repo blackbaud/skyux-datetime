@@ -255,7 +255,7 @@ export class SkyDatepickerInputDirective
   private control: AbstractControl;
   private dateFormatter = new SkyDateFormatter();
   private isFirstChange = true;
-  private initalPlaceholder: string;
+  private initialPlaceholder: string;
   private preferredShortDateFormat: string;
   private ngUnsubscribe = new Subject<void>();
 
@@ -277,7 +277,7 @@ export class SkyDatepickerInputDirective
     private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent
   ) {
-    this.initalPlaceholder = this.adapter.getPlaceholder(this.elementRef);
+    this.initialPlaceholder = this.adapter.getPlaceholder(this.elementRef);
     this.updatePlaceholder();
 
     this.localeProvider.getLocaleInfo()
@@ -558,7 +558,7 @@ export class SkyDatepickerInputDirective
   }
 
   private updatePlaceholder(): void {
-    if (!this.initalPlaceholder) {
+    if (!this.initialPlaceholder) {
       this.adapter.setPlaceholder(this.elementRef, this.dateFormat);
     }
   }
