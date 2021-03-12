@@ -21,7 +21,8 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyThemeModule
+  SkyThemeModule,
+  SkyThemeService
 } from '@skyux/theme';
 
 import {
@@ -41,17 +42,18 @@ import {
     SkyTimepickerInputDirective,
     SkyTimepickerComponent
   ],
-    imports: [
-        CommonModule,
-        SkyI18nModule,
-        SkyIconModule,
-        SkyDateTimeResourcesModule,
-        SkyAffixModule,
-        SkyOverlayModule,
-        SkyThemeModule
-    ],
+  imports: [
+    CommonModule,
+    SkyI18nModule,
+    SkyIconModule,
+    SkyDateTimeResourcesModule,
+    SkyAffixModule,
+    SkyOverlayModule,
+    SkyThemeModule
+  ],
   providers: [
-    SkyCoreAdapterService
+    SkyCoreAdapterService,
+    SkyThemeService
   ],
   exports: [
     SkyTimepickerInputDirective,

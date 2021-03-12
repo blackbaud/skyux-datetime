@@ -26,7 +26,8 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyThemeModule
+  SkyThemeModule,
+  SkyThemeService
 } from '@skyux/theme';
 
 import {
@@ -84,16 +85,16 @@ import {
     SkyDatepickerInputDirective,
     SkyFuzzyDatepickerInputDirective
   ],
-    imports: [
-        CommonModule,
-        SkyI18nModule,
-        FormsModule,
-        SkyIconModule,
-        SkyDateTimeResourcesModule,
-        SkyAffixModule,
-        SkyOverlayModule,
-        SkyThemeModule
-    ],
+  imports: [
+    CommonModule,
+    SkyI18nModule,
+    FormsModule,
+    SkyIconModule,
+    SkyDateTimeResourcesModule,
+    SkyAffixModule,
+    SkyOverlayModule,
+    SkyThemeModule
+  ],
   exports: [
     SkyDatepickerCalendarComponent,
     SkyDatepickerCalendarInnerComponent,
@@ -108,7 +109,8 @@ import {
     SkyAppWindowRef,
     SkyDatepickerConfigService,
     SkyFuzzyDateService,
-    SkyCoreAdapterService
+    SkyCoreAdapterService,
+    SkyThemeService
   ]
 })
 export class SkyDatepickerModule { }
