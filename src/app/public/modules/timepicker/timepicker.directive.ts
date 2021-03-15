@@ -1,5 +1,5 @@
 import {
-  AfterContentChecked,
+  AfterContentInit,
   ChangeDetectorRef,
   Directive,
   ElementRef,
@@ -61,11 +61,10 @@ const SKY_TIMEPICKER_VALIDATOR = {
   ]
 })
 export class SkyTimepickerInputDirective implements
-  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges, AfterContentChecked {
+  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges, AfterContentInit {
 
   public pickerChangedSubscription: Subscription;
   private _timeFormat: string = 'hh';
-  private controlInitialized = false;
 
   /**
    * Creates the timepicker input field and picker. Place this attribute on an `input` element,
@@ -170,11 +169,10 @@ export class SkyTimepickerInputDirective implements
     }
   }
 
-  public ngAfterContentChecked(): void {
+  public ngAfterContentInit(): void {
     // Watch for the control to be added and initialize the value immediately.
     /* istanbul ignore else */
-    if (!this.controlInitialized && this.control && this.control.parent) {
-      this.controlInitialized = true;
+    if (this.control && this.control.parent) {
       this.control.setValue(this.modelValue, {
         emitEvent: false
       });

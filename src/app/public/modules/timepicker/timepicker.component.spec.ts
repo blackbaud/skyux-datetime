@@ -797,7 +797,7 @@ describe('Timepicker', () => {
     it('should immediately initialize input value', fakeAsync(() => {
       fixture.detectChanges();
       fixture.whenStable();
-      expect(component.timeControl.value.local).toEqual('2:55 AM');
+      expect(component.timeControlValueAfterInit.local).toEqual('2:55 AM');
     }));
   });
 
