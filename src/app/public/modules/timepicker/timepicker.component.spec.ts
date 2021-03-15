@@ -793,6 +793,12 @@ describe('Timepicker', () => {
       expect(getInput(fixture).disabled).toBeFalsy();
       expect(getTriggerButton(fixture).disabled).toBeFalsy();
     }));
+
+    it('should immediately initialize input value', fakeAsync(() => {
+      fixture.detectChanges();
+      fixture.whenStable();
+      expect(component.timeControl.value.local).toEqual('2:55 AM');
+    }));
   });
 
   describe('inside input box', () => {
