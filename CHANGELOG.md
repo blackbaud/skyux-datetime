@@ -1,6 +1,6 @@
 # 4.10.1 (2021-03-15)
 
-- Fixed the timepicker component to initialize the control value during lifecycle hook. [#253](https://github.com/blackbaud/skyux-datetime/pull/253)
+- Fixed the timepicker component so that it initializes the control value during the lifecycle hook. [#253](https://github.com/blackbaud/skyux-datetime/pull/253)
 
 # 4.10.0 (2021-03-15)
 
