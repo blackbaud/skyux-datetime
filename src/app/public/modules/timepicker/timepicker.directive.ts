@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterContentChecked,
   ChangeDetectorRef,
   Directive,
   ElementRef,
@@ -61,10 +61,11 @@ const SKY_TIMEPICKER_VALIDATOR = {
   ]
 })
 export class SkyTimepickerInputDirective implements
-  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges, AfterViewInit {
+  OnInit, OnDestroy, ControlValueAccessor, Validator, OnChanges, AfterContentChecked {
 
   public pickerChangedSubscription: Subscription;
   private _timeFormat: string = 'hh';
+  private controlInitialized = false;
 
   /**
    * Creates the timepicker input field and picker. Place this attribute on an `input` element,
@@ -169,21 +170,15 @@ export class SkyTimepickerInputDirective implements
     }
   }
 
-  public ngAfterViewInit(): void {
-    // This is needed to address a bug in Angular 4.
-    // When a control value is set intially, its value is not represented on the view.
-    // See: https://github.com/angular/angular/issues/13792
-    // Of note is the parent check which allows us to determine if the form is reactive.
-    // Without this check there is a changed before checked error
+  public ngAfterContentChecked(): void {
+    // Watch for the control to be added and initialize the value immediately.
     /* istanbul ignore else */
-    if (this.control && this.control.parent) {
-      setTimeout(() => {
-        this.control.setValue(this.modelValue, {
-          emitEvent: false
-        });
-
-        this.changeDetector.markForCheck();
+    if (!this.controlInitialized && this.control && this.control.parent) {
+      this.controlInitialized = true;
+      this.control.setValue(this.modelValue, {
+        emitEvent: false
       });
+      this.changeDetector.markForCheck();
     }
   }
 
