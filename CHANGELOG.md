@@ -1,6 +1,6 @@
 # 4.10.2 (2021-03-19)
 
-- Replaced theme conditionals in templates with the new `skyIfTheme` directive. [#251](https://github.com/blackbaud/skyux-datetime/pull/251)
+- Replaced theme conditionals in templates with the new `skyThemeIf` directive. [#251](https://github.com/blackbaud/skyux-datetime/pull/251)
 
 # 4.10.1 (2021-03-15)
 
