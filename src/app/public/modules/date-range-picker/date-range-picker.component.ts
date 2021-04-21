@@ -7,6 +7,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   SimpleChanges
 } from '@angular/core';
 
@@ -64,6 +65,7 @@ import {
 import {
   SkyDateRangeService
 } from './date-range.service';
+import { SkyThemeService } from '@skyux/theme';
 
 /* tslint:disable:no-forward-ref no-use-before-declare */
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
@@ -178,6 +180,20 @@ export class SkyDateRangePickerComponent
   @Input()
   public label: string;
 
+  /**
+   * Indicates whether to mark the start date input as required.
+   * @default false
+   */
+  @Input()
+  public startDateRequired: boolean = false;
+
+  /**
+   * Indicates whether to mark the end date input as required.
+   * @default false
+   */
+  @Input()
+  public endDateRequired: boolean = false;
+
   public get startDateLabelResourceKey(): string {
     if (this.selectedCalculator.type === SkyDateRangeCalculatorType.Range) {
       return 'skyux_date_range_picker_start_date_label';
@@ -251,7 +267,8 @@ export class SkyDateRangePickerComponent
     private dateRangeService: SkyDateRangeService,
     private formBuilder: FormBuilder,
     private localeProvider: SkyAppLocaleProvider,
-    private windowRef: SkyAppWindowRef
+    private windowRef: SkyAppWindowRef,
+    @Optional() themeSvc?: SkyThemeService
   ) {
     this.localeProvider.getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -259,6 +276,13 @@ export class SkyDateRangePickerComponent
         SkyDateFormatter.setLocale(localeInfo.locale);
         this.preferredShortDateFormat = SkyDateFormatter.getPreferredShortDateFormat();
       });
+
+    // Update icons when theme changes.
+    themeSvc?.settingsChange
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(() => {
+      this.changeDetector.markForCheck();
+    });
   }
 
   public ngOnInit(): void {
@@ -290,6 +314,24 @@ export class SkyDateRangePickerComponent
         });
       }
     });
+
+    // Watch for errors on the start/end dates and reflect in parent control.
+    // This will catch any "required" errors on focus/blur.
+    this.startDateControl.statusChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(value => {
+        if (value === 'INVALID') {
+          this.validate(this.control);
+        }
+      });
+
+    this.endDateControl.statusChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(value => {
+        if (value === 'INVALID') {
+          this.validate(this.control);
+        }
+      });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

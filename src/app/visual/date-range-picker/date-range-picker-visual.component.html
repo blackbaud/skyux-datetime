@@ -16,6 +16,8 @@
         label="Last donation"
         [calculatorIds]="calculatorIds"
         [dateFormat]="dateFormat"
+        [endDateRequired]="endDateRequired"
+        [startDateRequired]="startDateRequired"
       >
       </sky-date-range-picker>
 
@@ -74,6 +76,20 @@ endDate: {{ reactiveForm.value.lastDonation?.endDate | date }}</code></pre>
     (click)="toggleDisabled()"
   >
     Toggle disabled
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="toggleStartDateRequired()"
+  >
+    Toggle start date required
+  </button>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    (click)="toggleEndDateRequired()"
+  >
+    Toggle end date required
   </button>
   <button
     class="sky-btn sky-btn-default"

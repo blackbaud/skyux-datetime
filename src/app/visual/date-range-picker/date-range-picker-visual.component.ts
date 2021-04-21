@@ -39,7 +39,9 @@ export class DateRangePickerVisualComponent implements OnInit {
   public calculatorIds: SkyDateRangeCalculatorId[];
   public dateFormat: string;
   public disabled = false;
+  public endDateRequired: boolean = false;
   public reactiveForm: FormGroup;
+  public startDateRequired: boolean = false;
 
   public get reactiveRange(): AbstractControl {
     return this.reactiveForm.get('lastDonation');
@@ -140,6 +142,7 @@ export class DateRangePickerVisualComponent implements OnInit {
         });
 
         this.calculatorIds = [
+          undefined,
           SkyDateRangeCalculatorId.SpecificRange,
           SkyDateRangeCalculatorId.LastFiscalYear,
           calculator.calculatorId
@@ -149,6 +152,14 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public setDateFormat(): void {
     this.dateFormat = 'YYYY-MM-DD';
+  }
+
+  public toggleEndDateRequired(): void {
+    this.endDateRequired = !this.endDateRequired;
+  }
+
+  public toggleStartDateRequired(): void {
+    this.startDateRequired = !this.startDateRequired;
   }
 
   public themeSettingsChange(themeSettings: SkyThemeSettings): void {

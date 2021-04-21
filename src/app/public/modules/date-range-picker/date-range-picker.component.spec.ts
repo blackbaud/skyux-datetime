@@ -502,6 +502,48 @@ describe('Date range picker', function () {
     expect(calculatorIdControl.errors).toBeFalsy();
   }));
 
+  it('should show validation errors when start date is required but not provided', fakeAsync(function () {
+    fixture.componentInstance.startDateRequired = true;
+    detectChanges();
+    const control = component.dateRange;
+    const calculatorIdControl = component.dateRangePicker.formGroup.get('calculatorId');
+    control.setValue({
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange
+    });
+    detectChanges();
+    const datepickerInputs = fixture.nativeElement.querySelectorAll('.sky-input-group input');
+
+    SkyAppTestUtility.fireDomEvent(datepickerInputs.item(0), 'blur');
+    detectChanges();
+    const expectedError = {
+      required: true
+    };
+
+    expect(control.errors).toEqual(expectedError);
+    expect(calculatorIdControl.errors).toEqual(expectedError);
+  }));
+
+  it('should show validation errors when end date is required but not provided', fakeAsync(function () {
+    fixture.componentInstance.endDateRequired = true;
+    detectChanges();
+    const control = component.dateRange;
+    const calculatorIdControl = component.dateRangePicker.formGroup.get('calculatorId');
+    control.setValue({
+      calculatorId: SkyDateRangeCalculatorId.SpecificRange
+    });
+    detectChanges();
+    const datepickerInputs = fixture.nativeElement.querySelectorAll('.sky-input-group input');
+
+    SkyAppTestUtility.fireDomEvent(datepickerInputs.item(1), 'blur');
+    detectChanges();
+    const expectedError = {
+      required: true
+    };
+
+    expect(control.errors).toEqual(expectedError);
+    expect(calculatorIdControl.errors).toEqual(expectedError);
+  }));
+
   it('should be accessible', async(function () {
     fixture.detectChanges();
 
