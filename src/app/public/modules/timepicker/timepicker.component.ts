@@ -262,10 +262,10 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
 
     // Update icons when theme changes.
     themeSvc?.settingsChange
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(() => {
-      this.changeDetector.markForCheck();
-    });
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.changeDetector.markForCheck();
+      });
   }
 
   public ngOnInit(): void {
