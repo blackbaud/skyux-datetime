@@ -181,14 +181,14 @@ export class SkyDateRangePickerComponent
   public label: string;
 
   /**
-   * Indicates whether to mark the start date input as required.
+   * Indicates whether to require users to specify a start date.
    * @default false
    */
   @Input()
   public startDateRequired: boolean = false;
 
   /**
-   * Indicates whether to mark the end date input as required.
+   * Indicates whether to require users to specify a end date.
    * @default false
    */
   @Input()
@@ -279,10 +279,10 @@ export class SkyDateRangePickerComponent
 
     // Update icons when theme changes.
     themeSvc?.settingsChange
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(() => {
-      this.changeDetector.markForCheck();
-    });
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.changeDetector.markForCheck();
+      });
   }
 
   public ngOnInit(): void {
