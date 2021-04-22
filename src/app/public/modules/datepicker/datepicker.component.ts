@@ -10,7 +10,6 @@ import {
   Optional,
   ViewChild
 } from '@angular/core';
-
 import {
   SkyAffixAutoFitContext,
   SkyAffixer,
@@ -19,27 +18,13 @@ import {
   SkyOverlayInstance,
   SkyOverlayService
 } from '@skyux/core';
+import { SkyInputBoxHostService } from '@skyux/forms';
+import { SkyThemeService } from '@skyux/theme';
 
-import {
-  SkyInputBoxHostService
-} from '@skyux/forms';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {
-  SkyThemeService
-} from '@skyux/theme';
-
-import {
-  fromEvent,
-  Subject
-} from 'rxjs';
-
-import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
-  SkyDatepickerCalendarComponent
-} from './datepicker-calendar.component';
+import { SkyDatepickerCalendarComponent } from './datepicker-calendar.component';
 
 let nextId = 0;
 
@@ -54,7 +39,6 @@ let nextId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkyDatepickerComponent implements OnDestroy, OnInit {
-
   /**
    * @internal
    * Indicates if the calendar button element or any of its children have focus.
@@ -213,12 +197,10 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     this.addTriggerButtonEventListeners();
 
     if (this.inputBoxHostService) {
-      this.inputBoxHostService.populate(
-        {
-          inputTemplate: this.inputTemplateRef,
-          buttonsTemplate: this.triggerButtonTemplateRef
-        }
-      );
+      this.inputBoxHostService.populate({
+        inputTemplate: this.inputTemplateRef,
+        buttonsTemplate: this.triggerButtonTemplateRef
+      });
     }
   }
 
@@ -279,7 +261,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     affixer.placementChange
       .pipe(takeUntil(this.calendarUnsubscribe))
       .subscribe((change) => {
-        this.isVisible = (change.placement !== null);
+        this.isVisible = change.placement !== null;
         this.changeDetector.markForCheck();
       });
 

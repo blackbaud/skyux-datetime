@@ -2,36 +2,32 @@
 // behavior of using the `Intl` API for formatting dates rather than having to register every
 // supported locale.
 // https://github.com/angular/angular/blob/4.4.x/packages/common/src/pipes/date_pipe.ts
-
-import {
-  SkyIntlDateFormatter
-} from '@skyux/i18n';
+import { SkyIntlDateFormatter } from '@skyux/i18n';
 
 import * as moment_ from 'moment';
+
 const moment = moment_;
 
 export class SkyDateFormatUtility {
-
-  private static _ALIASES: {[key: string]: string} = {
-    'medium': 'yMMMdjms',
-    'short': 'yMdjm',
-    'fullDate': 'yMMMMEEEEd',
-    'longDate': 'yMMMMd',
-    'mediumDate': 'yMMMd',
-    'shortDate': 'yMd',
-    'mediumTime': 'jms',
-    'shortTime': 'jm'
+  private static _ALIASES: { [key: string]: string } = {
+    medium: 'yMMMdjms',
+    short: 'yMdjm',
+    fullDate: 'yMMMMEEEEd',
+    longDate: 'yMMMMd',
+    mediumDate: 'yMMMd',
+    shortDate: 'yMd',
+    mediumTime: 'jms',
+    shortTime: 'jm'
   };
 
   /* istanbul ignore next */
-  constructor() { }
+  constructor() {}
 
   public static format(
     locale: string,
     value: any,
     pattern: string
   ): string | null {
-
     let date: Date;
 
     if (isBlank(value) || value !== value) {

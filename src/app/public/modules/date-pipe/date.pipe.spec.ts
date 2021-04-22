@@ -1,32 +1,12 @@
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { expect } from '@skyux-sdk/testing';
+import { SkyAppLocaleInfo, SkyAppLocaleProvider } from '@skyux/i18n';
 
-import {
-  expect
-} from '@skyux-sdk/testing';
+import { BehaviorSubject } from 'rxjs';
 
-import {
-  SkyAppLocaleInfo,
-  SkyAppLocaleProvider
-} from '@skyux/i18n';
-
-import {
-  BehaviorSubject
-} from 'rxjs';
-
-import {
-  DatePipeTestComponent
-} from './fixtures/date-pipe.component.fixture';
-
-import {
-  DatePipeTestModule
-} from './fixtures/date-pipe.module.fixture';
-
-import {
-  SkyDatePipe
-} from './date.pipe';
+import { SkyDatePipe } from './date.pipe';
+import { DatePipeTestComponent } from './fixtures/date-pipe.component.fixture';
+import { DatePipeTestModule } from './fixtures/date-pipe.module.fixture';
 
 describe('Date pipe', () => {
   let fixture: ComponentFixture<DatePipeTestComponent>;
@@ -44,9 +24,7 @@ describe('Date pipe', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        DatePipeTestModule
-      ],
+      imports: [DatePipeTestModule],
       providers: [
         {
           provide: SkyAppLocaleProvider,

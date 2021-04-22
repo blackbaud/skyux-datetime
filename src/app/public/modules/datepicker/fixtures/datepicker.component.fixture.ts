@@ -1,22 +1,13 @@
-import {
-  Component,
-  ViewChild
-} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import {
-  SkyDatepickerInputDirective
-} from '../datepicker-input.directive';
-
-import {
-  SkyDatepickerComponent
-} from '../datepicker.component';
+import { SkyDatepickerInputDirective } from '../datepicker-input.directive';
+import { SkyDatepickerComponent } from '../datepicker.component';
 
 @Component({
   selector: 'datepicker-test',
   templateUrl: './datepicker.component.fixture.html'
 })
 export class DatepickerTestComponent {
-
   public dateFormat: string;
 
   public isDisabled: boolean;

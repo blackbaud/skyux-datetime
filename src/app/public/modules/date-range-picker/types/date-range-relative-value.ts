@@ -1,6 +1,4 @@
-import {
-  SkyDateRange
-} from './date-range';
+import { SkyDateRange } from './date-range';
 
 /**
  * Need to add the following to classes which contain static methods.
@@ -9,10 +7,9 @@ import {
  * @dynamic
  */
 export abstract class SkyDateRangeRelativeValue {
-
   // Abstract classes are not covered properly.
   /* istanbul ignore next */
-  constructor () {}
+  constructor() {}
 
   public static get today(): SkyDateRange {
     const today = new Date();
@@ -144,7 +141,9 @@ export abstract class SkyDateRangeRelativeValue {
     const endDate = new Date();
 
     const currentMonth = startDate.getMonth();
-    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(currentMonth);
+    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(
+      currentMonth
+    );
 
     startDate.setMonth(quarterStartMonth);
     startDate.setDate(1);
@@ -163,7 +162,9 @@ export abstract class SkyDateRangeRelativeValue {
     const endDate = new Date();
 
     const currentMonth = startDate.getMonth();
-    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(currentMonth);
+    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(
+      currentMonth
+    );
 
     startDate.setMonth(quarterStartMonth + 3);
     startDate.setDate(1);
@@ -185,7 +186,9 @@ export abstract class SkyDateRangeRelativeValue {
     endDate.setDate(1);
 
     const currentMonth = startDate.getMonth();
-    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(currentMonth);
+    const quarterStartMonth = SkyDateRangeRelativeValue.getQuarterStartMonth(
+      currentMonth
+    );
 
     startDate.setMonth(quarterStartMonth - 3);
     startDate.setDate(1);

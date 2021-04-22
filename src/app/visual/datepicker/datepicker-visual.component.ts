@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,15 +6,9 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { SkyThemeService, SkyThemeSettings } from '@skyux/theme';
 
-import {
-  distinctUntilChanged
-} from 'rxjs/operators';
-
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'datepicker-visual',
@@ -37,7 +27,7 @@ export class DatepickerVisualComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private themeSvc: SkyThemeService
-  ) { }
+  ) {}
 
   public get reactiveDate(): AbstractControl {
     return this.reactiveForm.get('selectedDate');

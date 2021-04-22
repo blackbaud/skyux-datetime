@@ -1,6 +1,4 @@
-<sky-datepicker
-  #picker
->
+<sky-datepicker #picker>
   <input
     name="myDate"
     [dateFormat]="dateFormat"
@@ -17,8 +15,5 @@
 </sky-datepicker>
 
 <div *ngIf="showInvalidDirective">
-  <input
-    type="text"
-    skyDatepickerInput
-  />
+  <input type="text" skyDatepickerInput />
 </div>

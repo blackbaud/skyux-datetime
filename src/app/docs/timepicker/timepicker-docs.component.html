@@ -4,7 +4,8 @@
   pageTitle="Timepicker"
 >
   <sky-docs-demo-page-summary>
-    The timepicker module creates a SKY UX-themed input field and picker for users to enter or select times.
+    The timepicker module creates a SKY UX-themed input field and picker for
+    users to enter or select times.
   </sky-docs-demo-page-summary>
 
   <sky-docs-demo>
@@ -22,12 +23,9 @@
       </sky-docs-demo-control-panel-section>
     </sky-docs-demo-control-panel>
 
-    <div style="max-width: 50%;">
+    <div style="max-width: 50%">
       <sky-input-box>
-        <label
-          class="sky-control-label"
-          [for]="startTime.id"
-        >
+        <label class="sky-control-label" [for]="startTime.id">
           Start time
         </label>
         <sky-timepicker #timepicker>
@@ -45,17 +43,9 @@
   </sky-docs-demo>
 
   <sky-docs-design-guidelines>
-
-    <sky-docs-demo-page-section
-      heading="Usage"
-    >
-      <sky-docs-design-guideline
-        heading="Use when"
-        headingStyle="success"
-      >
-        <p>
-          Use timepickers when users need to specify the time of day.
-        </p>
+    <sky-docs-demo-page-section heading="Usage">
+      <sky-docs-design-guideline heading="Use when" headingStyle="success">
+        <p>Use timepickers when users need to specify the time of day.</p>
         <sky-docs-design-guideline-thumbnail
           caption="Do use timepickers when users specify times in 12-hour or 24-hour formats."
           captionType="success"
@@ -74,12 +64,14 @@
         >
         </sky-docs-design-guideline-thumbnail>
       </sky-docs-design-guideline>
-      <sky-docs-design-guideline
-        heading="Don't use when"
-        headingStyle="danger"
-      >
+      <sky-docs-design-guideline heading="Don't use when" headingStyle="danger">
         <p>
-          Don't use timepickers when users need to specify general durations or time spans. Use <a href="https://developer.blackbaud.com/skyux/components/radio">radio buttons</a> or HTML select fields instead.
+          Don't use timepickers when users need to specify general durations or
+          time spans. Use
+          <a href="https://developer.blackbaud.com/skyux/components/radio"
+            >radio buttons</a
+          >
+          or HTML select fields instead.
         </p>
         <sky-docs-design-guideline-thumbnail
           caption="Don't use timepickers when users specify hours and minutes as lengths of time."
@@ -96,26 +88,26 @@
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Anatomy"
-    >
+    <sky-docs-demo-page-section heading="Anatomy">
       <sky-docs-anatomy
         imagePath="~/assets/img/guidelines/timepicker/timepicker-anatomy.png"
       >
-        <sky-docs-anatomy-item anatomyNumber="1">Input field</sky-docs-anatomy-item>
-        <sky-docs-anatomy-item anatomyNumber="2">Picker button</sky-docs-anatomy-item>
+        <sky-docs-anatomy-item anatomyNumber="1"
+          >Input field</sky-docs-anatomy-item
+        >
+        <sky-docs-anatomy-item anatomyNumber="2"
+          >Picker button</sky-docs-anatomy-item
+        >
         <sky-docs-anatomy-item anatomyNumber="3">Picker</sky-docs-anatomy-item>
       </sky-docs-anatomy>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Options"
-    >
-      <sky-docs-design-guideline
-        heading="12-hour timepicker"
-      >
+    <sky-docs-demo-page-section heading="Options">
+      <sky-docs-design-guideline heading="12-hour timepicker">
         <p>
-          Use the 12-hour option for regions and users that use 12-hour time designations. This allows users to select hours, minutes, and "AM" or "PM."
+          Use the 12-hour option for regions and users that use 12-hour time
+          designations. This allows users to select hours, minutes, and "AM" or
+          "PM."
         </p>
         <sky-docs-design-guideline-thumbnail
           imageSource="~/assets/img/guidelines/timepicker/timepicker-options-1.png"
@@ -123,11 +115,10 @@
         </sky-docs-design-guideline-thumbnail>
       </sky-docs-design-guideline>
 
-      <sky-docs-design-guideline
-        heading="24-hour timepicker"
-      >
+      <sky-docs-design-guideline heading="24-hour timepicker">
         <p>
-          Use the 24-hour option for regions and users that use 24-hour time designations. This allows users to select hours and minutes.
+          Use the 24-hour option for regions and users that use 24-hour time
+          designations. This allows users to select hours and minutes.
         </p>
         <sky-docs-design-guideline-thumbnail
           imageSource="~/assets/img/guidelines/timepicker/timepicker-options-2.png"
@@ -136,14 +127,12 @@
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Behavior and states"
-    >
-      <sky-docs-design-guideline
-        heading="Keyboard entries"
-      >
+    <sky-docs-demo-page-section heading="Behavior and states">
+      <sky-docs-design-guideline heading="Keyboard entries">
         <p>
-          Users can use the keyboard to enter time values in the input field. Times automatically resolve to the correct format when the field loses focus.
+          Users can use the keyboard to enter time values in the input field.
+          Times automatically resolve to the correct format when the field loses
+          focus.
         </p>
         <sky-docs-design-guideline-thumbnail
           videoSource="~/assets/img/guidelines/timepicker/timepicker-autoformatting.mp4"
@@ -151,9 +140,7 @@
         >
         </sky-docs-design-guideline-thumbnail>
       </sky-docs-design-guideline>
-      <sky-docs-design-guideline
-        heading="States"
-      >
+      <sky-docs-design-guideline heading="States">
         <table class="sky-docs-table">
           <tr>
             <td class="sky-docs-table-cell sky-docs-table-cell-primary">
@@ -167,9 +154,7 @@
             </td>
           </tr>
           <tr>
-            <td class="sky-docs-table-cell">
-              Input field focused
-            </td>
+            <td class="sky-docs-table-cell">Input field focused</td>
             <td class="sky-docs-table-cell">
               <sky-docs-design-guideline-thumbnail
                 imageSource="~/assets/img/guidelines/timepicker/timepicker-state-focused.png"
@@ -178,9 +163,7 @@
             </td>
           </tr>
           <tr>
-            <td class="sky-docs-table-cell">
-              Picker open
-            </td>
+            <td class="sky-docs-table-cell">Picker open</td>
             <td class="sky-docs-table-cell">
               <sky-docs-design-guideline-thumbnail
                 imageSource="~/assets/img/guidelines/timepicker/timepicker-state-picker.png"
@@ -189,9 +172,7 @@
             </td>
           </tr>
           <tr>
-            <td class="sky-docs-table-cell">
-              Time entered
-            </td>
+            <td class="sky-docs-table-cell">Time entered</td>
             <td class="sky-docs-table-cell">
               <sky-docs-design-guideline-thumbnail
                 imageSource="~/assets/img/guidelines/timepicker/timepicker-state-entered.png"
@@ -200,9 +181,7 @@
             </td>
           </tr>
           <tr>
-            <td class="sky-docs-table-cell">
-              Error
-            </td>
+            <td class="sky-docs-table-cell">Error</td>
             <td class="sky-docs-table-cell">
               <sky-docs-design-guideline-thumbnail
                 imageSource="~/assets/img/guidelines/timepicker/timepicker-state-error.png"
@@ -214,37 +193,46 @@
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Layout"
-    >
+    <sky-docs-demo-page-section heading="Layout">
       <sky-docs-design-guideline>
         <p class="sky-docs-text-block">
-          Use 1/2- or 1/3-width columns for individual timepicker fields inside <a href="https://developer.blackbaud.com/skyux/components/modal">modals</a>, except when using small (300px) modals. When using two timepickers for start and stop times, use 10px of horizontal space between them.
+          Use 1/2- or 1/3-width columns for individual timepicker fields inside
+          <a href="https://developer.blackbaud.com/skyux/components/modal"
+            >modals</a
+          >, except when using small (300px) modals. When using two timepickers
+          for start and stop times, use 10px of horizontal space between them.
         </p>
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Related information"
-    >
-      <sky-docs-design-guideline
-       heading="Components"
-      >
+    <sky-docs-demo-page-section heading="Related information">
+      <sky-docs-design-guideline heading="Components">
         <ul>
           <li><a skyAppLink="/docs/datepicker">Datepicker</a></li>
-          <li><a href="https://developer.blackbaud.com/skyux-popovers/docs/popover">Popover</a></li>
-          <li><a href="https://developer.blackbaud.com/skyux/components/radio">Radio button</a></li>
+          <li>
+            <a
+              href="https://developer.blackbaud.com/skyux-popovers/docs/popover"
+              >Popover</a
+            >
+          </li>
+          <li>
+            <a href="https://developer.blackbaud.com/skyux/components/radio"
+              >Radio button</a
+            >
+          </li>
         </ul>
       </sky-docs-design-guideline>
-      <sky-docs-design-guideline
-        heading="Guidelines"
-      >
+      <sky-docs-design-guideline heading="Guidelines">
         <ul>
-          <li><a href="https://developer.blackbaud.com/skyux/design/guidelines/form-design">Form design</a></li>
+          <li>
+            <a
+              href="https://developer.blackbaud.com/skyux/design/guidelines/form-design"
+              >Form design</a
+            >
+          </li>
         </ul>
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
-
   </sky-docs-design-guidelines>
 
   <sky-docs-code-examples
@@ -256,5 +244,4 @@
       sourceCodePath="src/app/public/plugin-resources/code-examples/timepicker/basic/"
     ></sky-docs-code-example>
   </sky-docs-code-examples>
-
 </sky-docs-demo-page>

@@ -1,3 +1,3 @@
 {
-  "extends": "@skyux-sdk/builder/tslint"
+  "extends": ["@skyux-sdk/builder/tslint", "tslint-config-prettier"]
 }

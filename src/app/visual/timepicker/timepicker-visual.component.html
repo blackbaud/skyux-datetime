@@ -5,7 +5,7 @@
 <div
   class="app-screenshot"
   id="screenshot-timepicker12hr"
-  style="width: 400px; height: 400px;"
+  style="width: 400px; height: 400px"
 >
   <sky-timepicker #timePickerExample1>
     <input
@@ -18,12 +18,11 @@
     />
   </sky-timepicker>
 
-  <div *ngIf="time.errors && time.errors.skyTime && (time.dirty || time.touched)"
+  <div
+    *ngIf="time.errors && time.errors.skyTime && (time.dirty || time.touched)"
     class="sky-error-label"
   >
-    <span
-      [hidden]="!time.errors.skyTime.invalid"
-    >
+    <span [hidden]="!time.errors.skyTime.invalid">
       Please enter a valid time.
     </span>
   </div>
@@ -32,7 +31,7 @@
 <div
   class="app-screenshot"
   id="screenshot-timepicker24hr"
-  style="max-width: 400px; height: 500px;"
+  style="max-width: 400px; height: 500px"
 >
   <sky-timepicker #timePickerExample2>
     <input
@@ -44,12 +43,13 @@
       #time2="ngModel"
     />
   </sky-timepicker>
-  <div *ngIf="time2.errors && time2.errors.skyTime && (time2.dirty || time2.touched)"
+  <div
+    *ngIf="
+      time2.errors && time2.errors.skyTime && (time2.dirty || time2.touched)
+    "
     class="sky-error-label"
   >
-    <span
-      [hidden]="!time2.errors.skyTime.invalid"
-    >
+    <span [hidden]="!time2.errors.skyTime.invalid">
       Please enter a valid time.
     </span>
   </div>
@@ -58,13 +58,10 @@
 <div
   class="app-screenshot"
   id="screenshot-timepicker-input-box"
-  style="max-width: 400px; height: 500px;"
+  style="max-width: 400px; height: 500px"
 >
   <sky-input-box>
-    <label
-      class="sky-control-label"
-      [for]="timePickerInputBox.id"
-    >
+    <label class="sky-control-label" [for]="timePickerInputBox.id">
       Input box
     </label>
     <sky-timepicker #timePickerExample5>
@@ -82,18 +79,10 @@
   </sky-input-box>
 </div>
 
-<h3>
-  Reactive form timepicker
-</h3>
+<h3>Reactive form timepicker</h3>
 
-<form
-  novalidate
-  style="max-width: 400px"
-  [formGroup]="reactiveForm"
->
-  <sky-timepicker
-    #timePickerExample4
-  >
+<form novalidate style="max-width: 400px" [formGroup]="reactiveForm">
+  <sky-timepicker #timePickerExample4>
     <input
       formControlName="time"
       timeFormat="hh"
@@ -104,33 +93,25 @@
   </sky-timepicker>
 </form>
 
-<p>
-  Reactive form selected time is {{ reactiveTime.value.local }}
-</p>
+<p>Reactive form selected time is {{ reactiveTime.value.local }}</p>
 
-<p *ngIf="reactiveTime.errors && (reactiveTime.dirty || reactiveTime.touched)"
+<p
+  *ngIf="reactiveTime.errors && (reactiveTime.dirty || reactiveTime.touched)"
   class="sky-error-label"
 >
   <span *ngIf="reactiveTime.errors.required">
     This time is required. Please supply a value.
   </span>
   <span *ngIf="reactiveTime.errors.skyTime">
-    The time you have entered is invalid. Please enter a valid time or use the picker.
+    The time you have entered is invalid. Please enter a valid time or use the
+    picker.
   </span>
 </p>
 
-<button
-  class="sky-btn"
-  type="button"
-  (click)="toggleDisabled()"
->
+<button class="sky-btn" type="button" (click)="toggleDisabled()">
   Toggle disabled
 </button>
 
-<button
-  class="sky-btn"
-  type="button"
-  (click)="setSelectedHour()"
->
+<button class="sky-btn" type="button" (click)="setSelectedHour()">
   Dynamically set hour
 </button>

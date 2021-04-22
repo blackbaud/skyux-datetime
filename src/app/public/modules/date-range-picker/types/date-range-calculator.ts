@@ -1,32 +1,15 @@
-import {
-  ValidationErrors
-} from '@angular/forms';
+import { ValidationErrors } from '@angular/forms';
 
-import {
-  SkyDateRangeCalculation
-} from './date-range-calculation';
-
-import {
-  SkyDateRangeCalculatorConfig
-} from './date-range-calculator-config';
-
-import {
-  SkyDateRangeCalculatorId
-} from './date-range-calculator-id';
-
-import {
-  SkyDateRangeCalculatorType
-} from './date-range-calculator-type';
-
-import {
-  SkyDateRange
-} from './date-range';
+import { SkyDateRange } from './date-range';
+import { SkyDateRangeCalculation } from './date-range-calculation';
+import { SkyDateRangeCalculatorConfig } from './date-range-calculator-config';
+import { SkyDateRangeCalculatorId } from './date-range-calculator-id';
+import { SkyDateRangeCalculatorType } from './date-range-calculator-type';
 
 /**
  * Represents the calculator.
  */
 export class SkyDateRangeCalculator {
-
   /**
    * Specifies the text to display in the calculator select menu.
    */
@@ -53,8 +36,10 @@ export class SkyDateRangeCalculator {
    * @param startDateInput The start date.
    * @param endDateInput The end date.
    */
-  public getValue(startDateInput?: Date, endDateInput?: Date): SkyDateRangeCalculation {
-
+  public getValue(
+    startDateInput?: Date,
+    endDateInput?: Date
+  ): SkyDateRangeCalculation {
     const result = this.config.getValue(startDateInput, endDateInput);
 
     /* tslint:disable:no-null-keyword */
@@ -95,10 +80,6 @@ export class SkyDateRangeCalculator {
    * See: https://stackoverflow.com/a/38050824/6178885
    */
   private parseDateWithoutTime(date: Date): Date {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 }

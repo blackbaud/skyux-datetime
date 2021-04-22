@@ -8,21 +8,10 @@ import {
   ViewChild
 } from '@angular/core';
 
-import {
-  SkyDatepickerAdapterService
-} from './datepicker-adapter.service';
-
-import {
-  SkyDatepickerCalendarInnerComponent
-} from './datepicker-calendar-inner.component';
-
-import {
-  SkyDatepickerConfigService
-} from './datepicker-config.service';
-
-import {
-  SkyDateFormatter
-} from './date-formatter';
+import { SkyDateFormatter } from './date-formatter';
+import { SkyDatepickerAdapterService } from './datepicker-adapter.service';
+import { SkyDatepickerCalendarInnerComponent } from './datepicker-calendar-inner.component';
+import { SkyDatepickerConfigService } from './datepicker-config.service';
 
 /**
  * @internal
@@ -34,7 +23,6 @@ import {
   providers: [SkyDatepickerAdapterService]
 })
 export class SkyDatepickerCalendarComponent implements AfterViewInit {
-
   @Input()
   public minDate: Date;
 
@@ -56,7 +44,9 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
   }
 
   @Output()
-  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
+  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(
+    undefined
+  );
 
   @Output()
   public calendarModeChange: EventEmitter<string> = new EventEmitter<string>();
@@ -84,7 +74,8 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
   public constructor(
     private adapter: SkyDatepickerAdapterService,
     private config: SkyDatepickerConfigService,
-    private elementRef: ElementRef) {
+    private elementRef: ElementRef
+  ) {
     this.configureOptions();
   }
 
@@ -105,10 +96,12 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
   }
 
   public writeValue(value: Date): void {
-    if (value !== undefined
-      && this.formatter.dateIsValid(value)
-      && this.selectedDate !== undefined
-      && this._datepicker.compareHandlerDay(value, this.selectedDate) === 0) {
+    if (
+      value !== undefined &&
+      this.formatter.dateIsValid(value) &&
+      this.selectedDate !== undefined &&
+      this._datepicker.compareHandlerDay(value, this.selectedDate) === 0
+    ) {
       return;
     }
 
@@ -119,6 +112,5 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
       this.selectedDate = new Date();
       this._datepicker.select(new Date(), false);
     }
-
   }
 }

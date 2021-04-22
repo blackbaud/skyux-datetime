@@ -1,27 +1,14 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup
 } from '@angular/forms';
+import { SkyAppResourcesService } from '@skyux/i18n';
+import { SkyThemeService, SkyThemeSettings } from '@skyux/theme';
 
-import {
-  SkyAppResourcesService
-} from '@skyux/i18n';
-
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
-
-import {
-  first
-} from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 import {
   SkyDateRangeCalculation,
@@ -50,29 +37,24 @@ export class DateRangePickerVisualComponent implements OnInit {
     private formBuilder: FormBuilder,
     private resourcesService: SkyAppResourcesService,
     private themeSvc: SkyThemeService
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       lastDonation: new FormControl()
     });
 
-    this.reactiveRange.statusChanges
-      .subscribe((status) => {
-        console.log(
-          'Date range status change:',
-          status,
-          this.reactiveRange.errors
-        );
-      });
+    this.reactiveRange.statusChanges.subscribe((status) => {
+      console.log(
+        'Date range status change:',
+        status,
+        this.reactiveRange.errors
+      );
+    });
 
-    this.reactiveRange.valueChanges
-      .subscribe((value) => {
-        console.log(
-          'Date range value change:',
-          value
-        );
-      });
+    this.reactiveRange.valueChanges.subscribe((value) => {
+      console.log('Date range value change:', value);
+    });
   }
 
   public toggleDisabled(): void {

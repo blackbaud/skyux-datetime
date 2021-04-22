@@ -1,23 +1,10 @@
-import {
-  CommonModule
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {
-  NgModule
-} from '@angular/core';
+import { SkyDateRangePickerModule } from '../date-range-picker.module';
 
-import {
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
-
-import {
-  SkyDateRangePickerModule
-} from '../date-range-picker.module';
-
-import {
-  DateRangePickerTestComponent
-} from './date-range-picker.component.fixture';
+import { DateRangePickerTestComponent } from './date-range-picker.component.fixture';
 
 @NgModule({
   imports: [
@@ -26,11 +13,7 @@ import {
     ReactiveFormsModule,
     SkyDateRangePickerModule
   ],
-  declarations: [
-    DateRangePickerTestComponent
-  ],
-  exports: [
-    DateRangePickerTestComponent
-  ]
+  declarations: [DateRangePickerTestComponent],
+  exports: [DateRangePickerTestComponent]
 })
-export class DateRangePickerTestModule { }
+export class DateRangePickerTestModule {}

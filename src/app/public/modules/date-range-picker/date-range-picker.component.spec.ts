@@ -5,33 +5,16 @@ import {
   fakeAsync,
   tick
 } from '@angular/core/testing';
-
-import {
-  expect,
-  SkyAppTestUtility
-} from '@skyux-sdk/testing';
-
-import {
-  DateRangePickerTestComponent
-} from './fixtures/date-range-picker.component.fixture';
-
-import {
-  DateRangePickerTestModule
-} from './fixtures/date-range-picker.module.fixture';
-
-import {
-  SkyDateRangeCalculation
-} from './types/date-range-calculation';
-
-import {
-  SkyDateRangeCalculatorId
-} from './types/date-range-calculator-id';
-
-import {
-  SkyDateRangeCalculatorType
-} from './types/date-range-calculator-type';
+import { expect, SkyAppTestUtility } from '@skyux-sdk/testing';
 
 import * as moment_ from 'moment';
+
+import { DateRangePickerTestComponent } from './fixtures/date-range-picker.component.fixture';
+import { DateRangePickerTestModule } from './fixtures/date-range-picker.module.fixture';
+import { SkyDateRangeCalculation } from './types/date-range-calculation';
+import { SkyDateRangeCalculatorId } from './types/date-range-calculator-id';
+import { SkyDateRangeCalculatorType } from './types/date-range-calculator-type';
+
 const moment = moment_;
 
 const defaultCalculatorIds = [
@@ -83,7 +66,9 @@ describe('Date range picker', function () {
   }
 
   function enterStartDate(date: string): void {
-    const inputElement = fixture.nativeElement.querySelectorAll('input').item(0);
+    const inputElement = fixture.nativeElement
+      .querySelectorAll('input')
+      .item(0);
     inputElement.value = date;
     fixture.detectChanges();
 
@@ -108,25 +93,25 @@ describe('Date range picker', function () {
     // Check if element is hidden.
     switch (type) {
       case SkyDateRangeCalculatorType.Before:
-      expect(showStartDatePicker).toBeFalsy();
-      expect(showEndDatePicker).toBeTruthy();
-      break;
+        expect(showStartDatePicker).toBeFalsy();
+        expect(showEndDatePicker).toBeTruthy();
+        break;
 
       case SkyDateRangeCalculatorType.After:
-      expect(showStartDatePicker).toBeTruthy();
-      expect(showEndDatePicker).toBeFalsy();
-      break;
+        expect(showStartDatePicker).toBeTruthy();
+        expect(showEndDatePicker).toBeFalsy();
+        break;
 
       case SkyDateRangeCalculatorType.Range:
-      expect(showStartDatePicker).toBeTruthy();
-      expect(showEndDatePicker).toBeTruthy();
-      break;
+        expect(showStartDatePicker).toBeTruthy();
+        expect(showEndDatePicker).toBeTruthy();
+        break;
 
       default:
       case SkyDateRangeCalculatorType.Relative:
-      expect(showStartDatePicker).toBeFalsy();
-      expect(showEndDatePicker).toBeFalsy();
-      break;
+        expect(showStartDatePicker).toBeFalsy();
+        expect(showEndDatePicker).toBeFalsy();
+        break;
     }
   }
 
@@ -141,9 +126,7 @@ describe('Date range picker', function () {
 
   beforeEach(function () {
     TestBed.configureTestingModule({
-      imports: [
-        DateRangePickerTestModule
-      ]
+      imports: [DateRangePickerTestModule]
     });
 
     fixture = TestBed.createComponent(DateRangePickerTestComponent);
@@ -157,9 +140,9 @@ describe('Date range picker', function () {
   it('should set defaults', fakeAsync(function () {
     detectChanges();
 
-    const labelElement = fixture.nativeElement.querySelectorAll(
-      'label'
-    ).item(0);
+    const labelElement = fixture.nativeElement
+      .querySelectorAll('label')
+      .item(0);
 
     expect(labelElement.textContent).toContain('Select a date range');
 
@@ -190,7 +173,9 @@ describe('Date range picker', function () {
 
     detectChanges();
 
-    expect(component.dateRangePicker.calculatorIds).toEqual(defaultCalculatorIds);
+    expect(component.dateRangePicker.calculatorIds).toEqual(
+      defaultCalculatorIds
+    );
   }));
 
   it('should allow setting calculators asynchronously', fakeAsync(function () {
@@ -208,9 +193,9 @@ describe('Date range picker', function () {
 
     detectChanges();
 
-    const labelElement = fixture.nativeElement.querySelectorAll(
-      'label'
-    ).item(0);
+    const labelElement = fixture.nativeElement
+      .querySelectorAll('label')
+      .item(0);
 
     expect(component.dateRangePicker.label).toEqual('My label');
     expect(labelElement.textContent).toContain('My label');
@@ -225,7 +210,9 @@ describe('Date range picker', function () {
 
     enterStartDate('2000/1/2');
 
-    const inputElement = fixture.nativeElement.querySelectorAll('input').item(0);
+    const inputElement = fixture.nativeElement
+      .querySelectorAll('input')
+      .item(0);
 
     expect(inputElement.value).toEqual('2000-01-02');
   }));
@@ -326,9 +313,7 @@ describe('Date range picker', function () {
 
     // Change the available calculators, but make the default calculator the same
     // as the one set in the form initializer (see above);
-    component.calculatorIds = [
-      selectedValue.calculatorId
-    ];
+    component.calculatorIds = [selectedValue.calculatorId];
 
     detectChanges();
 
@@ -460,7 +445,9 @@ describe('Date range picker', function () {
     detectChanges();
 
     const control = component.dateRange;
-    const calculatorIdControl = component.dateRangePicker.formGroup.get('calculatorId');
+    const calculatorIdControl = component.dateRangePicker.formGroup.get(
+      'calculatorId'
+    );
 
     control.setValue({
       calculatorId: SkyDateRangeCalculatorId.SpecificRange
@@ -471,7 +458,9 @@ describe('Date range picker', function () {
     expect(control.errors).toBeFalsy();
     expect(calculatorIdControl.errors).toBeFalsy();
 
-    const datepickerInputs = fixture.nativeElement.querySelectorAll('.sky-input-group input');
+    const datepickerInputs = fixture.nativeElement.querySelectorAll(
+      '.sky-input-group input'
+    );
 
     datepickerInputs.item(0).value = '1/2/2000';
     datepickerInputs.item(1).value = '1/1/2000';

@@ -1,10 +1,6 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {
-  SkyDatePipe
-} from '../date.pipe';
+import { SkyDatePipe } from '../date.pipe';
 
 @Component({
   selector: 'date-pipe-test',
@@ -15,9 +11,7 @@ export class DatePipeTestComponent {
   public format: string;
   public locale: string;
 
-  constructor(
-    private datePipe: SkyDatePipe
-  ) { }
+  constructor(private datePipe: SkyDatePipe) {}
 
   public getDatePipeResult(
     value: Date,

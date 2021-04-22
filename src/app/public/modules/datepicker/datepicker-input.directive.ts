@@ -12,7 +12,6 @@ import {
   Optional,
   Renderer2
 } from '@angular/core';
-
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -21,38 +20,17 @@ import {
   Validator,
   ValidationErrors
 } from '@angular/forms';
-
-import {
-  SkyAppLocaleProvider,
-  SkyLibResourcesService
-} from '@skyux/i18n';
-
-import {
-  Subject
-} from 'rxjs';
-
-import {
-  distinctUntilChanged,
-  takeUntil
-} from 'rxjs/operators';
-
-import {
-  SkyDateFormatter
-} from './date-formatter';
-
-import {
-  SkyDatepickerAdapterService
-} from './datepicker-adapter.service';
-
-import {
-  SkyDatepickerConfigService
-} from './datepicker-config.service';
-
-import {
-  SkyDatepickerComponent
-} from './datepicker.component';
+import { SkyAppLocaleProvider, SkyLibResourcesService } from '@skyux/i18n';
 
 import * as moment_ from 'moment';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
+import { SkyDateFormatter } from './date-formatter';
+import { SkyDatepickerAdapterService } from './datepicker-adapter.service';
+import { SkyDatepickerConfigService } from './datepicker-config.service';
+import { SkyDatepickerComponent } from './datepicker.component';
+
 const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
@@ -78,8 +56,13 @@ const SKY_DATEPICKER_VALIDATOR = {
   ]
 })
 export class SkyDatepickerInputDirective
-  implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, ControlValueAccessor, Validator {
-
+  implements
+    OnInit,
+    OnDestroy,
+    AfterViewInit,
+    AfterContentInit,
+    ControlValueAccessor,
+    Validator {
   /**
    * Specifies the date format for the input. Place this attribute on the `input` element
    * to override the default in the `SkyDatepickerConfigService`.
@@ -94,9 +77,11 @@ export class SkyDatepickerInputDirective
   }
 
   public get dateFormat(): string {
-    return this._dateFormat ||
-            this.configService.dateFormat ||
-            this.preferredShortDateFormat;
+    return (
+      this._dateFormat ||
+      this.configService.dateFormat ||
+      this.preferredShortDateFormat
+    );
   }
 
   /**
@@ -107,11 +92,7 @@ export class SkyDatepickerInputDirective
   public set disabled(value: boolean) {
     this._disabled = value;
     this.datepickerComponent.disabled = value;
-    this.renderer.setProperty(
-      this.elementRef.nativeElement,
-      'disabled',
-      value
-    );
+    this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', value);
   }
 
   public get disabled(): boolean {
@@ -169,10 +150,10 @@ export class SkyDatepickerInputDirective
     if (value) {
       console.warn(
         '[Deprecation warning] You no longer need to provide a template reference variable ' +
-        'to the `skyDatepickerInput` attribute (this will be a breaking change in the next ' +
-        'major version release).\n' +
-        'Do this instead:\n' +
-        '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
+          'to the `skyDatepickerInput` attribute (this will be a breaking change in the next ' +
+          'major version release).\n' +
+          'Do this instead:\n' +
+          '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
       );
     }
   }
@@ -226,11 +207,10 @@ export class SkyDatepickerInputDirective
   private set value(value: any) {
     const dateValue = this.getDateValue(value);
 
-    const areDatesEqual = (
+    const areDatesEqual =
       this._value instanceof Date &&
       dateValue &&
-      dateValue.getTime() === this._value.getTime()
-    );
+      dateValue.getTime() === this._value.getTime();
 
     const isValidDateString = this.isDateStringValid(value);
 
@@ -240,12 +220,15 @@ export class SkyDatepickerInputDirective
       this._value = value;
       this.notifyUpdatedValue();
     } else if (dateValue !== this._value || !areDatesEqual) {
-      this._value = (dateValue || value);
+      this._value = dateValue || value;
       this.notifyUpdatedValue();
     }
 
     if (dateValue && isValidDateString) {
-      const formattedDate = this.dateFormatter.format(dateValue, this.dateFormat);
+      const formattedDate = this.dateFormatter.format(
+        dateValue,
+        this.dateFormat
+      );
       this.setInputElementValue(formattedDate);
     } else {
       this.setInputElementValue(value || '');
@@ -280,7 +263,8 @@ export class SkyDatepickerInputDirective
     this.initialPlaceholder = this.adapter.getPlaceholder(this.elementRef);
     this.updatePlaceholder();
 
-    this.localeProvider.getLocaleInfo()
+    this.localeProvider
+      .getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         SkyDateFormatter.setLocale(localeInfo.locale);
@@ -293,28 +277,22 @@ export class SkyDatepickerInputDirective
     if (!this.datepickerComponent) {
       throw new Error(
         'You must wrap the `skyDatepickerInput` directive within a ' +
-        '`<sky-datepicker>` component!'
+          '`<sky-datepicker>` component!'
       );
     }
 
     const element = this.elementRef.nativeElement;
 
-    this.renderer.addClass(
-      element,
-      'sky-form-control'
-    );
+    this.renderer.addClass(element, 'sky-form-control');
 
     const hasAriaLabel = element.getAttribute('aria-label');
 
     if (!hasAriaLabel) {
-      this.resourcesService.getString('skyux_date_field_default_label')
+      this.resourcesService
+        .getString('skyux_date_field_default_label')
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((value: string) => {
-          this.renderer.setAttribute(
-            element,
-            'aria-label',
-            value
-          );
+          this.renderer.setAttribute(element, 'aria-label', value);
         });
     }
   }
@@ -410,7 +388,7 @@ export class SkyDatepickerInputDirective
     }
 
     const dateValue = this.getDateValue(value);
-    const isDateValid = (dateValue && this.dateFormatter.dateIsValid(dateValue));
+    const isDateValid = dateValue && this.dateFormatter.dateIsValid(dateValue);
 
     if (!isDateValid || !this.isDateStringValid(value)) {
       // Mark the invalid control as touched so that the input's invalid CSS styles appear.
@@ -418,7 +396,7 @@ export class SkyDatepickerInputDirective
       this.control.markAsTouched();
 
       return {
-        'skyDate': {
+        skyDate: {
           invalid: value
         }
       };
@@ -426,13 +404,9 @@ export class SkyDatepickerInputDirective
 
     const minDate = this.minDate;
 
-    if (
-      minDate &&
-      this.dateFormatter.dateIsValid(minDate) &&
-      value < minDate
-    ) {
+    if (minDate && this.dateFormatter.dateIsValid(minDate) && value < minDate) {
       return {
-        'skyDate': {
+        skyDate: {
           minDate
         }
       };
@@ -440,13 +414,9 @@ export class SkyDatepickerInputDirective
 
     const maxDate = this.maxDate;
 
-    if (
-      maxDate &&
-      this.dateFormatter.dateIsValid(maxDate) &&
-      value > maxDate
-    ) {
+    if (maxDate && this.dateFormatter.dateIsValid(maxDate) && value > maxDate) {
       return {
-        'skyDate': {
+        skyDate: {
           maxDate
         }
       };
@@ -481,7 +451,10 @@ export class SkyDatepickerInputDirective
   private applyDateFormat(): void {
     this.updatePlaceholder();
     if (this.value) {
-      const formattedDate = this.dateFormatter.format(this.value, this.dateFormat);
+      const formattedDate = this.dateFormatter.format(
+        this.value,
+        this.dateFormat
+      );
       this.setInputElementValue(formattedDate);
       this.changeDetector.markForCheck();
     }
@@ -493,11 +466,7 @@ export class SkyDatepickerInputDirective
   }
 
   private setInputElementValue(value: string): void {
-    this.renderer.setProperty(
-      this.elementRef.nativeElement,
-      'value',
-      value
-    );
+    this.renderer.setProperty(this.elementRef.nativeElement, 'value', value);
   }
 
   private getDateValue(value: any): Date {
@@ -505,7 +474,11 @@ export class SkyDatepickerInputDirective
     if (value instanceof Date) {
       dateValue = value;
     } else if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(value, this.dateFormat, this.strict);
+      const date = this.dateFormatter.getDateFromString(
+        value,
+        this.dateFormat,
+        this.strict
+      );
       if (this.dateFormatter.dateIsValid(date)) {
         dateValue = date;
       }
