@@ -7,9 +7,21 @@ import {
 } from '@angular/core/testing';
 
 import {
+  SkyTheme,
+  SkyThemeMode,
+  SkyThemeService,
+  SkyThemeSettings,
+  SkyThemeSettingsChange
+} from '@skyux/theme';
+
+import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
+
+import {
+  BehaviorSubject
+} from 'rxjs';
 
 import {
   DateRangePickerTestComponent
@@ -32,8 +44,6 @@ import {
 } from './types/date-range-calculator-type';
 
 import * as moment_ from 'moment';
-import { SkyTheme, SkyThemeMode, SkyThemeService, SkyThemeSettings, SkyThemeSettingsChange } from '@skyux/theme';
-import { BehaviorSubject } from 'rxjs';
 
 const moment = moment_;
 

@@ -32,6 +32,10 @@ import {
 } from '@skyux/i18n';
 
 import {
+  SkyThemeService
+} from '@skyux/theme';
+
+import {
   combineLatest,
   Subject
 } from 'rxjs';
@@ -65,7 +69,6 @@ import {
 import {
   SkyDateRangeService
 } from './date-range.service';
-import { SkyThemeService } from '@skyux/theme';
 
 /* tslint:disable:no-forward-ref no-use-before-declare */
 const SKY_DATE_RANGE_PICKER_VALUE_ACCESSOR = {
