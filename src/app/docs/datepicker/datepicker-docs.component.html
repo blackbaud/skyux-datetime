@@ -4,12 +4,11 @@
   pageTitle="Datepicker"
 >
   <sky-docs-demo-page-summary>
-    The datepicker module provides an input and calendar for users to select dates or fuzzy dates.
+    The datepicker module provides an input and calendar for users to select
+    dates or fuzzy dates.
   </sky-docs-demo-page-summary>
 
-  <sky-docs-demo
-    [heading]="'Standard datepicker demo'"
-  >
+  <sky-docs-demo [heading]="'Standard datepicker demo'">
     <sky-docs-demo-control-panel
       (selectionChange)="onDemoSelectionChange($event)"
     >
@@ -23,18 +22,10 @@
       </sky-docs-demo-control-panel-section>
     </sky-docs-demo-control-panel>
 
-    <div
-      style="width:400px;"
-    >
-      <form
-        novalidate
-        [formGroup]="standardForm"
-      >
+    <div style="width: 400px">
+      <form novalidate [formGroup]="standardForm">
         <sky-input-box>
-          <label
-            class="sky-control-label"
-            [for]="dateOfBirth.id"
-          >
+          <label class="sky-control-label" [for]="dateOfBirth.id">
             Date of birth
           </label>
           <sky-datepicker>
@@ -51,11 +42,8 @@
         </sky-input-box>
       </form>
     </div>
-
   </sky-docs-demo>
-  <sky-docs-demo
-    [heading]="'Fuzzy datepicker demo'"
-  >
+  <sky-docs-demo [heading]="'Fuzzy datepicker demo'">
     <sky-docs-demo-control-panel
       (selectionChange)="onDemoSelectionChange($event)"
     >
@@ -81,18 +69,10 @@
       </sky-docs-demo-control-panel-section>
     </sky-docs-demo-control-panel>
 
-    <div
-      style="width:400px;"
-    >
-      <form
-        novalidate
-        [formGroup]="fuzzyForm"
-      >
+    <div style="width: 400px">
+      <form novalidate [formGroup]="fuzzyForm">
         <sky-input-box>
-          <label
-            class="sky-control-label"
-            [for]="dateOfBirthFuzzy.id"
-          >
+          <label class="sky-control-label" [for]="dateOfBirthFuzzy.id">
             Date of birth
           </label>
           <sky-datepicker>
@@ -111,27 +91,16 @@
         </sky-input-box>
       </form>
     </div>
-
   </sky-docs-demo>
 
   <sky-docs-design-guidelines>
-
-    <sky-docs-demo-page-section
-      heading="Usage"
-    >
-      <sky-docs-design-guideline
-        heading="Use when"
-        headingStyle="success"
-      >
-        <p>
-          Use datepickers when users need to enter valid dates.
-        </p>
+    <sky-docs-demo-page-section heading="Usage">
+      <sky-docs-design-guideline heading="Use when" headingStyle="success">
+        <p>Use datepickers when users need to enter valid dates.</p>
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Anatomy"
-    >
+    <sky-docs-demo-page-section heading="Anatomy">
       <sky-docs-design-guideline>
         <sky-docs-anatomy
           imagePath="~/assets/img/guidelines/datepicker/anatomy.png"
@@ -143,14 +112,13 @@
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Options"
-    >
-      <sky-docs-design-guideline
-        heading="Fuzzy dates"
-      >
+    <sky-docs-demo-page-section heading="Options">
+      <sky-docs-design-guideline heading="Fuzzy dates">
         <p class="sky-docs-text-block">
-          Fuzzy dates allow users to specify dates that are not complete. They enable partial dates when users are unsure of the complete date. For example, if users know the year but not the month or day, they can enter just the year. Supported formats include:
+          Fuzzy dates allow users to specify dates that are not complete. They
+          enable partial dates when users are unsure of the complete date. For
+          example, if users know the year but not the month or day, they can
+          enter just the year. Supported formats include:
         </p>
         <ul>
           <li>Month, day, and year</li>
@@ -160,23 +128,21 @@
         </ul>
       </sky-docs-design-guideline>
 
-      <sky-docs-design-guideline
-        heading="Minimum and maximum dates"
-      >
+      <sky-docs-design-guideline heading="Minimum and maximum dates">
         <p class="sky-docs-text-block">
-          You can specify minimum or maximum dates to prevent users from specifying dates before or after those thresholds.
+          You can specify minimum or maximum dates to prevent users from
+          specifying dates before or after those thresholds.
         </p>
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Behavior & states"
-    >
+    <sky-docs-demo-page-section heading="Behavior & states">
       <h3>Month string conversion for fuzzy dates</h3>
       <table class="sky-docs-table">
         <tr>
           <td class="sky-docs-table-cell sky-docs-table-cell-primary">
-            If users enter months as text instead of numbers, the datepicker converts the text to numbers when the datepicker loses focus.
+            If users enter months as text instead of numbers, the datepicker
+            converts the text to numbers when the datepicker loses focus.
           </td>
           <td class="sky-docs-table-cell">
             <sky-docs-design-guideline-thumbnail
@@ -190,9 +156,7 @@
       <h3>States</h3>
       <table class="sky-docs-table">
         <tr>
-          <td class="sky-docs-table-cell sky-docs-table-cell-primary">
-            Blank
-          </td>
+          <td class="sky-docs-table-cell sky-docs-table-cell-primary">Blank</td>
           <td class="sky-docs-table-cell">
             <sky-docs-design-guideline-thumbnail
               imageSource="~/assets/img/guidelines/datepicker/state-blank.png"
@@ -223,9 +187,7 @@
           </td>
         </tr>
         <tr>
-          <td class="sky-docs-table-cell sky-docs-table-cell-primary">
-            Error
-          </td>
+          <td class="sky-docs-table-cell sky-docs-table-cell-primary">Error</td>
           <td class="sky-docs-table-cell">
             <sky-docs-design-guideline-thumbnail
               imageSource="~/assets/img/guidelines/datepicker/state-error.png"
@@ -236,18 +198,18 @@
       </table>
     </sky-docs-demo-page-section>
 
-    <sky-docs-demo-page-section
-      heading="Related information"
-    >
-      <sky-docs-design-guideline
-        heading="Components"
-      >
+    <sky-docs-demo-page-section heading="Related information">
+      <sky-docs-design-guideline heading="Components">
         <ul>
-          <li><a href="https://developer.blackbaud.com/skyux/components/date-range-picker">Date range picker</a></li>
+          <li>
+            <a
+              href="https://developer.blackbaud.com/skyux/components/date-range-picker"
+              >Date range picker</a
+            >
+          </li>
         </ul>
       </sky-docs-design-guideline>
     </sky-docs-demo-page-section>
-
   </sky-docs-design-guidelines>
 
   <sky-docs-code-examples

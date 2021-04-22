@@ -1,15 +1,7 @@
-import {
-  Pipe,
-  PipeTransform
-} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
-import {
-  SkyFuzzyDate
-} from '../datepicker/fuzzy-date';
-
-import {
-  SkyFuzzyDateService
-} from '../datepicker/fuzzy-date.service';
+import { SkyFuzzyDate } from '../datepicker/fuzzy-date';
+import { SkyFuzzyDateService } from '../datepicker/fuzzy-date.service';
 
 /**
  * Formats date values using two or more date tokens that represent the day, month,
@@ -25,10 +17,7 @@ import {
   pure: false
 })
 export class SkyFuzzyDatePipe implements PipeTransform {
-
-  constructor(
-    private fuzzyDateService: SkyFuzzyDateService
-  ) {}
+  constructor(private fuzzyDateService: SkyFuzzyDateService) {}
 
   /**
    * Transforms fuzzy date values using two or more date tokens that represent the day, month,
@@ -49,9 +38,13 @@ export class SkyFuzzyDatePipe implements PipeTransform {
     if (!value) {
       return undefined;
     }
-    const fuzzyDateFormat = format || this.fuzzyDateService.getLocaleShortFormat(locale);
+    const fuzzyDateFormat =
+      format || this.fuzzyDateService.getLocaleShortFormat(locale);
     const fuzzyDateLocale = locale || this.fuzzyDateService.getCurrentLocale();
-    return this.fuzzyDateService.format(value, fuzzyDateFormat, fuzzyDateLocale);
+    return this.fuzzyDateService.format(
+      value,
+      fuzzyDateFormat,
+      fuzzyDateLocale
+    );
   }
-
 }

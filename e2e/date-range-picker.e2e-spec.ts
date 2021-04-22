@@ -1,20 +1,9 @@
-import {
-  expect,
-  SkyHostBrowser,
-  SkyVisualThemeSelector
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser, SkyVisualThemeSelector } from '@skyux-sdk/e2e';
+import { SkyHostBrowserBreakpoint } from '@skyux-sdk/e2e/host-browser/host-browser-breakpoint';
 
-import {
-  SkyHostBrowserBreakpoint
-} from '@skyux-sdk/e2e/host-browser/host-browser-breakpoint';
-
-import {
-  by,
-  element
-} from 'protractor';
+import { by, element } from 'protractor';
 
 describe('Date range picker', () => {
-
   //#region helpers
   let browserSize: SkyHostBrowserBreakpoint;
   let currentTheme: string;
@@ -83,7 +72,7 @@ describe('Date range picker', () => {
   //#endregion
 
   describe('(size: lg)', () => {
-    beforeEach( async() => {
+    beforeEach(async () => {
       currentTheme = undefined;
       currentThemeMode = undefined;
       await SkyHostBrowser.get('visual/date-range-picker');
@@ -110,7 +99,7 @@ describe('Date range picker', () => {
   });
 
   describe('(size: xs)', () => {
-    beforeEach( async() => {
+    beforeEach(async () => {
       currentTheme = undefined;
       currentThemeMode = undefined;
       await SkyHostBrowser.get('visual/date-range-picker');

@@ -1,16 +1,10 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup
 } from '@angular/forms';
-
 import {
   SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
@@ -18,21 +12,14 @@ import {
   SkyDateRangeService
 } from '@skyux/datetime';
 
-import {
-  Subject
-} from 'rxjs';
-
-import {
-  distinctUntilChanged,
-  takeUntil
-} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-date-range-picker-demo',
   templateUrl: './date-range-picker-demo.component.html'
 })
 export class DateRangePickerDemoComponent implements OnInit, OnDestroy {
-
   public calculatorIds: SkyDateRangeCalculatorId[];
 
   public dateFormat: string;
@@ -48,7 +35,7 @@ export class DateRangePickerDemoComponent implements OnInit, OnDestroy {
   constructor(
     private dateRangeService: SkyDateRangeService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
@@ -56,27 +43,22 @@ export class DateRangePickerDemoComponent implements OnInit, OnDestroy {
     });
 
     // Watch for status changes.
-    this.reactiveRange.statusChanges.pipe(
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((status) => {
-      console.log(
-        'Date range status change:',
-        status,
-        this.reactiveRange.errors
-      );
-    });
+    this.reactiveRange.statusChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((status) => {
+        console.log(
+          'Date range status change:',
+          status,
+          this.reactiveRange.errors
+        );
+      });
 
     // Watch for value changes.
-    this.reactiveRange.valueChanges.pipe(
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((value: SkyDateRangeCalculation) => {
-      console.log(
-        'Date range value change:',
-        value
-      );
-    });
+    this.reactiveRange.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((value: SkyDateRangeCalculation) => {
+        console.log('Date range value change:', value);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -131,7 +113,6 @@ export class DateRangePickerDemoComponent implements OnInit, OnDestroy {
   }
 
   public setCalculatorIds(): void {
-
     const calculator = this.dateRangeService.createCalculator({
       shortDescription: 'Since 1999',
       type: SkyDateRangeCalculatorType.Relative,
@@ -153,5 +134,4 @@ export class DateRangePickerDemoComponent implements OnInit, OnDestroy {
   public setDateFormat(): void {
     this.dateFormat = 'YYYY-MM-DD';
   }
-
 }

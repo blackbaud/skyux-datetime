@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -11,20 +7,15 @@ import {
   Validators
 } from '@angular/forms';
 
-import {
-  distinctUntilChanged
-} from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
-import {
-  SkyFuzzyDateService
-} from '../../public/modules/datepicker/fuzzy-date.service';
+import { SkyFuzzyDateService } from '../../public/modules/datepicker/fuzzy-date.service';
 
 @Component({
   selector: 'fuzzy-datepicker-visual',
   templateUrl: './fuzzy-datepicker-visual.component.html'
 })
 export class FuzzyDatepickerVisualComponent implements OnInit {
-
   public futureDisabled: boolean;
 
   public dateFormat: any = 'MM/DD/YYYY';
@@ -48,7 +39,7 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private fuzzyDateService: SkyFuzzyDateService
-  ) { }
+  ) {}
 
   public get reactiveDate(): AbstractControl {
     return this.reactiveForm.get('selectedFuzzyDate');
@@ -57,7 +48,9 @@ export class FuzzyDatepickerVisualComponent implements OnInit {
   // This property is only necessary to support the datepicker-calendar
   // on the page with the fuzzy datepicker.
   public get selectedDate(): any {
-    let fuzzyMoment = this.fuzzyDateService.getMomentFromFuzzyDate(this.selectedFuzzyDate);
+    let fuzzyMoment = this.fuzzyDateService.getMomentFromFuzzyDate(
+      this.selectedFuzzyDate
+    );
     let selectedDate: any;
 
     if (fuzzyMoment) {

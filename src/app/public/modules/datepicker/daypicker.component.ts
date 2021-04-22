@@ -1,14 +1,7 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import {
-  SkyDatepickerCalendarInnerComponent
-} from './datepicker-calendar-inner.component';
+import { Component, OnInit } from '@angular/core';
 
-import {
-  SkyDatepickerDate
-} from './datepicker-date';
+import { SkyDatepickerCalendarInnerComponent } from './datepicker-calendar-inner.component';
+import { SkyDatepickerDate } from './datepicker-date';
 
 /**
  * @internal
@@ -19,7 +12,6 @@ import {
   styleUrls: ['./daypicker.component.scss']
 })
 export class SkyDayPickerComponent implements OnInit {
-
   public labels: any[] = [];
   public title: string;
   public rows: Array<Array<SkyDatepickerDate>> = [];
@@ -27,15 +19,27 @@ export class SkyDayPickerComponent implements OnInit {
   public datepicker: SkyDatepickerCalendarInnerComponent;
   public CURRENT_THEME_TEMPLATE: any;
 
-  private daysInMonth: Array<number> = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  private daysInMonth: Array<number> = [
+    31,
+    28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31
+  ];
 
   public constructor(datepicker: SkyDatepickerCalendarInnerComponent) {
     this.datepicker = datepicker;
   }
 
   public ngOnInit(): void {
-
-    this.datepicker.stepDay = {months: 1};
+    this.datepicker.stepDay = { months: 1 };
 
     this.datepicker.setRefreshViewHandler(() => {
       this.refreshDayView();
@@ -59,7 +63,11 @@ export class SkyDayPickerComponent implements OnInit {
       date = new Date(current.getTime());
       date = this.datepicker.fixTimeZone(date);
       dates[i++] = date;
-      current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
+      current = new Date(
+        current.getFullYear(),
+        current.getMonth(),
+        current.getDate() + 1
+      );
     }
     return dates;
   }
@@ -75,9 +83,8 @@ export class SkyDayPickerComponent implements OnInit {
     let month = this.datepicker.activeDate.getMonth();
     let firstDayOfMonth = new Date(year, month, 1);
     let difference = this.datepicker.startingDay - firstDayOfMonth.getDay();
-    let numDisplayedFromPreviousMonth = (difference > 0)
-      ? 7 - difference
-      : -difference;
+    let numDisplayedFromPreviousMonth =
+      difference > 0 ? 7 - difference : -difference;
     let firstDate = new Date(firstDayOfMonth.getTime());
 
     /* istanbul ignore else */
@@ -102,13 +109,20 @@ export class SkyDayPickerComponent implements OnInit {
     this.labels = [];
     for (let j = 0; j < 7; j++) {
       this.labels[j] = {};
-      this.labels[j].abbr =
-        this.datepicker.dateFilter(pickerDates[j].date, this.datepicker.formatDayHeader);
-      this.labels[j].full = this.datepicker.dateFilter(pickerDates[j].date, 'EEEE');
+      this.labels[j].abbr = this.datepicker.dateFilter(
+        pickerDates[j].date,
+        this.datepicker.formatDayHeader
+      );
+      this.labels[j].full = this.datepicker.dateFilter(
+        pickerDates[j].date,
+        'EEEE'
+      );
     }
 
-    this.title =
-      this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
+    this.title = this.datepicker.dateFilter(
+      this.datepicker.activeDate,
+      this.datepicker.formatDayTitle
+    );
     this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
   }
 
@@ -125,15 +139,16 @@ export class SkyDayPickerComponent implements OnInit {
     } else if (key === 'down') {
       date = date + 7;
     } else if (key === 'pageup' || key === 'pagedown') {
-      let month = this.datepicker.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
+      let month =
+        this.datepicker.activeDate.getMonth() + (key === 'pageup' ? -1 : 1);
       this.datepicker.activeDate.setMonth(month, 1);
-      date =
-      Math.min(
+      date = Math.min(
         this.getDaysInMonth(
           this.datepicker.activeDate.getFullYear(),
           this.datepicker.activeDate.getMonth()
         ),
-        date);
+        date
+      );
     } else if (key === 'home') {
       date = 1;
     } else if (key === 'end') {
@@ -146,8 +161,10 @@ export class SkyDayPickerComponent implements OnInit {
   }
 
   private getDaysInMonth(year: number, month: number) {
-    return month === 1 && year % 4 === 0 &&
-      (year % 400 === 0 || year % 100 !== 0) ? 29 : this.daysInMonth[month];
+    return month === 1 &&
+      year % 4 === 0 &&
+      (year % 400 === 0 || year % 100 !== 0)
+      ? 29
+      : this.daysInMonth[month];
   }
-
 }

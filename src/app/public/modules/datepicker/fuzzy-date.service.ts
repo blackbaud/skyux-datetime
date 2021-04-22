@@ -1,25 +1,12 @@
-import {
-  Injectable,
-  OnDestroy
-} from '@angular/core';
-
-import {
-  SkyAppLocaleProvider
-} from '@skyux/i18n';
-
-import {
-  Subject
-} from 'rxjs';
-
-import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
-  SkyFuzzyDate
-} from './fuzzy-date';
+import { Injectable, OnDestroy } from '@angular/core';
+import { SkyAppLocaleProvider } from '@skyux/i18n';
 
 import * as moment_ from 'moment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { SkyFuzzyDate } from './fuzzy-date';
+
 const moment = moment_;
 
 /**
@@ -46,15 +33,13 @@ interface SkyFuzzyDateRange {
  */
 @Injectable()
 export class SkyFuzzyDateService implements OnDestroy {
-
   private currentLocale: string;
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(
-    private localeProvider: SkyAppLocaleProvider
-  ) {
-    this.localeProvider.getLocaleInfo()
+  constructor(private localeProvider: SkyAppLocaleProvider) {
+    this.localeProvider
+      .getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         this.currentLocale = localeInfo.locale;
@@ -86,7 +71,11 @@ export class SkyFuzzyDateService implements OnDestroy {
    * Formats a fuzzy date by using the provided format and locale strings.
    * If not provided, the locale will be taken from the browser's default locale.
    */
-  public format(fuzzyDate: SkyFuzzyDate, format: string, locale: string): string {
+  public format(
+    fuzzyDate: SkyFuzzyDate,
+    format: string,
+    locale: string
+  ): string {
     if (!this.isFuzzyDateValid(fuzzyDate)) {
       return '';
     }
@@ -108,23 +97,17 @@ export class SkyFuzzyDateService implements OnDestroy {
         switch (token.substr(0, 1).toLowerCase()) {
           case 'y':
             if (fuzzyDate.year) {
-              dateParts.push(
-                fuzzyDateMoment.format(token)
-              );
+              dateParts.push(fuzzyDateMoment.format(token));
             }
             break;
           case 'm':
             if (fuzzyDate.month) {
-              dateParts.push(
-                fuzzyDateMoment.format(token)
-              );
+              dateParts.push(fuzzyDateMoment.format(token));
             }
             break;
           case 'd':
             if (fuzzyDate.day) {
-              dateParts.push(
-                fuzzyDateMoment.format(token)
-              );
+              dateParts.push(fuzzyDateMoment.format(token));
             }
             break;
         }
@@ -144,13 +127,16 @@ export class SkyFuzzyDateService implements OnDestroy {
     }
 
     const year = fuzzyDate.year || this.getDefaultYear(fuzzyDate);
-    const month = fuzzyDate.month > 0 ? (fuzzyDate.month - 1) : 0;
+    const month = fuzzyDate.month > 0 ? fuzzyDate.month - 1 : 0;
     const day = fuzzyDate.day || 1;
 
     return moment([year, month, day]);
   }
 
-  public getStringFromFuzzyDate(fuzzyDate: SkyFuzzyDate, dateFormat: string): string {
+  public getStringFromFuzzyDate(
+    fuzzyDate: SkyFuzzyDate,
+    dateFormat: string
+  ): string {
     if (!fuzzyDate || !dateFormat) {
       return;
     }
@@ -167,7 +153,7 @@ export class SkyFuzzyDateService implements OnDestroy {
     ];
     dateComponents.sort((a: any, b: any) => a.index - b.index);
 
-    dateComponents.forEach(component => {
+    dateComponents.forEach((component) => {
       if (component.value > 0 && component.index > -1) {
         if (dateString) {
           dateString += separator;
@@ -179,7 +165,10 @@ export class SkyFuzzyDateService implements OnDestroy {
     return dateString.trim();
   }
 
-  public getFuzzyDateFromSelectedDate(selectedDate: Date, dateFormat: string): SkyFuzzyDate {
+  public getFuzzyDateFromSelectedDate(
+    selectedDate: Date,
+    dateFormat: string
+  ): SkyFuzzyDate {
     if (!selectedDate || !dateFormat) {
       return;
     }
@@ -202,7 +191,10 @@ export class SkyFuzzyDateService implements OnDestroy {
     return fuzzyDate;
   }
 
-  public getFuzzyDateFromString(date: string, dateFormat: string): SkyFuzzyDate {
+  public getFuzzyDateFromString(
+    date: string,
+    dateFormat: string
+  ): SkyFuzzyDate {
     if (!date || !dateFormat) {
       return;
     }
@@ -220,34 +212,49 @@ export class SkyFuzzyDateService implements OnDestroy {
     // 1 indicates a year
     // Other indicates a problem
     switch (dateComponents.length) {
-    case 3:
-      year = dateComponents[indexes.yearIndex];
-      month = dateComponents[indexes.monthIndex];
-      day = dateComponents[indexes.dayIndex];
-      break;
-    case 2:
-      // First, check for a 4-digit year. If year exists, then we assume the other component
-      // is the month. Otherwise, we can assume the input is mm/dd or mm/yy (2-digit year).
-      year = this.get4DigitYearFromDateString(date);
-      if (year) {
-        month = dateComponents[0] === year.toString() ? dateComponents[1] : dateComponents[0];
-      } else {
-        if (indexes.dayIndex > -1) {
-          // mm/dd
-          month = (indexes.monthIndex < indexes.dayIndex) ? dateComponents[0] : dateComponents[1];
-          day = (month === dateComponents[1]) ? dateComponents[0] : dateComponents[1];
+      case 3:
+        year = dateComponents[indexes.yearIndex];
+        month = dateComponents[indexes.monthIndex];
+        day = dateComponents[indexes.dayIndex];
+        break;
+      case 2:
+        // First, check for a 4-digit year. If year exists, then we assume the other component
+        // is the month. Otherwise, we can assume the input is mm/dd or mm/yy (2-digit year).
+        year = this.get4DigitYearFromDateString(date);
+        if (year) {
+          month =
+            dateComponents[0] === year.toString()
+              ? dateComponents[1]
+              : dateComponents[0];
         } else {
-          // mm/yy
-          month = (indexes.monthIndex < indexes.yearIndex) ? dateComponents[0] : dateComponents[1];
-          year = (month === dateComponents[1]) ? dateComponents[0] : dateComponents[1];
+          if (indexes.dayIndex > -1) {
+            // mm/dd
+            month =
+              indexes.monthIndex < indexes.dayIndex
+                ? dateComponents[0]
+                : dateComponents[1];
+            day =
+              month === dateComponents[1]
+                ? dateComponents[0]
+                : dateComponents[1];
+          } else {
+            // mm/yy
+            month =
+              indexes.monthIndex < indexes.yearIndex
+                ? dateComponents[0]
+                : dateComponents[1];
+            year =
+              month === dateComponents[1]
+                ? dateComponents[0]
+                : dateComponents[1];
+          }
         }
-      }
-      break;
-    case 1:
-      year = date;
-      break;
-    default:
-      return;
+        break;
+      case 1:
+        year = date;
+        break;
+      default:
+        return;
     }
 
     if (month) {
@@ -260,7 +267,11 @@ export class SkyFuzzyDateService implements OnDestroy {
       // Check if day is valid.
       if (day) {
         day = parseInt(day, 10);
-        let fuzzyMoment = this.getMomentFromFuzzyDate({ month: month, day: day, year: year });
+        let fuzzyMoment = this.getMomentFromFuzzyDate({
+          month: month,
+          day: day,
+          year: year
+        });
         if (isNaN(day) || !fuzzyMoment.isValid()) {
           return;
         }
@@ -268,7 +279,10 @@ export class SkyFuzzyDateService implements OnDestroy {
     }
 
     if (year) {
-      year = year.toString().length === 2 ? moment.parseTwoDigitYear(year) : parseInt(year.toString(), 10);
+      year =
+        year.toString().length === 2
+          ? moment.parseTwoDigitYear(year)
+          : parseInt(year.toString(), 10);
       if (isNaN(year) || year.toString().length !== 4) {
         return;
       }
@@ -281,7 +295,10 @@ export class SkyFuzzyDateService implements OnDestroy {
     };
   }
 
-  public getFuzzyDateRange(startFuzzyDate: SkyFuzzyDate, endFuzzyDate: SkyFuzzyDate): SkyFuzzyDateRange {
+  public getFuzzyDateRange(
+    startFuzzyDate: SkyFuzzyDate,
+    endFuzzyDate: SkyFuzzyDate
+  ): SkyFuzzyDateRange {
     let start;
     let end;
     let days;
@@ -289,7 +306,12 @@ export class SkyFuzzyDateService implements OnDestroy {
     let years;
     let valid = false;
 
-    if (startFuzzyDate && startFuzzyDate.year && endFuzzyDate && endFuzzyDate.year) {
+    if (
+      startFuzzyDate &&
+      startFuzzyDate.year &&
+      endFuzzyDate &&
+      endFuzzyDate.year
+    ) {
       start = this.getMomentFromFuzzyDate(startFuzzyDate);
       end = this.getMomentFromFuzzyDate(endFuzzyDate);
 
@@ -336,7 +358,7 @@ export class SkyFuzzyDateService implements OnDestroy {
     let returnValue: string;
     let separators = ['/', '.', '-', ' '];
 
-    separators.forEach(separator => {
+    separators.forEach((separator) => {
       if (!returnValue && dateFormat.indexOf(separator) > 0) {
         returnValue = separator;
       }
@@ -350,7 +372,7 @@ export class SkyFuzzyDateService implements OnDestroy {
     const separator = this.getDateSeparator(date);
 
     // Find the number value in the string that is 4 digits long.
-    date.split(separator).forEach(dateComponent => {
+    date.split(separator).forEach((dateComponent) => {
       if (!year && parseInt(dateComponent, 10).toString().length === 4) {
         year = dateComponent;
       }
@@ -362,7 +384,7 @@ export class SkyFuzzyDateService implements OnDestroy {
   }
 
   private isLeapYear(year: number): boolean {
-    return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
   private getMonthNumber(month: string): number {
@@ -412,7 +434,10 @@ export class SkyFuzzyDateService implements OnDestroy {
   }
 
   // Returns the index of each of the date components in the provided string (month, day, year).
-  private getDateValueIndexes(date: string, dateFormat: string): SkyDateIndexes {
+  private getDateValueIndexes(
+    date: string,
+    dateFormat: string
+  ): SkyDateIndexes {
     const dateFormatIndexes = this.getDateFormatIndexes(dateFormat);
     let dateComponentIndexes = [];
     if (dateFormatIndexes.yearIndex > -1) {
@@ -427,7 +452,9 @@ export class SkyFuzzyDateService implements OnDestroy {
       dateComponentIndexes.push(dateFormatIndexes.dayIndex);
     }
 
-    dateComponentIndexes.sort(function (a, b) { return a - b; });
+    dateComponentIndexes.sort(function (a, b) {
+      return a - b;
+    });
 
     return {
       yearIndex: dateComponentIndexes.indexOf(dateFormatIndexes.yearIndex),
@@ -444,7 +471,6 @@ export class SkyFuzzyDateService implements OnDestroy {
    * year only
    */
   private isFuzzyDateValid(fuzzyDate: SkyFuzzyDate): boolean {
-
     // If none of the dates part are specified, return false.
     if (!fuzzyDate.day && !fuzzyDate.month && !fuzzyDate.year) {
       return false;

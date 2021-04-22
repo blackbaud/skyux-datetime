@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component
-} from '@angular/core';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   SkyDocsDemoControlPanelChange,
   SkyDocsDemoControlPanelRadioChoice
@@ -14,15 +10,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimepickerDocsComponent {
-
   public demoModel: {
     selectedTime?: string;
-  } = { };
+  } = {};
 
   public demoSettings: {
     disabled?: boolean;
     timeFormat?: string;
-  } = { };
+  } = {};
 
   public timeFormatChoices: SkyDocsDemoControlPanelRadioChoice[] = [
     { value: 'hh', label: '12-hour' },
@@ -32,5 +27,4 @@ export class TimepickerDocsComponent {
   public onDemoSelectionChange(change: SkyDocsDemoControlPanelChange): void {
     this.demoSettings.timeFormat = change.timeFormat;
   }
-
 }

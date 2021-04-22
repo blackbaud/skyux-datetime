@@ -1,35 +1,12 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup
-} from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {
-  Subject
-} from 'rxjs';
-
-import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
-  SkyDateRangeCalculation
-} from '../types/date-range-calculation';
-
-import {
-  SkyDateRangeCalculatorId
-} from '../types/date-range-calculator-id';
-
-import {
-  SkyDateRangePickerComponent
-} from '../date-range-picker.component';
+import { SkyDateRangePickerComponent } from '../date-range-picker.component';
+import { SkyDateRangeCalculation } from '../types/date-range-calculation';
+import { SkyDateRangeCalculatorId } from '../types/date-range-calculator-id';
 
 @Component({
   selector: 'date-range-picker-test',
@@ -55,13 +32,14 @@ export class DateRangePickerTestComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      dateRange: [{ value: this.initialValue, disabled: this.initialDisabled }, []]
+      dateRange: [
+        { value: this.initialValue, disabled: this.initialDisabled },
+        []
+      ]
     });
 
     this.dateRange.valueChanges
@@ -78,9 +56,7 @@ export class DateRangePickerTestComponent implements OnInit, OnDestroy {
 
   public setCalculatorIdsAsync(): void {
     setTimeout(() => {
-      this.calculatorIds = [
-        SkyDateRangeCalculatorId.After
-      ];
+      this.calculatorIds = [SkyDateRangeCalculatorId.After];
     });
   }
 }

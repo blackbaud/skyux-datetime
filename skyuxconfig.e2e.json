@@ -1,8 +1,6 @@
 {
   "omnibar": false,
   "app": {
-    "styles": [
-      "src/app/visual-styles.scss"
-    ]
+    "styles": ["src/app/visual-styles.scss"]
   }
 }

@@ -1,16 +1,7 @@
-<div
-  class="app-screenshot"
-  style="width:300px"
->
-
+<div class="app-screenshot" style="width: 300px">
   <h2>Fuzzy date pipe</h2>
-  <div
-    class="sky-form-group"
-  >
-    <label
-      class="sky-control-label"
-      for="fuzzy-datepicker"
-    >
+  <div class="sky-form-group">
+    <label class="sky-control-label" for="fuzzy-datepicker">
       Choose or type in a fuzzy date
     </label>
     <sky-datepicker>
@@ -24,13 +15,8 @@
     </sky-datepicker>
   </div>
 
-  <div
-    class="sky-form-group"
-  >
-    <label
-      class="sky-control-label sky-control-label-required"
-      for="format"
-    >
+  <div class="sky-form-group">
+    <label class="sky-control-label sky-control-label-required" for="format">
       Format
     </label>
     <input
@@ -42,15 +28,8 @@
     />
   </div>
 
-  <div
-    class="sky-form-group"
-  >
-    <label
-      class="sky-control-label"
-      for="locale"
-    >
-      Locale
-    </label>
+  <div class="sky-form-group">
+    <label class="sky-control-label" for="locale"> Locale </label>
     <select
       class="sky-form-control"
       id="locale"
@@ -58,19 +37,16 @@
       [(ngModel)]="locale"
     >
       <option *ngFor="let localeItem of localeList">
-        {{localeItem}}
+        {{ localeItem }}
       </option>
     </select>
-    <span
-      class="sky-deemphasized"
-    >
-      Default locale based on browser's settings. Choose a locale above to override.
+    <span class="sky-deemphasized">
+      Default locale based on browser's settings. Choose a locale above to
+      override.
     </span>
   </div>
 
-  <div
-    class="sky-form-group"
-  >
+  <div class="sky-form-group">
     <p>
       <button
         class="sky-btn sky-btn-primary"
@@ -81,29 +57,18 @@
       </button>
     </p>
   </div>
-
 </div>
 
 <hr />
 
-<div
-  class="app-screenshot"
->
+<div class="app-screenshot">
+  <h3>Pipe output →</h3>
 
-  <h3>
-    Pipe output →
-  </h3>
-
-  <p
-    class="sky-emphasized"
-  >
-    {{ fuzzyDate | skyFuzzyDate:format:locale }}
+  <p class="sky-emphasized">
+    {{ fuzzyDate | skyFuzzyDate: format:locale }}
   </p>
 
-  <p
-    class="sky-field-label"
-  >
+  <p class="sky-field-label">
     SkyFuzzyDate model: <code>{{ dateForDisplay() }}</code>
   </p>
-
 </div>

@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -10,11 +6,7 @@ import {
   FormControl,
   AbstractControl
 } from '@angular/forms';
-
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
+import { SkyThemeService, SkyThemeSettings } from '@skyux/theme';
 
 @Component({
   selector: 'timepicker-visual',
@@ -29,20 +21,19 @@ export class TimepickerVisualComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private themeSvc: SkyThemeService
-  ) { }
+  ) {}
 
   public get reactiveTime(): AbstractControl {
     return this.reactiveForm.get('time');
   }
 
   public setReactiveTime(time: string) {
-    this.reactiveForm.setValue({'time': time});
+    this.reactiveForm.setValue({ time: time });
   }
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
       time: new FormControl('2:15 PM', [Validators.required])
-
     });
 
     this.reactiveTime.statusChanges.subscribe((status: any) => {

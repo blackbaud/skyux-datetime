@@ -1,27 +1,9 @@
-import {
-  NgModule
-} from '@angular/core';
-
-import {
-  SkyIdModule
-} from '@skyux/core';
-
-import {
-  SkyDocsToolsModule,
-  SkyDocsToolsOptions
-} from '@skyux/docs-tools';
-
-import {
-  SkyInputBoxModule
-} from '@skyux/forms';
-
-import {
-  SkyPageModule
-} from '@skyux/layout';
-
-import {
-  SkyAppLinkModule
-} from '@skyux/router';
+import { NgModule } from '@angular/core';
+import { SkyIdModule } from '@skyux/core';
+import { SkyDocsToolsModule, SkyDocsToolsOptions } from '@skyux/docs-tools';
+import { SkyInputBoxModule } from '@skyux/forms';
+import { SkyPageModule } from '@skyux/layout';
+import { SkyAppLinkModule } from '@skyux/router';
 
 import {
   SkyDatePipeModule,
@@ -52,4 +34,4 @@ import {
     }
   ]
 })
-export class AppExtrasModule { }
+export class AppExtrasModule {}

@@ -5,6 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './datepicker-noformat.component.fixture.html'
 })
 export class DatepickerNoFormatTestComponent {
-
   public selectedDate: any;
 }

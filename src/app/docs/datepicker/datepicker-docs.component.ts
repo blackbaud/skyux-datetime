@@ -4,20 +4,10 @@ import {
   Component,
   OnInit
 } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { SkyDocsDemoControlPanelChange } from '@skyux/docs-tools';
 
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup
-} from '@angular/forms';
-
-import {
-  SkyDocsDemoControlPanelChange
-} from '@skyux/docs-tools';
-
-import {
-  SkyFuzzyDate
-} from '../../public/public_api';
+import { SkyFuzzyDate } from '../../public/public_api';
 
 @Component({
   selector: 'app-datepicker-docs',
@@ -25,7 +15,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerDocsComponent implements OnInit {
-
   public fuzzyForm: FormGroup;
 
   public fuzzyMaxDate: SkyFuzzyDate;
@@ -45,7 +34,7 @@ export class DatepickerDocsComponent implements OnInit {
   constructor(
     private changeRef: ChangeDetectorRef,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.fuzzyForm = this.formBuilder.group({
@@ -83,5 +72,4 @@ export class DatepickerDocsComponent implements OnInit {
 
     this.changeRef.markForCheck();
   }
-
 }

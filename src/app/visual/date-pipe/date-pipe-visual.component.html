@@ -1,18 +1,7 @@
-<div
-  class="app-screenshot"
-  style="width:300px"
->
-
-  <h2>
-    Date pipe
-  </h2>
-  <div
-    class="sky-form-group"
-  >
-    <label
-      class="sky-control-label"
-      for="datepicker"
-    >
+<div class="app-screenshot" style="width: 300px">
+  <h2>Date pipe</h2>
+  <div class="sky-form-group">
+    <label class="sky-control-label" for="datepicker">
       Choose or type in a date
     </label>
     <sky-datepicker>
@@ -26,15 +15,8 @@
     </sky-datepicker>
   </div>
 
-  <div
-    class="sky-form-group"
-  >
-    <label
-      class="sky-control-label"
-      for="format"
-    >
-      Format
-    </label>
+  <div class="sky-form-group">
+    <label class="sky-control-label" for="format"> Format </label>
     <select
       class="sky-form-control"
       id="format"
@@ -42,25 +24,17 @@
       [(ngModel)]="format"
     >
       <option *ngFor="let formatItem of formatList">
-        {{formatItem}}
+        {{ formatItem }}
       </option>
     </select>
-    <span
-      class="sky-deemphasized"
-    >
-      Angular's predefined 'short' format is default. Choose a format above to override.
+    <span class="sky-deemphasized">
+      Angular's predefined 'short' format is default. Choose a format above to
+      override.
     </span>
   </div>
 
-  <div
-    class="sky-form-group"
-  >
-    <label
-      class="sky-control-label"
-      for="locale"
-    >
-      Locale
-    </label>
+  <div class="sky-form-group">
+    <label class="sky-control-label" for="locale"> Locale </label>
     <select
       class="sky-form-control"
       id="locale"
@@ -68,19 +42,16 @@
       [(ngModel)]="locale"
     >
       <option *ngFor="let localeItem of localeList">
-        {{localeItem}}
+        {{ localeItem }}
       </option>
     </select>
-    <span
-      class="sky-deemphasized"
-    >
-      Default locale based on browser's settings. Choose a locale above to override.
+    <span class="sky-deemphasized">
+      Default locale based on browser's settings. Choose a locale above to
+      override.
     </span>
   </div>
 
-  <div
-    class="sky-form-group"
-  >
+  <div class="sky-form-group">
     <p>
       <button
         class="sky-btn sky-btn-primary"
@@ -91,29 +62,18 @@
       </button>
     </p>
   </div>
-
 </div>
 
 <hr />
 
-<div
-  class="app-screenshot"
->
+<div class="app-screenshot">
+  <h3>Pipe output →</h3>
 
-  <h3>
-    Pipe output →
-  </h3>
-
-  <p
-    class="sky-emphasized"
-  >
-    {{ myDate | skyDate:format:locale }}
+  <p class="sky-emphasized">
+    {{ myDate | skyDate: format:locale }}
   </p>
 
-  <p
-    class="sky-field-label"
-  >
+  <p class="sky-field-label">
     Date model: <code>{{ dateForDisplay() }}</code>
   </p>
-
 </div>

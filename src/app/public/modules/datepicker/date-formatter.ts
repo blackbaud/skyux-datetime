@@ -1,8 +1,8 @@
 import * as moment_ from 'moment';
+
 const moment = moment_;
 
 export class SkyDateFormatter {
-
   private static defaultLocale: string = 'en-US';
 
   private static defaultShortDateFormat: string = 'MM/DD/YYYY';
@@ -18,14 +18,21 @@ export class SkyDateFormatter {
    * Returns the preferred short date format for the current locale.
    */
   public static getPreferredShortDateFormat(): string {
-    return moment.localeData().longDateFormat('L') || SkyDateFormatter.defaultShortDateFormat;
+    return (
+      moment.localeData().longDateFormat('L') ||
+      SkyDateFormatter.defaultShortDateFormat
+    );
   }
 
   public format(date: Date, format: string): string {
     return moment(date.getTime()).format(format);
   }
 
-  public getDateFromString(dateString: string, format: string, strict: boolean = false): Date {
+  public getDateFromString(
+    dateString: string,
+    format: string,
+    strict: boolean = false
+  ): Date {
     let momentValue = moment(dateString, format, strict);
 
     if (!momentValue.isValid()) {
