@@ -314,24 +314,6 @@ export class SkyDateRangePickerComponent
         });
       }
     });
-
-    // Watch for errors on the start/end dates and reflect in parent control.
-    // This will catch any "required" errors on focus/blur.
-    this.startDateControl.statusChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(value => {
-        if (value === 'INVALID') {
-          this.validate(this.control);
-        }
-      });
-
-    this.endDateControl.statusChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(value => {
-        if (value === 'INVALID') {
-          this.validate(this.control);
-        }
-      });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -578,6 +560,18 @@ export class SkyDateRangePickerComponent
       )
       .subscribe((endDate) => {
         this.patchValue({ endDate });
+      });
+
+      // Detect errors from the date inputs and update ng- classes on picker.
+      combineLatest([
+        this.startDateControl.statusChanges,
+        this.endDateControl.statusChanges
+      ])
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
+        this.changeDetector.markForCheck();
       });
   }
 

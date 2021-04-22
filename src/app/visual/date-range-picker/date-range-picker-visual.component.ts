@@ -43,7 +43,7 @@ export class DateRangePickerVisualComponent implements OnInit {
   public reactiveForm: FormGroup;
   public startDateRequired: boolean = false;
 
-  public get reactiveRange(): AbstractControl {
+  public get pickerFormControl(): AbstractControl {
     return this.reactiveForm.get('lastDonation');
   }
 
@@ -58,17 +58,16 @@ export class DateRangePickerVisualComponent implements OnInit {
     this.reactiveForm = this.formBuilder.group({
       lastDonation: new FormControl()
     });
-
-    this.reactiveRange.statusChanges
+    this.pickerFormControl.statusChanges
       .subscribe((status) => {
         console.log(
           'Date range status change:',
           status,
-          this.reactiveRange.errors
+          this.pickerFormControl.errors
         );
       });
 
-    this.reactiveRange.valueChanges
+    this.pickerFormControl.valueChanges
       .subscribe((value) => {
         console.log(
           'Date range value change:',
@@ -99,7 +98,7 @@ export class DateRangePickerVisualComponent implements OnInit {
       endDate: new Date('1/1/2013')
     };
 
-    this.reactiveRange.setValue(range);
+    this.pickerFormControl.setValue(range);
   }
 
   public setInvalidRange(): void {
@@ -109,7 +108,7 @@ export class DateRangePickerVisualComponent implements OnInit {
       endDate: new Date('1/1/2012')
     };
 
-    this.reactiveRange.setValue(range);
+    this.pickerFormControl.setValue(range);
   }
 
   public setInvalidDates(): void {
@@ -119,7 +118,7 @@ export class DateRangePickerVisualComponent implements OnInit {
       endDate: 'asdf' as any
     };
 
-    this.reactiveRange.setValue(range);
+    this.pickerFormControl.setValue(range);
   }
 
   public submit(): void {

@@ -32,6 +32,9 @@ import {
 } from './types/date-range-calculator-type';
 
 import * as moment_ from 'moment';
+import { SkyTheme, SkyThemeMode, SkyThemeService, SkyThemeSettings, SkyThemeSettingsChange } from '@skyux/theme';
+import { BehaviorSubject } from 'rxjs';
+
 const moment = moment_;
 
 const defaultCalculatorIds = [
@@ -62,6 +65,9 @@ const defaultCalculatorIds = [
 describe('Date range picker', function () {
   let fixture: ComponentFixture<DateRangePickerTestComponent>;
   let component: DateRangePickerTestComponent;
+  let mockThemeSvc: {
+    settingsChange: BehaviorSubject<SkyThemeSettingsChange>
+  };
 
   function detectChanges(): void {
     fixture.detectChanges();
@@ -140,9 +146,27 @@ describe('Date range picker', function () {
   }
 
   beforeEach(function () {
+    mockThemeSvc = {
+      settingsChange: new BehaviorSubject<SkyThemeSettingsChange>(
+        {
+          currentSettings: new SkyThemeSettings(
+            SkyTheme.presets.default,
+            SkyThemeMode.presets.light
+          ),
+          previousSettings: undefined
+        }
+      )
+    };
+
     TestBed.configureTestingModule({
       imports: [
         DateRangePickerTestModule
+      ],
+      providers: [
+        {
+          provide: SkyThemeService,
+          useValue: mockThemeSvc
+        }
       ]
     });
 
