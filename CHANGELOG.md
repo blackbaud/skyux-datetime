@@ -1,3 +1,7 @@
+# 4.11.1 (2021-05-20)
+
+- Fixed the date range picker to disable the inner form controls when consumers use a reactive form control during initialization or the `disabled` input. [#261](https://github.com/blackbaud/skyux-datetime/pull/261)
+
 # 4.11.0 (2021-04-23)
 
 - Added the `startDateRequired` and `endDateRequired` inputs to the date range picker component. [#257](https://github.com/blackbaud/skyux-datetime/pull/257)
