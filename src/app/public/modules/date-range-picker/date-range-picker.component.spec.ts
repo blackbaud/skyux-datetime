@@ -352,6 +352,20 @@ describe('Date range picker', function () {
     verifyFormFieldsDisabledStatus(false);
   }));
 
+  it('should set disabled state via template input on initialization', fakeAsync(function() {
+    component.templateDisable = true;
+
+    detectChanges();
+
+    verifyFormFieldsDisabledStatus(true);
+
+    component.templateDisable = false;
+
+    detectChanges();
+
+    verifyFormFieldsDisabledStatus(false);
+  }));
+
   it('should allow for disabling the control on initialization', fakeAsync(function () {
     component.initialValue = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange
