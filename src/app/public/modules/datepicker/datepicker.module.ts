@@ -59,20 +59,12 @@ import {
 } from './datepicker.component';
 
 import {
-  SkyDatepickerConfigService
-} from './datepicker-config.service';
-
-import {
   SkyDatepickerInputDirective
 } from './datepicker-input.directive';
 
 import {
   SkyFuzzyDatepickerInputDirective
 } from './datepicker-input-fuzzy.directive';
-
-import {
-  SkyFuzzyDateService
-} from './fuzzy-date.service';
 
 @NgModule({
   declarations: [
@@ -107,8 +99,6 @@ import {
   ],
   providers: [
     SkyAppWindowRef,
-    SkyDatepickerConfigService,
-    SkyFuzzyDateService,
     SkyCoreAdapterService,
     SkyThemeService
   ]

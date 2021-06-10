@@ -35,10 +35,6 @@ import {
   SkyDateRangePickerComponent
 } from './date-range-picker.component';
 
-import {
-  SkyDateRangeService
-} from './date-range.service';
-
 @NgModule({
   declarations: [
     SkyDateRangePickerComponent
@@ -56,8 +52,7 @@ import {
     SkyDateRangePickerComponent
   ],
   providers: [
-    SkyAppWindowRef,
-    SkyDateRangeService
+    SkyAppWindowRef
   ]
 })
 export class SkyDateRangePickerModule { }

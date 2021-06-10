@@ -36,7 +36,9 @@ import {
 /**
  * Creates and manages `SkyDateRangeCalculator` instances.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyDateRangeService {
 
   // Start the count higher than the number of available values

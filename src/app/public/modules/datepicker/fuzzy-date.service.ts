@@ -44,7 +44,9 @@ interface SkyFuzzyDateRange {
 /**
  * @internal
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyFuzzyDateService implements OnDestroy {
 
   private currentLocale: string;
