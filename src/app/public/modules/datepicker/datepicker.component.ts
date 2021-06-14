@@ -57,10 +57,10 @@ let nextId = 0;
 export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   /**
-   * Adds class to the overlay.
+   * Adds a class to the date picker.
    */
   @Input()
-  public overlayClass = '';
+  public pickerClass = '';
 
   /**
    * @internal
@@ -318,7 +318,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   private createOverlay(): void {
     const overlay = this.overlayService.create({
-      wrapperClass: this.overlayClass,
+      wrapperClass: this.pickerClass,
       enableClose: false,
       enablePointerEvents: false
     });
