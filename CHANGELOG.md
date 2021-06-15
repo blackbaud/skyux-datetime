@@ -1,6 +1,6 @@
 # 4.12.0 (2021-06-15)
 
-- Added an optional `pickerClass` for the date picker component. [#264](https://github.com/blackbaud/skyux-datetime/pull/264)
+- Added an optional `pickerClass` input for the datepicker component. [#264](https://github.com/blackbaud/skyux-datetime/pull/264)
 
 # 4.11.1 (2021-05-21)
 
