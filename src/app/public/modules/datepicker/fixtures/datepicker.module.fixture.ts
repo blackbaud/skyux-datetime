@@ -16,9 +16,12 @@ import {
 } from '@skyux/forms';
 
 import {
-  SkyThemeModule,
-  SkyThemeService
+  SkyThemeModule
 } from '@skyux/theme';
+
+import {
+  SkyDateTimeForRootCompatModule
+} from '../../shared/datetime-for-root-compat.module';
 
 import {
   SkyDatepickerModule
@@ -57,6 +60,7 @@ import {
     NoopAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    SkyDateTimeForRootCompatModule,
     SkyInputBoxModule,
     SkyThemeModule
   ],
@@ -66,9 +70,6 @@ import {
     DatepickerNoFormatTestComponent,
     DatepickerReactiveTestComponent,
     DatepickerTestComponent
-  ],
-  providers: [
-    SkyThemeService
   ]
 })
 export class DatepickerTestModule { }

@@ -5,10 +5,6 @@ import {
 } from '@angular/core/testing';
 
 import {
-  SkyAppWindowRef
-} from '@skyux/core';
-
-import {
   expect
 } from '@skyux-sdk/testing';
 
@@ -19,6 +15,10 @@ import {
 import {
   take
 } from 'rxjs/operators';
+
+import {
+  SkyDateTimeForRootCompatModule
+} from '../shared/datetime-for-root-compat.module';
 
 import {
   SkyFuzzyDateService
@@ -39,9 +39,11 @@ describe('SkyFuzzyDateservice', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        SkyDateTimeForRootCompatModule
+      ],
       providers: [
         SkyAppLocaleProvider,
-        SkyAppWindowRef,
         SkyFuzzyDateService
       ]
     });

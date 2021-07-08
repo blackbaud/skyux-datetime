@@ -24,6 +24,10 @@ import {
 } from '@skyux/router';
 
 import {
+  SkyDateTimeForRootCompatModule
+} from './public/modules/shared/datetime-for-root-compat.module';
+
+import {
   SkyDatePipeModule,
   SkyDatepickerModule,
   SkyDateRangePickerModule,
@@ -31,6 +35,9 @@ import {
 } from './public/public_api';
 
 @NgModule({
+  imports: [
+    SkyDateTimeForRootCompatModule
+  ],
   exports: [
     SkyAppLinkModule,
     SkyDatePipeModule,
