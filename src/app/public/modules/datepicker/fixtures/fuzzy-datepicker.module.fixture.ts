@@ -12,6 +12,10 @@ import {
 } from '@angular/platform-browser/animations';
 
 import {
+  SkyDateTimeForRootCompatModule
+} from '../../shared/datetime-for-root-compat.module';
+
+import {
   SkyDatepickerModule
 } from '../datepicker.module';
 
@@ -44,6 +48,7 @@ import {
   ],
   imports: [
     SkyDatepickerModule,
+    SkyDateTimeForRootCompatModule,
     NoopAnimationsModule,
     FormsModule,
     ReactiveFormsModule

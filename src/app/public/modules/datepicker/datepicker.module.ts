@@ -12,8 +12,6 @@ import {
 
 import {
   SkyAffixModule,
-  SkyAppWindowRef,
-  SkyCoreAdapterService,
   SkyOverlayModule
 } from '@skyux/core';
 
@@ -26,8 +24,7 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyThemeModule,
-  SkyThemeService
+  SkyThemeModule
 } from '@skyux/theme';
 
 import {
@@ -96,11 +93,6 @@ import {
     SkyDatepickerComponent,
     SkyDatepickerInputDirective,
     SkyFuzzyDatepickerInputDirective
-  ],
-  providers: [
-    SkyAppWindowRef,
-    SkyCoreAdapterService,
-    SkyThemeService
   ]
 })
 export class SkyDatepickerModule { }

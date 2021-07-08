@@ -4,7 +4,6 @@ import {
 
 import {
   SkyAffixModule,
-  SkyCoreAdapterService,
   SkyOverlayModule
 } from '@skyux/core';
 
@@ -21,8 +20,7 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyThemeModule,
-  SkyThemeService
+  SkyThemeModule
 } from '@skyux/theme';
 
 import {
@@ -50,10 +48,6 @@ import {
     SkyAffixModule,
     SkyOverlayModule,
     SkyThemeModule
-  ],
-  providers: [
-    SkyCoreAdapterService,
-    SkyThemeService
   ],
   exports: [
     SkyTimepickerInputDirective,

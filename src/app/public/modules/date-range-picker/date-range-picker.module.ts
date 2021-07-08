@@ -12,10 +12,6 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyAppWindowRef
-} from '@skyux/core';
-
-import {
   SkyInputBoxModule
 } from '@skyux/forms';
 
@@ -50,9 +46,6 @@ import {
   ],
   exports: [
     SkyDateRangePickerComponent
-  ],
-  providers: [
-    SkyAppWindowRef
   ]
 })
 export class SkyDateRangePickerModule { }
