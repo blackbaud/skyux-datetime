@@ -1,3 +1,10 @@
+# 5.0.0-beta.0 (2021-07-08)
+
+- Initial beta release.
+- Added support for `@angular/core@^12`. [#269](https://github.com/blackbaud/skyux-datetime/pull/269)
+- Added support for `5.0.0-beta.*` versions of SKY UX component libraries. [#269](https://github.com/blackbaud/skyux-datetime/pull/269)
+- Fixed `SkyDateRangeService`, `SkyFuzzyDateService`,  and `SkyDatepickerConfigService` to work within lazy-loaded feature modules. [#263](https://github.com/blackbaud/skyux-datetime/pull/263)
+
 # 4.12.0 (2021-06-15)
 
 - Added an optional `pickerClass` input for the datepicker component. [#264](https://github.com/blackbaud/skyux-datetime/pull/264)
