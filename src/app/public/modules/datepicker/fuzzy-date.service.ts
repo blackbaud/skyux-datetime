@@ -109,21 +109,21 @@ export class SkyFuzzyDateService implements OnDestroy {
           case 'y':
             if (fuzzyDate.year) {
               dateParts.push(
-                fuzzyDateMoment.format(token)
+                fuzzyDateMoment.format(token.toUpperCase())
               );
             }
             break;
           case 'm':
             if (fuzzyDate.month) {
               dateParts.push(
-                fuzzyDateMoment.format(token)
+                fuzzyDateMoment.format(token.toUpperCase())
               );
             }
             break;
           case 'd':
             if (fuzzyDate.day) {
               dateParts.push(
-                fuzzyDateMoment.format(token)
+                fuzzyDateMoment.format(token.toUpperCase())
               );
             }
             break;
@@ -444,6 +444,10 @@ export class SkyFuzzyDateService implements OnDestroy {
    * year only
    */
   private isFuzzyDateValid(fuzzyDate: SkyFuzzyDate): boolean {
+
+    if (!fuzzyDate) {
+      return false;
+    }
 
     // If none of the dates part are specified, return false.
     if (!fuzzyDate.day && !fuzzyDate.month && !fuzzyDate.year) {
