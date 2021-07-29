@@ -109,21 +109,21 @@ export class SkyFuzzyDateService implements OnDestroy {
           case 'y':
             if (fuzzyDate.year) {
               dateParts.push(
-                fuzzyDateMoment.format(token.toUpperCase())
+                fuzzyDateMoment.format(token)
               );
             }
             break;
           case 'm':
             if (fuzzyDate.month) {
               dateParts.push(
-                fuzzyDateMoment.format(token.toUpperCase())
+                fuzzyDateMoment.format(token)
               );
             }
             break;
           case 'd':
             if (fuzzyDate.day) {
               dateParts.push(
-                fuzzyDateMoment.format(token.toUpperCase())
+                fuzzyDateMoment.format(token)
               );
             }
             break;

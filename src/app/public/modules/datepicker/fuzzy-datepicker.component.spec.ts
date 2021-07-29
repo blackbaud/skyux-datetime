@@ -759,7 +759,7 @@ describe('fuzzy datepicker input', () => {
       }));
 
       it('should validate properly when an invalid date format is passed through input change', fakeAsync(() => {
-        fixture.componentInstance.dateFormat = 'mm/dd/yyyy';
+        fixture.componentInstance.dateFormat = 'MM/DD/YYYY';
         detectChanges(fixture);
 
         setInputElementValue(nativeElement, '2015/2/12', fixture);
@@ -1382,7 +1382,7 @@ describe('fuzzy datepicker input', () => {
       }));
 
       it('should validate properly when an invalid date format is passed through input change', fakeAsync(() => {
-        fixture.componentInstance.dateFormat = 'mm/dd/yyyy';
+        fixture.componentInstance.dateFormat = 'MM/DD/YYYY';
         detectChanges(fixture);
         setInputElementValue(nativeElement, '2015/2/12', fixture);
 
@@ -1665,7 +1665,7 @@ describe('fuzzy datepicker input', () => {
 
       try {
         component.yearRequired = true;
-        component.dateFormat = 'mm/dd';
+        component.dateFormat = 'MM/DD';
         detectChanges(fixture);
       } catch (err) {
         expect(err.message).toEqual('You have configured conflicting settings. Year is required and dateFormat does not include year.');
