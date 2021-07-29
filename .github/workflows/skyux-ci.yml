@@ -11,6 +11,9 @@ on:
       - 3.x.x
     tags:
       - '*.*.*'
+  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
   ci:
