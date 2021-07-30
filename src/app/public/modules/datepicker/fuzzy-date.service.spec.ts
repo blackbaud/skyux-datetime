@@ -136,6 +136,17 @@ describe('SkyFuzzyDateservice', () => {
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
+    it(`should return formatted string, based on default browser locale when no locale is given`, () => {
+      const spy = spyOn(service, 'getMomentFromFuzzyDate').and.callThrough();
+      const fuzzyDate = {month: 11, day: 5, year: 1955};
+      const actual = service.format(fuzzyDate, currentShortFormat);
+      const expected = moment('11/5/1955').format('L');
+
+      expect(actual).toEqual(expected);
+      expect(spy).toHaveBeenCalledWith(fuzzyDate);
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
     it(`should return formatted string, when providing custom format and locale`, () => {
       const frenchLongFormat = moment.localeData('fr').longDateFormat('LL');
       const fuzzyDate = {month: 11, day: 5, year: 1955};
