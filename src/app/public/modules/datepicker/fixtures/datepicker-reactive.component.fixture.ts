@@ -60,5 +60,14 @@ export class DatepickerReactiveTestComponent implements OnInit {
     this.datepickerForm = this.formBuilder.group({
       date: this.dateControl
     });
+
+    this.datepickerForm.valueChanges.subscribe(() => {
+      this.valueChanged();
+    });
+  }
+
+  // Used for a jasmine spy.
+  public valueChanged(): void {
+    return;
   }
 }

@@ -83,7 +83,7 @@ describe('Date range picker', function () {
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
-    tick();
+    tick(5);
   }
 
   function getLocaleLongDateFormat(): string {

@@ -98,7 +98,7 @@ function detectChanges(fixture: ComponentFixture<any>): void {
   fixture.detectChanges();
   tick();
   fixture.detectChanges();
-  tick();
+  tick(5);
 }
 
 function getTriggerButton(fixture: ComponentFixture<any>): HTMLButtonElement {
@@ -1200,6 +1200,10 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toBe(true);
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
+
+        expect(component.datepickerForm.valid).toBe(true);
+        expect(component.datepickerForm.pristine).toBe(true);
+        expect(component.datepickerForm.touched).toBe(false);
       }));
 
       it('should set correct statuses when initialized with value', fakeAsync(() => {
@@ -1209,6 +1213,10 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toBe(true);
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
+
+        expect(component.datepickerForm.valid).toBe(true);
+        expect(component.datepickerForm.pristine).toBe(true);
+        expect(component.datepickerForm.touched).toBe(false);
       }));
 
       it('should set correct statuses after user types within input', fakeAsync(() => {
@@ -1218,12 +1226,20 @@ describe('datepicker', () => {
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
 
+        expect(component.datepickerForm.valid).toBe(true);
+        expect(component.datepickerForm.pristine).toBe(true);
+        expect(component.datepickerForm.touched).toBe(false);
+
         setInputElementValue(nativeElement, '1/1/2000', fixture);
         blurInput(nativeElement, fixture);
 
         expect(component.dateControl.valid).toBe(true);
         expect(component.dateControl.pristine).toBe(false);
         expect(component.dateControl.touched).toBe(true);
+
+        expect(component.datepickerForm.valid).toBe(true);
+        expect(component.datepickerForm.pristine).toBe(false);
+        expect(component.datepickerForm.touched).toBe(true);
       }));
 
       it('should set correct statuses after user selects from calendar', fakeAsync(() => {
@@ -1233,6 +1249,10 @@ describe('datepicker', () => {
         expect(component.dateControl.pristine).toBe(true);
         expect(component.dateControl.touched).toBe(false);
 
+        expect(component.datepickerForm.valid).toBe(true);
+        expect(component.datepickerForm.pristine).toBe(true);
+        expect(component.datepickerForm.touched).toBe(false);
+
         clickTrigger(fixture);
         getSelectedCalendarItem().click();
         detectChanges(fixture);
@@ -1240,6 +1260,10 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toBe(true);
         expect(component.dateControl.pristine).toBe(false);
         expect(component.dateControl.touched).toBe(true);
+
+        expect(component.datepickerForm.valid).toBe(true);
+        expect(component.datepickerForm.pristine).toBe(false);
+        expect(component.datepickerForm.touched).toBe(true);
       }));
     });
 
@@ -1391,26 +1415,26 @@ describe('datepicker', () => {
 
     describe('disabled state', () => {
       it('should disable the input and trigger button when disabled is set to true ' +
-      'and enable them when disabled is changed to false', () => {
-        fixture.detectChanges();
-        component.isDisabled = true;
-        fixture.detectChanges();
-        const triggerButton = getTriggerButton(fixture);
+        'and enable them when disabled is changed to false', () => {
+          fixture.detectChanges();
+          component.isDisabled = true;
+          fixture.detectChanges();
+          const triggerButton = getTriggerButton(fixture);
 
-        expect(fixture.componentInstance.inputDirective.disabled).toBeTruthy();
-        expect(fixture.componentInstance.datepicker.disabled).toBeTruthy();
-        expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeTruthy();
-        expect(triggerButton.disabled).toBeTruthy();
+          expect(fixture.componentInstance.inputDirective.disabled).toBeTruthy();
+          expect(fixture.componentInstance.datepicker.disabled).toBeTruthy();
+          expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeTruthy();
+          expect(triggerButton.disabled).toBeTruthy();
 
-        fixture.detectChanges();
-        component.isDisabled = false;
-        fixture.detectChanges();
+          fixture.detectChanges();
+          component.isDisabled = false;
+          fixture.detectChanges();
 
-        expect(fixture.componentInstance.inputDirective.disabled).toBeFalsy();
-        expect(fixture.componentInstance.datepicker.disabled).toBeFalsy();
-        expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeFalsy();
-        expect(triggerButton.disabled).toBeFalsy();
-      });
+          expect(fixture.componentInstance.inputDirective.disabled).toBeFalsy();
+          expect(fixture.componentInstance.datepicker.disabled).toBeFalsy();
+          expect(fixture.debugElement.query(By.css('input')).nativeElement.disabled).toBeFalsy();
+          expect(triggerButton.disabled).toBeFalsy();
+        });
 
     });
 

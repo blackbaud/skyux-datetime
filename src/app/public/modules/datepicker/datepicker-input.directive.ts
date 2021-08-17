@@ -236,7 +236,7 @@ export class SkyDatepickerInputDirective
 
     // If the string value supplied is malformed, do not set the value to its Date equivalent.
     // (JavaScript's Date parser will convert poorly formatted dates to Date objects, such as "abc 123", which isn't ideal.)
-    if (!isValidDateString) {
+    if (!isValidDateString && value !== this._value) {
       this._value = value;
       this.notifyUpdatedValue();
     } else if (dateValue !== this._value || !areDatesEqual) {
@@ -346,6 +346,13 @@ export class SkyDatepickerInputDirective
         this.changeDetector.markForCheck();
       });
     }
+
+    // This ensures that if the control is initialized with an undefined value that we don't mark
+    // the form dirty at this point; however, we do mark it dirty for any further changes. We should
+    // evaluate our overall form control approach here in a future version.
+    setTimeout(() => {
+      this.isFirstChange = false;
+    }, 5);
 
     this.adapter.init(this.elementRef);
   }
