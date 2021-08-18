@@ -1,3 +1,15 @@
+# 5.0.0-beta.1 (2021-08-18)
+
+- Added bug fixes and features from the `master` branch. [#277](https://github.com/blackbaud/skyux-datetime/pull/277)
+
+# 4.12.2 (2021-08-18)
+
+- Fixed performance issues with the datepicker and timepicker components. [#275](https://github.com/blackbaud/skyux-datetime/pull/275)
+
+# 4.12.1 (2021-07-30)
+
+- Fixed the fuzzy datepicker component to properly format dates based on the given date format. [#270](https://github.com/blackbaud/skyux-datetime/pull/270)
+
 # 5.0.0-beta.0 (2021-07-08)
 
 - Initial beta release.
