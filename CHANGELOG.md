@@ -1,6 +1,6 @@
 # 5.0.0-beta.1 (2021-08-18)
 
-- Added bug fixes and features from the `master` branch. [#278](https://github.com/blackbaud/skyux-layout/pull/278)
+- Added bug fixes and features from the `master` branch. [#278](https://github.com/blackbaud/skyux-datetime/pull/278)
 
 # 4.12.2 (2021-08-18)
 
