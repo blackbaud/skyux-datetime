@@ -24,16 +24,13 @@ import {
 } from '@skyux/theme';
 
 import {
-  SkyDateTimeResourcesModule
-} from '../shared/datetime-resources.module';
-
-import {
   SkyTimepickerInputDirective
 } from './timepicker.directive';
 
 import {
   SkyTimepickerComponent
 } from './timepicker.component';
+import { SkyDatetimeResourcesModule } from '../shared/sky-datetime-resources.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +41,7 @@ import {
     CommonModule,
     SkyI18nModule,
     SkyIconModule,
-    SkyDateTimeResourcesModule,
+    SkyDatetimeResourcesModule,
     SkyAffixModule,
     SkyOverlayModule,
     SkyThemeModule

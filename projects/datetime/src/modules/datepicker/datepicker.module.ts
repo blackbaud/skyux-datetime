@@ -28,10 +28,6 @@ import {
 } from '@skyux/theme';
 
 import {
-  SkyDateTimeResourcesModule
-} from '../shared/datetime-resources.module';
-
-import {
   SkyDatepickerCalendarComponent
 } from './datepicker-calendar.component';
 
@@ -62,6 +58,7 @@ import {
 import {
   SkyFuzzyDatepickerInputDirective
 } from './datepicker-input-fuzzy.directive';
+import { SkyDatetimeResourcesModule } from '../shared/sky-datetime-resources.module';
 
 @NgModule({
   declarations: [
@@ -79,7 +76,7 @@ import {
     SkyI18nModule,
     FormsModule,
     SkyIconModule,
-    SkyDateTimeResourcesModule,
+    SkyDatetimeResourcesModule,
     SkyAffixModule,
     SkyOverlayModule,
     SkyThemeModule

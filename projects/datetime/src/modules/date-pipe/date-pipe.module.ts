@@ -5,10 +5,8 @@ import {
 import {
   NgModule
 } from '@angular/core';
+import { SkyDatetimeResourcesModule } from '../shared/sky-datetime-resources.module';
 
-import {
-  SkyDateTimeResourcesModule
-} from '../shared/datetime-resources.module';
 
 import {
   SkyDatePipe
@@ -29,7 +27,7 @@ import {
   ],
   imports: [
     CommonModule,
-    SkyDateTimeResourcesModule
+    SkyDatetimeResourcesModule
   ],
   exports: [
     SkyDatePipe,

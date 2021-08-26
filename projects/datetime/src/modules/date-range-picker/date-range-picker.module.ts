@@ -22,10 +22,7 @@ import {
 import {
   SkyDatepickerModule
 } from '../datepicker/datepicker.module';
-
-import {
-  SkyDateTimeResourcesModule
-} from '../shared/datetime-resources.module';
+import { SkyDatetimeResourcesModule } from '../shared/sky-datetime-resources.module';
 
 import {
   SkyDateRangePickerComponent
@@ -41,7 +38,7 @@ import {
     ReactiveFormsModule,
     SkyI18nModule,
     SkyDatepickerModule,
-    SkyDateTimeResourcesModule,
+    SkyDatetimeResourcesModule,
     SkyInputBoxModule
   ],
   exports: [

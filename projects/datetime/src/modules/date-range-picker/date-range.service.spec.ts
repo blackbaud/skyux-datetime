@@ -6,9 +6,6 @@ import {
   SkyI18nModule
 } from '@skyux/i18n';
 
-import {
-  SkyDateTimeResourcesModule
-} from '../shared/datetime-resources.module';
 
 import {
   SkyDateRangeCalculatorId
@@ -25,6 +22,7 @@ import {
 import {
   SkyDateRangeService
 } from './date-range.service';
+import { SkyDatetimeResourcesModule } from '../shared/sky-datetime-resources.module';
 
 describe('Date range service', function () {
   let service: SkyDateRangeService;
@@ -33,7 +31,7 @@ describe('Date range service', function () {
     TestBed.configureTestingModule({
       imports: [
         SkyI18nModule,
-        SkyDateTimeResourcesModule
+        SkyDatetimeResourcesModule
       ],
       providers: [
         SkyDateRangeService
