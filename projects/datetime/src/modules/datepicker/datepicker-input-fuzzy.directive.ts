@@ -357,6 +357,7 @@ export class SkyFuzzyDatepickerInputDirective
 
     const hasAriaLabel = element.getAttribute('aria-label');
 
+    /* istanbul ignore else */
     if (!hasAriaLabel) {
       this.resourcesService.getString('skyux_date_field_default_label')
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -417,8 +418,9 @@ export class SkyFuzzyDatepickerInputDirective
     this.onTouched();
 
     let formattedDate = this.fuzzyDateService.format(this.value, this.dateFormat, this.locale);
+
     if (this.control.valid) {
-      this.setInputElementValue(formattedDate || '');
+      this.setInputElementValue(formattedDate);
     }
   }
 
@@ -578,6 +580,7 @@ export class SkyFuzzyDatepickerInputDirective
     return this.configService.minDate;
   }
 
+  /* istanbul ignore next */
   private fuzzyDatesEqual(dateA: SkyFuzzyDate, dateB: SkyFuzzyDate): boolean {
     return dateA && dateB
     && (

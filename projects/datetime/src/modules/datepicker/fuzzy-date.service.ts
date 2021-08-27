@@ -90,10 +90,6 @@ export class SkyFuzzyDateService implements OnDestroy {
    */
   public format(fuzzyDate: SkyFuzzyDate, format: string, locale?: string): string {
 
-    if (!locale) {
-      locale = this.currentLocale;
-    }
-
     if (!this.isFuzzyDateValid(fuzzyDate)) {
       return '';
     }
@@ -110,6 +106,8 @@ export class SkyFuzzyDateService implements OnDestroy {
 
     for (let index = 0; index < formatTokens.length; index++) {
       const token = formatTokens[index];
+
+      /* istanbul ignore else */
       if (token) {
         // tslint:disable-next-line: switch-default
         switch (token.substr(0, 1).toLowerCase()) {

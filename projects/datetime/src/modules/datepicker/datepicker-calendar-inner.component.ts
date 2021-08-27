@@ -359,6 +359,7 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   }
 
   public toggleMode(direction: number): void {
+    /*istanbul ignore next */
     direction = direction || 1;
 
     /* istanbul ignore else */

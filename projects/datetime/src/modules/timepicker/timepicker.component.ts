@@ -430,6 +430,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
     overlay.backdropClick
       .pipe(takeUntil(this.timepickerUnsubscribe))
       .subscribe(() => {
+        /* istanbul ignore else */
         if (this.isOpen) {
           this.closePicker();
         }
@@ -469,6 +470,7 @@ export class SkyTimepickerComponent implements OnInit, OnDestroy {
       this.timepickerUnsubscribe.complete();
       this.timepickerUnsubscribe = undefined;
     }
+    /* istanbul ignore next */
     this.overlayKeydownListner?.unsubscribe();
   }
 }

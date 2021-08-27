@@ -9,7 +9,8 @@ import {
 
 import {
   SkyAppLocaleInfo,
-  SkyAppLocaleProvider
+  SkyAppLocaleProvider,
+  SkyIntlDateFormatter
 } from '@skyux/i18n';
 
 import {
@@ -244,6 +245,18 @@ describe('Date pipe', () => {
       '1/21/2017' // Firefox
     ];
     expect(expectedValues).toContain(value);
+  });
+
+  it('should revert to provided format pattern if a match is not found in our SkyDateFormatUtility aliases', () => {
+    const spy = spyOn(SkyIntlDateFormatter, 'format');
+    fixture.componentInstance.format = 'NOT_A_REAL_FORMAT';
+    fixture.componentInstance.dateValue = '2017-01-20T19:00:00+0000';
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledWith(
+      new Date('2017-01-20T19:00:00+0000'),
+      'en-US',
+      'NOT_A_REAL_FORMAT'
+    );
   });
 
   it('should work as an injectable', () => {

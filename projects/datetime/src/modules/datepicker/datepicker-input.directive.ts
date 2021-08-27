@@ -87,6 +87,7 @@ export class SkyDatepickerInputDirective
    */
   @Input()
   public set dateFormat(value: string) {
+    /* istanbul ignore else */
     if (value !== this._dateFormat) {
       this._dateFormat = value;
       this.applyDateFormat();

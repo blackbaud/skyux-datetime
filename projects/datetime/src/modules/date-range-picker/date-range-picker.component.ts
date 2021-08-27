@@ -290,6 +290,7 @@ export class SkyDateRangePickerComponent
       });
 
     // Update icons when theme changes.
+    /* istanbul ignore next */
     themeSvc?.settingsChange
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
@@ -544,6 +545,7 @@ export class SkyDateRangePickerComponent
         // if the component is disabled during form creation, null is passed
         // as the value of the calculator id control
         // only handle the value changes if the calculator id is a number
+        /* istanbul ignore else */
         if (!isNaN(id)) {
           const calculator = this.getCalculatorById(id);
           const newValue = calculator.getValue();

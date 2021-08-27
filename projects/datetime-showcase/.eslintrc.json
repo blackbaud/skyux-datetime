@@ -10,8 +10,7 @@
       ],
       "parserOptions": {
         "project": [
-          "projects/datetime-showcase/tsconfig.app.json",
-          "projects/datetime-showcase/tsconfig.spec.json"
+          "projects/datetime-showcase/tsconfig.app.json"
         ],
         "createDefaultProgram": true
       },

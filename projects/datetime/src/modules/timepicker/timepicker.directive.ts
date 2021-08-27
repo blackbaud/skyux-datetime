@@ -157,6 +157,7 @@ export class SkyTimepickerInputDirective implements
         this._onTouched();
       });
 
+    /* istanbul ignore else */
     if (!this.elRef.nativeElement.getAttribute('aria-label')) {
       this.resourcesService.getString('skyux_timepicker_input_default_label')
         .subscribe((value: string) => {
@@ -194,9 +195,9 @@ export class SkyTimepickerInputDirective implements
     this.writeValue(event.target.value);
   }
 
+  /* istanbul ignore next */
   @HostListener('blur')
   public onBlur() {
-    /* istanbul ignore next */
     this._onTouched();
   }
 
@@ -281,6 +282,7 @@ export class SkyTimepickerInputDirective implements
     if (this.skyTimepickerInput) {
       this.skyTimepickerInput.disabled = this.disabled;
 
+      /* istanbul ignore else */
       if (this.skyTimepickerInput.selectedTime !== this.modelValue) {
         this.skyTimepickerInput.selectedTime = this.modelValue;
       }
@@ -291,5 +293,6 @@ export class SkyTimepickerInputDirective implements
   private _onChange = (_: any) => { };
   /*istanbul ignore next */
   private _onTouched = () => { };
+  /* istanbul ignore next */
   private _validatorChange = () => { };
 }

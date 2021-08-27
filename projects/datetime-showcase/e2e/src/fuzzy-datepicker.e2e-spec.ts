@@ -20,17 +20,17 @@ describe('Fuzzy datepicker', () => {
     });
   });
 
-  it('should match previous monthpicker screenshot', (done) => {
-    element(by.css('.sky-datepicker-calendar-title')).click();
+  it('should match previous monthpicker screenshot', async (done) => {
+    await element(by.css('.sky-datepicker-calendar-title')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-monthpicker'
     });
   });
 
-  it('should match previous yearpicker screenshot', (done) => {
-    element(by.css('.sky-datepicker-calendar-title')).click();
-    element(by.css('.sky-datepicker-calendar-title')).click();
+  it('should match previous yearpicker screenshot', async (done) => {
+    await element(by.css('.sky-datepicker-calendar-title')).click();
+    await element(by.css('.sky-datepicker-calendar-title')).click();
     SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-yearpicker'
@@ -43,18 +43,18 @@ describe('Fuzzy datepicker', () => {
     });
   });
 
-  it('should match previous fuzzy datepicker input screenshot when open', (done) => {
-    element(by.css('.sky-datepicker button')).click();
-    SkyHostBrowser.moveCursorOffScreen();
+  it('should match previous fuzzy datepicker input screenshot when open', async (done) => {
+    await element(by.css('.sky-datepicker button')).click();
+    await SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-input-open'
     });
   });
 
-  it('should match previous fuzzy datepicker input screenshot when invalid', (done) => {
-    element(by.css('#button-set-invalid-value')).click();
-    SkyHostBrowser.moveCursorOffScreen();
-    SkyHostBrowser.scrollTo('#screenshot-fuzzy-datepicker');
+  it('should match previous fuzzy datepicker input screenshot when invalid', async (done) => {
+    await element(by.css('#button-set-invalid-value')).click();
+    await SkyHostBrowser.moveCursorOffScreen();
+    await SkyHostBrowser.scrollTo('#screenshot-fuzzy-datepicker');
     expect('#screenshot-fuzzy-datepicker').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-input-invalid'
     });

@@ -18,6 +18,7 @@ export class SkyDateFormatter {
    * Returns the preferred short date format for the current locale.
    */
   public static getPreferredShortDateFormat(): string {
+    /* istanbul ignore next */
     return moment.localeData().longDateFormat('L') || SkyDateFormatter.defaultShortDateFormat;
   }
 
@@ -25,7 +26,12 @@ export class SkyDateFormatter {
     return moment(date.getTime()).format(format);
   }
 
-  public getDateFromString(dateString: string, format: string, strict: boolean = false): Date {
+  public getDateFromString(
+    dateString: string,
+    format: string,
+    /* istanbul ignore next */
+    strict: boolean = false
+  ): Date {
     let momentValue = moment(dateString, format, strict);
 
     if (!momentValue.isValid()) {

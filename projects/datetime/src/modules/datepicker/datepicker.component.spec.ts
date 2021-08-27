@@ -1425,6 +1425,20 @@ describe('datepicker', () => {
       localProvider = p;
     }));
 
+    it('should fall back to default locale if the locale provider doesnt return a value', fakeAsync(() => {
+      spyOn(localProvider, 'getLocaleInfo').and.returnValue(of({
+        locale: ''
+      }));
+      fixture = TestBed.createComponent(DatepickerNoFormatTestComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      setInputProperty(new Date(2017, 9, 24), component, fixture);
+
+      // Expect US default format of MM/DD/YYYY.
+      expect(getInputElementValue(fixture)).toBe('10/24/2017');
+    }));
+
     it('should display formatted date based on locale by default', fakeAsync(() => {
       spyOn(localProvider, 'getLocaleInfo').and.returnValue(
         of({

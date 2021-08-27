@@ -126,6 +126,21 @@ describe('Fuzzy date pipe', () => {
     expect(spy).toHaveBeenCalledWith(date, 'MMM Y', 'en-US');
   });
 
+  it('should default to the locales short format when format is not provided', () => {
+    const fuzzyDateService = new SkyFuzzyDateService(mockLocaleProvider);
+    const spy = spyOn(fuzzyDateService, 'format').and.callThrough();
+    const date: SkyFuzzyDate = {
+      year: 1955,
+      month: 11
+    };
+    const defaultFormat = fuzzyDateService.getLocaleShortFormat('en-US');
+    const fuzzyDatePipe = new SkyFuzzyDatePipe(fuzzyDateService);
+    const value = fuzzyDatePipe.transform(date);
+
+    expect(value).toEqual('11/1955');
+    expect(spy).toHaveBeenCalledWith(date, defaultFormat, 'en-US');
+  });
+
   it('should work as an injectable', () => {
     fixture.detectChanges();
     const fuzzyDate: SkyFuzzyDate = {

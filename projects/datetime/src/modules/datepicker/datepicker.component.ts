@@ -327,6 +327,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     overlay.backdropClick
       .pipe(takeUntil(this.calendarUnsubscribe))
       .subscribe(() => {
+        /* istanbul ignore else */
         if (this.isOpen) {
           this.closePicker();
         }
