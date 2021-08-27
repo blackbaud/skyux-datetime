@@ -43,9 +43,7 @@ import {
   SkyDateRangeCalculatorType
 } from './types/date-range-calculator-type';
 
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import moment from "moment"
 
 const defaultCalculatorIds = [
   SkyDateRangeCalculatorId.AnyTime,
