@@ -9,9 +9,9 @@ import {
 } from 'protractor';
 
 describe('Fuzzy datepicker', () => {
-  beforeEach(() => {
-    SkyHostBrowser.get('visual/fuzzy-datepicker');
-    SkyHostBrowser.setWindowBreakpoint('lg');
+  beforeEach(async () => {
+    await SkyHostBrowser.get('visual/fuzzy-datepicker');
+    await SkyHostBrowser.setWindowBreakpoint('lg');
   });
 
   it('should match previous daypicker screenshot', (done) => {
@@ -22,7 +22,7 @@ describe('Fuzzy datepicker', () => {
 
   it('should match previous monthpicker screenshot', async (done) => {
     await element(by.css('.sky-datepicker-calendar-title')).click();
-    SkyHostBrowser.moveCursorOffScreen();
+    await SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-monthpicker'
     });
@@ -31,7 +31,7 @@ describe('Fuzzy datepicker', () => {
   it('should match previous yearpicker screenshot', async (done) => {
     await element(by.css('.sky-datepicker-calendar-title')).click();
     await element(by.css('.sky-datepicker-calendar-title')).click();
-    SkyHostBrowser.moveCursorOffScreen();
+    await SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
       screenshotName: 'fuzzy-datepicker-yearpicker'
     });
