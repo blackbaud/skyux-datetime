@@ -253,8 +253,8 @@ describe('Date pipe', () => {
     fixture.componentInstance.dateValue = '2000-01-01';
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledWith(
-      new Date('2000-01-01'),
-      'en-US',
+      jasmine.any(Date),
+      jasmine.any(String),
       'NOT_A_REAL_FORMAT'
     );
   });
