@@ -250,10 +250,10 @@ describe('Date pipe', () => {
   it('should revert to provided format pattern if a match is not found in our SkyDateFormatUtility aliases', () => {
     const spy = spyOn(SkyIntlDateFormatter, 'format');
     fixture.componentInstance.format = 'NOT_A_REAL_FORMAT';
-    fixture.componentInstance.dateValue = '2017-01-20T19:00:00+0000';
+    fixture.componentInstance.dateValue = '2000-01-01';
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledWith(
-      new Date('2017-01-20T19:00:00+0000'),
+      new Date('2000-01-01'),
       'en-US',
       'NOT_A_REAL_FORMAT'
     );
