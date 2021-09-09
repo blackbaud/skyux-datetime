@@ -83,10 +83,6 @@ import { SkyDatetimeResourcesModule } from '../shared/sky-datetime-resources.mod
   ],
   exports: [
     SkyDatepickerCalendarComponent,
-    SkyDatepickerCalendarInnerComponent,
-    SkyDayPickerComponent,
-    SkyMonthPickerComponent,
-    SkyYearPickerComponent,
     SkyDatepickerComponent,
     SkyDatepickerInputDirective,
     SkyFuzzyDatepickerInputDirective

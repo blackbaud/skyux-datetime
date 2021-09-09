@@ -1,9 +1,16 @@
 <div
   class="date-range-demo"
 >
-  <sky-docs-demo-control-panel-theme
-    (themeSettingsChange)="themeSettingsChange($event)"
-  ></sky-docs-demo-control-panel-theme>
+  <div
+    class=“sky-padding-even-default”
+  >
+    <label
+      class=“sky-control-label”
+    >
+      Theme:
+      <sky-e2e-theme-selector></sky-e2e-theme-selector>
+    </label>
+  </div>
 
   <form
     id="screenshot-date-range-picker"

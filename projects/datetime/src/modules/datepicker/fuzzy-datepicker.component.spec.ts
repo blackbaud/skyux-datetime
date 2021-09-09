@@ -22,6 +22,7 @@ import {
 
 import {
   expect,
+  expectAsync,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
@@ -292,21 +293,19 @@ describe('fuzzy datepicker input', () => {
       flush();
     }));
 
-    it('should be accessible', async(() => {
+    it('should be accessible', async () => {
       fixture.detectChanges();
       clickDatepickerButton(fixture, false);
       fixture.detectChanges();
 
       // Due to the nature of the calendar popup and this being an async test,
       // we need a couple when stable blocks to ensure the calendar is showing.
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          fixture.detectChanges();
-          expect(fixture.nativeElement).toBeAccessible();
-        });
-      });
-    }));
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await expectAsync(fixture.nativeElement).toBeAccessible();
+    });
 
     describe('initialization', () => {
       it('should handle initializing with a Fuzzy Date object', fakeAsync(() => {

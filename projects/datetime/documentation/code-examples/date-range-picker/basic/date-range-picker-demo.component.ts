@@ -16,7 +16,7 @@ import {
   SkyDateRangeCalculatorId,
   SkyDateRangeCalculatorType,
   SkyDateRangeService
-} from '@skyux/datetime';
+} from 'projects/datetime/src/public-api';
 
 import {
   Subject

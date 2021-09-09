@@ -15,11 +15,6 @@ import {
 } from '@skyux/i18n';
 
 import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
-
-import {
   first
 } from 'rxjs/operators';
 
@@ -31,7 +26,7 @@ import {
 } from 'projects/datetime/src/public-api';
 
 @Component({
-  selector: 'date-range-picker-visual',
+  selector: 'app-date-range-picker-visual',
   templateUrl: './date-range-picker-visual.component.html',
   styleUrls: ['./date-range-picker-visual.component.scss']
 })
@@ -50,8 +45,7 @@ export class DateRangePickerVisualComponent implements OnInit {
   constructor(
     private dateRangeService: SkyDateRangeService,
     private formBuilder: FormBuilder,
-    private resourcesService: SkyAppResourcesService,
-    private themeSvc: SkyThemeService
+    private resourcesService: SkyAppResourcesService
   ) { }
 
   public ngOnInit(): void {
@@ -159,9 +153,5 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public toggleStartDateRequired(): void {
     this.startDateRequired = !this.startDateRequired;
-  }
-
-  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
-    this.themeSvc.setTheme(themeSettings);
   }
 }

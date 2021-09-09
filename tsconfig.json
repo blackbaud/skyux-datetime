@@ -4,6 +4,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@skyux/datetime": [
+        "projects/datetime/src/public-api.ts"
+      ],
       "datetime": [
         "dist/datetime/datetime",
         "dist/datetime"

@@ -15,13 +15,8 @@ import {
   distinctUntilChanged
 } from 'rxjs/operators';
 
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
-
 @Component({
-  selector: 'datepicker-visual',
+  selector: 'app-datepicker-visual',
   templateUrl: './datepicker-visual.component.html'
 })
 export class DatepickerVisualComponent implements OnInit {
@@ -35,8 +30,7 @@ export class DatepickerVisualComponent implements OnInit {
   public strict: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private themeSvc: SkyThemeService
+    private formBuilder: FormBuilder
   ) { }
 
   public get reactiveDate(): AbstractControl {
@@ -88,9 +82,5 @@ export class DatepickerVisualComponent implements OnInit {
   public setInvalidValue(): void {
     this.reactiveDate.setValue('invalid');
     (this.selectedDate as any) = 'invalid';
-  }
-
-  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
-    this.themeSvc.setTheme(themeSettings);
   }
 }
