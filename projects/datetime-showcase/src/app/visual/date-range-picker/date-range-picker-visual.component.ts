@@ -13,7 +13,6 @@ import {
 import {
   SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
-  SkyDateRangeCalculatorType,
   SkyDateRangeService
 } from 'projects/datetime/src/public-api';
 
