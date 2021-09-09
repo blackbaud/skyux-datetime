@@ -11,14 +11,6 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyAppResourcesService
-} from '@skyux/i18n';
-
-import {
-  first
-} from 'rxjs/operators';
-
-import {
   SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
   SkyDateRangeCalculatorType,
@@ -44,8 +36,7 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   constructor(
     private dateRangeService: SkyDateRangeService,
-    private formBuilder: FormBuilder,
-    private resourcesService: SkyAppResourcesService
+    private formBuilder: FormBuilder
   ) { }
 
   public ngOnInit(): void {
@@ -118,29 +109,6 @@ export class DateRangePickerVisualComponent implements OnInit {
   public submit(): void {
     const value = this.reactiveForm.value;
     console.log('Form submitted with:', value);
-  }
-
-  public setCalculatorIds(): void {
-    this.resourcesService
-      .getString('my_resource_string')
-      .pipe(first())
-      .subscribe((value) => {
-        const calculator = this.dateRangeService.createCalculator({
-          shortDescription: value,
-          type: SkyDateRangeCalculatorType.Relative,
-          getValue: () => ({
-            startDate: new Date(),
-            endDate: new Date('1/1/1')
-          })
-        });
-
-        this.calculatorIds = [
-          undefined,
-          SkyDateRangeCalculatorId.SpecificRange,
-          SkyDateRangeCalculatorId.LastFiscalYear,
-          calculator.calculatorId
-        ];
-      });
   }
 
   public setDateFormat(): void {
