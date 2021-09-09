@@ -20,10 +20,6 @@ import {
 } from '@skyux/theme';
 
 import {
-  SkyDateTimeForRootCompatModule
-} from '../../shared/datetime-for-root-compat.module';
-
-import {
   SkyDatepickerModule
 } from '../datepicker.module';
 
@@ -60,7 +56,6 @@ import {
     NoopAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    SkyDateTimeForRootCompatModule,
     SkyInputBoxModule,
     SkyThemeModule
   ],

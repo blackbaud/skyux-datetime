@@ -45,10 +45,6 @@ import {
 } from '@skyux/theme';
 
 import {
-  SkyDateTimeForRootCompatModule
-} from '../shared/datetime-for-root-compat.module';
-
-import {
   TimepickerTestComponent
 } from './fixtures/timepicker-component.fixture';
 
@@ -197,7 +193,6 @@ describe('Timepicker', () => {
           TimepickerTestComponent
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule
@@ -606,7 +601,6 @@ describe('Timepicker', () => {
           NgModel
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule
@@ -710,7 +704,6 @@ describe('Timepicker', () => {
           TimepickerReactiveTestComponent
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule,
@@ -812,7 +805,6 @@ describe('Timepicker', () => {
           TimepickerInputBoxTestComponent
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           SkyInputBoxModule
         ],
