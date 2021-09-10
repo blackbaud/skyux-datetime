@@ -1,3 +1,8 @@
+# 5.0.0-beta.3 (2021-09-10)
+
+- Updated peer dependencies. [#280](https://github.com/blackbaud/skyux-datetime/pull/280)
+- Enabled Ivy's "partial" compilation mode. [#280](https://github.com/blackbaud/skyux-datetime/pull/280)
+
 # 5.0.0-beta.2 (2021-09-01)
 
 - Migrated to Angular CLI. [#278](https://github.com/blackbaud/skyux-datetime/pull/278)
