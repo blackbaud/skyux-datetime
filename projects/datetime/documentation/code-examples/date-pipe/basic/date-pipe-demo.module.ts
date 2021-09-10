@@ -8,7 +8,7 @@ import {
 
 import {
   SkyDatePipeModule
-} from '@skyux/datetime';
+} from 'projects/datetime/src/public-api';
 
 import {
   DatePipeDemoComponent

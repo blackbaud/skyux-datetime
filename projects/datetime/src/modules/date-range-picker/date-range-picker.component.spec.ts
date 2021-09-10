@@ -16,6 +16,7 @@ import {
 
 import {
   expect,
+  expectAsync,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
@@ -628,11 +629,9 @@ describe('Date range picker', function () {
     expect(calculatorIdControl.errors).toEqual(expectedError);
   }));
 
-  it('should be accessible', async(function () {
+  it('should be accessible', async () => {
     fixture.detectChanges();
-
-    fixture.whenStable().then(() => {
-      expect(fixture.elementRef.nativeElement).toBeAccessible();
-    });
-  }));
+    await fixture.whenStable();
+    await expectAsync(fixture.elementRef.nativeElement).toBeAccessible();
+  });
 });

@@ -12,10 +12,6 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyDateTimeForRootCompatModule
- } from '../../shared/datetime-for-root-compat.module';
-
-import {
   SkyDateRangePickerModule
 } from '../date-range-picker.module';
 
@@ -28,8 +24,7 @@ import {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SkyDateRangePickerModule,
-    SkyDateTimeForRootCompatModule
+    SkyDateRangePickerModule
   ],
   declarations: [
     DateRangePickerTestComponent

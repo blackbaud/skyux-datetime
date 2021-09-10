@@ -10,12 +10,11 @@ import { DatePipeWithProviderVisualComponent } from './date-pipe/date-pipe-with-
 import { VisualComponent } from './visual.component';
 import { SkyInputBoxModule } from '@skyux/forms';
 import { SkyIdModule } from '@skyux/core';
-import { SkyDocsToolsModule } from '@skyux/docs-tools';
 import { RouterModule } from '@angular/router';
 import { SkyDatepickerModule, SkyDatePipeModule, SkyDateRangePickerModule, SkyTimepickerModule } from 'projects/datetime/src/public-api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SkyPageModule } from '@skyux/layout';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
 
 
 
@@ -31,23 +30,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     VisualComponent
   ],
   imports: [
-    BrowserAnimationsModule,
+    NoopAnimationsModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SkyDocsToolsModule,
     SkyIdModule,
     SkyInputBoxModule,
     SkyTimepickerModule,
     SkyDatePipeModule,
     SkyDatepickerModule,
     SkyDateRangePickerModule,
-    SkyDocsToolsModule,
     SkyIdModule,
     SkyInputBoxModule,
-    SkyPageModule,
     SkyTimepickerModule,
-    RouterModule
+    RouterModule,
+    SkyE2eThemeSelectorModule
   ]
 })
 export class VisualModule { }

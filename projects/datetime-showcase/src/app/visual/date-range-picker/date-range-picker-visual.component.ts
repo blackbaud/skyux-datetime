@@ -11,27 +11,13 @@ import {
 } from '@angular/forms';
 
 import {
-  SkyAppResourcesService
-} from '@skyux/i18n';
-
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
-
-import {
-  first
-} from 'rxjs/operators';
-
-import {
   SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
-  SkyDateRangeCalculatorType,
   SkyDateRangeService
 } from 'projects/datetime/src/public-api';
 
 @Component({
-  selector: 'date-range-picker-visual',
+  selector: 'app-date-range-picker-visual',
   templateUrl: './date-range-picker-visual.component.html',
   styleUrls: ['./date-range-picker-visual.component.scss']
 })
@@ -49,9 +35,7 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   constructor(
     private dateRangeService: SkyDateRangeService,
-    private formBuilder: FormBuilder,
-    private resourcesService: SkyAppResourcesService,
-    private themeSvc: SkyThemeService
+    private formBuilder: FormBuilder
   ) { }
 
   public ngOnInit(): void {
@@ -126,29 +110,6 @@ export class DateRangePickerVisualComponent implements OnInit {
     console.log('Form submitted with:', value);
   }
 
-  public setCalculatorIds(): void {
-    this.resourcesService
-      .getString('my_resource_string')
-      .pipe(first())
-      .subscribe((value) => {
-        const calculator = this.dateRangeService.createCalculator({
-          shortDescription: value,
-          type: SkyDateRangeCalculatorType.Relative,
-          getValue: () => ({
-            startDate: new Date(),
-            endDate: new Date('1/1/1')
-          })
-        });
-
-        this.calculatorIds = [
-          undefined,
-          SkyDateRangeCalculatorId.SpecificRange,
-          SkyDateRangeCalculatorId.LastFiscalYear,
-          calculator.calculatorId
-        ];
-      });
-  }
-
   public setDateFormat(): void {
     this.dateFormat = 'YYYY-MM-DD';
   }
@@ -159,9 +120,5 @@ export class DateRangePickerVisualComponent implements OnInit {
 
   public toggleStartDateRequired(): void {
     this.startDateRequired = !this.startDateRequired;
-  }
-
-  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
-    this.themeSvc.setTheme(themeSettings);
   }
 }

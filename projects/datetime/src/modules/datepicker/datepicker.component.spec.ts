@@ -30,6 +30,7 @@ import {
 
 import {
   expect,
+  expectAsync,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
@@ -404,21 +405,19 @@ describe('datepicker', () => {
       expect(picker).not.toBeNull();
     }));
 
-    it('should be accessible', async(() => {
+    it('should be accessible', async () => {
       fixture.detectChanges();
       clickTrigger(fixture, false);
       fixture.detectChanges();
 
       // Due to the nature of the calendar popup and this being an async test,
       // we need a couple whenStable() blocks to ensure the calendar is showing.
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          fixture.detectChanges();
-          expect(fixture.nativeElement).toBeAccessible();
-        });
-      });
-    }));
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await expectAsync(fixture.nativeElement).toBeAccessible();
+    });
 
     it('should display the expected calendar icon in the calendar button', fakeAsync(() => {
 

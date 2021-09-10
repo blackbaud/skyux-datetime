@@ -57,24 +57,24 @@ describe('Date range picker', () => {
     });
 
     it('should match previous `Before` screenshot', async (done) => {
-      await element(by.css('select')).click();
-      await element.all(by.css('select option')).get(1).click();
+      await element(by.css('#screenshot-date-range-picker select')).click();
+      await element.all(by.css('#screenshot-date-range-picker select option')).get(1).click();
       expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
         screenshotName: getScreenshotName('date-range-picker-before')
       });
     });
 
     it('should match previous `After` screenshot', async (done) => {
-      await element(by.css('select')).click();
-      await element.all(by.css('select option')).get(2).click();
+      await element(by.css('#screenshot-date-range-picker select')).click();
+      await element.all(by.css('#screenshot-date-range-picker select option')).get(2).click();
       expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
         screenshotName: getScreenshotName('date-range-picker-after')
       });
     });
 
     it('should match previous default value screenshot', async (done) => {
-      await element(by.css('select')).click();
-      await element.all(by.css('select option')).get(3).click();
+      await element(by.css('#screenshot-date-range-picker select')).click();
+      await element.all(by.css('#screenshot-date-range-picker select option')).get(3).click();
       expect('#screenshot-date-range-picker').toMatchBaselineScreenshot(done, {
         screenshotName: getScreenshotName('date-range-picker-default-value')
       });

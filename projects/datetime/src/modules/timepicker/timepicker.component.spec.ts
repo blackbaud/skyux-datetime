@@ -28,6 +28,7 @@ import {
 
 import {
   expect,
+  expectAsync,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
@@ -42,10 +43,6 @@ import {
   SkyThemeSettings,
   SkyThemeSettingsChange
 } from '@skyux/theme';
-
-import {
-  SkyDateTimeForRootCompatModule
-} from '../shared/datetime-for-root-compat.module';
 
 import {
   TimepickerTestComponent
@@ -196,7 +193,6 @@ describe('Timepicker', () => {
           TimepickerTestComponent
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule
@@ -558,15 +554,12 @@ describe('Timepicker', () => {
       expect(component.timepickerComponent.isVisible).toBe(false);
     }));
 
-    it('should be accessible', async(() => {
+    it('should be accessible', async () => {
       fixture.detectChanges();
-
       openTimepicker(fixture, true);
-
-      fixture.whenStable().then(() => {
-        expect(fixture.nativeElement).toBeAccessible();
-      });
-    }));
+      await fixture.whenStable();
+      await expectAsync(fixture.nativeElement).toBeAccessible();
+    });
 
     it('should display the expected clock icon in the time button', fakeAsync(() => {
       function validateIcon(iconCls: string): void {
@@ -608,7 +601,6 @@ describe('Timepicker', () => {
           NgModel
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule
@@ -712,7 +704,6 @@ describe('Timepicker', () => {
           TimepickerReactiveTestComponent
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           NoopAnimationsModule,
           FormsModule,
@@ -814,7 +805,6 @@ describe('Timepicker', () => {
           TimepickerInputBoxTestComponent
         ],
         imports: [
-          SkyDateTimeForRootCompatModule,
           SkyTimepickerModule,
           SkyInputBoxModule
         ],

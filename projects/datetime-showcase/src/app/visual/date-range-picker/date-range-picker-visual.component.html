@@ -1,9 +1,16 @@
 <div
   class="date-range-demo"
 >
-  <sky-docs-demo-control-panel-theme
-    (themeSettingsChange)="themeSettingsChange($event)"
-  ></sky-docs-demo-control-panel-theme>
+  <div
+    class=“sky-padding-even-default”
+  >
+    <label
+      class=“sky-control-label”
+    >
+      Theme:
+      <sky-e2e-theme-selector></sky-e2e-theme-selector>
+    </label>
+  </div>
 
   <form
     id="screenshot-date-range-picker"
@@ -118,13 +125,6 @@ endDate: {{ reactiveForm.value.lastDonation?.endDate | date }}</code></pre>
     (click)="setInvalidDates()"
   >
     Set invalid dates
-  </button>
-  <button
-    class="sky-btn sky-btn-default"
-    type="button"
-    (click)="setCalculatorIds()"
-  >
-    Set custom calculators
   </button>
   <button
     class="sky-btn sky-btn-default"

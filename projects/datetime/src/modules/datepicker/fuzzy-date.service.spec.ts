@@ -17,10 +17,6 @@ import {
 } from 'rxjs/operators';
 
 import {
-  SkyDateTimeForRootCompatModule
-} from '../shared/datetime-for-root-compat.module';
-
-import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
 
@@ -38,9 +34,6 @@ describe('SkyFuzzyDateservice', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SkyDateTimeForRootCompatModule
-      ],
       providers: [
         SkyAppLocaleProvider,
         SkyFuzzyDateService

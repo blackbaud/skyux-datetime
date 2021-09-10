@@ -11,13 +11,8 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
-
 @Component({
-  selector: 'timepicker-visual',
+  selector: 'app-timepicker-visual',
   templateUrl: './timepicker-visual.component.html'
 })
 export class TimepickerVisualComponent implements OnInit {
@@ -27,8 +22,7 @@ export class TimepickerVisualComponent implements OnInit {
   public time24Hour = '20:30';
 
   constructor(
-    private formBuilder: FormBuilder,
-    private themeSvc: SkyThemeService
+    private formBuilder: FormBuilder
   ) { }
 
   public get reactiveTime(): AbstractControl {
@@ -62,9 +56,5 @@ export class TimepickerVisualComponent implements OnInit {
     this.time12Hour = '1:00 AM';
     this.time24Hour = '1:00';
     this.setReactiveTime('1:00 AM');
-  }
-
-  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
-    this.themeSvc.setTheme(themeSettings);
   }
 }

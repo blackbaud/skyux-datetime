@@ -16,7 +16,7 @@ import {
 
 import {
   SkyDatepickerModule
-} from '@skyux/datetime';
+} from 'projects/datetime/src/public-api';
 
 import {
   SkyInputBoxModule
