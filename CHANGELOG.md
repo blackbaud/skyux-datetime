@@ -1,3 +1,7 @@
+# 5.0.0-beta.4 (2021-09-10)
+
+- Updated peer dependencies. [#282](https://github.com/blackbaud/skyux-datetime/pull/282)
+
 # 5.0.0-beta.3 (2021-09-10)
 
 - Updated peer dependencies. [#280](https://github.com/blackbaud/skyux-datetime/pull/280)
