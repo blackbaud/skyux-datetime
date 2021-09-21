@@ -28,7 +28,8 @@
     "@skyux/core": "^4.0.0",
     "@skyux/forms": "^4.4.0",
     "@skyux/i18n": "^4.0.0",
-    "@skyux/indicators": "^4.0.0"
+    "@skyux/indicators": "^4.0.0",
+    "@skyux/popovers": "^4.0.0"
   },
   "dependencies": {
     "moment": "2.29.0"

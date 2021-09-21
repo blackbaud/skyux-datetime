@@ -1,7 +1,10 @@
 import {
   Component,
-  OnInit
+  EventEmitter,
+  OnInit,
+  Output
 } from '@angular/core';
+
 import {
   SkyDatepickerCalendarInnerComponent
 } from './datepicker-calendar-inner.component';
@@ -19,6 +22,9 @@ import {
   styleUrls: ['./daypicker.component.scss']
 })
 export class SkyDayPickerComponent implements OnInit {
+
+  @Output()
+  public dayRangeChange: EventEmitter<Array<SkyDatepickerDate>> = new                EventEmitter<Array<SkyDatepickerDate>>(undefined);
 
   public labels: any[] = [];
   public title: string;
@@ -50,6 +56,16 @@ export class SkyDayPickerComponent implements OnInit {
     this.datepicker.refreshView();
   }
 
+  public onDayCellClick(event: Event, date: SkyDatepickerDate) {
+    if (date.disabled && !date.importantText) {
+      // I was unable to find a way to make the popover directive conditional short of duplicating
+      // the date cell and using ngIf to have versions with and without the popover. Conditionally
+      // setting the trigger works, but on click of a disabled cell it will show an empty
+      // popover which I am preventing here
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
   protected getDates(startDate: Date, n: number): Date[] {
     let dates: Date[] = new Array(n);
     let current = new Date(startDate.getTime());
@@ -98,6 +114,8 @@ export class SkyDayPickerComponent implements OnInit {
       );
       pickerDates[i] = _dateObject;
     }
+
+    this.dayRangeChange.emit(pickerDates);
 
     this.labels = [];
     for (let j = 0; j < 7; j++) {

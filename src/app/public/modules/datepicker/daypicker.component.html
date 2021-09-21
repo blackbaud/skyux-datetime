@@ -95,11 +95,15 @@
             class="sky-datepicker-center"
             role="gridcell"
             [id]="date.uid"
+            [skyPopover]="dayInfoPopover"
+            skyPopoverPlacement="right"
+            [skyPopoverTrigger]="date.important && date.importantText ? 'mouseenter' : undefined"
+            (click)="onDayCellClick($event, date)"
             >
             <button
               type="button"
               class="sky-btn sky-btn-sm sky-btn-default sky-datepicker-btn-date"
-              [ngClass]="{ 'sky-datepicker-btn-selected': date.selected, 'sky-btn-disabled': date.disabled, 'sky-btn-active': datepicker.isActive(date)}"
+              [ngClass]="{ 'sky-datepicker-btn-selected': date.selected, 'sky-btn-disabled': date.disabled, 'sky-btn-active': datepicker.isActive(date), 'sky-datepicker-btn-disabled': date.disabled, 'sky-datepicker-btn-important': date.important}"
               [disabled]="date.disabled"
               (click)="datepicker.selectCalendar($event, date.date, true)"
               tabindex="-1"
@@ -107,7 +111,16 @@
               <span
                 [ngClass]="{'sky-datepicker-secondary': date.secondary }"
                 >{{date.label}}</span>
+                <div 
+                  *ngIf="date.important"
+                  class="sky-datepicker-important-date-indicator">
+                </div>
             </button>
+            <sky-popover
+              #dayInfoPopover
+            >
+              {{date.importantText}}
+            </sky-popover>
           </td>
         </tr>
       </ng-template>

@@ -3,13 +3,17 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { SkyDateFormatter } from './date-formatter';
+import { SkyDatepickerCustomDate } from './datepicker-custom-date';
 
 import {
   SkyDatepickerDate
@@ -26,7 +30,7 @@ let nextDatepickerId = 0;
   styleUrls: ['./datepicker-calendar-inner.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
+export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   public startingDay: number;
 
@@ -43,6 +47,9 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
       this.activeDate = value;
     }
   }
+
+  @Input()
+  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   public get selectedDate(): Date {
     return this._selectedDate;
@@ -105,6 +112,8 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   };
 
   private _selectedDate: Date;
+  private _customDates: Array<SkyDatepickerCustomDate> = [];
+  private ngUnsubscribe = new Subject();
 
   public ngOnInit(): void {
 
@@ -113,10 +122,23 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
     } else {
       this.activeDate = new Date();
     }
+
+    if (this.customDateStream) {
+      this.customDateStream
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(dates => {
+          this._customDates = dates;
+      });
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
     this.refreshView();
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   public setCompareHandler(handler: Function, type: string): void {
@@ -259,7 +281,9 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
       disabled: this.isDisabled(date),
       current: this.compare(date, new Date()) === 0,
       secondary: isSecondary,
-      uid: id
+      uid: id,
+      important: false,
+      importantText: ''
     };
 
     return dateObject;
@@ -374,6 +398,18 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   protected isDisabled(date: Date): boolean {
 
     return ((this.minDate && this.compare(date, this.minDate) < 0)
-      || (this.maxDate && this.compare(date, this.maxDate) > 0));
+      || (this.maxDate && this.compare(date, this.maxDate) > 0))
+      || this.isCustomDisabled(date);
+  }
+
+  protected isCustomDisabled(date: Date): boolean {
+    let dpDate: SkyDatepickerCustomDate;
+    if (this._customDates) {
+      dpDate = this._customDates.find(d => { return d.date.getTime() === date.getTime(); });
+      if (dpDate) {
+        return dpDate.disabled;
+      }
+    }
+    return false;
   }
 }

@@ -68,6 +68,7 @@ import {
 import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
+import { SkyPopoverModule } from '@skyux/popovers';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import {
     SkyIconModule,
     SkyDateTimeResourcesModule,
     SkyAffixModule,
-    SkyOverlayModule
+    SkyOverlayModule,
+    SkyPopoverModule
   ],
   exports: [
     SkyDatepickerCalendarComponent,
