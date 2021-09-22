@@ -179,7 +179,7 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
     let date: SkyDatepickerDate;
     if (this._customDates && this._pickerDates) {
       this._customDates.forEach(custom => {
-        date = this._pickerDates.find(d => { return d.date.getDate() === custom.date.getDate(); });
+        date = this._pickerDates.find(d => { return d.date.getTime() === custom.date.getTime(); });
         if (date) {
           date.important = custom.important;
           if (custom.disabled) {
