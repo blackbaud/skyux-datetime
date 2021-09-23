@@ -165,7 +165,7 @@ export class SkyDatepickerInputDirective
    * @required
    */
   @Input()
-  public set skyDatepickerInput(value: SkyDatepickerComponent | undefined) {
+  public set skyDatepickerInput(value: SkyDatepickerComponent | undefined | '') {
     if (value) {
       console.warn(
         '[Deprecation warning] You no longer need to provide a template reference variable ' +
