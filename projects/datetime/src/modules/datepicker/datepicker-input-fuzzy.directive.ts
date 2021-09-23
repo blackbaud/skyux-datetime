@@ -187,7 +187,7 @@ export class SkyFuzzyDatepickerInputDirective
    * @required
    */
   @Input()
-  public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent) { }
+  public set skyFuzzyDatepickerInput(value: SkyDatepickerComponent | undefined | '') { }
 
   /**
    * Specifies the starting day of the week in the calendar, where `0` sets the starting day

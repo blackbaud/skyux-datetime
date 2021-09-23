@@ -1,3 +1,7 @@
+# 5.0.0-beta.5 (2021-09-23)
+
+- Fixed the datepicker directive and fuzzy datepicker directive to allow for undefined component references when strict mode is enabled. [#284](https://github.com/blackbaud/skyux-datetime/pull/284)
+
 # 5.0.0-beta.4 (2021-09-10)
 
 - Updated peer dependencies. [#282](https://github.com/blackbaud/skyux-datetime/pull/282)
