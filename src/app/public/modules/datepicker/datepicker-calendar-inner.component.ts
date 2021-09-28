@@ -405,7 +405,9 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
   protected isCustomDisabled(date: Date): boolean {
     let dpDate: SkyDatepickerCustomDate;
     if (this._customDates) {
-      dpDate = this._customDates.find(d => { return d.date.getTime() === date.getTime(); });
+      dpDate = this._customDates.find(d => {
+        return d.date.getTime() === date.getTime();
+      });
       if (dpDate) {
         return dpDate.disabled;
       }

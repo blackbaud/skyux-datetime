@@ -32,8 +32,10 @@ export class SkyDayPickerComponent implements OnInit {
   public weekNumbers: number[] = [];
   public datepicker: SkyDatepickerCalendarInnerComponent;
   public CURRENT_THEME_TEMPLATE: any;
+  public activeDateHasChanged: boolean = false;
 
   private daysInMonth: Array<number> = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  private initialDate: number;
 
   public constructor(datepicker: SkyDatepickerCalendarInnerComponent) {
     this.datepicker = datepicker;
@@ -42,6 +44,7 @@ export class SkyDayPickerComponent implements OnInit {
   public ngOnInit(): void {
 
     this.datepicker.stepDay = {months: 1};
+    this.initialDate = this.datepicker.activeDate.getDate();
 
     this.datepicker.setRefreshViewHandler(() => {
       this.refreshDayView();
@@ -56,16 +59,6 @@ export class SkyDayPickerComponent implements OnInit {
     this.datepicker.refreshView();
   }
 
-  public onDayCellClick(event: Event, date: SkyDatepickerDate) {
-    if (date.disabled && !date.importantText) {
-      // I was unable to find a way to make the popover directive conditional short of duplicating
-      // the date cell and using ngIf to have versions with and without the popover. Conditionally
-      // setting the trigger works, but on click of a disabled cell it will show an empty
-      // popover which I am preventing here
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
-  }
   protected getDates(startDate: Date, n: number): Date[] {
     let dates: Date[] = new Array(n);
     let current = new Date(startDate.getTime());
@@ -95,6 +88,10 @@ export class SkyDayPickerComponent implements OnInit {
       ? 7 - difference
       : -difference;
     let firstDate = new Date(firstDayOfMonth.getTime());
+
+    if (this.datepicker.activeDate.getDate() !== this.initialDate) {
+      this.activeDateHasChanged = true;
+    }
 
     /* istanbul ignore else */
     /* sanity check */

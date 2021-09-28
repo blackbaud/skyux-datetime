@@ -9,8 +9,7 @@ import {
   OnInit,
   Optional,
   ViewChild,
-  Output,
-  Input
+  Output
 } from '@angular/core';
 
 import {
@@ -44,6 +43,7 @@ import {
   SkyDatepickerCalendarComponent
 } from './datepicker-calendar.component';
 import { SkyDatepickerCustomDate } from './datepicker-custom-date';
+
 import { SkyDatepickerDateRange } from './datepicker-date-range';
 
 let nextId = 0;
@@ -65,9 +65,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
    */
    @Output()
    public dateRangeChange = new EventEmitter<SkyDatepickerDateRange>();
-
-   @Input()
-   public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   /**
    * @internal
@@ -138,6 +135,8 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   public startingDay: number;
 
   public triggerButtonId: string;
+
+  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   @ViewChild(SkyDatepickerCalendarComponent)
   private calendar: SkyDatepickerCalendarComponent;

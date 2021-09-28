@@ -69,6 +69,9 @@ import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
 import { SkyPopoverModule } from '@skyux/popovers';
+import { SkyDayPickerCellComponent } from './daypicker-cell.component';
+import { SkyDayPickerButtonComponent } from './daypicker-button.component';
+import { SkyDaypickerPopoverService } from './daypicker-popover.service';
 
 @NgModule({
   declarations: [
@@ -79,7 +82,9 @@ import { SkyPopoverModule } from '@skyux/popovers';
     SkyYearPickerComponent,
     SkyDatepickerComponent,
     SkyDatepickerInputDirective,
-    SkyFuzzyDatepickerInputDirective
+    SkyFuzzyDatepickerInputDirective,
+    SkyDayPickerCellComponent,
+    SkyDayPickerButtonComponent
   ],
   imports: [
     CommonModule,
@@ -99,13 +104,16 @@ import { SkyPopoverModule } from '@skyux/popovers';
     SkyYearPickerComponent,
     SkyDatepickerComponent,
     SkyDatepickerInputDirective,
-    SkyFuzzyDatepickerInputDirective
+    SkyFuzzyDatepickerInputDirective,
+    SkyDayPickerCellComponent,
+    SkyDayPickerButtonComponent
   ],
   providers: [
     SkyAppWindowRef,
     SkyDatepickerConfigService,
     SkyFuzzyDateService,
-    SkyCoreAdapterService
+    SkyCoreAdapterService,
+    SkyDaypickerPopoverService
   ]
 })
 export class SkyDatepickerModule { }

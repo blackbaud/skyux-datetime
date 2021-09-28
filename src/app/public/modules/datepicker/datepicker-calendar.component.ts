@@ -144,14 +144,20 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
 
   public onDayRangeChange(event: Array<SkyDatepickerDate>): void {
     this._pickerDates = event;
-    if (!this._rangeBeginDate || this._rangeBeginDate.getTime() !== this._pickerDates[0].date.getTime()) {
+    if (
+        !this._rangeBeginDate ||
+        this._rangeBeginDate.getTime() !== this._pickerDates[0].date.getTime()
+    ) {
       // the date range has changed emit event
       this._rangeBeginDate = this._pickerDates[0].date;
       this._customDates = [];
       this.dateRangeChange.emit({ startDate: this._rangeBeginDate, endDate: this._pickerDates[event.length - 1].date });
     }
 
-    if (this._customDates && this._customDates.length > 0) {
+    if (
+      this._customDates &&
+      this._customDates.length > 0
+    ) {
       // days refreshed without a date change, re-apply any customizations
       this.applyCustomDates();
     }
@@ -177,9 +183,14 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
 
   private applyCustomDates(): void {
     let date: SkyDatepickerDate;
-    if (this._customDates && this._pickerDates) {
+    if (
+      this._customDates &&
+      this._pickerDates
+    ) {
       this._customDates.forEach(custom => {
-        date = this._pickerDates.find(d => { return d.date.getTime() === custom.date.getTime(); });
+        date = this._pickerDates.find(d => {
+          return d.date.getTime() === custom.date.getTime();
+        });
         if (date) {
           date.important = custom.important;
           if (custom.disabled) {

@@ -28,6 +28,7 @@ import {
 } from '@skyux/i18n';
 
 import {
+  Observable,
   Subject
 } from 'rxjs';
 
@@ -53,6 +54,7 @@ import {
 } from './datepicker.component';
 
 import * as moment_ from 'moment';
+import { SkyDatepickerCustomDate } from './datepicker-custom-date';
 const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
@@ -219,6 +221,16 @@ export class SkyDatepickerInputDirective
     return this._strict || false;
   }
 
+  @Input()
+  public set customDateStream(value: Observable<Array<SkyDatepickerCustomDate>>) {
+    this._customDateStream = value;
+    this.datepickerComponent.customDateStream = this.customDateStream;
+  }
+
+  public get customDateStream(): Observable<Array<SkyDatepickerCustomDate>> {
+    return this._customDateStream;
+  }
+
   private get value(): any {
     return this._value;
   }
@@ -265,6 +277,8 @@ export class SkyDatepickerInputDirective
   private _startingDay: number;
   private _strict: boolean;
   private _value: any;
+  private _customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
+  private _disabledDates: Array<SkyDatepickerCustomDate>;
 
   constructor(
     private adapter: SkyDatepickerAdapterService,
@@ -312,6 +326,14 @@ export class SkyDatepickerInputDirective
             value
           );
         });
+    }
+
+    if (this.customDateStream) {
+      this.customDateStream
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(dates => {
+        this._disabledDates = dates?.filter(date => { return date.disabled; });
+    });
     }
   }
 
@@ -446,6 +468,22 @@ export class SkyDatepickerInputDirective
           maxDate
         }
       };
+    }
+
+    // make sure date is not included in custom disabled dates
+    if (
+      this._disabledDates &&
+      this._disabledDates.length > 0
+    ) {
+      if (this._disabledDates.some(disabled => {
+        return disabled.date.getTime() === dateValue.getTime();
+      })) {
+        return {
+          'skyDate': {
+            dateValue
+          }
+        };
+      }
     }
   }
 
