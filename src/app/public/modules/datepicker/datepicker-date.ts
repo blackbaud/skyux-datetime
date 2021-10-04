@@ -10,5 +10,5 @@ export interface SkyDatepickerDate {
   secondary: boolean;
   uid: string;
   important: boolean;
-  importantText: string;
+  importantText: Array<string>;
 }

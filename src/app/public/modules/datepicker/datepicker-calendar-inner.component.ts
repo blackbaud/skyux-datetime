@@ -283,7 +283,7 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
       secondary: isSecondary,
       uid: id,
       important: false,
-      importantText: ''
+      importantText: []
     };
 
     return dateObject;

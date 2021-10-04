@@ -5,7 +5,7 @@
   [skyPopover]="dayInfoPopover"
   skyPopoverPlacement="left"
   [skyPopoverMessageStream]="popoverController"
-  [attr.aria-label]="date.importantText"
+  [attr.aria-label]="getImportantTextLabel()"
 >
   <sky-daypicker-button
     [date]="date"
@@ -17,7 +17,9 @@
     (popoverClosed)="onPopoverClosed($event)"
     (popoverOpened)="onPopoverOpened($event)"
   >
-    {{date.importantText}}
+    <div *ngFor="let text of date.importantText">
+      {{text}}
+    </div>
   </sky-popover>
 </div>
 <div

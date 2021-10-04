@@ -125,6 +125,14 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getImportantTextLabel(): string {
+    if (this.hasTooltip) {
+      return this.date.importantText.join(', ');
+    } else {
+      return '';
+    }
+  }
+
   private hideTooltip(): void {
     if (this.popoverOpen) {
       this.popoverController.next({ type: SkyPopoverMessageType.Close });
