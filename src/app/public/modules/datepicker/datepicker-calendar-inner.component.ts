@@ -3,17 +3,19 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { SkyDateFormatter } from './date-formatter';
-import { SkyDatepickerCustomDate } from './datepicker-custom-date';
+import {
+  SkyDateFormatter
+} from './date-formatter';
+
+import {
+  SkyDatepickerCustomDate
+} from './datepicker-custom-date';
 
 import {
   SkyDatepickerDate
@@ -30,7 +32,7 @@ let nextDatepickerId = 0;
   styleUrls: ['./datepicker-calendar-inner.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, OnDestroy {
+export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   @Input()
   public startingDay: number;
 
@@ -47,9 +49,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
       this.activeDate = value;
     }
   }
-
-  @Input()
-  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   public get selectedDate(): Date {
     return this._selectedDate;
@@ -113,7 +112,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
 
   private _selectedDate: Date;
   private _customDates: Array<SkyDatepickerCustomDate> = [];
-  private ngUnsubscribe = new Subject();
 
   public ngOnInit(): void {
 
@@ -123,22 +121,10 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
       this.activeDate = new Date();
     }
 
-    if (this.customDateStream) {
-      this.customDateStream
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(dates => {
-          this._customDates = dates;
-      });
-    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
     this.refreshView();
-  }
-
-  public ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   public setCompareHandler(handler: Function, type: string): void {

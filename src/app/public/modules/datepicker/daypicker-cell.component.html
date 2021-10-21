@@ -6,12 +6,9 @@
   skyPopoverPlacement="left"
   [skyPopoverMessageStream]="popoverController"
   [attr.aria-label]="getImportantTextLabel()"
+  class="sky-daypicker-cell"
 >
-  <sky-daypicker-button
-    [date]="date"
-    [datepicker]="datepicker"
-  >
-  </sky-daypicker-button>
+  <ng-container *ngTemplateOutlet="daypickerButtonTemplateRef"></ng-container>
   <sky-popover
     #dayInfoPopover
     (popoverClosed)="onPopoverClosed($event)"
@@ -26,11 +23,15 @@
   *ngIf="!hasTooltip"
   (mouseenter)="onDayMouseenter($event)"
   (mouseleave)="onDayMouseleave($event)"
+  class="sky-daypicker-cell"
 >
+  <ng-container *ngTemplateOutlet="daypickerButtonTemplateRef"></ng-container>
+</div>
+
+<ng-template #daypickerButtonTemplateRef>
   <sky-daypicker-button
     [date]="date"
     [datepicker]="datepicker"
   >
   </sky-daypicker-button>
-</div>
-
+</ng-template>

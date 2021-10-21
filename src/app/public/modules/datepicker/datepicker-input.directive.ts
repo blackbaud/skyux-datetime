@@ -28,7 +28,6 @@ import {
 } from '@skyux/i18n';
 
 import {
-  Observable,
   Subject
 } from 'rxjs';
 
@@ -53,8 +52,16 @@ import {
   SkyDatepickerComponent
 } from './datepicker.component';
 
+import {
+  SkyDatepickerCustomDate
+} from './datepicker-custom-date';
+
+import {
+  SkyDatepickerService
+} from './datepicker.service';
+
 import * as moment_ from 'moment';
-import { SkyDatepickerCustomDate } from './datepicker-custom-date';
+
 const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
@@ -221,16 +228,6 @@ export class SkyDatepickerInputDirective
     return this._strict || false;
   }
 
-  @Input()
-  public set customDateStream(value: Observable<Array<SkyDatepickerCustomDate>>) {
-    this._customDateStream = value;
-    this.datepickerComponent.customDateStream = this.customDateStream;
-  }
-
-  public get customDateStream(): Observable<Array<SkyDatepickerCustomDate>> {
-    return this._customDateStream;
-  }
-
   private get value(): any {
     return this._value;
   }
@@ -277,7 +274,6 @@ export class SkyDatepickerInputDirective
   private _startingDay: number;
   private _strict: boolean;
   private _value: any;
-  private _customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
   private _disabledDates: Array<SkyDatepickerCustomDate>;
 
   constructor(
@@ -288,7 +284,8 @@ export class SkyDatepickerInputDirective
     private localeProvider: SkyAppLocaleProvider,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
-    @Optional() private datepickerComponent: SkyDatepickerComponent
+    @Optional() private datepickerComponent: SkyDatepickerComponent,
+    @Optional() private datepickerService: SkyDatepickerService
   ) {
     this.localeProvider.getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -328,13 +325,11 @@ export class SkyDatepickerInputDirective
         });
     }
 
-    if (this.customDateStream) {
-      this.customDateStream
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(dates => {
-        this._disabledDates = dates?.filter(date => { return date.disabled; });
-    });
-    }
+      this.datepickerService.customDates
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(dates => {
+          this._disabledDates = dates?.filter(date => { return date.disabled; });
+      });
   }
 
   public ngAfterContentInit(): void {

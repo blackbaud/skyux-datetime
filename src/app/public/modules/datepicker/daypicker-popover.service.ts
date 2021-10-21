@@ -1,6 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { SkyDatepickerDate } from './datepicker-date';
+import {
+  Injectable
+} from '@angular/core';
+
+import {
+  Subject
+} from 'rxjs';
+
+import {
+  SkyDatepickerDate
+} from './datepicker-date';
 
 /**
  * @internal
@@ -10,8 +18,4 @@ export class SkyDaypickerPopoverService {
 
   public mouseoverDateStream: Subject<SkyDatepickerDate> = new Subject<SkyDatepickerDate>();
 
-  constructor(
-
-  ) {
-  }
 }

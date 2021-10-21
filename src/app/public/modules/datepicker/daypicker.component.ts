@@ -1,8 +1,7 @@
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output
+  Optional
 } from '@angular/core';
 
 import {
@@ -12,6 +11,7 @@ import {
 import {
   SkyDatepickerDate
 } from './datepicker-date';
+import { SkyDatepickerService } from './datepicker.service';
 
 /**
  * @internal
@@ -22,9 +22,6 @@ import {
   styleUrls: ['./daypicker.component.scss']
 })
 export class SkyDayPickerComponent implements OnInit {
-
-  @Output()
-  public dayRangeChange: EventEmitter<Array<SkyDatepickerDate>> = new                EventEmitter<Array<SkyDatepickerDate>>(undefined);
 
   public labels: any[] = [];
   public title: string;
@@ -37,7 +34,10 @@ export class SkyDayPickerComponent implements OnInit {
   private daysInMonth: Array<number> = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   private initialDate: number;
 
-  public constructor(datepicker: SkyDatepickerCalendarInnerComponent) {
+  public constructor(
+    datepicker: SkyDatepickerCalendarInnerComponent,
+    @Optional() private datepickerService: SkyDatepickerService
+  ) {
     this.datepicker = datepicker;
   }
 
@@ -112,7 +112,7 @@ export class SkyDayPickerComponent implements OnInit {
       pickerDates[i] = _dateObject;
     }
 
-    this.dayRangeChange.emit(pickerDates);
+    this.datepickerService.setPickerDateRange(pickerDates);
 
     this.labels = [];
     for (let j = 0; j < 7; j++) {

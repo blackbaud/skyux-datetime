@@ -5,10 +5,8 @@
       [maxDate]="maxDate"
       [startingDay]="startingDay"
       (selectedDateChange)="onSelectedDateChange($event)"
-      (calendarModeChange)="onCalendarModeChange($event)"
-      [customDateStream]="customDateStream">
+      (calendarModeChange)="onCalendarModeChange($event)">
     <sky-daypicker
-      (dayRangeChange)="onDayRangeChange($event)"
       tabindex="0"></sky-daypicker>
     <sky-monthpicker tabindex="0"></sky-monthpicker>
     <sky-yearpicker tabindex="0"></sky-yearpicker>

@@ -9,7 +9,8 @@ import {
   OnInit,
   Optional,
   ViewChild,
-  Output
+  Output,
+  Input
 } from '@angular/core';
 
 import {
@@ -42,9 +43,14 @@ import {
 import {
   SkyDatepickerCalendarComponent
 } from './datepicker-calendar.component';
-import { SkyDatepickerCustomDate } from './datepicker-custom-date';
 
-import { SkyDatepickerDateRange } from './datepicker-date-range';
+import {
+  SkyDatepickerCustomDate
+} from './datepicker-custom-date';
+
+import {
+  SkyDatepickerDateRange
+} from './datepicker-date-range';
 
 let nextId = 0;
 
@@ -59,6 +65,12 @@ let nextId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkyDatepickerComponent implements OnDestroy, OnInit {
+
+   /**
+    * Array of dates with custom information for the selected date range.
+    */
+   @Input()
+    public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   /**
    * Fires when the range of dispalyed dates changes.
@@ -135,8 +147,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   public startingDay: number;
 
   public triggerButtonId: string;
-
-  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   @ViewChild(SkyDatepickerCalendarComponent)
   private calendar: SkyDatepickerCalendarComponent;

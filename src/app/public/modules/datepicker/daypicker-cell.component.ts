@@ -1,19 +1,39 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import {
   Component,
   Input,
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { SkyPopoverMessage, SkyPopoverMessageType } from '@skyux/popovers';
-import { SkyPopoverComponent } from '@skyux/popovers/modules/popover/popover.component';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { SkyDatepickerCalendarInnerComponent } from './datepicker-calendar-inner.component';
+
+import {
+  Subject
+} from 'rxjs';
+
+import {
+  takeUntil
+} from 'rxjs/operators';
+
+import {
+  SkyDatepickerCalendarInnerComponent
+} from './datepicker-calendar-inner.component';
+
+import {
+  SkyPopoverMessage,
+  SkyPopoverMessageType
+} from '@skyux/popovers';
+
+import {
+  SkyPopoverComponent
+} from '@skyux/popovers/modules/popover/popover.component';
 
 import {
   SkyDatepickerDate
 } from './datepicker-date';
-import { SkyDaypickerPopoverService } from './daypicker-popover.service';
+
+import {
+  SkyDaypickerPopoverService
+} from './daypicker-popover.service';
 
 /**
  * @internal
@@ -21,7 +41,7 @@ import { SkyDaypickerPopoverService } from './daypicker-popover.service';
 @Component({
   selector: 'sky-daypicker-cell',
   templateUrl: 'daypicker-cell.component.html',
-  styleUrls: ['./daypicker-cell.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
 
@@ -54,7 +74,8 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
     this.hasTooltip =
       this.date.important &&
       this.date.importantText &&
-      this.date.importantText.length > 0;
+      this.date.importantText.length > 0 &&
+      this.date.importantText[0].length > 0;
 
     // show the tooltip if this is the active date and is not the
     // initial active date (activeDateHasChanged)
