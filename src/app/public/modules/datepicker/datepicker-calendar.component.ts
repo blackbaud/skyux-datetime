@@ -120,12 +120,15 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
     private adapter: SkyDatepickerAdapterService,
     private config: SkyDatepickerConfigService,
     private elementRef: ElementRef,
-    @Optional() private datePickerService: SkyDatepickerService) {
+    @Optional() private datePickerService?: SkyDatepickerService) {
     this.configureOptions();
   }
 
   public ngOnInit(): void {
-    if (this.customDateStream) {
+    if (
+      this.customDateStream &&
+      this.datePickerService
+    ) {
       this.customDateStream
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(dates => {
@@ -133,9 +136,11 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
       });
     }
 
-    this.datePickerService.dayRangeChange.subscribe(range => {
-      this.dateRangeChange.emit(range);
-    });
+    if (this.datePickerService) {
+      this.datePickerService.dayRangeChange.subscribe(range => {
+        this.dateRangeChange.emit(range);
+      });
+    }
 
   }
 

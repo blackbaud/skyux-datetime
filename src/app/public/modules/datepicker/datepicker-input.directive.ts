@@ -285,7 +285,7 @@ export class SkyDatepickerInputDirective
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
     @Optional() private datepickerComponent: SkyDatepickerComponent,
-    @Optional() private datepickerService: SkyDatepickerService
+    @Optional() private datepickerService?: SkyDatepickerService
   ) {
     this.localeProvider.getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -325,11 +325,13 @@ export class SkyDatepickerInputDirective
         });
     }
 
+    if (this.datepickerService) {
       this.datepickerService.customDates
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(dates => {
           this._disabledDates = dates?.filter(date => { return date.disabled; });
       });
+    }
   }
 
   public ngAfterContentInit(): void {

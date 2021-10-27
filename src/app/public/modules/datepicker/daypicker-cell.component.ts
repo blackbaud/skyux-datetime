@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy } from '@angular/core';
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnDestroy,

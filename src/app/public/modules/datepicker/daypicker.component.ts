@@ -1,8 +1,12 @@
 import {
+  ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   Optional
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   SkyDatepickerCalendarInnerComponent
@@ -21,7 +25,7 @@ import { SkyDatepickerService } from './datepicker.service';
   templateUrl: 'daypicker.component.html',
   styleUrls: ['./daypicker.component.scss']
 })
-export class SkyDayPickerComponent implements OnInit {
+export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
   public labels: any[] = [];
   public title: string;
@@ -33,10 +37,12 @@ export class SkyDayPickerComponent implements OnInit {
 
   private daysInMonth: Array<number> = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   private initialDate: number;
+  private ngUnsubscribe = new Subject<void>();
 
   public constructor(
     datepicker: SkyDatepickerCalendarInnerComponent,
-    @Optional() private datepickerService: SkyDatepickerService
+    @Optional() private datepickerService?: SkyDatepickerService,
+    @Optional() private changeDetectorRef?: ChangeDetectorRef
   ) {
     this.datepicker = datepicker;
   }
@@ -57,6 +63,20 @@ export class SkyDayPickerComponent implements OnInit {
     }, 'day');
 
     this.datepicker.refreshView();
+
+    if (this.datepickerService && this.changeDetectorRef) {
+      this.datepickerService.customDates
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
+          // make sure the display is updated when we get custom dates
+          this.changeDetectorRef.markForCheck();
+      });
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   protected getDates(startDate: Date, n: number): Date[] {
@@ -112,8 +132,6 @@ export class SkyDayPickerComponent implements OnInit {
       pickerDates[i] = _dateObject;
     }
 
-    this.datepickerService.setPickerDateRange(pickerDates);
-
     this.labels = [];
     for (let j = 0; j < 7; j++) {
       this.labels[j] = {};
@@ -125,6 +143,11 @@ export class SkyDayPickerComponent implements OnInit {
     this.title =
       this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
     this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
+
+    if (this.datepickerService) {
+      this.datepickerService.setPickerDateRange(this.rows);
+    }
+
   }
 
   private keydownDays(key: string, event: KeyboardEvent) {

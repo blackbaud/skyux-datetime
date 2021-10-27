@@ -26,7 +26,7 @@ export class SkyDatepickerService {
 
   public dayRangeChange: Subject<SkyDatepickerDateRange> = new Subject<SkyDatepickerDateRange>();
 
-  private _pickerDates: Array<SkyDatepickerDate> = [];
+  private _dateRows: SkyDatepickerDate[][];
   private _rangeBeginDate: Date;
   private _customDates: Array<SkyDatepickerCustomDate>;
 
@@ -34,30 +34,31 @@ export class SkyDatepickerService {
    * Accepts the custom dates for the current date range and applies them to the date picker dates
    * @param customDates - the array of custom dates for the date range
    */
-  public setCustomDates(customDates: Array<SkyDatepickerCustomDate>) {
-    this.customDates.next(customDates);
+  public setCustomDates(customDates: Array<SkyDatepickerCustomDate>): void {
     this._customDates = customDates;
     this.applyCustomDates();
+    this.customDates.next(customDates);
   }
 
   /**
-   * Accepts the range of dates currently displayed in the picker applies any custom dates
+   * Accepts the date rows currently displayed in the picker applies any custom dates
    * and sets the next range to be consumed if it has changed
-   * @param pickerDates - the array of dates currently displayed in the picker
+   * @param dateRows - the array of date rows currently displayed in the picker
    */
-  public setPickerDateRange(pickerDates: Array<SkyDatepickerDate>) {
-    this._pickerDates = pickerDates;
+  public setPickerDateRange(dateRows: SkyDatepickerDate[][]): void {
+    this._dateRows = dateRows;
     if (
         !this._rangeBeginDate ||
-        this._rangeBeginDate.getTime() !== this._pickerDates[0].date.getTime()
+        this._rangeBeginDate.getTime() !== this._dateRows[0][0].date.getTime()
     ) {
+      const lastRow = this._dateRows.length - 1;
       // the date range has changed emit event
-      this._rangeBeginDate = pickerDates[0].date;
+      this._rangeBeginDate = this._dateRows[0][0].date;
       this._customDates = [];
       this.customDates.next(this._customDates);
       this.dayRangeChange.next({
         startDate: this._rangeBeginDate,
-        endDate: pickerDates[pickerDates.length - 1].date
+        endDate: this._dateRows[lastRow][this._dateRows[lastRow].length - 1].date
       });
     }
 
@@ -75,24 +76,38 @@ export class SkyDatepickerService {
    */
   private applyCustomDates(): void {
     let date: SkyDatepickerDate;
+    let newDate: SkyDatepickerDate;
+    let dateIndex: number;
+
     if (
       this._customDates &&
-      this._pickerDates
+      this._dateRows
     ) {
       this._customDates.forEach(custom => {
-        date = this._pickerDates.find(d => {
-          return d.date.getTime() === custom.date.getTime();
+        dateIndex = -1;
+        this._dateRows.forEach(row => {
+          if (dateIndex === -1) {
+            dateIndex = row.findIndex(d => {
+              return d.date.getTime() === custom.date.getTime();
+            });
+            if (dateIndex > -1) {
+              date = row[dateIndex];
+              // replace the date with a new instance so that display gets updated
+              newDate = {
+                current: date.current,
+                date: date.date,
+                disabled: custom.disabled ? true : date.disabled,
+                important: custom.important,
+                importantText: custom.important ? custom.importantText : undefined,
+                label: date.label,
+                secondary: date.secondary,
+                selected: date.selected,
+                uid: date.uid
+              };
+              row[dateIndex] = newDate;
+            }
+          }
         });
-        if (date) {
-          date.important = custom.important;
-          if (custom.disabled) {
-            date.disabled = true;
-          }
-          if (date.important) {
-            // important text to be displayed only when the date is flagged as important
-            date.importantText = custom.importantText;
-          }
-        }
       });
     }
   }

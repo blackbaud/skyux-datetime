@@ -9,6 +9,6 @@ export interface SkyDatepickerDate {
   current: boolean;
   secondary: boolean;
   uid: string;
-  important: boolean;
-  importantText: Array<string>;
+  important?: boolean;
+  importantText?: Array<string>;
 }
