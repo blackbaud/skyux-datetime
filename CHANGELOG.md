@@ -1,3 +1,7 @@
+# 4.12.3 (2021-10-28)
+
+- Fixed the datepicker component to work with TypeScript's strict mode. [#290](https://github.com/blackbaud/skyux-datetime/pull/290)
+
 # 4.12.2 (2021-08-18)
 
 - Fixed performance issues with the datepicker and timepicker components. [#275](https://github.com/blackbaud/skyux-datetime/pull/275)
