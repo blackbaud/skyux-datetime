@@ -1,0 +1,35 @@
+<div *ngIf="hasTooltip"
+  class="sky-daypicker-cell"
+  [attr.aria-label]="getImportantTextLabel()"
+  [skyPopover]="dayInfoPopover"
+  skyPopoverPlacement="left"
+  [skyPopoverMessageStream]="popoverController"
+  (mouseenter)="onDayMouseenter($event)"
+  (mouseleave)="onDayMouseleave($event)"
+>
+  <ng-container *ngTemplateOutlet="daypickerButtonTemplateRef"></ng-container>
+  <sky-popover
+    #dayInfoPopover
+    (popoverClosed)="onPopoverClosed($event)"
+    (popoverOpened)="onPopoverOpened($event)"
+  >
+    <div *ngFor="let text of date.importantText">
+      {{text}}
+    </div>
+  </sky-popover>
+</div>
+<div *ngIf="!hasTooltip"
+  class="sky-daypicker-cell"
+  (mouseenter)="onDayMouseenter($event)"
+  (mouseleave)="onDayMouseleave($event)"
+>
+  <ng-container *ngTemplateOutlet="daypickerButtonTemplateRef"></ng-container>
+</div>
+
+<ng-template #daypickerButtonTemplateRef>
+  <sky-daypicker-button
+    [date]="date"
+    [datepicker]="datepicker"
+  >
+  </sky-daypicker-button>
+</ng-template>

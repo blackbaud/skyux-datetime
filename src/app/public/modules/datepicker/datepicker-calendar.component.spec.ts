@@ -6,6 +6,10 @@ import {
 } from '@angular/core/testing';
 
 import {
+  Subject
+} from 'rxjs';
+
+import {
   expect
 } from '@skyux-sdk/testing';
 
@@ -20,6 +24,11 @@ import {
 import { By } from '@angular/platform-browser';
 
 import * as moment_ from 'moment';
+
+import {
+  SkyDatepickerCustomDate
+} from '@skyux-sdk/builder/../../../dist/public_api';
+
 const moment = moment_;
 
 describe('datepicker calendar', () => {
@@ -723,5 +732,59 @@ describe('datepicker calendar', () => {
       });
 
     });
+
+    describe('custom disabled dates', () => {
+      let dateStream: Subject<Array<SkyDatepickerCustomDate>>;
+      beforeEach(() => {
+        dateStream = new Subject<Array<SkyDatepickerCustomDate>>();
+        fixture.detectChanges();
+        component.datepicker.customDateStream = dateStream;
+        component.datepicker.ngOnInit();
+      });
+
+      it('should not select active date when selected date is disabled', () => {
+        component.selectedDate = new Date('4/4/2017');
+
+        fixture.detectChanges();
+        clickNextArrow(nativeElement);
+
+        dateStream.next([
+          {
+            date: new Date(2017, 4, 1),
+            disabled: true,
+            important: false,
+            importantText: []
+          }
+        ]);
+        fixture.detectChanges();
+
+        triggerKeydown(fixture, { which: 13 });
+        verifyDatepicker(nativeElement, 'May 2017', '', '01', '');
+        expect(component.selectedDate).toEqual(new Date('4/4/2017'));
+      });
+
+      it('should select active date when selected date is not disabled', () => {
+        component.selectedDate = new Date('4/4/2017');
+
+        fixture.detectChanges();
+        clickNextArrow(nativeElement);
+
+        dateStream.next([
+          {
+            date: new Date(2017, 4, 1),
+            disabled: false,
+            important: true,
+            importantText: []
+          }
+        ]);
+        fixture.detectChanges();
+
+        triggerKeydown(fixture, { which: 13 });
+        verifyDatepicker(nativeElement, 'May 2017', '01', '01', '');
+      expect(component.selectedDate).toEqual(new Date('5/1/2017'));
+      });
+
+    });
+
   });
 });

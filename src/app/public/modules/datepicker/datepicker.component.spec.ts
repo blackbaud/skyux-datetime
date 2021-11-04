@@ -870,6 +870,47 @@ describe('datepicker', () => {
       }));
     });
 
+    describe('disabled date', () => {
+      let ngModel: NgModel;
+      beforeEach(() => {
+        let inputElement = fixture.debugElement.query(By.css('input'));
+        ngModel = <NgModel>inputElement.injector.get(NgModel);
+        (component.inputDirective as any).datepickerService.customDates.next([
+          {
+            date: new Date(2021, 9, 1),
+            disabled: true
+          },
+          {
+            date: new Date(2021, 9, 15),
+            disabled: false
+          },
+          {
+            date: new Date(2021, 9, 31),
+            disabled: true
+          }
+        ]);
+      });
+
+      it('should handle change to disabled date', fakeAsync(() => {
+        setInputProperty(new Date('9/30/2021'), component, fixture);
+        detectChanges(fixture);
+
+        setInputElementValue(fixture.nativeElement, '10/1/2021', fixture);
+
+        expect(ngModel.valid).toBe(false);
+      }));
+
+      it('should handle change to non-disabled date', fakeAsync(() => {
+        setInputProperty(new Date('9/30/2021'), component, fixture);
+        detectChanges(fixture);
+
+        setInputElementValue(fixture.nativeElement, '10/15/2021', fixture);
+
+        expect(ngModel.valid).toBe(true);
+      }));
+
+    });
+
     describe('disabled state', () => {
       it('should disable the input and trigger button when disabled is set to true ' +
       'and enable them when disabled is changed to false', fakeAsync(() => {

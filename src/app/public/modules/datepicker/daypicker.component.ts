@@ -1,7 +1,13 @@
 import {
+  ChangeDetectorRef,
   Component,
-  OnInit
+  OnDestroy,
+  OnInit,
+  Optional
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import {
   SkyDatepickerCalendarInnerComponent
 } from './datepicker-calendar-inner.component';
@@ -9,6 +15,7 @@ import {
 import {
   SkyDatepickerDate
 } from './datepicker-date';
+import { SkyDatepickerService } from './datepicker.service';
 
 /**
  * @internal
@@ -18,7 +25,7 @@ import {
   templateUrl: 'daypicker.component.html',
   styleUrls: ['./daypicker.component.scss']
 })
-export class SkyDayPickerComponent implements OnInit {
+export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
   public labels: any[] = [];
   public title: string;
@@ -26,16 +33,24 @@ export class SkyDayPickerComponent implements OnInit {
   public weekNumbers: number[] = [];
   public datepicker: SkyDatepickerCalendarInnerComponent;
   public CURRENT_THEME_TEMPLATE: any;
+  public activeDateHasChanged: boolean = false;
 
   private daysInMonth: Array<number> = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  private initialDate: number;
+  private ngUnsubscribe = new Subject<void>();
 
-  public constructor(datepicker: SkyDatepickerCalendarInnerComponent) {
+  public constructor(
+    datepicker: SkyDatepickerCalendarInnerComponent,
+    @Optional() private datepickerService?: SkyDatepickerService,
+    @Optional() private changeDetectorRef?: ChangeDetectorRef
+  ) {
     this.datepicker = datepicker;
   }
 
   public ngOnInit(): void {
 
     this.datepicker.stepDay = {months: 1};
+    this.initialDate = this.datepicker.activeDate.getDate();
 
     this.datepicker.setRefreshViewHandler(() => {
       this.refreshDayView();
@@ -48,6 +63,20 @@ export class SkyDayPickerComponent implements OnInit {
     }, 'day');
 
     this.datepicker.refreshView();
+
+    if (this.datepickerService && this.changeDetectorRef) {
+      this.datepickerService.customDates
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
+          // make sure the display is updated when we get custom dates
+          this.changeDetectorRef.markForCheck();
+      });
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   protected getDates(startDate: Date, n: number): Date[] {
@@ -80,6 +109,10 @@ export class SkyDayPickerComponent implements OnInit {
       : -difference;
     let firstDate = new Date(firstDayOfMonth.getTime());
 
+    if (this.datepicker.activeDate.getDate() !== this.initialDate) {
+      this.activeDateHasChanged = true;
+    }
+
     /* istanbul ignore else */
     /* sanity check */
     if (numDisplayedFromPreviousMonth > 0) {
@@ -110,6 +143,11 @@ export class SkyDayPickerComponent implements OnInit {
     this.title =
       this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
     this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
+
+    if (this.datepickerService) {
+      this.datepickerService.setPickerDateRange(this.rows);
+    }
+
   }
 
   private keydownDays(key: string, event: KeyboardEvent) {

@@ -175,6 +175,14 @@
   >
     Toggle strict formatting
   </button>
+  <button
+    class="sky-btn"
+    id="button-set-invalid-value"
+    type="button"
+    (click)="toggleShowImortantDates()"
+  >
+    Toggle important dates
+  </button>
 </div>
 
 <div
@@ -190,7 +198,9 @@
     >
       Input box
     </label>
-    <sky-datepicker #inputBoxPicker>
+    <sky-datepicker #inputBoxPicker
+      (dateRangeChange)="onDateRangeChange($event)"
+      [customDateStream]="customDates">
       <input
         skyDatepickerInput
         [disabled]="disabled"

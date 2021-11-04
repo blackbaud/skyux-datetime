@@ -52,7 +52,16 @@ import {
   SkyDatepickerComponent
 } from './datepicker.component';
 
+import {
+  SkyDatepickerCustomDate
+} from './datepicker-custom-date';
+
+import {
+  SkyDatepickerService
+} from './datepicker.service';
+
 import * as moment_ from 'moment';
+
 const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare
@@ -266,6 +275,7 @@ export class SkyDatepickerInputDirective
   private _startingDay: number;
   private _strict: boolean;
   private _value: any;
+  private _disabledDates: Array<SkyDatepickerCustomDate>;
 
   constructor(
     private adapter: SkyDatepickerAdapterService,
@@ -275,7 +285,8 @@ export class SkyDatepickerInputDirective
     private localeProvider: SkyAppLocaleProvider,
     private renderer: Renderer2,
     private resourcesService: SkyLibResourcesService,
-    @Optional() private datepickerComponent: SkyDatepickerComponent
+    @Optional() private datepickerComponent: SkyDatepickerComponent,
+    @Optional() private datepickerService?: SkyDatepickerService
   ) {
     this.initialPlaceholder = this.adapter.getPlaceholder(this.elementRef);
     this.updatePlaceholder();
@@ -316,6 +327,14 @@ export class SkyDatepickerInputDirective
             value
           );
         });
+    }
+
+    if (this.datepickerService) {
+      this.datepickerService.customDates
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(dates => {
+          this._disabledDates = dates?.filter(date => { return date.disabled; });
+      });
     }
   }
 
@@ -450,6 +469,22 @@ export class SkyDatepickerInputDirective
           maxDate
         }
       };
+    }
+
+    // make sure date is not included in custom disabled dates
+    if (
+      this._disabledDates &&
+      this._disabledDates.length > 0
+    ) {
+      if (this._disabledDates.some(disabled => {
+        return disabled.date.getTime() === dateValue.getTime();
+      })) {
+        return {
+          'skyDate': {
+            dateValue
+          }
+        };
+      }
     }
   }
 

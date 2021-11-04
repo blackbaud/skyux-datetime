@@ -19,6 +19,8 @@ import {
   SkyThemeService,
   SkyThemeSettings
 } from '@skyux/theme';
+import { SkyDatepickerCustomDate, SkyDatepickerDateRange } from '../../public/public_api';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'datepicker-visual',
@@ -33,6 +35,9 @@ export class DatepickerVisualComponent implements OnInit {
   public selectedDate: Date = new Date(1955, 10, 5);
   public startingDay: number;
   public strict: boolean = false;
+  public showImportant: boolean = false;
+  public customDates: Subject<Array<SkyDatepickerCustomDate>> = new Subject<Array<SkyDatepickerCustomDate>>();
+  public currentDateRange: SkyDatepickerDateRange;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -92,5 +97,91 @@ export class DatepickerVisualComponent implements OnInit {
 
   public themeSettingsChange(themeSettings: SkyThemeSettings): void {
     this.themeSvc.setTheme(themeSettings);
+  }
+
+  public toggleShowImortantDates(): void {
+    this.showImportant = !this.showImportant;
+    this.outputImportantDates();
+  }
+
+  public onDateRangeChange(range: SkyDatepickerDateRange) {
+    this.currentDateRange = range;
+    if (this.showImportant) {
+      this.outputImportantDates();
+    }
+  }
+
+  public outputImportantDates() {
+    if (
+      this.showImportant &&
+      this.currentDateRange
+    ) {
+      let customDates: SkyDatepickerCustomDate[] = [];
+      customDates.push({
+        date: this.currentDateRange.startDate,
+        disabled: false,
+        important: true,
+        importantText: ['First date']
+      });
+
+      customDates.push({
+        date: this.getNextDate(this.currentDateRange.startDate, 8),
+        disabled: false,
+        important: true,
+        importantText: ['Important']
+      });
+
+      customDates.push({
+        date: this.getNextDate(this.currentDateRange.startDate, 9),
+        disabled: false,
+        important: true,
+        importantText: ['Also Important']
+      });
+
+      customDates.push({
+        date: this.getNextDate(this.currentDateRange.startDate, 10),
+        disabled: true,
+        important: true,
+        importantText: ['Disabled']
+      });
+
+      customDates.push({
+        date: this.getNextDate(this.currentDateRange.startDate, 11),
+        disabled: true,
+        important: false,
+        importantText: []
+      });
+
+      customDates.push({
+        date: this.getNextDate(this.currentDateRange.startDate, 12),
+        disabled: false,
+        important: true,
+        importantText: []
+      });
+
+      customDates.push({
+        date: this.getNextDate(this.currentDateRange.startDate, 13),
+        disabled: false,
+        important: true,
+        importantText: ['Multiple', 'Messages']
+      });
+
+      customDates.push({
+        date: this.currentDateRange.endDate,
+        disabled: false,
+        important: true,
+        importantText: ['Last date']
+      });
+
+      this.customDates.next(customDates);
+    } else {
+      this.customDates.next([]);
+    }
+  }
+
+  public getNextDate(startDate: Date, daystoAdd: number): Date {
+    let newDate = new Date(startDate);
+    newDate.setDate(newDate.getDate() + daystoAdd);
+    return newDate;
   }
 }

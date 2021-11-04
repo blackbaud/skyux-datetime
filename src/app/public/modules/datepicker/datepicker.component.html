@@ -60,6 +60,8 @@
       [startingDay]="startingDay"
       (calendarModeChange)="onCalendarModeChange()"
       (selectedDateChange)="onSelectedDateChange($event)"
+      (dateRangeChange)="onDateRangeChange($event)"
+      [customDateStream]="customDateStream"
     >
     </sky-datepicker-calendar>
   </div>

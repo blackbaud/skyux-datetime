@@ -73,6 +73,18 @@
     .sky-btn-default:hover {
       @include sky-theme-modern-border-hover
     }
+
+  }
+
+  .sky-btn-sm.sky-datepicker-btn-date {
+    height: 30px;
+    min-width: 0;
+    padding: 0;
+    width: 30px;
+  }
+
+  .sky-btn-sm.sky-datepicker-btn-date.sky-datepicker-btn-important {
+    padding: 6px 7px;
   }
 
   .sky-btn-sm.sky-datepicker-btn-date {
