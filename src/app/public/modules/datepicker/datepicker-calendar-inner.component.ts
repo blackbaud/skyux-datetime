@@ -124,12 +124,14 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
     40: 'down'
   };
 
-  private _selectedDate: Date;
-  private _customDates: Array<SkyDatepickerCustomDate> = [];
   private ngUnsubscribe = new Subject<void>();
 
-  public constructor( @Optional() private datepickerService?: SkyDatepickerService) {
-  }
+  private _customDates: Array<SkyDatepickerCustomDate> = [];
+  private _selectedDate: Date;
+
+  public constructor(
+    @Optional() private datepickerService?: SkyDatepickerService
+  ) {}
 
   public ngOnInit(): void {
 
@@ -139,13 +141,11 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
       this.activeDate = new Date();
     }
 
-    if (this.datepickerService) {
-      this.datepickerService.customDates
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(dates => {
-          this._customDates = dates;
-      });
-    }
+    this.datepickerService?.customDates
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(customDates => {
+        this._customDates = customDates;
+    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -412,21 +412,17 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
   }
 
   protected isDisabled(date: Date): boolean {
-
     return ((this.minDate && this.compare(date, this.minDate) < 0)
       || (this.maxDate && this.compare(date, this.maxDate) > 0))
-      || this.isCustomDisabled(date);
+      || this.isCustomDateDisabled(date);
   }
 
-  protected isCustomDisabled(date: Date): boolean {
-    let dpDate: SkyDatepickerCustomDate;
-    if (this._customDates) {
-      dpDate = this._customDates.find(d => {
-        return d.date.getTime() === date.getTime();
-      });
-      if (dpDate) {
-        return dpDate.disabled;
-      }
+  private isCustomDateDisabled(date: Date): boolean {
+    const dpDate = this._customDates.find(d => {
+      return d.date.getTime() === date.getTime();
+    });
+    if (dpDate) {
+      return !!dpDate.disabled;
     }
     return false;
   }

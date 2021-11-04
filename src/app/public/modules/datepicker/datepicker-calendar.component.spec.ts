@@ -6,12 +6,20 @@ import {
 } from '@angular/core/testing';
 
 import {
-  Subject
-} from 'rxjs';
+  By
+} from '@angular/platform-browser';
 
 import {
   expect
 } from '@skyux-sdk/testing';
+
+import {
+  Subject
+} from 'rxjs';
+
+import {
+  SkyDatepickerCustomDate
+} from './datepicker-custom-date';
 
 import {
   SkyDatepickerModule
@@ -21,13 +29,7 @@ import {
   DatepickerCalendarTestComponent
 } from './fixtures/datepicker-calendar.component.fixture';
 
-import { By } from '@angular/platform-browser';
-
 import * as moment_ from 'moment';
-
-import {
-  SkyDatepickerCustomDate
-} from '@skyux-sdk/builder/../../../dist/public_api';
 
 const moment = moment_;
 

@@ -9,9 +9,8 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  ViewChild,
   Output,
-  Input
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -68,17 +67,17 @@ let nextId = 0;
 })
 export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
-   /**
-    * Array of dates with custom information for the selected date range.
-    */
-   @Input()
-    public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
+  /**
+   * Array of dates with custom information for the selected date range.
+   */
+  @Input()
+  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   /**
    * Fires when the range of dispalyed dates changes.
    */
-   @Output()
-   public dateRangeChange = new EventEmitter<SkyDatepickerDateRange>();
+  @Output()
+  public dateRangeChange = new EventEmitter<SkyDatepickerDateRange>();
 
   /**
    * Adds a class to the datepicker.
