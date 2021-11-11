@@ -7,33 +7,29 @@ import {
 } from '@angular/core';
 
 import {
-  Subject
-} from 'rxjs';
+  SkyPopoverMessage,
+  SkyPopoverMessageType
+} from '@skyux/popovers';
 
 import {
   takeUntil
 } from 'rxjs/operators';
 
 import {
+  Subject
+} from 'rxjs';
+
+import {
   SkyDatepickerCalendarInnerComponent
 } from './datepicker-calendar-inner.component';
-
-import {
-  SkyPopoverMessage,
-  SkyPopoverMessageType
-} from '@skyux/popovers';
-
-import {
-  SkyPopoverComponent
-} from '@skyux/popovers/modules/popover/popover.component';
 
 import {
   SkyDatepickerDate
 } from './datepicker-date';
 
 import {
-  SkyDaypickerPopoverService
-} from './daypicker-popover.service';
+  SkyDatepickerService
+} from './datepicker.service';
 
 /**
  * @internal
@@ -45,14 +41,17 @@ import {
 })
 export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
 
-  @Input()
-  public date: SkyDatepickerDate;
-
-  @Input()
-  public datepicker: SkyDatepickerCalendarInnerComponent;
-
+  /**
+   * Specifies if the active date has been changed.
+   */
   @Input()
   public activeDateHasChanged: boolean;
+
+  /**
+   * Specifies the date this picker cell will represent on the calendar.
+   */
+  @Input()
+  public date: SkyDatepickerDate;
 
   public hasTooltip: boolean = false;
 
@@ -60,15 +59,16 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
 
   private activeUid: string = '';
 
+  private cancelPopover: boolean = false;
+
   private popoverOpen: boolean = false;
 
   private ngUnsubscribe = new Subject<void>();
 
-  private cancelPopover: boolean = false;
-
-  public constructor(private daypickerPopoverService: SkyDaypickerPopoverService) {
-
-  }
+  public constructor(
+    private datepicker: SkyDatepickerCalendarInnerComponent,
+    private datepickerService: SkyDatepickerService
+  ) {}
 
   public ngOnInit(): void {
     this.hasTooltip =
@@ -89,8 +89,7 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
     }
 
     if (this.hasTooltip) {
-      // subscribe to the mouseover date stream to get date currently active
-      this.daypickerPopoverService.mouseoverDateStream
+      this.datepickerService.keyDatePopoverStream
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(date => {
         if (date) {
@@ -98,7 +97,7 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
         } else {
           this.activeUid = '';
         }
-        // if this day has an open popover and they have moved off of the day close the popover
+        // If this day has an open popover and they have moved off of the day close the popover.
         if (this.date.uid !== this.activeUid) {
           this.hideTooltip();
         }
@@ -112,35 +111,31 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public onDayMouseenter(event: MouseEvent): void {
-    // entering a cell check to see if a tooltip should be displayed and if so signal
-    // new active day to other days
+  public onDayMouseenter(): void {
     this.cancelPopover = false;
     if (this.hasTooltip) {
       this.showTooltip();
-      this.daypickerPopoverService.mouseoverDateStream.next(this.date);
+      this.datepickerService.keyDatePopoverStream.next(this.date);
     }
   }
 
-  public onDayMouseleave(event: MouseEvent): void {
-    // leaving the cell hide any tooltip and signal to other cells there is no active
-    // tooltip (will close a tooltip that is open due to being the selected day)
+  public onDayMouseleave(): void {
     this.cancelPopover = true;
     if (this.hasTooltip) {
       this.hideTooltip();
     }
-    this.daypickerPopoverService.mouseoverDateStream.next(undefined);
+    this.datepickerService.keyDatePopoverStream.next(undefined);
   }
 
-  public onPopoverClosed(event: SkyPopoverComponent): void {
+  public onPopoverClosed(): void {
     this.popoverOpen = false;
   }
 
-  public onPopoverOpened(event: SkyPopoverComponent): void {
+  public onPopoverOpened(): void {
     this.popoverOpen = true;
+    /* istanbul ignore else */
     if (this.cancelPopover) {
-      // there is the potential for the popover to get opened just as the user leaves a
-      // date, if that happens close it
+      // If the popover gets opened just as a mouseout event happens, close it.
       this.hideTooltip();
       this.cancelPopover = false;
     }
@@ -155,19 +150,22 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
   }
 
   private hideTooltip(): void {
+    /* istanbul ignore else */
     if (this.popoverOpen) {
       this.popoverController.next({ type: SkyPopoverMessageType.Close });
     }
   }
 
   private showTooltip(): void {
+    /* istanbul ignore else */
     if (
       this.hasTooltip &&
       !this.popoverOpen
     ) {
-      // wait half a second before showing the tooltip
+      /**
+       * Delay 1/2 second before opening the popover as long as mouse hasn't moved off the date.
+       */
       setTimeout(() => {
-        // open the popover as long as they haven't moved off the date in the interim
         if (
           !this.cancelPopover &&
           this.activeUid === this.date.uid

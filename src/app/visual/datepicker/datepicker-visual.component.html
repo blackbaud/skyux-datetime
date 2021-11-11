@@ -198,9 +198,11 @@
     >
       Input box
     </label>
-    <sky-datepicker #inputBoxPicker
+    <sky-datepicker
+      [customDateStream]="customDateStream"
       (dateRangeChange)="onDateRangeChange($event)"
-      [customDateStream]="customDates">
+      #inputBoxPicker
+    >
       <input
         skyDatepickerInput
         [disabled]="disabled"

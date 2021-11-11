@@ -31,6 +31,10 @@ import {
 } from '@skyux/theme';
 
 import {
+  SkyPopoverModule
+} from '@skyux/popovers';
+
+import {
   SkyDateTimeResourcesModule
 } from '../shared/datetime-resources.module';
 
@@ -41,18 +45,6 @@ import {
 import {
   SkyDatepickerCalendarInnerComponent
 } from './datepicker-calendar-inner.component';
-
-import {
-  SkyDayPickerComponent
-} from './daypicker.component';
-
-import {
-  SkyMonthPickerComponent
-} from './monthpicker.component';
-
-import {
-  SkyYearPickerComponent
-} from './yearpicker.component';
 
 import {
   SkyDatepickerComponent
@@ -71,28 +63,32 @@ import {
 } from './datepicker-input-fuzzy.directive';
 
 import {
-  SkyFuzzyDateService
-} from './fuzzy-date.service';
-
-import {
-  SkyPopoverModule
-} from '@skyux/popovers';
-
-import {
-  SkyDayPickerCellComponent
-} from './daypicker-cell.component';
+  SkyDatepickerService
+} from './datepicker.service';
 
 import {
   SkyDayPickerButtonComponent
 } from './daypicker-button.component';
 
 import {
-  SkyDaypickerPopoverService
-} from './daypicker-popover.service';
+  SkyDayPickerCellComponent
+} from './daypicker-cell.component';
 
 import {
-  SkyDatepickerService
-} from './datepicker.service';
+  SkyDayPickerComponent
+} from './daypicker.component';
+
+import {
+  SkyFuzzyDateService
+} from './fuzzy-date.service';
+
+import {
+  SkyMonthPickerComponent
+} from './monthpicker.component';
+
+import {
+  SkyYearPickerComponent
+} from './yearpicker.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +132,6 @@ import {
     SkyFuzzyDateService,
     SkyCoreAdapterService,
     SkyThemeService,
-    SkyDaypickerPopoverService,
     SkyDatepickerService
   ]
 })

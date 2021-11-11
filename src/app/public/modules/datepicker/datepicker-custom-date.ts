@@ -11,16 +11,16 @@ export interface SkyDatepickerCustomDate {
   /**
    * Indicates whether to disable the date.
    */
-  disabled: boolean;
+  disabled?: boolean;
 
   /**
    * Indicates whether to display the date as important in the calendar.
    */
-  important: boolean;
+  important?: boolean;
 
   /**
    * Displays a popup of the provided text when hovering over the important date in the calendar.
    */
-  importantText: Array<string>;
+  importantText?: Array<string>;
 
 }

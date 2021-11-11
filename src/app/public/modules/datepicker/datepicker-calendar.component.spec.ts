@@ -18,16 +18,16 @@ import {
 } from 'rxjs';
 
 import {
+  DatepickerCalendarTestComponent
+} from './fixtures/datepicker-calendar.component.fixture';
+
+import {
   SkyDatepickerCustomDate
 } from './datepicker-custom-date';
 
 import {
   SkyDatepickerModule
 } from './datepicker.module';
-
-import {
-  DatepickerCalendarTestComponent
-} from './fixtures/datepicker-calendar.component.fixture';
 
 import * as moment_ from 'moment';
 
@@ -783,7 +783,7 @@ describe('datepicker calendar', () => {
 
         triggerKeydown(fixture, { which: 13 });
         verifyDatepicker(nativeElement, 'May 2017', '01', '01', '');
-      expect(component.selectedDate).toEqual(new Date('5/1/2017'));
+        expect(component.selectedDate).toEqual(new Date('5/1/2017'));
       });
 
     });

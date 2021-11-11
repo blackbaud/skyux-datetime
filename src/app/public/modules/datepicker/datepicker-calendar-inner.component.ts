@@ -5,7 +5,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   ViewEncapsulation
@@ -16,16 +15,8 @@ import {
 } from 'rxjs';
 
 import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
   SkyDateFormatter
 } from './date-formatter';
-
-import {
-  SkyDatepickerCustomDate
-} from './datepicker-custom-date';
 
 import {
   SkyDatepickerDate
@@ -125,27 +116,18 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
   };
 
   private ngUnsubscribe = new Subject<void>();
-
-  private _customDates: Array<SkyDatepickerCustomDate> = [];
   private _selectedDate: Date;
 
   public constructor(
-    @Optional() private datepickerService?: SkyDatepickerService
+    private datepickerService: SkyDatepickerService
   ) {}
 
   public ngOnInit(): void {
-
     if (this.selectedDate) {
       this.activeDate = new Date(this.selectedDate);
     } else {
       this.activeDate = new Date();
     }
-
-    this.datepickerService?.customDates
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(customDates => {
-        this._customDates = customDates;
-    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -414,16 +396,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
   protected isDisabled(date: Date): boolean {
     return ((this.minDate && this.compare(date, this.minDate) < 0)
       || (this.maxDate && this.compare(date, this.maxDate) > 0))
-      || this.isCustomDateDisabled(date);
-  }
-
-  private isCustomDateDisabled(date: Date): boolean {
-    const dpDate = this._customDates.find(d => {
-      return d.date.getTime() === date.getTime();
-    });
-    if (dpDate) {
-      return !!dpDate.disabled;
-    }
-    return false;
+      || this.datepickerService.isDateDisabled(date);
   }
 }

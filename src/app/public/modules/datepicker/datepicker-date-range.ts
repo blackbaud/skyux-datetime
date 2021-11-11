@@ -1,5 +1,16 @@
-
+/**
+ * Specifies a range of dates.
+ */
 export interface SkyDatepickerDateRange {
-  startDate: Date;
+
+  /**
+   * The end date.
+   */
   endDate: Date;
+
+  /**
+   * The start date.
+   */
+  startDate: Date;
+
 }

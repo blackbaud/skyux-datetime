@@ -68,6 +68,7 @@ import {
 } from './fixtures/datepicker-reactive.component.fixture';
 
 import * as moment_ from 'moment';
+import { SkyDatepickerService } from './datepicker.service';
 const moment = moment_;
 
 // #region helpers
@@ -875,10 +876,12 @@ describe('datepicker', () => {
       beforeEach(() => {
         let inputElement = fixture.debugElement.query(By.css('input'));
         ngModel = <NgModel>inputElement.injector.get(NgModel);
-        (component.inputDirective as any).datepickerService.customDates.next([
+        const datepickerService = TestBed.inject(SkyDatepickerService);
+        datepickerService.setCustomDates([
           {
             date: new Date(2021, 9, 1),
             disabled: true
+
           },
           {
             date: new Date(2021, 9, 15),
@@ -892,18 +895,12 @@ describe('datepicker', () => {
       });
 
       it('should handle change to disabled date', fakeAsync(() => {
-        setInputProperty(new Date('9/30/2021'), component, fixture);
-        detectChanges(fixture);
-
         setInputElementValue(fixture.nativeElement, '10/1/2021', fixture);
 
         expect(ngModel.valid).toBe(false);
       }));
 
       it('should handle change to non-disabled date', fakeAsync(() => {
-        setInputProperty(new Date('9/30/2021'), component, fixture);
-        detectChanges(fixture);
-
         setInputElementValue(fixture.nativeElement, '10/15/2021', fixture);
 
         expect(ngModel.valid).toBe(true);

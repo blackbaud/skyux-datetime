@@ -90,16 +90,14 @@
         let-index="index"
         >
         <tr role="row">
-          <td
+          <td *ngFor="let date of row"
             class="sky-datepicker-center"
             role="gridcell"
             [id]="date.uid"
-            *ngFor="let date of row"
           >
           <sky-daypicker-cell
-            [date]="date"
-            [datepicker]="datepicker"
             [activeDateHasChanged]="activeDateHasChanged"
+            [date]="date"
           >
           </sky-daypicker-cell>
         </td>

@@ -12,31 +12,40 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyThemeService,
+  SkyThemeSettings
+} from '@skyux/theme';
+
+import {
   distinctUntilChanged
 } from 'rxjs/operators';
 
 import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
-import { SkyDatepickerCustomDate, SkyDatepickerDateRange } from '../../public/public_api';
-import { Subject } from 'rxjs';
+  Subject
+} from 'rxjs';
+
+import {
+  SkyDatepickerCustomDate,
+  SkyDatepickerDateRange
+} from '../../public/public_api';
 
 @Component({
   selector: 'datepicker-visual',
   templateUrl: './datepicker-visual.component.html'
 })
 export class DatepickerVisualComponent implements OnInit {
+
+  public customDateStream: Subject<Array<SkyDatepickerCustomDate>> =
+    new Subject<Array<SkyDatepickerCustomDate>>();
   public disabled = false;
   public minDate: Date;
   public maxDate: Date;
   public noValidate = false;
   public reactiveForm: FormGroup;
+  public showImportant: boolean = false;
   public selectedDate: Date = new Date(1955, 10, 5);
   public startingDay: number;
   public strict: boolean = false;
-  public showImportant: boolean = false;
-  public customDates: Subject<Array<SkyDatepickerCustomDate>> = new Subject<Array<SkyDatepickerCustomDate>>();
   public currentDateRange: SkyDatepickerDateRange;
 
   constructor(
@@ -104,14 +113,14 @@ export class DatepickerVisualComponent implements OnInit {
     this.outputImportantDates();
   }
 
-  public onDateRangeChange(range: SkyDatepickerDateRange) {
+  public onDateRangeChange(range: SkyDatepickerDateRange): void {
     this.currentDateRange = range;
     if (this.showImportant) {
       this.outputImportantDates();
     }
   }
 
-  public outputImportantDates() {
+  public outputImportantDates(): void {
     if (
       this.showImportant &&
       this.currentDateRange
@@ -173,9 +182,9 @@ export class DatepickerVisualComponent implements OnInit {
         importantText: ['Last date']
       });
 
-      this.customDates.next(customDates);
+      this.customDateStream.next(customDates);
     } else {
-      this.customDates.next([]);
+      this.customDateStream.next([]);
     }
   }
 

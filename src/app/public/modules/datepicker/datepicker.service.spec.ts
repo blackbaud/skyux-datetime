@@ -13,10 +13,6 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  SkyDatepickerService
-} from './datepicker.service';
-
-import {
   SkyDatepickerCustomDate
 } from './datepicker-custom-date';
 
@@ -24,6 +20,11 @@ import {
   SkyDatepickerDate
 } from './datepicker-date';
 
+import {
+  SkyDatepickerService
+} from './datepicker.service';
+
+//#region helpers
 function setRangeBeginDate(date: Date, service: any): void {
   service._rangeBeginDate = date;
 }
@@ -43,10 +44,13 @@ function getDateRows(service: any): SkyDatepickerDate[][] {
 function getApplySpy(service: any): jasmine.Spy {
   return spyOn(service, 'applyCustomDates');
 }
+//#endregion
 
 describe('SkyDatepickerService', () => {
+
   let service: SkyDatepickerService;
-  let customDates: Array<SkyDatepickerCustomDate> = [
+
+  const customDates: Array<SkyDatepickerCustomDate> = [
     {
       date: new Date(2021, 9, 1),
       disabled: false,
@@ -73,7 +77,7 @@ describe('SkyDatepickerService', () => {
     }
   ];
 
-  let dateRows: SkyDatepickerDate[][] = [
+  const dateRows: SkyDatepickerDate[][] = [
     [
       {
         current: false,
@@ -154,7 +158,7 @@ describe('SkyDatepickerService', () => {
       ]
     });
 
-    service = TestBed.get(SkyDatepickerService);
+    service = new SkyDatepickerService();
     tick();
   }));
 
@@ -282,9 +286,6 @@ describe('SkyDatepickerService', () => {
       (service as any).applyCustomDates();
 
       expect(getDateRows(service)).toBe(undefined);
-
     });
-
   });
-
 });

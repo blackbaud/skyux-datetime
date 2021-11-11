@@ -1,16 +1,20 @@
 <button
-  type="button"
   class="sky-btn sky-btn-sm sky-btn-default sky-datepicker-btn-date"
-  [ngClass]="{ 'sky-datepicker-btn-selected': date.selected, 'sky-btn-disabled': date.disabled, 'sky-btn-active': datepicker.isActive(date), 'sky-datepicker-btn-disabled': date.disabled, 'sky-datepicker-btn-important': date.important}"
-  [disabled]="date.disabled"
-  (click)="datepicker.selectCalendar($event, date.date, true)"
   tabindex="-1"
-  >
+  type="button"
+  [disabled]="date.disabled"
+  [ngClass]="{
+      'sky-datepicker-btn-selected': date.selected,
+      'sky-btn-disabled': date.disabled,
+      'sky-btn-active': datepicker.isActive(date),
+      'sky-datepicker-btn-disabled': date.disabled,
+      'sky-datepicker-btn-key-date': date.important
+    }"
+  (click)="datepicker.selectCalendar($event, date.date, true)"
+>
   <span
-    [ngClass]="{'sky-datepicker-secondary': date.secondary }"
-    >{{date.label}}</span>
-    <div 
-      *ngIf="date.important"
-      class="sky-datepicker-important-date-indicator">
-    </div>
+    [ngClass]="{ 'sky-datepicker-secondary': date.secondary }"
+  >
+    {{date.label}}
+  </span>
 </button>

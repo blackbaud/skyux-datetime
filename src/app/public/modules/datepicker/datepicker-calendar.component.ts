@@ -6,7 +6,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   ViewChild
 } from '@angular/core';
@@ -15,6 +14,14 @@ import {
   Observable,
   Subject
 }from 'rxjs';
+
+import {
+  takeUntil
+} from 'rxjs/operators';
+
+import {
+  SkyDateFormatter
+} from './date-formatter';
 
 import {
   SkyDatepickerAdapterService
@@ -29,20 +36,12 @@ import {
 } from './datepicker-config.service';
 
 import {
-  SkyDateFormatter
-} from './date-formatter';
-
-import {
   SkyDatepickerCustomDate
 } from './datepicker-custom-date';
 
 import {
   SkyDatepickerDateRange
 } from './datepicker-date-range';
-
-import {
-  takeUntil
-} from 'rxjs/operators';
 
 import {
   SkyDatepickerService
@@ -55,11 +54,15 @@ import {
   selector: 'sky-datepicker-calendar',
   templateUrl: './datepicker-calendar.component.html',
   styleUrls: ['./datepicker-calendar.component.scss'],
-  providers: [
-    SkyDatepickerAdapterService
-  ]
+  providers: [SkyDatepickerAdapterService]
 })
 export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, OnDestroy {
+
+  /**
+   * A stream of customized dates.
+   */
+  @Input()
+  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   @Input()
   public minDate: Date;
@@ -77,22 +80,18 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
     this._startingDay = start;
   }
 
-  /** dates with customized information/display */
-  @Input()
-   public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
-
   public get startingDay() {
     return this._startingDay || 0;
   }
-
-  @Output()
-  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
 
   @Output()
   public calendarModeChange: EventEmitter<string> = new EventEmitter<string>();
 
   @Output()
   public dateRangeChange: EventEmitter<SkyDatepickerDateRange> = new EventEmitter<SkyDatepickerDateRange>(undefined);
+
+  @Output()
+  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
 
   /**
    * @internal
@@ -112,23 +111,21 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
 
   private formatter = new SkyDateFormatter();
 
-  private _startingDay: number;
-
   private ngUnsubscribe = new Subject();
+
+  private _startingDay: number;
 
   public constructor(
     private adapter: SkyDatepickerAdapterService,
     private config: SkyDatepickerConfigService,
     private elementRef: ElementRef,
-    @Optional() private datePickerService?: SkyDatepickerService) {
+    private datePickerService: SkyDatepickerService
+  ) {
     this.configureOptions();
   }
 
   public ngOnInit(): void {
-    if (
-      this.customDateStream &&
-      this.datePickerService
-    ) {
+    if (this.customDateStream) {
       this.customDateStream
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(dates => {
@@ -136,12 +133,11 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
       });
     }
 
-    if (this.datePickerService) {
-      this.datePickerService.dayRangeChange.subscribe(range => {
+    this.datePickerService.dayRangeChange
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(range => {
         this.dateRangeChange.emit(range);
-      });
-    }
-
+    });
   }
 
   public ngAfterViewInit(): void {

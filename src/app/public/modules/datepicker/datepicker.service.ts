@@ -18,20 +18,45 @@ import {
   SkyDatepickerDateRange
 } from './datepicker-date-range';
 
+/**
+ * @internal
+ */
 @Injectable()
 export class SkyDatepickerService {
-  // todo proper formatting on this
+
+  /**
+   * Returns the custom dates provided by the datepicker component.
+   */
   public readonly customDates: Subject<Array<SkyDatepickerCustomDate>> =
     new Subject<Array<SkyDatepickerCustomDate>>();
 
+  /**
+   * Fires when the range of displayed dates in the calendar change.
+   */
   public dayRangeChange: Subject<SkyDatepickerDateRange> = new Subject<SkyDatepickerDateRange>();
 
-  private _dateRows: SkyDatepickerDate[][];
-  private _rangeBeginDate: Date;
-  private _customDates: Array<SkyDatepickerCustomDate>;
+  /**
+   * Specifies if a key date popover is currently displayed.
+   */
+  public keyDatePopoverStream: Subject<SkyDatepickerDate> = new Subject<SkyDatepickerDate>();
 
   /**
-   * Accepts the custom dates for the current date range and applies them to the date picker dates
+   * Custom dates provided by the datepicker component.
+   */
+  private _customDates: Array<SkyDatepickerCustomDate> = [];
+
+  /**
+   * The dates currently displayed in the calendar.
+   */
+  private _dateRows: SkyDatepickerDate[][] = [];
+
+  /**
+   * The first date that appears in the `_dateRows` array.
+   */
+  private _rangeBeginDate: Date;
+
+  /**
+   * Sets the custom dates for the current date range and applies them to the date picker dates
    * @param customDates - the array of custom dates for the date range
    */
   public setCustomDates(customDates: Array<SkyDatepickerCustomDate>): void {
@@ -41,9 +66,8 @@ export class SkyDatepickerService {
   }
 
   /**
-   * Accepts the date rows currently displayed in the picker applies any custom dates
-   * and sets the next range to be consumed if it has changed
-   * @param dateRows - the array of date rows currently displayed in the picker
+   * Sets the date rows currently displayed in the picker and applies any custom dates.
+   * @param dateRows - the array of date rows currently displayed in the calendar
    */
   public setPickerDateRange(dateRows: SkyDatepickerDate[][]): void {
     this._dateRows = dateRows;
@@ -62,13 +86,25 @@ export class SkyDatepickerService {
       });
     }
 
-    if (
-      this._customDates &&
-      this._customDates.length > 0
-    ) {
+    if (this._customDates && this._customDates.length > 0) {
       // days refreshed without a date change, re-apply any customizations
       this.applyCustomDates();
     }
+  }
+
+  /**
+   * Returns true if `date` is found in the `customDates` array and marked as `disabled`.
+   */
+  public isDateDisabled(date: Date): boolean {
+    if (date) {
+      const customDateMatch = this._customDates.find(d => {
+        return d.date.getTime() === date.getTime();
+      });
+      if (customDateMatch) {
+        return !!customDateMatch.disabled;
+      }
+    }
+    return false;
   }
 
   /**
@@ -79,26 +115,25 @@ export class SkyDatepickerService {
     let newDate: SkyDatepickerDate;
     let dateIndex: number;
 
-    if (
-      this._customDates &&
-      this._dateRows
-    ) {
-      this._customDates.forEach(custom => {
+    /* istanbul ignore else */
+    if (this._customDates && this._dateRows) {
+      this._customDates.forEach(customDate => {
         dateIndex = -1;
         this._dateRows.forEach(row => {
           if (dateIndex === -1) {
             dateIndex = row.findIndex(d => {
-              return d.date.getTime() === custom.date.getTime();
+              return d.date.getTime() === customDate.date.getTime();
             });
             if (dateIndex > -1) {
               date = row[dateIndex];
-              // replace the date with a new instance so that display gets updated
+              // Replace the date with a new instance so that display gets updated.
               newDate = {
                 current: date.current,
                 date: date.date,
-                disabled: custom.disabled ? true : date.disabled,
-                important: custom.important,
-                importantText: custom.important ? custom.importantText : undefined,
+                disabled: !!customDate.disabled || !!date.disabled,
+                important: !!customDate.important || !!date.important,
+                importantText: !!customDate.important ?
+                  (customDate.importantText || date.importantText) : undefined,
                 label: date.label,
                 secondary: date.secondary,
                 selected: date.selected,

@@ -55,13 +55,13 @@
     #calendarRef
   >
     <sky-datepicker-calendar
+      [customDateStream]="customDateStream"
       [maxDate]="maxDate"
       [minDate]="minDate"
       [startingDay]="startingDay"
       (calendarModeChange)="onCalendarModeChange()"
-      (selectedDateChange)="onSelectedDateChange($event)"
       (dateRangeChange)="onDateRangeChange($event)"
-      [customDateStream]="customDateStream"
+      (selectedDateChange)="onSelectedDateChange($event)"
     >
     </sky-datepicker-calendar>
   </div>

@@ -74,16 +74,17 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
 
   /**
-   * Fires when the range of dispalyed dates changes.
-   */
-  @Output()
-  public dateRangeChange = new EventEmitter<SkyDatepickerDateRange>();
-
-  /**
    * Adds a class to the datepicker.
    */
   @Input()
   public pickerClass = '';
+
+  /**
+   * Fires when the range of displayed dates in the calendar change.
+   * This is useful to know when to push new custom dates to the `customDateStream`.
+   */
+  @Output()
+  public dateRangeChange = new EventEmitter<SkyDatepickerDateRange>();
 
   /**
    * @internal

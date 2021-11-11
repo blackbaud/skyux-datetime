@@ -16,6 +16,9 @@ import {
 @Injectable()
 export class SkyDaypickerPopoverService {
 
-  public mouseoverDateStream: Subject<SkyDatepickerDate> = new Subject<SkyDatepickerDate>();
+  /**
+   * Specifies if a key date popover is currently displayed.
+   */
+  public keyDatePopoverStream: Subject<SkyDatepickerDate> = new Subject<SkyDatepickerDate>();
 
 }

@@ -18,20 +18,16 @@ import {
 } from './datepicker-calendar-inner.component';
 
 import {
-  SkyDatepickerDate
-} from './datepicker-date';
-
-import {
   SkyDatepickerModule
 } from './datepicker.module';
 
 import {
+  SkyDatepickerService
+} from './datepicker.service';
+
+import {
   SkyDayPickerCellComponent
 } from './daypicker-cell.component';
-
-function setNextMouseOverDate(component: any, date: SkyDatepickerDate): void {
-  component.daypickerPopoverService.mouseoverDateStream.next(date);
-}
 
 function getShowTooltipSpy(component: any): jasmine.Spy {
   return spyOn(component, 'showTooltip');
@@ -39,10 +35,6 @@ function getShowTooltipSpy(component: any): jasmine.Spy {
 
 function getHideTooltipSpy(component: any): jasmine.Spy {
   return spyOn(component, 'hideTooltip');
-}
-
-function getNextMouseoverDateSpy(component: any): jasmine.Spy {
-  return spyOn(component.daypickerPopoverService.mouseoverDateStream, 'next');
 }
 
 function getPopoverOpen(component: any): boolean {
@@ -57,10 +49,6 @@ function setCancelPopover(component: any, cancel: boolean): void {
   component.cancelPopover = cancel;
 }
 
-function getPopoverControllerSpy(component: any): jasmine.Spy {
-  return spyOn(component.popoverController, 'next');
-}
-
 function hideTooltip(component: any): void {
   component.hideTooltip();
 }
@@ -73,10 +61,17 @@ function setActiveUid(component: any, uid: string): void {
   component.activeUid = uid;
 }
 
-describe('daypicker cell', () => {
+class MockSkyCalendarInnerComponent {
+  public isActive(value: any): boolean {
+    return false;
+  }
+}
 
+describe('daypicker cell', () => {
   let fixture: ComponentFixture<SkyDayPickerCellComponent>;
   let component: SkyDayPickerCellComponent;
+  let datepickerService: SkyDatepickerService;
+  const calendarInnerComponent = new MockSkyCalendarInnerComponent();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -85,6 +80,9 @@ describe('daypicker cell', () => {
       ],
       imports: [
         SkyDatepickerModule
+      ],
+      providers: [
+        { provide: SkyDatepickerCalendarInnerComponent, useValue: calendarInnerComponent }
       ]
     });
 
@@ -101,8 +99,7 @@ describe('daypicker cell', () => {
       important: true,
       importantText: ['important!']
     };
-
-    component.datepicker = new SkyDatepickerCalendarInnerComponent();
+    datepickerService = TestBed.inject(SkyDatepickerService);
   });
 
   describe('set hasTooltip', () => {
@@ -142,15 +139,15 @@ describe('daypicker cell', () => {
 
       expect(component.hasTooltip).toBeTruthy();
     });
-
   });
 
   describe('showTooltip on Init', () => {
     let showSpy: jasmine.Spy;
     let activeDateSpy: jasmine.Spy;
+
     beforeEach(() => {
       showSpy = getShowTooltipSpy(component);
-      activeDateSpy = spyOn(component.datepicker, 'isActive').and.returnValue(true);
+      activeDateSpy = spyOn(calendarInnerComponent, 'isActive').and.returnValue(true);
       component.activeDateHasChanged = true;
     });
 
@@ -182,7 +179,7 @@ describe('daypicker cell', () => {
     });
   });
 
-  describe('daypickerPopoverService mouseoverDateStream', () => {
+  describe('daypickerPopoverService keyDatePopoverStream', () => {
     let hideSpy: jasmine.Spy;
 
     beforeEach(() => {
@@ -191,15 +188,13 @@ describe('daypicker cell', () => {
     });
 
     it('should hide the tooltip if no mouseover date', () => {
-      setNextMouseOverDate(component, undefined);
+      datepickerService.keyDatePopoverStream.next(undefined);
 
       expect(hideSpy).toHaveBeenCalled();
     });
 
     it('should hide the tooltip if new mouseover date', () => {
-      setNextMouseOverDate (
-        component,
-        {
+      datepickerService.keyDatePopoverStream.next({
           current: false,
           date: new Date(),
           disabled: false,
@@ -214,7 +209,7 @@ describe('daypicker cell', () => {
     });
 
     it('should not hide the tooltip if mouseover this date', () => {
-      setNextMouseOverDate (component, component.date);
+      datepickerService.keyDatePopoverStream.next(component.date);
 
       expect(hideSpy).not.toHaveBeenCalled();
     });
@@ -226,14 +221,14 @@ describe('daypicker cell', () => {
 
     beforeEach(() => {
       showSpy = getShowTooltipSpy(component);
-      nextDateSpy = getNextMouseoverDateSpy(component);
+      nextDateSpy = spyOn(datepickerService.keyDatePopoverStream, 'next');
     });
 
     it('should not call showTooltip if no tooltip', () => {
       component.date.important = false;
       fixture.detectChanges();
 
-      component.onDayMouseenter(undefined);
+      component.onDayMouseenter();
 
       expect(component.hasTooltip).toBeFalsy();
       expect(showSpy).not.toHaveBeenCalled();
@@ -243,7 +238,7 @@ describe('daypicker cell', () => {
     it('should call showTooltip if have tooltip', () => {
       fixture.detectChanges();
 
-      component.onDayMouseenter(undefined);
+      component.onDayMouseenter();
 
       expect(component.hasTooltip).toBeTruthy();
       expect(showSpy).toHaveBeenCalled();
@@ -258,14 +253,14 @@ describe('daypicker cell', () => {
 
     beforeEach(() => {
       hideSpy = getHideTooltipSpy(component);
-      nextDateSpy = getNextMouseoverDateSpy(component);
+      nextDateSpy = spyOn(datepickerService.keyDatePopoverStream, 'next');
     });
 
     it('should not call hideTooltip if no tooltip', () => {
       component.date.important = false;
       fixture.detectChanges();
 
-      component.onDayMouseleave(undefined);
+      component.onDayMouseleave();
 
       expect(component.hasTooltip).toBeFalsy();
       expect(hideSpy).not.toHaveBeenCalled();
@@ -275,7 +270,7 @@ describe('daypicker cell', () => {
     it('should call showTooltip if have tooltip', () => {
       fixture.detectChanges();
 
-      component.onDayMouseleave(undefined);
+      component.onDayMouseleave();
 
       expect(component.hasTooltip).toBeTruthy();
       expect(hideSpy).toHaveBeenCalled();
@@ -290,7 +285,7 @@ describe('daypicker cell', () => {
       fixture.detectChanges();
       setPopoverOpen(component, true);
 
-      component.onPopoverClosed(undefined);
+      component.onPopoverClosed();
 
       expect(getPopoverOpen(component)).toBeFalsy();
     });
@@ -309,7 +304,7 @@ describe('daypicker cell', () => {
       setPopoverOpen(component, false);
       setCancelPopover(component, false);
 
-      component.onPopoverOpened(undefined);
+      component.onPopoverOpened();
 
       expect(getPopoverOpen(component)).toBeTruthy();
       expect(hideSpy).not.toHaveBeenCalled();
@@ -320,7 +315,7 @@ describe('daypicker cell', () => {
       setPopoverOpen(component, false);
       setCancelPopover(component, true);
 
-      component.onPopoverOpened(undefined);
+      component.onPopoverOpened();
 
       expect(hideSpy).toHaveBeenCalled();
     });
@@ -355,7 +350,7 @@ describe('daypicker cell', () => {
     let controlerSpy: jasmine.Spy;
 
     beforeEach(() => {
-      controlerSpy = getPopoverControllerSpy(component);
+      controlerSpy = spyOn(component.popoverController, 'next');
     });
 
     it('should close the popover if open', () => {
@@ -382,7 +377,7 @@ describe('daypicker cell', () => {
     let controlerSpy: jasmine.Spy;
 
     beforeEach(() => {
-      controlerSpy = getPopoverControllerSpy(component);
+      controlerSpy = spyOn(component.popoverController, 'next');
     });
 
     it('should not open the tool tip if hasTooltip is false', fakeAsync(() => {
@@ -414,7 +409,7 @@ describe('daypicker cell', () => {
       });
     }));
 
-    it('should not open the tool tip if cancelled', fakeAsync(() => {
+    it('should not open the tool tip if cancelled', async () => {
       fixture.detectChanges();
       setPopoverOpen(component, false);
       setActiveUid(component, component.date.uid);
@@ -423,14 +418,12 @@ describe('daypicker cell', () => {
 
       setCancelPopover(component, true);
 
-      tick(500);
+      await fixture.whenStable();
       fixture.detectChanges();
 
-      fixture.whenStable().then(() => {
-        expect(controlerSpy).not.toHaveBeenCalled();
-      });
-
-    }));
+      await fixture.whenStable();
+      expect(controlerSpy).not.toHaveBeenCalled();
+    });
 
     it('should not open the tool tip if activeUid differs', fakeAsync(() => {
       fixture.detectChanges();

@@ -1,12 +1,12 @@
 import {
-  ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit,
-  Optional
+  OnInit
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
+import {
+  Subject
+} from 'rxjs';
 
 import {
   SkyDatepickerCalendarInnerComponent
@@ -15,7 +15,10 @@ import {
 import {
   SkyDatepickerDate
 } from './datepicker-date';
-import { SkyDatepickerService } from './datepicker.service';
+
+import {
+  SkyDatepickerService
+} from './datepicker.service';
 
 /**
  * @internal
@@ -41,8 +44,7 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
   public constructor(
     datepicker: SkyDatepickerCalendarInnerComponent,
-    @Optional() private datepickerService?: SkyDatepickerService,
-    @Optional() private changeDetectorRef?: ChangeDetectorRef
+    private datepickerService: SkyDatepickerService
   ) {
     this.datepicker = datepicker;
   }
@@ -63,15 +65,6 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
     }, 'day');
 
     this.datepicker.refreshView();
-
-    if (this.datepickerService && this.changeDetectorRef) {
-      this.datepickerService.customDates
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
-          // make sure the display is updated when we get custom dates
-          this.changeDetectorRef.markForCheck();
-      });
-    }
   }
 
   public ngOnDestroy(): void {
@@ -144,10 +137,7 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
       this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
     this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
 
-    if (this.datepickerService) {
-      this.datepickerService.setPickerDateRange(this.rows);
-    }
-
+    this.datepickerService.setPickerDateRange(this.rows);
   }
 
   private keydownDays(key: string, event: KeyboardEvent) {
