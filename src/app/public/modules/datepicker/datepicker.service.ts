@@ -56,7 +56,7 @@ export class SkyDatepickerService {
   private _rangeBeginDate: Date;
 
   /**
-   * Sets the custom dates for the current date range and applies them to the date picker dates
+   * Sets the custom dates for the current date range displayed in the calendar.
    * @param customDates - the array of custom dates for the date range
    */
   public setCustomDates(customDates: Array<SkyDatepickerCustomDate>): void {
@@ -108,7 +108,7 @@ export class SkyDatepickerService {
   }
 
   /**
-   * Applies custom date properties to the existing SkyDatepickerDates displayed
+   * Applies custom date properties to the existing dates displayed in the calendar.
    */
   private applyCustomDates(): void {
     let date: SkyDatepickerDate;

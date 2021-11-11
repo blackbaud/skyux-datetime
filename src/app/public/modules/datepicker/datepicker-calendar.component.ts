@@ -125,6 +125,7 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
   }
 
   public ngOnInit(): void {
+    /* istanbul ignore else */
     if (this.customDateStream) {
       this.customDateStream
         .pipe(takeUntil(this.ngUnsubscribe))

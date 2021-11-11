@@ -48,6 +48,10 @@ import {
 } from './datepicker.component';
 
 import {
+  SkyDatepickerService
+} from './datepicker.service';
+
+import {
   DatepickerTestComponent
 } from './fixtures/datepicker.component.fixture';
 
@@ -68,7 +72,7 @@ import {
 } from './fixtures/datepicker-reactive.component.fixture';
 
 import * as moment_ from 'moment';
-import { SkyDatepickerService } from './datepicker.service';
+
 const moment = moment_;
 
 // #region helpers

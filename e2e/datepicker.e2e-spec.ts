@@ -6,7 +6,8 @@ import {
 
 import {
   element,
-  by
+  by,
+  browser
 } from 'protractor';
 
 describe('Datepicker', () => {
@@ -105,6 +106,17 @@ describe('Datepicker', () => {
 
       expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
         screenshotName: getScreenshotName('datepicker-input-box-disabled')
+      });
+    });
+
+    it('should match previous datepicker input screenshot with custom dates', async (done) => {
+      await SkyHostBrowser.scrollTo('#button-set-custom-dates');
+      await element(by.css('#button-set-custom-dates')).click();
+      await element(by.css('#sky-datepicker-button-2')).click();
+      await SkyHostBrowser.moveCursorOffScreen();
+
+      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
+        screenshotName: getScreenshotName('datepicker-input-custom-dates')
       });
     });
   }

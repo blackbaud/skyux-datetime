@@ -179,7 +179,7 @@ describe('daypicker cell', () => {
     });
   });
 
-  describe('daypickerPopoverService keyDatePopoverStream', () => {
+  describe('datepickerService keyDatePopoverStream', () => {
     let hideSpy: jasmine.Spy;
 
     beforeEach(() => {

@@ -42,7 +42,7 @@ export class DatepickerVisualComponent implements OnInit {
   public maxDate: Date;
   public noValidate = false;
   public reactiveForm: FormGroup;
-  public showImportant: boolean = false;
+  public showCustomDates: boolean = false;
   public selectedDate: Date = new Date(1955, 10, 5);
   public startingDay: number;
   public strict: boolean = false;
@@ -108,21 +108,21 @@ export class DatepickerVisualComponent implements OnInit {
     this.themeSvc.setTheme(themeSettings);
   }
 
-  public toggleShowImortantDates(): void {
-    this.showImportant = !this.showImportant;
-    this.outputImportantDates();
+  public toggleCustomDates(): void {
+    this.showCustomDates = !this.showCustomDates;
+    this.updateCustomDates();
   }
 
   public onDateRangeChange(range: SkyDatepickerDateRange): void {
     this.currentDateRange = range;
-    if (this.showImportant) {
-      this.outputImportantDates();
+    if (this.showCustomDates) {
+      this.updateCustomDates();
     }
   }
 
-  public outputImportantDates(): void {
+  public updateCustomDates(): void {
     if (
-      this.showImportant &&
+      this.showCustomDates &&
       this.currentDateRange
     ) {
       let customDates: SkyDatepickerCustomDate[] = [];
