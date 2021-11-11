@@ -72,10 +72,10 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.hasTooltip =
-      this.date.important &&
-      this.date.importantText &&
-      this.date.importantText.length > 0 &&
-      this.date.importantText[0].length > 0;
+      this.date.keyDate &&
+      this.date.keyDateText &&
+      this.date.keyDateText.length > 0 &&
+      this.date.keyDateText[0].length > 0;
 
     // show the tooltip if this is the active date and is not the
     // initial active date (activeDateHasChanged)
@@ -141,9 +141,9 @@ export class SkyDayPickerCellComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getImportantTextLabel(): string {
+  public getKeyDateLabel(): string {
     if (this.hasTooltip) {
-      return this.date.importantText.join(', ');
+      return this.date.keyDateText.join(', ');
     } else {
       return '';
     }

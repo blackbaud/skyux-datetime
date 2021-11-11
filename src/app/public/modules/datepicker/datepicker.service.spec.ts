@@ -54,26 +54,26 @@ describe('SkyDatepickerService', () => {
     {
       date: new Date(2021, 9, 1),
       disabled: false,
-      important: true,
-      importantText: ['important!']
+      keyDate: true,
+      keyDateText: ['important!']
     },
     {
       date: new Date(2021, 9, 3),
       disabled: true,
-      important: false,
-      importantText: ['not applied']
+      keyDate: false,
+      keyDateText: ['not applied']
     },
     {
       date: new Date(2021, 9, 5),
       disabled: true,
-      important: true,
-      importantText: ['disabled!']
+      keyDate: true,
+      keyDateText: ['disabled!']
     },
     {
       date: new Date(2021, 9, 15),
       disabled: false,
-      important: true,
-      importantText: ['out of range!']
+      keyDate: true,
+      keyDateText: ['out of range!']
     }
   ];
 
@@ -83,8 +83,8 @@ describe('SkyDatepickerService', () => {
         current: false,
         date: new Date(2021, 9, 1),
         disabled: false,
-        important: false,
-        importantText: undefined,
+        keyDate: false,
+        keyDateText: undefined,
         label: '1',
         secondary: false,
         selected: false,
@@ -94,8 +94,8 @@ describe('SkyDatepickerService', () => {
         current: false,
         date: new Date(2021, 9, 2),
         disabled: false,
-        important: false,
-        importantText: undefined,
+        keyDate: false,
+        keyDateText: undefined,
         label: '2',
         secondary: false,
         selected: false,
@@ -105,8 +105,8 @@ describe('SkyDatepickerService', () => {
         current: false,
         date: new Date(2021, 9, 3),
         disabled: false,
-        important: false,
-        importantText: undefined,
+        keyDate: false,
+        keyDateText: undefined,
         label: '3',
         secondary: false,
         selected: false,
@@ -118,8 +118,8 @@ describe('SkyDatepickerService', () => {
         current: false,
         date: new Date(2021, 9, 4),
         disabled: false,
-        important: false,
-        importantText: undefined,
+        keyDate: false,
+        keyDateText: undefined,
         label: '4',
         secondary: false,
         selected: false,
@@ -129,8 +129,8 @@ describe('SkyDatepickerService', () => {
         current: false,
         date: new Date(2021, 9, 5),
         disabled: false,
-        important: false,
-        importantText: undefined,
+        keyDate: false,
+        keyDateText: undefined,
         label: '5',
         secondary: false,
         selected: false,
@@ -140,8 +140,8 @@ describe('SkyDatepickerService', () => {
         current: false,
         date: new Date(2021, 9, 6),
         disabled: false,
-        important: false,
-        importantText: undefined,
+        keyDate: false,
+        keyDateText: undefined,
         label: '6',
         secondary: false,
         selected: false,
@@ -239,34 +239,34 @@ describe('SkyDatepickerService', () => {
 
       (service as any).applyCustomDates();
       let updatedRows = getDateRows(service);
-      expect(updatedRows[0][0].important).toBeTruthy();
+      expect(updatedRows[0][0].keyDate).toBeTruthy();
       expect(updatedRows[0][0].disabled).toBeFalsy();
-      expect(updatedRows[0][0].importantText[0]).toBe('important!');
+      expect(updatedRows[0][0].keyDateText[0]).toBe('important!');
       expect(updatedRows[0][0].uid).toBe('1');
 
-      expect(updatedRows[0][1].important).toBeFalsy();
+      expect(updatedRows[0][1].keyDate).toBeFalsy();
       expect(updatedRows[0][1].disabled).toBeFalsy();
-      expect(updatedRows[0][1].importantText).toBeUndefined();
+      expect(updatedRows[0][1].keyDateText).toBeUndefined();
       expect(updatedRows[0][1].uid).toBe('2');
 
-      expect(updatedRows[0][2].important).toBeFalsy();
+      expect(updatedRows[0][2].keyDate).toBeFalsy();
       expect(updatedRows[0][2].disabled).toBeTruthy();
-      expect(updatedRows[0][2].importantText).toBeUndefined();
+      expect(updatedRows[0][2].keyDateText).toBeUndefined();
       expect(updatedRows[0][2].uid).toBe('3');
 
-      expect(updatedRows[1][0].important).toBeFalsy();
+      expect(updatedRows[1][0].keyDate).toBeFalsy();
       expect(updatedRows[1][0].disabled).toBeFalsy();
-      expect(updatedRows[1][0].importantText).toBeUndefined();
+      expect(updatedRows[1][0].keyDateText).toBeUndefined();
       expect(updatedRows[1][0].uid).toBe('4');
 
-      expect(updatedRows[1][1].important).toBeTruthy();
+      expect(updatedRows[1][1].keyDate).toBeTruthy();
       expect(updatedRows[1][1].disabled).toBeTruthy();
-      expect(updatedRows[1][1].importantText[0]).toBe('disabled!');
+      expect(updatedRows[1][1].keyDateText[0]).toBe('disabled!');
       expect(updatedRows[1][1].uid).toBe('5');
 
-      expect(updatedRows[1][2].important).toBeFalsy();
+      expect(updatedRows[1][2].keyDate).toBeFalsy();
       expect(updatedRows[1][2].disabled).toBeFalsy();
-      expect(updatedRows[1][2].importantText).toBeUndefined();
+      expect(updatedRows[1][2].keyDateText).toBeUndefined();
       expect(updatedRows[1][2].uid).toBe('6');
     });
 

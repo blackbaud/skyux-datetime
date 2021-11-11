@@ -129,57 +129,57 @@ export class DatepickerVisualComponent implements OnInit {
       customDates.push({
         date: this.currentDateRange.startDate,
         disabled: false,
-        important: true,
-        importantText: ['First date']
+        keyDate: true,
+        keyDateText: ['First date']
       });
 
       customDates.push({
         date: this.getNextDate(this.currentDateRange.startDate, 8),
         disabled: false,
-        important: true,
-        importantText: ['Important']
+        keyDate: true,
+        keyDateText: ['Important']
       });
 
       customDates.push({
         date: this.getNextDate(this.currentDateRange.startDate, 9),
         disabled: false,
-        important: true,
-        importantText: ['Also Important']
+        keyDate: true,
+        keyDateText: ['Also Important']
       });
 
       customDates.push({
         date: this.getNextDate(this.currentDateRange.startDate, 10),
         disabled: true,
-        important: true,
-        importantText: ['Disabled']
+        keyDate: true,
+        keyDateText: ['Disabled']
       });
 
       customDates.push({
         date: this.getNextDate(this.currentDateRange.startDate, 11),
         disabled: true,
-        important: false,
-        importantText: []
+        keyDate: false,
+        keyDateText: []
       });
 
       customDates.push({
         date: this.getNextDate(this.currentDateRange.startDate, 12),
         disabled: false,
-        important: true,
-        importantText: []
+        keyDate: true,
+        keyDateText: []
       });
 
       customDates.push({
         date: this.getNextDate(this.currentDateRange.startDate, 13),
         disabled: false,
-        important: true,
-        importantText: ['Multiple', 'Messages']
+        keyDate: true,
+        keyDateText: ['Multiple', 'Messages']
       });
 
       customDates.push({
         date: this.currentDateRange.endDate,
         disabled: false,
-        important: true,
-        importantText: ['Last date']
+        keyDate: true,
+        keyDateText: ['Last date']
       });
 
       this.customDateStream.next(customDates);

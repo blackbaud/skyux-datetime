@@ -14,13 +14,13 @@ export interface SkyDatepickerCustomDate {
   disabled?: boolean;
 
   /**
-   * Indicates whether to display the date as important in the calendar.
+   * Indicates whether to display the date as a key date in the calendar.
    */
-  important?: boolean;
+  keyDate?: boolean;
 
   /**
-   * Displays a popup of the provided text when hovering over the important date in the calendar.
+   * Displays a popup of the provided text when hovering over the key date in the calendar.
    */
-  importantText?: Array<string>;
+  keyDateText?: Array<string>;
 
 }

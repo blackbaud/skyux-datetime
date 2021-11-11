@@ -96,45 +96,45 @@ describe('daypicker cell', () => {
       secondary: false,
       selected: false,
       uid: '1',
-      important: true,
-      importantText: ['important!']
+      keyDate: true,
+      keyDateText: ['important!']
     };
     datepickerService = TestBed.inject(SkyDatepickerService);
   });
 
   describe('set hasTooltip', () => {
-    it('should set hasTooltip to false if not an important date', () => {
-      component.date.important = false;
+    it('should set hasTooltip to false if not a key date', () => {
+      component.date.keyDate = false;
       fixture.detectChanges();
 
       expect(component.hasTooltip).toBeFalsy();
     });
 
-    it('should set hasTooltip to false if an important date and importantText undefined', () => {
-      component.date.importantText = undefined;
-
-      fixture.detectChanges();
-
-      expect(component.hasTooltip).toBeFalsy();
-    });
-
-    it('should set hasTooltip to false if an important date and no importantText items', () => {
-      component.date.importantText = [];
+    it('should set hasTooltip to false if a key date and keyDateText undefined', () => {
+      component.date.keyDateText = undefined;
 
       fixture.detectChanges();
 
       expect(component.hasTooltip).toBeFalsy();
     });
 
-    it('should set hasTooltip to false if an important date and importantText item empty', () => {
-      component.date.importantText = [''];
+    it('should set hasTooltip to false if a key date and no keyDateText items', () => {
+      component.date.keyDateText = [];
 
       fixture.detectChanges();
 
       expect(component.hasTooltip).toBeFalsy();
     });
 
-    it('should set hasTooltip to true if important date and importantText item not empty', () => {
+    it('should set hasTooltip to false if a key date and keyDateText item empty', () => {
+      component.date.keyDateText = [''];
+
+      fixture.detectChanges();
+
+      expect(component.hasTooltip).toBeFalsy();
+    });
+
+    it('should set hasTooltip to true if key date and keyDateText item not empty', () => {
       fixture.detectChanges();
 
       expect(component.hasTooltip).toBeTruthy();
@@ -159,7 +159,7 @@ describe('daypicker cell', () => {
     });
 
     it('should not show tooltip when no tooltip', () => {
-      component.date.important = false;
+      component.date.keyDate = false;
       fixture.detectChanges();
 
       expect(showSpy).not.toHaveBeenCalled();
@@ -225,7 +225,7 @@ describe('daypicker cell', () => {
     });
 
     it('should not call showTooltip if no tooltip', () => {
-      component.date.important = false;
+      component.date.keyDate = false;
       fixture.detectChanges();
 
       component.onDayMouseenter();
@@ -257,7 +257,7 @@ describe('daypicker cell', () => {
     });
 
     it('should not call hideTooltip if no tooltip', () => {
-      component.date.important = false;
+      component.date.keyDate = false;
       fixture.detectChanges();
 
       component.onDayMouseleave();
@@ -322,26 +322,26 @@ describe('daypicker cell', () => {
 
   });
 
-  describe('getImportantTextLabel', () => {
+  describe('getKeyDateLabel', () => {
 
     it('should return empty string if no tooltip', () => {
-      component.date.important = false;
+      component.date.keyDate = false;
       fixture.detectChanges();
 
-      expect(component.getImportantTextLabel()).toBe('');
+      expect(component.getKeyDateLabel()).toBe('');
     });
 
-    it('should return a single stringif one important text', () => {
+    it('should return a single string if a single keyDateText', () => {
       fixture.detectChanges();
 
-      expect(component.getImportantTextLabel()).toBe('important!');
+      expect(component.getKeyDateLabel()).toBe('important!');
     });
 
-    it('should return a comma delimited string if multiple important texts', () => {
-      component.date.importantText = ['important!', 'this too'];
+    it('should return a comma delimited string if multiple keyDateTexts', () => {
+      component.date.keyDateText = ['important!', 'this too'];
       fixture.detectChanges();
 
-      expect(component.getImportantTextLabel()).toBe('important!, this too');
+      expect(component.getKeyDateLabel()).toBe('important!, this too');
     });
 
   });
@@ -381,7 +381,7 @@ describe('daypicker cell', () => {
     });
 
     it('should not open the tool tip if hasTooltip is false', fakeAsync(() => {
-      component.date.important =  false;
+      component.date.keyDate =  false;
       fixture.detectChanges();
       setPopoverOpen(component, false);
 

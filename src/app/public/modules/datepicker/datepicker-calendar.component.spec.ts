@@ -754,8 +754,8 @@ describe('datepicker calendar', () => {
           {
             date: new Date(2017, 4, 1),
             disabled: true,
-            important: false,
-            importantText: []
+            keyDate: false,
+            keyDateText: []
           }
         ]);
         fixture.detectChanges();
@@ -775,8 +775,8 @@ describe('datepicker calendar', () => {
           {
             date: new Date(2017, 4, 1),
             disabled: false,
-            important: true,
-            importantText: []
+            keyDate: true,
+            keyDateText: []
           }
         ]);
         fixture.detectChanges();

@@ -131,9 +131,9 @@ export class SkyDatepickerService {
                 current: date.current,
                 date: date.date,
                 disabled: !!customDate.disabled || !!date.disabled,
-                important: !!customDate.important || !!date.important,
-                importantText: !!customDate.important ?
-                  (customDate.importantText || date.importantText) : undefined,
+                keyDate: !!customDate.keyDate || !!date.keyDate,
+                keyDateText: !!customDate.keyDate ?
+                  (customDate.keyDateText || date.keyDateText) : undefined,
                 label: date.label,
                 secondary: date.secondary,
                 selected: date.selected,

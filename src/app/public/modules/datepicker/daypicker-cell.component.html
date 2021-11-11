@@ -1,6 +1,6 @@
 <div *ngIf="hasTooltip"
   class="sky-daypicker-cell"
-  [attr.aria-label]="getImportantTextLabel()"
+  [attr.aria-label]="getKeyDateLabel()"
   [skyPopover]="dayInfoPopover"
   skyPopoverPlacement="left"
   [skyPopoverMessageStream]="popoverController"
@@ -13,7 +13,7 @@
     (popoverOpened)="onPopoverOpened()"
     #dayInfoPopover
   >
-    <div *ngFor="let text of date.importantText">
+    <div *ngFor="let text of date.keyDateText">
       {{text}}
     </div>
   </sky-popover>

@@ -280,8 +280,8 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
       current: this.compare(date, new Date()) === 0,
       secondary: isSecondary,
       uid: id,
-      important: false,
-      importantText: []
+      keyDate: false,
+      keyDateText: []
     };
 
     return dateObject;
