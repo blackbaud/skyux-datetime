@@ -6,8 +6,7 @@ import {
 
 import {
   element,
-  by,
-  browser
+  by
 } from 'protractor';
 
 describe('Datepicker', () => {
