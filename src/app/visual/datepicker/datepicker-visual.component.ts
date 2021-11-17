@@ -25,8 +25,8 @@ import {
 } from 'rxjs';
 
 import {
-  SkyDatepickerCustomDate,
-  SkyDatepickerDateRange
+  SkyCalendarDateRangeChangeEvent,
+  SkyDatepickerCustomDate
 } from '../../public/public_api';
 
 @Component({
@@ -46,7 +46,6 @@ export class DatepickerVisualComponent implements OnInit {
   public selectedDate: Date = new Date(1955, 10, 5);
   public startingDay: number;
   public strict: boolean = false;
-  public currentDateRange: SkyDatepickerDateRange;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -108,83 +107,85 @@ export class DatepickerVisualComponent implements OnInit {
     this.themeSvc.setTheme(themeSettings);
   }
 
-  public toggleCustomDates(): void {
+  public onToggleCustomDatesClick(): void {
     this.showCustomDates = !this.showCustomDates;
-    this.updateCustomDates();
   }
 
-  public onDateRangeChange(range: SkyDatepickerDateRange): void {
-    this.currentDateRange = range;
-    if (this.showCustomDates) {
-      this.updateCustomDates();
-    }
+  public onCalendarDateRangeChange(range: SkyCalendarDateRangeChangeEvent): void {
+    this.updateCustomDates(range);
   }
 
-  public updateCustomDates(): void {
-    if (
-      this.showCustomDates &&
-      this.currentDateRange
-    ) {
-      let customDates: SkyDatepickerCustomDate[] = [];
+  /**
+   * Simulate an async call to fetch data and add custom "key" dates to the current date range.
+   */
+  public updateCustomDates(event: SkyCalendarDateRangeChangeEvent): void {
+    if (this.showCustomDates && event) {
+      const customDates: SkyDatepickerCustomDate[] = [];
       customDates.push({
-        date: this.currentDateRange.startDate,
+        date: event.startDate,
         disabled: false,
         keyDate: true,
         keyDateText: ['First date']
       });
 
       customDates.push({
-        date: this.getNextDate(this.currentDateRange.startDate, 8),
+        date: this.getNextDate(event.startDate, 8),
         disabled: false,
         keyDate: true,
         keyDateText: ['Important']
       });
 
       customDates.push({
-        date: this.getNextDate(this.currentDateRange.startDate, 9),
+        date: this.getNextDate(event.startDate, 9),
         disabled: false,
         keyDate: true,
         keyDateText: ['Also Important']
       });
 
       customDates.push({
-        date: this.getNextDate(this.currentDateRange.startDate, 10),
+        date: this.getNextDate(event.startDate, 10),
         disabled: true,
         keyDate: true,
         keyDateText: ['Disabled']
       });
 
       customDates.push({
-        date: this.getNextDate(this.currentDateRange.startDate, 11),
+        date: this.getNextDate(event.startDate, 11),
         disabled: true,
         keyDate: false,
         keyDateText: []
       });
 
       customDates.push({
-        date: this.getNextDate(this.currentDateRange.startDate, 12),
+        date: this.getNextDate(event.startDate, 12),
         disabled: false,
         keyDate: true,
         keyDateText: []
       });
 
       customDates.push({
-        date: this.getNextDate(this.currentDateRange.startDate, 13),
+        date: this.getNextDate(event.startDate, 13),
         disabled: false,
         keyDate: true,
         keyDateText: ['Multiple', 'Messages']
       });
 
       customDates.push({
-        date: this.currentDateRange.endDate,
+        date: event.endDate,
         disabled: false,
         keyDate: true,
         keyDateText: ['Last date']
       });
 
-      this.customDateStream.next(customDates);
-    } else {
-      this.customDateStream.next([]);
+      // Bind the stream to the event argument.
+      if (!event.customDates) {
+        event.customDates = this.customDateStream;
+      }
+
+      // Simulate async call to fetch data and push custom dates back to the component.
+      setTimeout(() => {
+        this.customDateStream.next(customDates);
+      }, 2000);
     }
   }
 

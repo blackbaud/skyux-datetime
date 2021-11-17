@@ -5,19 +5,13 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
 
 import {
-  Observable,
   Subject
 }from 'rxjs';
-
-import {
-  takeUntil
-} from 'rxjs/operators';
 
 import {
   SkyDateFormatter
@@ -35,18 +29,6 @@ import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
 
-import {
-  SkyDatepickerCustomDate
-} from './datepicker-custom-date';
-
-import {
-  SkyDatepickerDateRange
-} from './datepicker-date-range';
-
-import {
-  SkyDatepickerService
-} from './datepicker.service';
-
 /**
  * @internal
  */
@@ -56,13 +38,7 @@ import {
   styleUrls: ['./datepicker-calendar.component.scss'],
   providers: [SkyDatepickerAdapterService]
 })
-export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, OnDestroy {
-
-  /**
-   * A stream of customized dates.
-   */
-  @Input()
-  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
+export class SkyDatepickerCalendarComponent implements AfterViewInit, OnDestroy {
 
   @Input()
   public minDate: Date;
@@ -86,9 +62,6 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
 
   @Output()
   public calendarModeChange: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output()
-  public dateRangeChange: EventEmitter<SkyDatepickerDateRange> = new EventEmitter<SkyDatepickerDateRange>(undefined);
 
   @Output()
   public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
@@ -118,27 +91,9 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnInit, On
   public constructor(
     private adapter: SkyDatepickerAdapterService,
     private config: SkyDatepickerConfigService,
-    private elementRef: ElementRef,
-    private datePickerService: SkyDatepickerService
+    private elementRef: ElementRef
   ) {
     this.configureOptions();
-  }
-
-  public ngOnInit(): void {
-    /* istanbul ignore else */
-    if (this.customDateStream) {
-      this.customDateStream
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(dates => {
-          this.datePickerService.setCustomDates(dates);
-      });
-    }
-
-    this.datePickerService.dayRangeChange
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(range => {
-        this.dateRangeChange.emit(range);
-    });
   }
 
   public ngAfterViewInit(): void {

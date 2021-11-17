@@ -14,20 +14,16 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  Subject
-} from 'rxjs';
-
-import {
   DatepickerCalendarTestComponent
 } from './fixtures/datepicker-calendar.component.fixture';
 
 import {
-  SkyDatepickerCustomDate
-} from './datepicker-custom-date';
-
-import {
   SkyDatepickerModule
 } from './datepicker.module';
+
+import {
+  SkyDatepickerService
+} from './datepicker.service';
 
 import * as moment_ from 'moment';
 
@@ -736,12 +732,11 @@ describe('datepicker calendar', () => {
     });
 
     describe('custom disabled dates', () => {
-      let dateStream: Subject<Array<SkyDatepickerCustomDate>>;
+      let service: SkyDatepickerService;
+
       beforeEach(() => {
-        dateStream = new Subject<Array<SkyDatepickerCustomDate>>();
         fixture.detectChanges();
-        component.datepicker.customDateStream = dateStream;
-        component.datepicker.ngOnInit();
+        service = TestBed.inject(SkyDatepickerService);
       });
 
       it('should not select active date when selected date is disabled', () => {
@@ -750,7 +745,7 @@ describe('datepicker calendar', () => {
         fixture.detectChanges();
         clickNextArrow(nativeElement);
 
-        dateStream.next([
+        service.setCustomDates([
           {
             date: new Date(2017, 4, 1),
             disabled: true,
@@ -771,7 +766,7 @@ describe('datepicker calendar', () => {
         fixture.detectChanges();
         clickNextArrow(nativeElement);
 
-        dateStream.next([
+        service.setCustomDates([
           {
             date: new Date(2017, 4, 1),
             disabled: false,

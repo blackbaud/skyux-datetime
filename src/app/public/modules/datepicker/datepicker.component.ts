@@ -38,6 +38,7 @@ import {
 } from 'rxjs';
 
 import {
+  debounceTime,
   takeUntil
 } from 'rxjs/operators';
 
@@ -50,8 +51,12 @@ import {
 } from './datepicker-custom-date';
 
 import {
-  SkyDatepickerDateRange
+  SkyCalendarDateRangeChangeEvent
 } from './datepicker-date-range';
+
+import {
+  SkyDatepickerService
+} from './datepicker.service';
 
 let nextId = 0;
 
@@ -69,6 +74,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   /**
    * Array of dates with custom information for the selected date range.
+   * @deprecated
    */
   @Input()
   public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
@@ -84,7 +90,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
    * This is useful to know when to push new custom dates to the `customDateStream`.
    */
   @Output()
-  public dateRangeChange = new EventEmitter<SkyDatepickerDateRange>();
+  public calendarDateRangeChange = new EventEmitter<SkyCalendarDateRangeChangeEvent>();
 
   /**
    * @internal
@@ -215,7 +221,11 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   private affixer: SkyAffixer;
 
+  // private calendarDateRangeChangeEventArgs: SkyCalendarDateRangeChangeEvent;
+
   private calendarUnsubscribe: Subject<void>;
+
+  private customDatesSubscription: Subscription;
 
   private ngUnsubscribe = new Subject();
 
@@ -233,6 +243,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     private affixService: SkyAffixService,
     private changeDetector: ChangeDetectorRef,
     private coreAdapter: SkyCoreAdapterService,
+    private datepickerService: SkyDatepickerService,
     private overlayService: SkyOverlayService,
     @Optional() public inputBoxHostService?: SkyInputBoxHostService,
     @Optional() themeSvc?: SkyThemeService
@@ -258,6 +269,31 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
         }
       );
     }
+
+    this.datepickerService.calendarDateRangeChange
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(range => {
+        this.cancelCustomDatesSubscription();
+
+        const args: SkyCalendarDateRangeChangeEvent = {
+          startDate: range.startDate,
+          endDate: range.endDate,
+          customDates: undefined
+        };
+        this.calendarDateRangeChange.emit(args);
+
+        // If consumer has added an observable to the args, watch for incoming custom dates.
+        /* istanbul ignore else */
+        if (args.customDates) {
+          this.datepickerService.isDaypickerWaiting.next(true);
+          this.customDatesSubscription = args.customDates
+            .pipe(debounceTime(250))
+            .subscribe((result) => {
+              this.datepickerService.setCustomDates(result);
+              this.datepickerService.isDaypickerWaiting.next(false);
+          });
+        }
+    });
   }
 
   public ngOnDestroy(): void {
@@ -289,11 +325,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
     }
   }
 
-  public onDateRangeChange(event: SkyDatepickerDateRange): void {
-    this.dateRangeChange.emit(event);
-  }
-
-  private closePicker() {
+  private closePicker(): void {
     this.destroyAffixer();
     this.destroyOverlay();
     this.removePickerEventListeners();
@@ -393,5 +425,12 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
       this.calendarUnsubscribe = undefined;
     }
     this.overlayKeydownListner?.unsubscribe();
+  }
+
+  private cancelCustomDatesSubscription(): void {
+    if (this.customDatesSubscription) {
+      this.customDatesSubscription.unsubscribe();
+      this.customDatesSubscription = undefined;
+    }
   }
 }

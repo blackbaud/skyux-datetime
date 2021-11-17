@@ -1,8 +1,13 @@
 import {
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit
 } from '@angular/core';
+
+import {
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   Subject
@@ -30,6 +35,7 @@ import {
 })
 export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
+  public isWaiting: boolean;
   public labels: any[] = [];
   public title: string;
   public rows: Array<Array<SkyDatepickerDate>> = [];
@@ -44,7 +50,8 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
   public constructor(
     datepicker: SkyDatepickerCalendarInnerComponent,
-    private datepickerService: SkyDatepickerService
+    private datepickerService: SkyDatepickerService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.datepicker = datepicker;
   }
@@ -63,6 +70,13 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
     this.datepicker.setKeydownHandler((key: string, event: KeyboardEvent) => {
       this.keydownDays(key, event);
     }, 'day');
+
+    this.datepickerService.isDaypickerWaiting
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(value => {
+        this.isWaiting = value;
+        this.changeDetectorRef.markForCheck();
+    });
 
     this.datepicker.refreshView();
   }

@@ -180,7 +180,7 @@ describe('SkyDatepickerService', () => {
 
     beforeEach(() => {
       setCustomDates(customDates, service);
-      dayRangeSpy = spyOn(service.dayRangeChange, 'next');
+      dayRangeSpy = spyOn(service.calendarDateRangeChange, 'next');
       applySpy = getApplySpy(service);
     });
 

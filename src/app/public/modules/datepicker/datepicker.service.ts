@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 
 import {
+  BehaviorSubject,
   Subject
 } from 'rxjs';
 
@@ -15,7 +16,7 @@ import {
 } from './datepicker-date';
 
 import {
-  SkyDatepickerDateRange
+  SkyCalendarDateRangeChangeEvent
 } from './datepicker-date-range';
 
 /**
@@ -33,7 +34,12 @@ export class SkyDatepickerService {
   /**
    * Fires when the range of displayed dates in the calendar change.
    */
-  public dayRangeChange: Subject<SkyDatepickerDateRange> = new Subject<SkyDatepickerDateRange>();
+  public calendarDateRangeChange: Subject<SkyCalendarDateRangeChangeEvent> = new Subject<SkyCalendarDateRangeChangeEvent>();
+
+  /**
+   * Specifies if the daypicker is waiting on an async process.
+   */
+  public isDaypickerWaiting: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   /**
    * Specifies if a key date popover is currently displayed.
@@ -60,7 +66,7 @@ export class SkyDatepickerService {
    * @param customDates - the array of custom dates for the date range
    */
   public setCustomDates(customDates: Array<SkyDatepickerCustomDate>): void {
-    this._customDates = customDates;
+    this._customDates = customDates || [];
     this.applyCustomDates();
     this.customDates.next(customDates);
   }
@@ -80,7 +86,7 @@ export class SkyDatepickerService {
       this._rangeBeginDate = this._dateRows[0][0].date;
       this._customDates = [];
       this.customDates.next(this._customDates);
-      this.dayRangeChange.next({
+      this.calendarDateRangeChange.next({
         startDate: this._rangeBeginDate,
         endDate: this._dateRows[lastRow][this._dateRows[lastRow].length - 1].date
       });

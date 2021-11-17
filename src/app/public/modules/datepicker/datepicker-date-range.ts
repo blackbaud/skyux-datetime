@@ -1,7 +1,15 @@
+import {
+  Observable
+} from 'rxjs';
+
+import {
+  SkyDatepickerCustomDate
+} from '../../public_api';
+
 /**
  * Specifies a range of dates.
  */
-export interface SkyDatepickerDateRange {
+export interface SkyCalendarDateRangeChangeEvent {
 
   /**
    * The end date.
@@ -12,5 +20,7 @@ export interface SkyDatepickerDateRange {
    * The start date.
    */
   startDate: Date;
+
+  customDates?: Observable<SkyDatepickerCustomDate[]>;
 
 }

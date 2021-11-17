@@ -22,7 +22,8 @@ import {
 } from '@skyux/i18n';
 
 import {
-  SkyIconModule
+  SkyIconModule,
+  SkyWaitModule
 } from '@skyux/indicators';
 
 import {
@@ -112,7 +113,8 @@ import {
     SkyAffixModule,
     SkyOverlayModule,
     SkyThemeModule,
-    SkyPopoverModule
+    SkyPopoverModule,
+    SkyWaitModule
   ],
   exports: [
     SkyDatepickerCalendarComponent,
