@@ -74,7 +74,9 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   public pickerClass = '';
 
   /**
-   * Fires when the range of displayed dates in the calendar changes.
+   * Fires when the range of displayed dates in the calendar changes. Provides the
+   * current range of displayed dates and a mutable `customDate` property consumers can use
+   * to modify individual dates on the calendar.
    */
   @Output()
   public calendarDateRangeChange = new EventEmitter<SkyCalendarDateRangeChangeEvent>();

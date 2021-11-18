@@ -17,11 +17,12 @@ import {
 } from '@skyux/theme';
 
 import {
+  delay,
   distinctUntilChanged
 } from 'rxjs/operators';
 
 import {
-  Subject
+  of
 } from 'rxjs';
 
 import {
@@ -35,8 +36,6 @@ import {
 })
 export class DatepickerVisualComponent implements OnInit {
 
-  public customDateStream: Subject<Array<SkyDatepickerCustomDate>> =
-    new Subject<Array<SkyDatepickerCustomDate>>();
   public disabled = false;
   public minDate: Date;
   public maxDate: Date;
@@ -177,15 +176,8 @@ export class DatepickerVisualComponent implements OnInit {
         keyDateText: ['Last date']
       });
 
-      // Bind the stream to the event argument.
-      if (!event.customDates) {
-        event.customDates = this.customDateStream;
-      }
-
-      // Simulate async call to fetch data and push custom dates back to the component.
-      setTimeout(() => {
-        this.customDateStream.next(customDates);
-      }, 2000);
+      // Bind observable to event argument and simulate async call.
+      event.customDates = of(customDates).pipe(delay(2000));
     }
   }
 

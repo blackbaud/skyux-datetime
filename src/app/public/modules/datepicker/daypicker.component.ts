@@ -35,7 +35,7 @@ import {
 })
 export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
-  public isWaiting: boolean;
+  public isWaiting: boolean = false;
   public labels: any[] = [];
   public title: string;
   public rows: Array<Array<SkyDatepickerDate>> = [];
@@ -75,7 +75,8 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(value => {
         this.isWaiting = value;
-        this.changeDetectorRef.markForCheck();
+        // Avoid an ExpressionChangedAfterItHasBeenCheckedError.
+        this.changeDetectorRef.detectChanges();
     });
 
     this.datepicker.refreshView();

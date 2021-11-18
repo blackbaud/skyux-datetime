@@ -4,12 +4,12 @@ import {
 } from '@angular/core';
 
 import {
-  Subject
+  of
 } from 'rxjs';
 
 import {
-  SkyDatepickerCustomDate
-} from '../datepicker-custom-date';
+  delay
+} from 'rxjs/operators';
 
 import {
   SkyCalendarDateRangeChangeEvent
@@ -28,9 +28,6 @@ import {
   templateUrl: './datepicker.component.fixture.html'
 })
 export class DatepickerTestComponent {
-
-  public customDateStream: Subject<Array<SkyDatepickerCustomDate>> =
-    new Subject<Array<SkyDatepickerCustomDate>>();
 
   public dateFormat: string;
 
@@ -58,10 +55,8 @@ export class DatepickerTestComponent {
   @ViewChild(SkyDatepickerComponent)
   public datepicker: SkyDatepickerComponent;
 
-  public onCalendarDateRangeChange(range: SkyCalendarDateRangeChangeEvent): void {
-    // Simulate async call to fetch data and push custom dates back to the component.
+  public onCalendarDateRangeChange(event: SkyCalendarDateRangeChangeEvent): void {
     if (this.showCustomDates) {
-      range.customDates = this.customDateStream;
       const customDates = [
         {
           date: new Date(1955, 10, 1),
@@ -78,9 +73,8 @@ export class DatepickerTestComponent {
         }
       ];
 
-      setTimeout(() => {
-        this.customDateStream.next(customDates);
-      });
+      // Bind observable to event argument and simulate async call.
+      event.customDates = of(customDates).pipe(delay(2000));
     }
   }
 }

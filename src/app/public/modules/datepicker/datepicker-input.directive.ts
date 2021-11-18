@@ -52,10 +52,6 @@ import {
   SkyDatepickerComponent
 } from './datepicker.component';
 
-import {
-  SkyDatepickerService
-} from './datepicker.service';
-
 import * as moment_ from 'moment';
 
 const moment = moment_;
@@ -276,7 +272,6 @@ export class SkyDatepickerInputDirective
     private adapter: SkyDatepickerAdapterService,
     private changeDetector: ChangeDetectorRef,
     private configService: SkyDatepickerConfigService,
-    private datepickerService: SkyDatepickerService,
     private elementRef: ElementRef,
     private localeProvider: SkyAppLocaleProvider,
     private renderer: Renderer2,
@@ -454,14 +449,6 @@ export class SkyDatepickerInputDirective
       return {
         'skyDate': {
           maxDate
-        }
-      };
-    }
-
-    if (this.datepickerService.isDateDisabled(dateValue)) {
-      return {
-        'skyDate': {
-          dateValue
         }
       };
     }
