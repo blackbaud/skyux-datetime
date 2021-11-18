@@ -151,7 +151,7 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
       this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
     this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
 
-    this.datepickerService.setPickerDateRange(this.rows);
+    this.datepickerService.setCalendarDateRange(this.rows);
   }
 
   private keydownDays(key: string, event: KeyboardEvent) {

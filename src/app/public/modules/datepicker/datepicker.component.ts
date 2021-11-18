@@ -32,7 +32,6 @@ import {
 
 import {
   fromEvent,
-  Observable,
   Subject,
   Subscription
 } from 'rxjs';
@@ -45,10 +44,6 @@ import {
 import {
   SkyDatepickerCalendarComponent
 } from './datepicker-calendar.component';
-
-import {
-  SkyDatepickerCustomDate
-} from './datepicker-custom-date';
 
 import {
   SkyCalendarDateRangeChangeEvent
@@ -73,21 +68,13 @@ let nextId = 0;
 export class SkyDatepickerComponent implements OnDestroy, OnInit {
 
   /**
-   * Array of dates with custom information for the selected date range.
-   * @deprecated
-   */
-  @Input()
-  public customDateStream: Observable<Array<SkyDatepickerCustomDate>>;
-
-  /**
    * Adds a class to the datepicker.
    */
   @Input()
   public pickerClass = '';
 
   /**
-   * Fires when the range of displayed dates in the calendar change.
-   * This is useful to know when to push new custom dates to the `customDateStream`.
+   * Fires when the range of displayed dates in the calendar changes.
    */
   @Output()
   public calendarDateRangeChange = new EventEmitter<SkyCalendarDateRangeChangeEvent>();
@@ -220,8 +207,6 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
   private triggerButtonTemplateRef: TemplateRef<any>;
 
   private affixer: SkyAffixer;
-
-  // private calendarDateRangeChangeEventArgs: SkyCalendarDateRangeChangeEvent;
 
   private calendarUnsubscribe: Subject<void>;
 

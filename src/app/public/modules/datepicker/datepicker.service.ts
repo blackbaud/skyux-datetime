@@ -72,10 +72,10 @@ export class SkyDatepickerService {
   }
 
   /**
-   * Sets the date rows currently displayed in the picker and applies any custom dates.
+   * Sets the date rows currently displayed in the calendar and applies any custom dates.
    * @param dateRows - the array of date rows currently displayed in the calendar
    */
-  public setPickerDateRange(dateRows: SkyDatepickerDate[][]): void {
+  public setCalendarDateRange(dateRows: SkyDatepickerDate[][]): void {
     this._dateRows = dateRows;
     if (
         !this._rangeBeginDate ||
@@ -99,7 +99,7 @@ export class SkyDatepickerService {
   }
 
   /**
-   * Returns true if `date` is found in the `customDates` array and marked as `disabled`.
+   * Returns `true` if `date` is found in the `customDates` array and marked as `disabled`.
    */
   public isDateDisabled(date: Date): boolean {
     if (date) {

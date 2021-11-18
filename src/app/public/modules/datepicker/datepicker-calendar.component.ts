@@ -4,18 +4,9 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
   Output,
   ViewChild
 } from '@angular/core';
-
-import {
-  Subject
-}from 'rxjs';
-
-import {
-  SkyDateFormatter
-} from './date-formatter';
 
 import {
   SkyDatepickerAdapterService
@@ -29,6 +20,10 @@ import {
   SkyDatepickerConfigService
 } from './datepicker-config.service';
 
+import {
+  SkyDateFormatter
+} from './date-formatter';
+
 /**
  * @internal
  */
@@ -38,7 +33,7 @@ import {
   styleUrls: ['./datepicker-calendar.component.scss'],
   providers: [SkyDatepickerAdapterService]
 })
-export class SkyDatepickerCalendarComponent implements AfterViewInit, OnDestroy {
+export class SkyDatepickerCalendarComponent implements AfterViewInit {
 
   @Input()
   public minDate: Date;
@@ -61,10 +56,10 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnDestroy 
   }
 
   @Output()
-  public calendarModeChange: EventEmitter<string> = new EventEmitter<string>();
+  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
 
   @Output()
-  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
+  public calendarModeChange: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * @internal
@@ -84,25 +79,17 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnDestroy 
 
   private formatter = new SkyDateFormatter();
 
-  private ngUnsubscribe = new Subject();
-
   private _startingDay: number;
 
   public constructor(
     private adapter: SkyDatepickerAdapterService,
     private config: SkyDatepickerConfigService,
-    private elementRef: ElementRef
-  ) {
+    private elementRef: ElementRef) {
     this.configureOptions();
   }
 
   public ngAfterViewInit(): void {
     this.adapter.init(this.elementRef);
-  }
-
-  public ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   public configureOptions(): void {
@@ -134,5 +121,4 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit, OnDestroy 
     }
 
   }
-
 }

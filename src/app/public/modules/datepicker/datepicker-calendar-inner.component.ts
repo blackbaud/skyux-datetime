@@ -3,16 +3,11 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-
-import {
-  Subject
-} from 'rxjs';
 
 import {
   SkyDateFormatter
@@ -37,7 +32,7 @@ let nextDatepickerId = 0;
   styleUrls: ['./datepicker-calendar-inner.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, OnDestroy {
+export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   @Input()
   public startingDay: number;
 
@@ -115,7 +110,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
     40: 'down'
   };
 
-  private ngUnsubscribe = new Subject<void>();
   private _selectedDate: Date;
 
   public constructor(
@@ -132,11 +126,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
 
   public ngOnChanges(changes: SimpleChanges): void {
     this.refreshView();
-  }
-
-  public ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   public setCompareHandler(handler: Function, type: string): void {
