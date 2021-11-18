@@ -908,46 +908,6 @@ describe('datepicker', () => {
         expect(serviceSpy).toHaveBeenCalled();
         expect(waitSpy).toHaveBeenCalled();
       });
-
-      it('should not allow user to activate a disabled date', async () => {
-        component.showCustomDates = true;
-
-        clickTrigger(fixture, false);
-        fixture.detectChanges();
-        await fixture.whenStable();
-
-        // Attempt to click Nov 1st, which should be disabled.
-        getCalendarDayButton(2, fixture).click();
-        fixture.detectChanges();
-
-        // Date should not change.
-        expect(component.selectedDate).toEqual(new Date(initialDate));
-
-        // Attempt to click Nov 2nd, which is NOT disabled.
-        getCalendarDayButton(3, fixture).click();
-        fixture.detectChanges();
-
-        // Date should change.
-        expect(component.selectedDate).toEqual(new Date('11/2/1955'));
-      });
-
-      it('should not mark model invalid if value is changed to a disable date', async () => {
-        const inputElement = fixture.debugElement.query(By.css('input'));
-        const ngModel = inputElement.injector.get(NgModel);
-        component.showCustomDates = true;
-
-        clickTrigger(fixture, false);
-        fixture.detectChanges();
-        await fixture.whenStable();
-
-        component.selectedDate = '11/1/1955';
-        fixture.detectChanges();
-        await fixture.whenStable();
-
-        // Model should be marked as invalid.
-        expect(ngModel.value).toEqual(new Date('11/1/1955'));
-        expect(ngModel.valid).toEqual(false);
-      });
     });
 
     describe('disabled state', () => {
