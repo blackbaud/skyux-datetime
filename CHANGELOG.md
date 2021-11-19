@@ -1,6 +1,6 @@
 # 5.0.2 (2021-11-19)
 
-- Updated the builder to support StackBlitz. []()
+- Updated the builder to support StackBlitz. [#294](https://github.com/blackbaud/skyux-datetime/pull/294)
 
 # 5.0.1 (2021-11-02)
 
