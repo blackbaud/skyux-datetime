@@ -745,7 +745,7 @@ describe('datepicker calendar', () => {
         fixture.detectChanges();
         clickNextArrow(nativeElement);
 
-        service.setCustomDates([
+        service.emitCustomDates([
           {
             date: new Date(2017, 4, 1),
             disabled: true,
@@ -766,7 +766,7 @@ describe('datepicker calendar', () => {
         fixture.detectChanges();
         clickNextArrow(nativeElement);
 
-        service.setCustomDates([
+        service.emitCustomDates([
           {
             date: new Date(2017, 4, 1),
             disabled: false,

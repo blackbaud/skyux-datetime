@@ -942,12 +942,14 @@ describe('fuzzy datepicker input', () => {
         flush();
       }));
 
-      it('should pass min date from config service to calendar when min fuzzy date is invalid', fakeAsync(() => {
+      fit('should pass min date from config service to calendar when min fuzzy date is invalid', fakeAsync(() => {
         setInputProperty(new Date('5/21/2017'), component, fixture);
         component.minDate = { month: 15, day: 35, year: 2017 };
         detectChanges(fixture);
+        detectChanges(fixture);
 
         clickDatepickerButton(fixture);
+        detectChanges(fixture);
 
         const dateButtonEl = getCalendarDayButton(1, fixture);
         expect(dateButtonEl).toHaveCssClass('sky-btn-disabled');

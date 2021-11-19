@@ -276,7 +276,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
           this.customDatesSubscription = args.customDates
             .pipe(debounceTime(250))
             .subscribe((result) => {
-              this.datepickerService.setCustomDates(result);
+              this.datepickerService.customDates.next(result);
               this.datepickerService.isDaypickerWaiting.next(false);
           });
         }

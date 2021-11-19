@@ -17,10 +17,6 @@ import {
   SkyDatepickerDate
 } from './datepicker-date';
 
-import {
-  SkyDatepickerService
-} from './datepicker.service';
-
 let nextDatepickerId = 0;
 
 /**
@@ -111,10 +107,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
   };
 
   private _selectedDate: Date;
-
-  public constructor(
-    private datepickerService: SkyDatepickerService
-  ) {}
 
   public ngOnInit(): void {
     if (this.selectedDate) {
@@ -265,7 +257,7 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
       date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
       label: this.dateFilter(date, format),
       selected: this.compare(date, this.selectedDate) === 0,
-      disabled: this.isDisabled(date),
+      disabled: false,
       current: this.compare(date, new Date()) === 0,
       secondary: isSecondary,
       uid: id,
@@ -278,8 +270,8 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
 
   public createCalendarRows(
     dates: Array<SkyDatepickerDate>,
-    size: number): Array<Array<SkyDatepickerDate>> {
-
+    size: number
+  ): Array<Array<SkyDatepickerDate>> {
     let rows: Array<Array<SkyDatepickerDate>> = [];
     while (dates.length > 0) {
       rows.push(dates.splice(0, size));
@@ -384,7 +376,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
 
   protected isDisabled(date: Date): boolean {
     return ((this.minDate && this.compare(date, this.minDate) < 0)
-      || (this.maxDate && this.compare(date, this.maxDate) > 0))
-      || this.datepickerService.isDateDisabled(date);
+      || (this.maxDate && this.compare(date, this.maxDate) > 0));
   }
 }

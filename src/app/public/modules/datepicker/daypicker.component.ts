@@ -18,6 +18,10 @@ import {
 } from './datepicker-calendar-inner.component';
 
 import {
+  SkyDatepickerCustomDate
+} from './datepicker-custom-date';
+
+import {
   SkyDatepickerDate
 } from './datepicker-date';
 
@@ -57,6 +61,13 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+
+    // Apply custom dates to calendar every time `customDates` are updated.
+    this.datepickerService.customDates
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(customDates => {
+        this.applyCustomDates(customDates, this.rows);
+    });
 
     this.datepicker.stepDay = {months: 1};
     this.initialDate = this.datepicker.activeDate.getDate();
@@ -150,9 +161,9 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
     this.title =
       this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
-    this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
 
-    this.datepickerService.setCalendarDateRange(this.rows);
+    this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
+    this.emitCalendarDateRangeChange();
   }
 
   private keydownDays(key: string, event: KeyboardEvent) {
@@ -191,6 +202,60 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
   private getDaysInMonth(year: number, month: number) {
     return month === 1 && year % 4 === 0 &&
       (year % 400 === 0 || year % 100 !== 0) ? 29 : this.daysInMonth[month];
+  }
+
+  /**
+   * Applies custom date properties to the existing dates displayed in the calendar.
+   */
+  private applyCustomDates(
+    customDates: SkyDatepickerCustomDate[],
+    dateRows: SkyDatepickerDate[][]
+  ): void {
+    let date: SkyDatepickerDate;
+    let newDate: SkyDatepickerDate;
+    let dateIndex: number;
+
+    /* istanbul ignore else */
+    if (customDates && dateRows) {
+      customDates.forEach(customDate => {
+        dateIndex = -1;
+        dateRows.forEach(row => {
+          if (dateIndex === -1) {
+            dateIndex = row.findIndex(d => {
+              return d.date.getTime() === customDate.date.getTime();
+            });
+            if (dateIndex > -1) {
+              date = row[dateIndex];
+              // Replace the date with a new instance so that display gets updated.
+              newDate = {
+                current: date.current,
+                date: date.date,
+                disabled: !!customDate.disabled || !!date.disabled,
+                keyDate: !!customDate.keyDate || !!date.keyDate,
+                keyDateText: !!customDate.keyDate ?
+                  (customDate.keyDateText || date.keyDateText) : undefined,
+                label: date.label,
+                secondary: date.secondary,
+                selected: date.selected,
+                uid: date.uid
+              };
+              row[dateIndex] = newDate;
+            }
+          }
+        });
+      });
+    }
+  }
+
+  private emitCalendarDateRangeChange(): void {
+    const lastRow = this.rows.length - 1;
+    const rangeBeginDate = this.rows[0][0].date;
+    const rangeEndDate = this.rows[lastRow][this.rows[lastRow].length - 1].date;
+
+    this.datepickerService.calendarDateRangeChange.next({
+      startDate: rangeBeginDate,
+      endDate: rangeEndDate
+    });
   }
 
 }
