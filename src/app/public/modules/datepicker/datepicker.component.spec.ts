@@ -883,7 +883,7 @@ describe('datepicker', () => {
 
       it('should not set custom dates by default', async () => {
         const service = TestBed.inject(SkyDatepickerService);
-        const serviceSpy = spyOn(service, 'setCustomDates').and.callThrough();
+        const serviceSpy = spyOn(service.customDates, 'next').and.callThrough();
         const waitSpy = spyOn(service.isDaypickerWaiting, 'next').and.callThrough();
 
         clickTrigger(fixture, false);
@@ -898,7 +898,7 @@ describe('datepicker', () => {
         component.showCustomDates = true;
 
         const service = TestBed.inject(SkyDatepickerService);
-        const serviceSpy = spyOn(service, 'setCustomDates').and.callThrough();
+        const serviceSpy = spyOn(service.customDates, 'next').and.callThrough();
         const waitSpy = spyOn(service.isDaypickerWaiting, 'next').and.callThrough();
 
         clickTrigger(fixture, false);

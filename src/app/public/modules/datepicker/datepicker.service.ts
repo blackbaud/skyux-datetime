@@ -46,18 +46,4 @@ export class SkyDatepickerService {
    */
   public keyDatePopoverStream: Subject<SkyDatepickerDate> = new Subject<SkyDatepickerDate>();
 
-  /**
-   * Returns `true` if `date` is found in the `customDates` array and marked as `disabled`.
-   */
-  public isDateDisabled(date: Date, customDates: SkyDatepickerCustomDate[]): boolean {
-    if (date) {
-      const customDateMatch = customDates.find(d => {
-        return d.date.getTime() === date.getTime();
-      });
-      if (customDateMatch) {
-        return !!customDateMatch.disabled;
-      }
-    }
-    return false;
-  }
 }

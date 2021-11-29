@@ -232,7 +232,7 @@ describe('SkyDatepickerService', () => {
 
   });
 
-  describe('applyCustomDates', () => {
+  xdescribe('applyCustomDates', () => {
     it(`should apply custom dates to the dateRows array`, () => {
       setCustomDates(customDates, service);
       setDateRows(dateRows, service);

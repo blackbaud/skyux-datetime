@@ -30,6 +30,18 @@ import {
 } from './datepicker.service';
 
 /**
+ * Helper interface to compare date ranges.
+ * @internal
+ */
+interface SkyDateRange {
+
+  startDate: Date;
+
+  endDate: Date;
+
+}
+
+/**
  * @internal
  */
 @Component({
@@ -162,8 +174,16 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
     this.title =
       this.datepicker.dateFilter(this.datepicker.activeDate, this.datepicker.formatDayTitle);
 
+    const oldDateRange = this.getDateRange(this.rows);
     this.rows = this.datepicker.createCalendarRows(pickerDates, 7);
-    this.emitCalendarDateRangeChange();
+    const newDateRange = this.getDateRange(this.rows);
+
+    if (!this.dateRangeRowsAreEqual(oldDateRange, newDateRange)) {
+      this.datepickerService.calendarDateRangeChange.next({
+        startDate: newDateRange.startDate,
+        endDate: newDateRange.endDate
+      });
+    }
   }
 
   private keydownDays(key: string, event: KeyboardEvent) {
@@ -226,14 +246,13 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
             });
             if (dateIndex > -1) {
               date = row[dateIndex];
-              // Replace the date with a new instance so that display gets updated.
+              // Replace the date with a new instance so the display gets updated.
               newDate = {
                 current: date.current,
                 date: date.date,
-                disabled: !!customDate.disabled || !!date.disabled,
+                disabled: !!date.disabled || !!customDate.disabled,
                 keyDate: !!customDate.keyDate || !!date.keyDate,
-                keyDateText: !!customDate.keyDate ?
-                  (customDate.keyDateText || date.keyDateText) : undefined,
+                keyDateText: customDate.keyDateText || date.keyDateText,
                 label: date.label,
                 secondary: date.secondary,
                 selected: date.selected,
@@ -247,15 +266,25 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private emitCalendarDateRangeChange(): void {
-    const lastRow = this.rows.length - 1;
-    const rangeBeginDate = this.rows[0][0].date;
-    const rangeEndDate = this.rows[lastRow][this.rows[lastRow].length - 1].date;
+  private dateRangeRowsAreEqual(rangeA: SkyDateRange, rangeB: SkyDateRange): boolean | undefined {
+    /* istanbul ignore if */
+    if (!rangeA && !rangeB) {
+      return true;
+    } else if ((rangeA && !rangeB) || (!rangeA && rangeB)) {
+      return false;
+    }
 
-    this.datepickerService.calendarDateRangeChange.next({
-      startDate: rangeBeginDate,
-      endDate: rangeEndDate
-    });
+    return this.compareDays(rangeA.startDate, rangeB.startDate) === 0 &&
+            this.compareDays(rangeA.endDate, rangeB.endDate) === 0;
+  }
+
+  private getDateRange(rows: Array<Array<SkyDatepickerDate>>): SkyDateRange | undefined {
+    if (rows && rows.length > 0) {
+      return {
+        startDate: rows[0][0].date,
+        endDate: rows[rows.length - 1][rows[rows.length - 1].length - 1].date
+      };
+    }
   }
 
 }
