@@ -53,7 +53,6 @@ import {
 } from './datepicker.component';
 
 import * as moment_ from 'moment';
-
 const moment = moment_;
 
 // tslint:disable:no-forward-ref no-use-before-declare

@@ -65,11 +65,19 @@ export class DatepickerTestComponent {
         },
         {
           date: new Date(1955, 10, 15),
-          disabled: false
+          disabled: false,
+          keyDate: true,
+          keyDateInfo: [
+            'Just some key date information...'
+          ]
         },
         {
           date: new Date(1955, 10, 30),
-          disabled: true
+          disabled: true,
+          keyDate: true,
+          keyDateInfo: [
+            'This is a key date and also disabled.'
+          ]
         }
       ];
 

@@ -26,7 +26,6 @@ import {
 } from './datepicker.service';
 
 import * as moment_ from 'moment';
-
 const moment = moment_;
 
 describe('datepicker calendar', () => {

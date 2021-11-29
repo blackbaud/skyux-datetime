@@ -908,6 +908,38 @@ describe('datepicker', () => {
         expect(serviceSpy).toHaveBeenCalled();
         expect(waitSpy).toHaveBeenCalled();
       });
+
+      it('should not add disabled and key-date CSS classes when custom date is not set', fakeAsync(() => {
+        component.showCustomDates = false;
+
+        clickTrigger(fixture);
+        tick(2000); // Trigger 2s fake async call in fixture.
+        fixture.detectChanges();
+
+        const disabledButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-disabled');
+        const keyDateButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-key-date');
+
+        expect(disabledButtons.length).toEqual(0);
+        expect(keyDateButtons.length).toEqual(0);
+      }));
+
+      it('should add disabled and key-date CSS classes when custom date is set', fakeAsync(() => {
+        component.showCustomDates = true;
+
+        clickTrigger(fixture);
+        tick(2000); // Trigger 2s fake async call in fixture.
+        fixture.detectChanges();
+
+        const disabledButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-disabled');
+        const keyDateButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-key-date');
+
+        expect(disabledButtons.length).toBeGreaterThan(0);
+        expect(keyDateButtons.length).toBeGreaterThan(0);
+      }));
     });
 
     describe('disabled state', () => {
