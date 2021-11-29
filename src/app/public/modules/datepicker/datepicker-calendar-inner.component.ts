@@ -19,14 +19,20 @@ import {
 } from 'rxjs';
 
 import {
+  SkyDatepickerCustomDate
+} from '../../public_api';
+
+import {
   SkyDateFormatter
 } from './date-formatter';
 
 import {
   SkyDatepickerDate
 } from './datepicker-date';
-import { SkyDatepickerService } from './datepicker.service';
-import { SkyDatepickerCustomDate } from '../../public_api';
+
+import {
+  SkyDatepickerService
+} from './datepicker.service';
 
 let nextDatepickerId = 0;
 
