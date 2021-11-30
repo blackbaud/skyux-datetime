@@ -313,7 +313,7 @@ export class SkyDatepickerComponent implements OnDestroy, OnInit {
           .pipe(debounceTime(250))
           .subscribe((result) => {
             this.customDates = result;
-            this.isDaypickerWaiting = false
+            this.isDaypickerWaiting = false;
 
             // Trigger change detection in child components to show changes in the calendar.
             this.changeDetector.markForCheck();
