@@ -12,8 +12,8 @@ import {
 } from 'rxjs/operators';
 
 import {
-  SkyCalendarDateRangeChangeEvent
-} from '../datepicker-date-range';
+  SkyDatepickerCalendarChange
+} from '../datepicker-calendar-change';
 
 import {
   SkyDatepickerInputDirective
@@ -55,7 +55,7 @@ export class DatepickerTestComponent {
   @ViewChild(SkyDatepickerComponent)
   public datepicker: SkyDatepickerComponent;
 
-  public onCalendarDateRangeChange(event: SkyCalendarDateRangeChangeEvent): void {
+  public onCalendarDateRangeChange(event: SkyDatepickerCalendarChange): void {
     if (this.showCustomDates) {
       const customDates = [
         {

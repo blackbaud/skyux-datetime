@@ -11,10 +11,6 @@ import {
 } from '@angular/core';
 
 import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
   Subject
 } from 'rxjs';
 
@@ -30,10 +26,6 @@ import {
   SkyDatepickerDate
 } from './datepicker-date';
 
-import {
-  SkyDatepickerService
-} from './datepicker.service';
-
 let nextDatepickerId = 0;
 
 /**
@@ -46,6 +38,10 @@ let nextDatepickerId = 0;
   encapsulation: ViewEncapsulation.None
 })
 export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, OnDestroy {
+
+  @Input()
+  public customDates: SkyDatepickerCustomDate[];
+
   @Input()
   public startingDay: number;
 
@@ -123,15 +119,9 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
     40: 'down'
   };
 
-  private customDates: SkyDatepickerCustomDate[] = [];
-
   private ngUnsubscribe = new Subject();
 
   private _selectedDate: Date;
-
-  constructor(
-    private skyDatepickerService: SkyDatepickerService
-  ) {}
 
   public ngOnInit(): void {
     if (this.selectedDate) {
@@ -139,12 +129,6 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, O
     } else {
       this.activeDate = new Date();
     }
-
-    this.skyDatepickerService.customDates
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(dates => {
-        this.customDates = dates;
-      });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

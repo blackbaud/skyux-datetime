@@ -7,9 +7,9 @@ import {
 } from '../../public_api';
 
 /**
- * Specifies a range of dates displayed in the calendar.
+ * Specifies changes in the datepicker calendar.
  */
-export interface SkyCalendarDateRangeChangeEvent {
+export interface SkyDatepickerCalendarChange {
 
   /**
    * The end date.

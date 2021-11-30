@@ -48,10 +48,6 @@ import {
 } from './datepicker.component';
 
 import {
-  SkyDatepickerService
-} from './datepicker.service';
-
-import {
   DatepickerTestComponent
 } from './fixtures/datepicker.component.fixture';
 
@@ -882,31 +878,21 @@ describe('datepicker', () => {
       }));
 
       it('should not set custom dates by default', async () => {
-        const service = TestBed.inject(SkyDatepickerService);
-        const serviceSpy = spyOn(service.customDates, 'next').and.callThrough();
-        const waitSpy = spyOn(service.isDaypickerWaiting, 'next').and.callThrough();
-
         clickTrigger(fixture, false);
         fixture.detectChanges();
         await fixture.whenStable();
 
-        expect(serviceSpy).not.toHaveBeenCalled();
-        expect(waitSpy).not.toHaveBeenCalled();
+        expect(component.datepicker.customDates).toBeUndefined();
       });
 
       it('should set custom dates when an observable is passed back to the change event arguments', async () => {
         component.showCustomDates = true;
 
-        const service = TestBed.inject(SkyDatepickerService);
-        const serviceSpy = spyOn(service.customDates, 'next').and.callThrough();
-        const waitSpy = spyOn(service.isDaypickerWaiting, 'next').and.callThrough();
-
         clickTrigger(fixture, false);
         fixture.detectChanges();
         await fixture.whenStable();
 
-        expect(serviceSpy).toHaveBeenCalled();
-        expect(waitSpy).toHaveBeenCalled();
+        expect(component.datepicker.customDates).not.toBeUndefined();
       });
 
       it('should not add disabled and key-date CSS classes when custom date is not set', fakeAsync(() => {

@@ -26,7 +26,7 @@ import {
 } from 'rxjs';
 
 import {
-  SkyCalendarDateRangeChangeEvent,
+  SkyDatepickerCalendarChange,
   SkyDatepickerCustomDate
 } from '../../public/public_api';
 
@@ -110,14 +110,14 @@ export class DatepickerVisualComponent implements OnInit {
     this.showCustomDates = !this.showCustomDates;
   }
 
-  public onCalendarDateRangeChange(range: SkyCalendarDateRangeChangeEvent): void {
+  public onCalendarDateRangeChange(range: SkyDatepickerCalendarChange): void {
     this.updateCustomDates(range);
   }
 
   /**
    * Simulate an async call to fetch data and add custom "key" dates to the current date range.
    */
-  public updateCustomDates(event: SkyCalendarDateRangeChangeEvent): void {
+  public updateCustomDates(event: SkyDatepickerCalendarChange): void {
     if (this.showCustomDates && event) {
       const customDates: SkyDatepickerCustomDate[] = [];
       customDates.push({

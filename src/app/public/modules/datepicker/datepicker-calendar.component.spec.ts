@@ -744,14 +744,14 @@ describe('datepicker calendar', () => {
         fixture.detectChanges();
         clickNextArrow(nativeElement);
 
-        service.customDates.next([
+        component.customDates = [
           {
             date: new Date(2017, 4, 1),
             disabled: true,
             keyDate: false,
             keyDateText: []
           }
-        ]);
+        ];
         fixture.detectChanges();
 
         triggerKeydown(fixture, { which: 13 });
@@ -765,14 +765,14 @@ describe('datepicker calendar', () => {
         fixture.detectChanges();
         clickNextArrow(nativeElement);
 
-        service.customDates.next([
+        component.customDates = [
           {
             date: new Date(2017, 4, 1),
             disabled: false,
             keyDate: true,
             keyDateText: []
           }
-        ]);
+        ];
         fixture.detectChanges();
 
         triggerKeydown(fixture, { which: 13 });

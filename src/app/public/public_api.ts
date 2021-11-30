@@ -18,5 +18,5 @@ export * from './modules/datepicker/fuzzy-date.service';
 export * from './modules/timepicker/timepicker.interface';
 export * from './modules/timepicker/timepicker.module';
 
-export * from './modules/datepicker/datepicker-date-range';
+export * from './modules/datepicker/datepicker-calendar-change';
 export * from './modules/datepicker/datepicker-custom-date';

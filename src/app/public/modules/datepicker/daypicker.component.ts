@@ -1,13 +1,11 @@
 import {
-  ChangeDetectorRef,
   Component,
+  EventEmitter,
+  Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  Output
 } from '@angular/core';
-
-import {
-  takeUntil
-} from 'rxjs/operators';
 
 import {
   Subject
@@ -26,8 +24,8 @@ import {
 } from './datepicker-date';
 
 import {
-  SkyDatepickerService
-} from './datepicker.service';
+  SkyDatepickerCalendarChange
+} from './datepicker-calendar-change';
 
 /**
  * Helper interface to compare date ranges.
@@ -51,7 +49,20 @@ interface SkyDateRange {
 })
 export class SkyDayPickerComponent implements OnInit, OnDestroy {
 
+  @Input()
+  public set customDates(value: SkyDatepickerCustomDate[]) {
+    /* istanbul ignore else */
+    if (value) {
+      this.applyCustomDates(value, this.rows);
+    }
+  }
+
+  @Output()
+  public calendarDateRangeChange: EventEmitter<SkyDatepickerCalendarChange> = new EventEmitter<SkyDatepickerCalendarChange>();
+
+  @Input()
   public isWaiting: boolean = false;
+
   public labels: any[] = [];
   public title: string;
   public rows: Array<Array<SkyDatepickerDate>> = [];
@@ -65,22 +76,12 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   public constructor(
-    datepicker: SkyDatepickerCalendarInnerComponent,
-    private datepickerService: SkyDatepickerService,
-    private changeDetectorRef: ChangeDetectorRef
+    datepicker: SkyDatepickerCalendarInnerComponent
   ) {
     this.datepicker = datepicker;
   }
 
   public ngOnInit(): void {
-
-    // Apply custom dates to calendar every time `customDates` are updated.
-    this.datepickerService.customDates
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(customDates => {
-        this.applyCustomDates(customDates, this.rows);
-    });
-
     this.datepicker.stepDay = {months: 1};
     this.initialDate = this.datepicker.activeDate.getDate();
 
@@ -93,14 +94,6 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
     this.datepicker.setKeydownHandler((key: string, event: KeyboardEvent) => {
       this.keydownDays(key, event);
     }, 'day');
-
-    this.datepickerService.isDaypickerWaiting
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(value => {
-        this.isWaiting = value;
-        // Avoid an ExpressionChangedAfterItHasBeenCheckedError.
-        this.changeDetectorRef.detectChanges();
-    });
 
     this.datepicker.refreshView();
   }
@@ -179,7 +172,7 @@ export class SkyDayPickerComponent implements OnInit, OnDestroy {
     const newDateRange = this.getDateRange(this.rows);
 
     if (!this.dateRangeRowsAreEqual(oldDateRange, newDateRange)) {
-      this.datepickerService.calendarDateRangeChange.next({
+      this.calendarDateRangeChange.next({
         startDate: newDateRange.startDate,
         endDate: newDateRange.endDate
       });
