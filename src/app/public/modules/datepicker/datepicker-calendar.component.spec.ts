@@ -21,10 +21,6 @@ import {
   SkyDatepickerModule
 } from './datepicker.module';
 
-import {
-  SkyDatepickerService
-} from './datepicker.service';
-
 import * as moment_ from 'moment';
 const moment = moment_;
 
@@ -731,11 +727,9 @@ describe('datepicker calendar', () => {
     });
 
     describe('custom disabled dates', () => {
-      let service: SkyDatepickerService;
 
       beforeEach(() => {
         fixture.detectChanges();
-        service = TestBed.inject(SkyDatepickerService);
       });
 
       it('should not select active date when selected date is disabled', () => {
