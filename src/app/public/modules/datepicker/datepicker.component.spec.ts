@@ -68,6 +68,7 @@ import {
 } from './fixtures/datepicker-reactive.component.fixture';
 
 import * as moment_ from 'moment';
+
 const moment = moment_;
 
 // #region helpers
@@ -867,6 +868,63 @@ describe('datepicker', () => {
 
         const firstDayCol = getCalendarColumn(0, fixture);
         expect(firstDayCol.textContent).toContain('Fr');
+      }));
+    });
+
+    describe('custom dates', () => {
+      const initialDate = '11/5/1955';
+      beforeEach(fakeAsync(() => {
+        setInputProperty(initialDate, component, fixture);
+      }));
+
+      it('should not set custom dates by default', async () => {
+        clickTrigger(fixture, false);
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(component.datepicker.customDates).toBeUndefined();
+      });
+
+      it('should set custom dates when an observable is passed back to the change event arguments', async () => {
+        component.showCustomDates = true;
+
+        clickTrigger(fixture, false);
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(component.datepicker.customDates).not.toBeUndefined();
+      });
+
+      it('should not add disabled and key-date CSS classes when custom date is not set', fakeAsync(() => {
+        component.showCustomDates = false;
+
+        clickTrigger(fixture);
+        tick(2000); // Trigger 2s fake async call in fixture.
+        fixture.detectChanges();
+
+        const disabledButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-disabled');
+        const keyDateButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-key-date');
+
+        expect(disabledButtons.length).toEqual(0);
+        expect(keyDateButtons.length).toEqual(0);
+      }));
+
+      it('should add disabled and key-date CSS classes when custom date is set', fakeAsync(() => {
+        component.showCustomDates = true;
+
+        clickTrigger(fixture);
+        tick(2000); // Trigger 2s fake async call in fixture.
+        fixture.detectChanges();
+
+        const disabledButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-disabled');
+        const keyDateButtons: NodeListOf<HTMLElement> =
+          document.querySelectorAll('.sky-datepicker-btn-key-date');
+
+        expect(disabledButtons.length).toBeGreaterThan(0);
+        expect(keyDateButtons.length).toBeGreaterThan(0);
       }));
     });
 

@@ -175,6 +175,14 @@
   >
     Toggle strict formatting
   </button>
+  <button
+    class="sky-btn"
+    id="button-set-custom-dates"
+    type="button"
+    (click)="onToggleCustomDatesClick()"
+  >
+    Toggle custom dates
+  </button>
 </div>
 
 <div
@@ -190,7 +198,10 @@
     >
       Input box
     </label>
-    <sky-datepicker #inputBoxPicker>
+    <sky-datepicker
+      (calendarDateRangeChange)="onCalendarDateRangeChange($event)"
+      #inputBoxPicker
+    >
       <input
         skyDatepickerInput
         [disabled]="disabled"

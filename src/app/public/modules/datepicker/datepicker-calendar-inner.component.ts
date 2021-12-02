@@ -3,13 +3,24 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
-import { SkyDateFormatter } from './date-formatter';
+import {
+  Subject
+} from 'rxjs';
+
+import {
+  SkyDatepickerCustomDate
+} from '../../public_api';
+
+import {
+  SkyDateFormatter
+} from './date-formatter';
 
 import {
   SkyDatepickerDate
@@ -26,7 +37,11 @@ let nextDatepickerId = 0;
   styleUrls: ['./datepicker-calendar-inner.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
+export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges, OnDestroy {
+
+  @Input()
+  public customDates: SkyDatepickerCustomDate[];
+
   @Input()
   public startingDay: number;
 
@@ -104,10 +119,11 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
     40: 'down'
   };
 
+  private ngUnsubscribe = new Subject();
+
   private _selectedDate: Date;
 
   public ngOnInit(): void {
-
     if (this.selectedDate) {
       this.activeDate = new Date(this.selectedDate);
     } else {
@@ -117,6 +133,11 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     this.refreshView();
+  }
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   public setCompareHandler(handler: Function, type: string): void {
@@ -252,6 +273,8 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
     isSecondary: boolean,
     id: string): SkyDatepickerDate {
 
+    const customDateMatch = this.getCustomDate(date);
+
     let dateObject: SkyDatepickerDate = {
       date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
       label: this.dateFilter(date, format),
@@ -259,7 +282,9 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
       disabled: this.isDisabled(date),
       current: this.compare(date, new Date()) === 0,
       secondary: isSecondary,
-      uid: id
+      uid: id,
+      keyDate: customDateMatch ? customDateMatch.keyDate : undefined,
+      keyDateText: customDateMatch ? customDateMatch.keyDateText : []
     };
 
     return dateObject;
@@ -267,8 +292,8 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
 
   public createCalendarRows(
     dates: Array<SkyDatepickerDate>,
-    size: number): Array<Array<SkyDatepickerDate>> {
-
+    size: number
+  ): Array<Array<SkyDatepickerDate>> {
     let rows: Array<Array<SkyDatepickerDate>> = [];
     while (dates.length > 0) {
       rows.push(dates.splice(0, size));
@@ -371,9 +396,24 @@ export class SkyDatepickerCalendarInnerComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Date is disabled if it meets any of these criteria:
+   * 1. Date falls outside the min or max dates set by the SkyDatepickerConfigService.
+   * 2. Date is marked as disabled in the customDates array.
+   */
   protected isDisabled(date: Date): boolean {
+    const customDate = this.getCustomDate(date);
+    return (
+      (this.minDate && this.compare(date, this.minDate) < 0) ||
+      (this.maxDate && this.compare(date, this.maxDate) > 0)) ||
+      (customDate && customDate.disabled);
+  }
 
-    return ((this.minDate && this.compare(date, this.minDate) < 0)
-      || (this.maxDate && this.compare(date, this.maxDate) > 0));
+  private getCustomDate(date: Date): SkyDatepickerCustomDate | undefined {
+    if (this.customDates) {
+      return this.customDates.find((customDate: SkyDatepickerCustomDate) => {
+        return customDate.date.getTime() === date.getTime();
+      });
+    }
   }
 }

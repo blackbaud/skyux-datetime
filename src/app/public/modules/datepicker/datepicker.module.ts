@@ -22,13 +22,18 @@ import {
 } from '@skyux/i18n';
 
 import {
-  SkyIconModule
+  SkyIconModule,
+  SkyWaitModule
 } from '@skyux/indicators';
 
 import {
   SkyThemeModule,
   SkyThemeService
 } from '@skyux/theme';
+
+import {
+  SkyPopoverModule
+} from '@skyux/popovers';
 
 import {
   SkyDateTimeResourcesModule
@@ -41,18 +46,6 @@ import {
 import {
   SkyDatepickerCalendarInnerComponent
 } from './datepicker-calendar-inner.component';
-
-import {
-  SkyDayPickerComponent
-} from './daypicker.component';
-
-import {
-  SkyMonthPickerComponent
-} from './monthpicker.component';
-
-import {
-  SkyYearPickerComponent
-} from './yearpicker.component';
 
 import {
   SkyDatepickerComponent
@@ -71,8 +64,32 @@ import {
 } from './datepicker-input-fuzzy.directive';
 
 import {
+  SkyDatepickerService
+} from './datepicker.service';
+
+import {
+  SkyDayPickerButtonComponent
+} from './daypicker-button.component';
+
+import {
+  SkyDayPickerCellComponent
+} from './daypicker-cell.component';
+
+import {
+  SkyDayPickerComponent
+} from './daypicker.component';
+
+import {
   SkyFuzzyDateService
 } from './fuzzy-date.service';
+
+import {
+  SkyMonthPickerComponent
+} from './monthpicker.component';
+
+import {
+  SkyYearPickerComponent
+} from './yearpicker.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +100,9 @@ import {
     SkyYearPickerComponent,
     SkyDatepickerComponent,
     SkyDatepickerInputDirective,
-    SkyFuzzyDatepickerInputDirective
+    SkyFuzzyDatepickerInputDirective,
+    SkyDayPickerCellComponent,
+    SkyDayPickerButtonComponent
   ],
   imports: [
     CommonModule,
@@ -93,7 +112,9 @@ import {
     SkyDateTimeResourcesModule,
     SkyAffixModule,
     SkyOverlayModule,
-    SkyThemeModule
+    SkyThemeModule,
+    SkyPopoverModule,
+    SkyWaitModule
   ],
   exports: [
     SkyDatepickerCalendarComponent,
@@ -103,14 +124,17 @@ import {
     SkyYearPickerComponent,
     SkyDatepickerComponent,
     SkyDatepickerInputDirective,
-    SkyFuzzyDatepickerInputDirective
+    SkyFuzzyDatepickerInputDirective,
+    SkyDayPickerCellComponent,
+    SkyDayPickerButtonComponent
   ],
   providers: [
     SkyAppWindowRef,
     SkyDatepickerConfigService,
     SkyFuzzyDateService,
     SkyCoreAdapterService,
-    SkyThemeService
+    SkyThemeService,
+    SkyDatepickerService
   ]
 })
 export class SkyDatepickerModule { }
