@@ -1,3 +1,7 @@
+# 4.13.0 (2021-12-02)
+
+- Added the `calendarDateRangeChange` event to the datepicker component to allow consumers to listen for changes to the calendar and push back `customDates` that show key dates or disabled dates in the datepicker's calendar. [#293](https://github.com/blackbaud/skyux-datetime/pull/293)
+
 # 4.12.3 (2021-10-28)
 
 - Fixed the datepicker component to work with TypeScript's strict mode. [#290](https://github.com/blackbaud/skyux-datetime/pull/290)
