@@ -21,7 +21,8 @@ import {
   SkyOverlayInstance,
   SkyOverlayService
 } from '@skyux/core';
-import { SkyDatepickerCalendarChange, SkyDatepickerCustomDate } from '@skyux/datetime';
+import { SkyDatepickerCustomDate } from './datepicker-custom-date';
+import { SkyDatepickerCalendarChange } from './datepicker-calendar-change';
 
 import {
   SkyInputBoxHostService

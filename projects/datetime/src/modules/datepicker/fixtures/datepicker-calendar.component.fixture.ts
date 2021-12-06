@@ -2,7 +2,7 @@ import {
   Component,
   ViewChild
 } from '@angular/core';
-import { SkyDatepickerCustomDate } from '@skyux/datetime';
+import { SkyDatepickerCustomDate } from '../datepicker-custom-date';
 
 import {
   SkyDatepickerCalendarComponent

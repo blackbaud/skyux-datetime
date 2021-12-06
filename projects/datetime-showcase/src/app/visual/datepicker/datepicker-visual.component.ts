@@ -10,7 +10,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { SkyDatepickerCalendarChange, SkyDatepickerCustomDate } from '@skyux/datetime';
+import { SkyDatepickerCalendarChange, SkyDatepickerCustomDate } from 'projects/datetime/src/public-api';
 import { of } from 'rxjs';
 
 import {

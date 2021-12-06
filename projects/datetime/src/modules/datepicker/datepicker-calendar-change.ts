@@ -1,4 +1,4 @@
-import { SkyDatepickerCustomDate } from '@skyux/datetime';
+import { SkyDatepickerCustomDate } from './datepicker-custom-date';
 import {
   Observable
 } from 'rxjs';

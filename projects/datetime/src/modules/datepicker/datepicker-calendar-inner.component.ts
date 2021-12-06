@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { SkyDatepickerCustomDate } from '@skyux/datetime';
+import { SkyDatepickerCustomDate } from './datepicker-custom-date';
 import { Subject } from 'rxjs';
 
 import { SkyDateFormatter } from './date-formatter';
