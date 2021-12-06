@@ -29,5 +29,3 @@ export { SkyFuzzyDatepickerInputDirective as λ4 } from './modules/datepicker/da
 export { SkyDateRangePickerComponent as λ5 } from './modules/date-range-picker/date-range-picker.component';
 export { SkyTimepickerComponent as λ6 } from './modules/timepicker/timepicker.component';
 export { SkyTimepickerInputDirective as λ7 } from './modules/timepicker/timepicker.directive';
-export { SkyDayPickerCellComponent as λ8 } from './modules/datepicker/daypicker-cell.component';
-export { SkyDayPickerButtonComponent as λ9 } from './modules/datepicker/daypicker-button.component';
