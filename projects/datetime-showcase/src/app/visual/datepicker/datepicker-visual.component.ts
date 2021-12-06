@@ -10,8 +10,11 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { SkyDatepickerCalendarChange, SkyDatepickerCustomDate } from '@skyux/datetime';
+import { of } from 'rxjs';
 
 import {
+  delay,
   distinctUntilChanged
 } from 'rxjs/operators';
 
@@ -25,6 +28,7 @@ export class DatepickerVisualComponent implements OnInit {
   public maxDate: Date;
   public noValidate = false;
   public reactiveForm: FormGroup;
+  public showCustomDates: boolean = false;
   public selectedDate: Date = new Date(1955, 10, 5);
   public startingDay: number;
   public strict: boolean = false;
@@ -82,5 +86,86 @@ export class DatepickerVisualComponent implements OnInit {
   public setInvalidValue(): void {
     this.reactiveDate.setValue('invalid');
     (this.selectedDate as any) = 'invalid';
+  }
+
+  public onToggleCustomDatesClick(): void {
+    this.showCustomDates = !this.showCustomDates;
+  }
+
+  public onCalendarDateRangeChange(range: SkyDatepickerCalendarChange): void {
+    this.updateCustomDates(range);
+  }
+
+  /**
+   * Simulate an async call to fetch data and add custom "key" dates to the current date range.
+   */
+  public updateCustomDates(event: SkyDatepickerCalendarChange): void {
+    if (this.showCustomDates && event) {
+      const customDates: SkyDatepickerCustomDate[] = [];
+      customDates.push({
+        date: event.startDate,
+        disabled: false,
+        keyDate: true,
+        keyDateText: ['First date']
+      });
+
+      customDates.push({
+        date: this.getNextDate(event.startDate, 8),
+        disabled: false,
+        keyDate: true,
+        keyDateText: ['Important']
+      });
+
+      customDates.push({
+        date: this.getNextDate(event.startDate, 9),
+        disabled: false,
+        keyDate: true,
+        keyDateText: ['Also Important']
+      });
+
+      customDates.push({
+        date: this.getNextDate(event.startDate, 10),
+        disabled: true,
+        keyDate: true,
+        keyDateText: ['Disabled']
+      });
+
+      customDates.push({
+        date: this.getNextDate(event.startDate, 11),
+        disabled: true,
+        keyDate: false,
+        keyDateText: []
+      });
+
+      customDates.push({
+        date: this.getNextDate(event.startDate, 12),
+        disabled: false,
+        keyDate: true,
+        keyDateText: []
+      });
+
+      customDates.push({
+        date: this.getNextDate(event.startDate, 13),
+        disabled: false,
+        keyDate: true,
+        keyDateText: ['Multiple', 'Messages']
+      });
+
+      customDates.push({
+        date: event.endDate,
+        disabled: false,
+        keyDate: true,
+        keyDateText: ['Last date']
+      });
+
+      // Bind observable to event argument and simulate async call.
+      event.customDates = of(customDates).pipe(delay(2000));
+    }
+  }
+
+  public getNextDate(startDate: Date, daystoAdd: number): Date {
+    let newDate = new Date(startDate);
+    newDate.setDate(newDate.getDate() + daystoAdd);
+    return newDate;
   }
 }

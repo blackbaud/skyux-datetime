@@ -14,6 +14,8 @@ export * from './modules/datepicker/datepicker-config.service';
 export * from './modules/datepicker/datepicker.module';
 export * from './modules/datepicker/fuzzy-date';
 export * from './modules/datepicker/fuzzy-date.service';
+export * from './modules/datepicker/datepicker-calendar-change';
+export * from './modules/datepicker/datepicker-custom-date';
 
 export * from './modules/timepicker/timepicker.interface';
 export * from './modules/timepicker/timepicker.module';
@@ -27,3 +29,5 @@ export { SkyFuzzyDatepickerInputDirective as λ4 } from './modules/datepicker/da
 export { SkyDateRangePickerComponent as λ5 } from './modules/date-range-picker/date-range-picker.component';
 export { SkyTimepickerComponent as λ6 } from './modules/timepicker/timepicker.component';
 export { SkyTimepickerInputDirective as λ7 } from './modules/timepicker/timepicker.directive';
+export { SkyDayPickerCellComponent as λ8 } from './modules/datepicker/daypicker-cell.component';
+export { SkyDayPickerButtonComponent as λ9 } from './modules/datepicker/daypicker-button.component';

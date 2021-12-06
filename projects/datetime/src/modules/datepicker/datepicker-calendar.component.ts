@@ -23,6 +23,7 @@ import {
 import {
   SkyDateFormatter
 } from './date-formatter';
+import { SkyDatepickerCalendarChange, SkyDatepickerCustomDate } from '@skyux/datetime';
 
 /**
  * @internal
@@ -34,6 +35,12 @@ import {
   providers: [SkyDatepickerAdapterService]
 })
 export class SkyDatepickerCalendarComponent implements AfterViewInit {
+
+  @Input()
+  public customDates: SkyDatepickerCustomDate[];
+
+  @Input()
+  public isDaypickerWaiting: boolean;
 
   @Input()
   public minDate: Date;
@@ -56,10 +63,13 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
   }
 
   @Output()
-  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
+  public calendarDateRangeChange: EventEmitter<SkyDatepickerCalendarChange> = new EventEmitter<SkyDatepickerCalendarChange>();
 
   @Output()
   public calendarModeChange: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  public selectedDateChange: EventEmitter<Date> = new EventEmitter<Date>(undefined);
 
   /**
    * @internal
@@ -94,6 +104,10 @@ export class SkyDatepickerCalendarComponent implements AfterViewInit {
 
   public configureOptions(): void {
     Object.assign(this, this.config);
+  }
+
+  public onCalendarDateRangeChange(event: SkyDatepickerCalendarChange): void {
+    this.calendarDateRangeChange.next(event);
   }
 
   public onCalendarModeChange(event: string): void {
