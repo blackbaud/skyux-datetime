@@ -1,3 +1,7 @@
+# 5.1.1 (2021-12-07)
+
+- Added support for Prettier code formatting. []()
+
 # 5.1.0 (2021-12-06)
 
 - Added the `calendarDateRangeChange` event to the datepicker component to allow consumers to listen for changes to the calendar and push back `customDates` that show key dates or disabled dates in the datepicker's calendar. [#297](https://github.com/blackbaud/skyux-datetime/pull/297)
@@ -54,7 +58,7 @@
 - Initial beta release.
 - Added support for `@angular/core@^12`. [#269](https://github.com/blackbaud/skyux-datetime/pull/269)
 - Added support for `5.0.0-beta.*` versions of SKY UX component libraries. [#269](https://github.com/blackbaud/skyux-datetime/pull/269)
-- Fixed `SkyDateRangeService`, `SkyFuzzyDateService`,  and `SkyDatepickerConfigService` to work within lazy-loaded feature modules. [#263](https://github.com/blackbaud/skyux-datetime/pull/263)
+- Fixed `SkyDateRangeService`, `SkyFuzzyDateService`, and `SkyDatepickerConfigService` to work within lazy-loaded feature modules. [#263](https://github.com/blackbaud/skyux-datetime/pull/263)
 
 # 4.12.0 (2021-06-15)
 
@@ -131,7 +135,7 @@
 
 # 4.1.2 (2020-07-16)
 
-- Fixed the date pipe to allow all data types. [#186](https://github.com/blackbaud/skyux-datetime/pull/186)  (Thanks [@Blackbaud-NickGlyder](https://github.com/Blackbaud-NickGlyder)!)
+- Fixed the date pipe to allow all data types. [#186](https://github.com/blackbaud/skyux-datetime/pull/186) (Thanks [@Blackbaud-NickGlyder](https://github.com/Blackbaud-NickGlyder)!)
 
 # 4.1.1 (2020-07-07)
 
@@ -196,7 +200,7 @@
 
 # 3.8.0 (2020-02-20)
 
-- Added the `strict` property to the datepicker input directive to indicate whether the format of the date value must match the format from the `dateFormat` value.  [#114](https://github.com/blackbaud/skyux-datetime/pull/114)
+- Added the `strict` property to the datepicker input directive to indicate whether the format of the date value must match the format from the `dateFormat` value. [#114](https://github.com/blackbaud/skyux-datetime/pull/114)
 
 # 3.7.1 (2020-02-04)
 
@@ -212,7 +216,7 @@
 
 # 3.6.3 (2019-10-21)
 
-- Fixed the `disabled` property on the datepicker and timepicker inputs for reactive forms.  [#91](https://github.com/blackbaud/skyux-datetime/pull/91)
+- Fixed the `disabled` property on the datepicker and timepicker inputs for reactive forms. [#91](https://github.com/blackbaud/skyux-datetime/pull/91)
 
 # 3.6.2 (2019-10-01)
 

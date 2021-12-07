@@ -10,7 +10,8 @@
     "skyux:generate-lib-resources-module": "ng generate @skyux/i18n:lib-resources-module",
     "lint": "ng lint",
     "skyux:generate-documentation": "ng generate @skyux-sdk/documentation-schematics:documentation",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "skyux:format": "npx prettier --write ."
   },
   "private": true,
   "dependencies": {
@@ -28,7 +29,7 @@
     "@skyux/forms": "5.0.1",
     "@skyux/i18n": "5.0.1",
     "@skyux/indicators": "5.1.1",
-    "@skyux/packages": "5.89.0",
+    "@skyux/packages": "5.91.0",
     "@skyux/popovers": "5.0.1",
     "@skyux/theme": "5.0.4",
     "moment": "2.29.1",
@@ -48,12 +49,14 @@
     "@skyux-sdk/angular-builders": "5.0.0-beta.2",
     "@skyux-sdk/documentation-schematics": "5.0.0",
     "@skyux-sdk/e2e": "5.0.0-beta.1",
+    "@skyux-sdk/prettier-schematics": "5.0.0",
     "@skyux-sdk/testing": "5.1.1",
     "@types/jasmine": "3.8.2",
     "@types/node": "12.20.37",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
     "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
     "jasmine-core": "3.8.0",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "6.3.9",
@@ -61,6 +64,7 @@
     "karma-coverage": "2.0.3",
     "karma-jasmine": "4.0.1",
     "ng-packagr": "12.2.5",
+    "prettier": "2.4.1",
     "protractor": "7.0.0",
     "ts-node": "8.3.0",
     "typescript": "4.3.5"

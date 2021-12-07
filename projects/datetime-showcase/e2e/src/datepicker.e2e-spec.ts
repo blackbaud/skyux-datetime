@@ -1,13 +1,6 @@
-import {
-  expect,
-  SkyHostBrowser,
-  SkyVisualThemeSelector
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser, SkyVisualThemeSelector } from '@skyux-sdk/e2e';
 
-import {
-  element,
-  by
-} from 'protractor';
+import { element, by } from 'protractor';
 
 describe('Datepicker', () => {
   let currentTheme: string;
@@ -36,9 +29,12 @@ describe('Datepicker', () => {
     it('should match previous daypicker screenshot', async (done) => {
       await SkyHostBrowser.scrollTo('#screenshot-datepicker-calendar');
 
-      expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-daypicker')
-      });
+      expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(
+        done,
+        {
+          screenshotName: getScreenshotName('datepicker-daypicker'),
+        }
+      );
     });
 
     it('should match previous monthpicker screenshot', async (done) => {
@@ -46,9 +42,12 @@ describe('Datepicker', () => {
       await element(by.css('.sky-datepicker-calendar-title')).click();
       await SkyHostBrowser.moveCursorOffScreen();
 
-      expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-monthpicker')
-      });
+      expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(
+        done,
+        {
+          screenshotName: getScreenshotName('datepicker-monthpicker'),
+        }
+      );
     });
 
     it('should match previous yearpicker screenshot', async (done) => {
@@ -57,16 +56,19 @@ describe('Datepicker', () => {
       await element(by.css('.sky-datepicker-calendar-title')).click();
       await SkyHostBrowser.moveCursorOffScreen();
 
-      expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-yearpicker')
-      });
+      expect('#screenshot-datepicker-calendar').toMatchBaselineScreenshot(
+        done,
+        {
+          screenshotName: getScreenshotName('datepicker-yearpicker'),
+        }
+      );
     });
 
     it('should match previous datepicker input screenshot', async (done) => {
       await SkyHostBrowser.scrollTo('#screenshot-datepicker');
 
       expect('#screenshot-datepicker').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-input')
+        screenshotName: getScreenshotName('datepicker-input'),
       });
     });
 
@@ -76,7 +78,7 @@ describe('Datepicker', () => {
       await SkyHostBrowser.moveCursorOffScreen();
 
       expect('#screenshot-datepicker').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-input-open')
+        screenshotName: getScreenshotName('datepicker-input-open'),
       });
     });
 
@@ -87,25 +89,31 @@ describe('Datepicker', () => {
       await SkyHostBrowser.scrollTo('#screenshot-datepicker');
 
       expect('#screenshot-datepicker').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-input-invalid')
+        screenshotName: getScreenshotName('datepicker-input-invalid'),
       });
     });
 
     it('should match previous datepicker input screenshot', async (done) => {
       await SkyHostBrowser.scrollTo('#screenshot-datepicker-input-box');
 
-      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-input-box')
-      });
+      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(
+        done,
+        {
+          screenshotName: getScreenshotName('datepicker-input-box'),
+        }
+      );
     });
 
     it('should match previous datepicker input screenshot when disabled', async (done) => {
       await element(by.css('#toggle-disabled-btn')).click();
       await SkyHostBrowser.scrollTo('#screenshot-datepicker-input-box');
 
-      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-input-box-disabled')
-      });
+      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(
+        done,
+        {
+          screenshotName: getScreenshotName('datepicker-input-box-disabled'),
+        }
+      );
     });
 
     it('should match previous datepicker input screenshot with custom dates', async (done) => {
@@ -114,9 +122,12 @@ describe('Datepicker', () => {
       await element(by.css('#sky-datepicker-button-2')).click();
       await SkyHostBrowser.moveCursorOffScreen();
 
-      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('datepicker-input-custom-dates')
-      });
+      expect('#screenshot-datepicker-input-box').toMatchBaselineScreenshot(
+        done,
+        {
+          screenshotName: getScreenshotName('datepicker-input-custom-dates'),
+        }
+      );
     });
   }
 
@@ -142,5 +153,4 @@ describe('Datepicker', () => {
 
     validateAll();
   });
-
 });

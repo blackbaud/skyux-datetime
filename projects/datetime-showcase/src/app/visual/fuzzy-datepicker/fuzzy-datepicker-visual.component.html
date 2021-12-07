@@ -1,7 +1,7 @@
 <div
   class="app-screenshot"
   id="screenshot-fuzzy-datepicker-calendar"
-  style="display: inline-block;"
+  style="display: inline-block"
 >
   <sky-datepicker-calendar
     [selectedDate]="selectedDate"
@@ -14,7 +14,7 @@
 <div
   class="app-screenshot"
   id="screenshot-fuzzy-datepicker"
-  style="max-width: 50%; height: 500px;"
+  style="max-width: 50%; height: 500px"
 >
   <sky-datepicker>
     <input
@@ -47,9 +47,7 @@
     </tr>
   </table>
 
-  <p *ngIf="date.errors?.skyFuzzyDate"
-    class="sky-error-label"
-  >
+  <p *ngIf="date.errors?.skyFuzzyDate" class="sky-error-label">
     <span *ngIf="date.errors.skyFuzzyDate?.invalid">
       Please enter a valid date.
     </span>
@@ -72,14 +70,8 @@
   </p>
 </div>
 
-<div
-  class="app-screenshot"
-  style="max-width: 50%; height: 500px;"
->
-  <form
-    novalidate
-    [formGroup]="reactiveForm"
-  >
+<div class="app-screenshot" style="max-width: 50%; height: 500px">
+  <form novalidate [formGroup]="reactiveForm">
     <sky-datepicker>
       <input
         formControlName="selectedFuzzyDate"
@@ -111,9 +103,7 @@
       </tr>
     </table>
 
-    <p *ngIf="reactiveDate.errors?.skyFuzzyDate"
-      class="sky-error-label"
-    >
+    <p *ngIf="reactiveDate.errors?.skyFuzzyDate" class="sky-error-label">
       <span *ngIf="reactiveDate.errors.skyFuzzyDate?.invalid">
         Please enter a valid date.
       </span>
@@ -137,49 +127,23 @@
   </form>
 </div>
 
-<div
-  class="app-screenshot"
->
-  <button
-    class="sky-btn"
-    type="button"
-    (click)="setMinMaxDates()"
-  >
+<div class="app-screenshot">
+  <button class="sky-btn" type="button" (click)="setMinMaxDates()">
     Set min and max dates
   </button>
-  <button
-    class="sky-btn"
-    type="button"
-    (click)="toggleYearRequired()"
-  >
+  <button class="sky-btn" type="button" (click)="toggleYearRequired()">
     Toggle year required
   </button>
-  <button
-    class="sky-btn"
-    type="button"
-    (click)="toggleFutureDisabled()"
-  >
+  <button class="sky-btn" type="button" (click)="toggleFutureDisabled()">
     Toggle cannot be in future
   </button>
-  <button
-    class="sky-btn"
-    type="button"
-    (click)="setStartingDay()"
-  >
+  <button class="sky-btn" type="button" (click)="setStartingDay()">
     Set starting day to Monday
   </button>
-  <button
-    class="sky-btn"
-    type="button"
-    (click)="toggleDisabled()"
-  >
+  <button class="sky-btn" type="button" (click)="toggleDisabled()">
     Toggle disabled
   </button>
-  <button
-    class="sky-btn"
-    type="button"
-    (click)="setValue()"
-  >
+  <button class="sky-btn" type="button" (click)="setValue()">
     Set new value
   </button>
   <button

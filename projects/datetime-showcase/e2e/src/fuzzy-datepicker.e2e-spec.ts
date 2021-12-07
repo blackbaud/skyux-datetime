@@ -1,12 +1,6 @@
-import {
-  expect,
-  SkyHostBrowser
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser } from '@skyux-sdk/e2e';
 
-import {
-  by,
-  element
-} from 'protractor';
+import { by, element } from 'protractor';
 
 describe('Fuzzy datepicker', () => {
   beforeEach(async () => {
@@ -15,31 +9,40 @@ describe('Fuzzy datepicker', () => {
   });
 
   it('should match previous daypicker screenshot', (done) => {
-    expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
-      screenshotName: 'fuzzy-datepicker-daypicker'
-    });
+    expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(
+      done,
+      {
+        screenshotName: 'fuzzy-datepicker-daypicker',
+      }
+    );
   });
 
   it('should match previous monthpicker screenshot', async (done) => {
     await element(by.css('.sky-datepicker-calendar-title')).click();
     await SkyHostBrowser.moveCursorOffScreen();
-    expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
-      screenshotName: 'fuzzy-datepicker-monthpicker'
-    });
+    expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(
+      done,
+      {
+        screenshotName: 'fuzzy-datepicker-monthpicker',
+      }
+    );
   });
 
   it('should match previous yearpicker screenshot', async (done) => {
     await element(by.css('.sky-datepicker-calendar-title')).click();
     await element(by.css('.sky-datepicker-calendar-title')).click();
     await SkyHostBrowser.moveCursorOffScreen();
-    expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(done, {
-      screenshotName: 'fuzzy-datepicker-yearpicker'
-    });
+    expect('#screenshot-fuzzy-datepicker-calendar').toMatchBaselineScreenshot(
+      done,
+      {
+        screenshotName: 'fuzzy-datepicker-yearpicker',
+      }
+    );
   });
 
   it('should match previous fuzzy datepicker input screenshot', (done) => {
     expect('#screenshot-fuzzy-datepicker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'fuzzy-datepicker-input'
+      screenshotName: 'fuzzy-datepicker-input',
     });
   });
 
@@ -47,7 +50,7 @@ describe('Fuzzy datepicker', () => {
     await element(by.css('.sky-datepicker button')).click();
     await SkyHostBrowser.moveCursorOffScreen();
     expect('#screenshot-fuzzy-datepicker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'fuzzy-datepicker-input-open'
+      screenshotName: 'fuzzy-datepicker-input-open',
     });
   });
 
@@ -56,7 +59,7 @@ describe('Fuzzy datepicker', () => {
     await SkyHostBrowser.moveCursorOffScreen();
     await SkyHostBrowser.scrollTo('#screenshot-fuzzy-datepicker');
     expect('#screenshot-fuzzy-datepicker').toMatchBaselineScreenshot(done, {
-      screenshotName: 'fuzzy-datepicker-input-invalid'
+      screenshotName: 'fuzzy-datepicker-input-invalid',
     });
   });
 });

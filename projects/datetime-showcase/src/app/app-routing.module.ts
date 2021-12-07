@@ -11,36 +11,36 @@ import { VisualComponent } from './visual/visual.component';
 const routes: Routes = [
   {
     path: '',
-    component: VisualComponent
+    component: VisualComponent,
   },
   {
     path: 'visual/datepicker',
-    component: DatepickerVisualComponent
+    component: DatepickerVisualComponent,
   },
   {
     path: 'visual/date-range-picker',
-    component: DateRangePickerVisualComponent
+    component: DateRangePickerVisualComponent,
   },
   {
     path: 'visual/fuzzy-datepicker',
-    component: FuzzyDatepickerVisualComponent
+    component: FuzzyDatepickerVisualComponent,
   },
   {
     path: 'visual/timepicker',
-    component: TimepickerVisualComponent
+    component: TimepickerVisualComponent,
   },
   {
     path: 'visual/date-pipe',
-    component: DatePipeVisualComponent
+    component: DatePipeVisualComponent,
   },
   {
     path: 'visual/fuzzy-date-pipe',
-    component: FuzzyDatePipeVisualComponent
-  }
+    component: FuzzyDatePipeVisualComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

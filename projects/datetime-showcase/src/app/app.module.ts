@@ -7,17 +7,9 @@ import { AppComponent } from './app.component';
 import { VisualModule } from './visual/visual.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    VisualModule
-  ],
-  providers: [
-    SkyThemeService
-  ],
-  bootstrap: [AppComponent]
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, VisualModule],
+  providers: [SkyThemeService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

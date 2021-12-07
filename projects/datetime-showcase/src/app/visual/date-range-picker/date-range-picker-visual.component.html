@@ -1,22 +1,12 @@
-<div
-  class="date-range-demo"
->
-  <div
-    class=“sky-padding-even-default”
-  >
-    <label
-      class=“sky-control-label”
-    >
+<div class="date-range-demo">
+  <div class="“sky-padding-even-default”">
+    <label class="“sky-control-label”">
       Theme:
       <sky-e2e-theme-selector></sky-e2e-theme-selector>
     </label>
   </div>
 
-  <form
-    id="screenshot-date-range-picker"
-    novalidate
-    [formGroup]="reactiveForm"
-  >
+  <form id="screenshot-date-range-picker" novalidate [formGroup]="reactiveForm">
     <div class="sky-form-group">
       <sky-date-range-picker
         formControlName="lastDonation"
@@ -30,19 +20,13 @@
     </div>
 
     <div class="sky-form-group">
-      <button
-        class="sky-btn sky-btn-default"
-        type="button"
-        (click)="submit()"
-      >
+      <button class="sky-btn sky-btn-default" type="button" (click)="submit()">
         Submit
       </button>
     </div>
   </form>
 
-  <h3>
-    &lt;sky-date-range-picker&gt; statuses
-  </h3>
+  <h3>&lt;sky-date-range-picker&gt; statuses</h3>
 
   <table>
     <tr>
@@ -59,23 +43,17 @@
     </tr>
   </table>
 
-  <div *ngIf="pickerFormControl.errors"
-    class="sky-error-label"
-  >
+  <div *ngIf="pickerFormControl.errors" class="sky-error-label">
     {{ pickerFormControl.errors | json }}
   </div>
 
-  <h3>
-    &lt;sky-date-range-picker&gt; value
-  </h3>
+  <h3>&lt;sky-date-range-picker&gt; value</h3>
 
   <pre><code style="display:block;">calculatorId: {{ reactiveForm.value.lastDonation?.calculatorId }}
 startDate: {{ reactiveForm.value.lastDonation?.startDate | date }}
 endDate: {{ reactiveForm.value.lastDonation?.endDate | date }}</code></pre>
 
-  <h3>
-    Manipulate value and state
-  </h3>
+  <h3>Manipulate value and state</h3>
 
   <button
     class="sky-btn sky-btn-default"
@@ -98,18 +76,10 @@ endDate: {{ reactiveForm.value.lastDonation?.endDate | date }}</code></pre>
   >
     Toggle end date required
   </button>
-  <button
-    class="sky-btn sky-btn-default"
-    type="button"
-    (click)="resetForm()"
-  >
+  <button class="sky-btn sky-btn-default" type="button" (click)="resetForm()">
     Reset form
   </button>
-  <button
-    class="sky-btn sky-btn-default"
-    type="button"
-    (click)="setRange()"
-  >
+  <button class="sky-btn sky-btn-default" type="button" (click)="setRange()">
     Set specific range
   </button>
   <button
