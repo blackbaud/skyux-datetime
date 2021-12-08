@@ -1,16 +1,8 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {
-  SkyAppLocaleInfo,
-  SkyAppLocaleProvider
-} from '@skyux/i18n';
+import { SkyAppLocaleInfo, SkyAppLocaleProvider } from '@skyux/i18n';
 
-import {
-  BehaviorSubject,
-  Observable
-} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export class MyLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo(): Observable<SkyAppLocaleInfo> {
@@ -19,7 +11,7 @@ export class MyLocaleProvider extends SkyAppLocaleProvider {
     // Simulate HTTP call.
     setTimeout(() => {
       obs.next({
-        locale: 'fr-CA'
+        locale: 'fr-CA',
       });
     }, 1000);
 
@@ -28,14 +20,14 @@ export class MyLocaleProvider extends SkyAppLocaleProvider {
 }
 
 @Component({
-  selector: 'date-pipe-with-provider-visual',
+  selector: 'app-date-pipe-with-provider-visual',
   templateUrl: './date-pipe-with-provider-visual.component.html',
   providers: [
     {
       provide: SkyAppLocaleProvider,
-      useClass: MyLocaleProvider
-    }
-  ]
+      useClass: MyLocaleProvider,
+    },
+  ],
 })
 export class DatePipeWithProviderVisualComponent {
   public dateValue = new Date('01/01/2019');

@@ -1,18 +1,12 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {
-  SkyDatePipe
-} from 'projects/datetime/src/public-api';
+import { SkyDatePipe } from 'projects/datetime/src/public-api';
 
 @Component({
-  selector: 'date-pipe-visual',
-  templateUrl: './date-pipe-visual.component.html'
+  selector: 'app-date-pipe-visual',
+  templateUrl: './date-pipe-visual.component.html',
 })
 export class DatePipeVisualComponent implements OnInit {
-
   public format: string = 'short';
 
   // Pre-defined format options from SkyDateFormatUtility.
@@ -24,7 +18,7 @@ export class DatePipeVisualComponent implements OnInit {
     'mediumDate',
     'shortDate',
     'mediumTime',
-    'shortTime'
+    'shortTime',
   ];
 
   public locale: string = 'en-US';
@@ -41,17 +35,19 @@ export class DatePipeVisualComponent implements OnInit {
     'ja-JP',
     'pt-BR',
     'ru-RU',
-    'zh-CN'
+    'zh-CN',
   ];
 
   public myDate = new Date(1955, 10, 5);
 
-  constructor(
-    private datePipe: SkyDatePipe
-  ) { }
+  constructor(private datePipe: SkyDatePipe) {}
 
   public ngOnInit(): void {
-    const result = this.datePipe.transform(new Date('01/01/2019'), 'short', 'en-US');
+    const result = this.datePipe.transform(
+      new Date('01/01/2019'),
+      'short',
+      'en-US'
+    );
     console.log('Result from calling pipe directly:', result);
   }
 

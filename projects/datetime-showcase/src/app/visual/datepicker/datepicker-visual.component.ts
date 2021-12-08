@@ -1,26 +1,23 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators
+  Validators,
 } from '@angular/forms';
-import { SkyDatepickerCalendarChange, SkyDatepickerCustomDate } from 'projects/datetime/src/public-api';
+import {
+  SkyDatepickerCalendarChange,
+  SkyDatepickerCustomDate,
+} from 'projects/datetime/src/public-api';
 import { of } from 'rxjs';
 
-import {
-  delay,
-  distinctUntilChanged
-} from 'rxjs/operators';
+import { delay, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-datepicker-visual',
-  templateUrl: './datepicker-visual.component.html'
+  templateUrl: './datepicker-visual.component.html',
 })
 export class DatepickerVisualComponent implements OnInit {
   public disabled = false;
@@ -33,9 +30,7 @@ export class DatepickerVisualComponent implements OnInit {
   public startingDay: number;
   public strict: boolean = false;
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) { }
+  constructor(private formBuilder: FormBuilder) {}
 
   public get reactiveDate(): AbstractControl {
     return this.reactiveForm.get('selectedDate');
@@ -43,7 +38,7 @@ export class DatepickerVisualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      selectedDate: new FormControl(new Date(1955, 10, 5), Validators.required)
+      selectedDate: new FormControl(new Date(1955, 10, 5), Validators.required),
     });
 
     this.reactiveDate.statusChanges
@@ -106,56 +101,56 @@ export class DatepickerVisualComponent implements OnInit {
         date: event.startDate,
         disabled: false,
         keyDate: true,
-        keyDateText: ['First date']
+        keyDateText: ['First date'],
       });
 
       customDates.push({
         date: this.getNextDate(event.startDate, 8),
         disabled: false,
         keyDate: true,
-        keyDateText: ['Important']
+        keyDateText: ['Important'],
       });
 
       customDates.push({
         date: this.getNextDate(event.startDate, 9),
         disabled: false,
         keyDate: true,
-        keyDateText: ['Also Important']
+        keyDateText: ['Also Important'],
       });
 
       customDates.push({
         date: this.getNextDate(event.startDate, 10),
         disabled: true,
         keyDate: true,
-        keyDateText: ['Disabled']
+        keyDateText: ['Disabled'],
       });
 
       customDates.push({
         date: this.getNextDate(event.startDate, 11),
         disabled: true,
         keyDate: false,
-        keyDateText: []
+        keyDateText: [],
       });
 
       customDates.push({
         date: this.getNextDate(event.startDate, 12),
         disabled: false,
         keyDate: true,
-        keyDateText: []
+        keyDateText: [],
       });
 
       customDates.push({
         date: this.getNextDate(event.startDate, 13),
         disabled: false,
         keyDate: true,
-        keyDateText: ['Multiple', 'Messages']
+        keyDateText: ['Multiple', 'Messages'],
       });
 
       customDates.push({
         date: event.endDate,
         disabled: false,
         keyDate: true,
-        keyDateText: ['Last date']
+        keyDateText: ['Last date'],
       });
 
       // Bind observable to event argument and simulate async call.

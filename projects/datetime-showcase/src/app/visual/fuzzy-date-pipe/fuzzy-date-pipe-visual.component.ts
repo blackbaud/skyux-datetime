@@ -1,20 +1,18 @@
+import { Component, OnInit } from '@angular/core';
+
 import {
-  Component,
-  OnInit
-} from '@angular/core';
-
-import { SkyFuzzyDate, SkyFuzzyDatePipe } from 'projects/datetime/src/public-api';
-
+  SkyFuzzyDate,
+  SkyFuzzyDatePipe,
+} from 'projects/datetime/src/public-api';
 
 @Component({
-  selector: 'fuzzy-date-pipe-visual',
-  templateUrl: './fuzzy-date-pipe-visual.component.html'
+  selector: 'app-fuzzy-date-pipe-visual',
+  templateUrl: './fuzzy-date-pipe-visual.component.html',
 })
 export class FuzzyDatePipeVisualComponent implements OnInit {
-
   public fuzzyDate: SkyFuzzyDate = {
     month: 11,
-    year: 1955
+    year: 1955,
   };
 
   public format: string;
@@ -33,15 +31,17 @@ export class FuzzyDatePipeVisualComponent implements OnInit {
     'ja-JP',
     'pt-BR',
     'ru-RU',
-    'zh-CN'
+    'zh-CN',
   ];
 
-  constructor(
-    private datePipe: SkyFuzzyDatePipe
-  ) { }
+  constructor(private datePipe: SkyFuzzyDatePipe) {}
 
   public ngOnInit(): void {
-    const result = this.datePipe.transform({ month: 11, year: 1955 }, 'MMMM y', 'en-US');
+    const result = this.datePipe.transform(
+      { month: 11, year: 1955 },
+      'MMMM y',
+      'en-US'
+    );
     console.log('Result from calling pipe directly:', result);
   }
 

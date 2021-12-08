@@ -1,25 +1,22 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
-  FormGroup
+  FormGroup,
 } from '@angular/forms';
 
 import {
   SkyDateRangeCalculation,
   SkyDateRangeCalculatorId,
-  SkyDateRangeService
+  SkyDateRangeService,
 } from 'projects/datetime/src/public-api';
 
 @Component({
   selector: 'app-date-range-picker-visual',
   templateUrl: './date-range-picker-visual.component.html',
-  styleUrls: ['./date-range-picker-visual.component.scss']
+  styleUrls: ['./date-range-picker-visual.component.scss'],
 })
 export class DateRangePickerVisualComponent implements OnInit {
   public calculatorIds: SkyDateRangeCalculatorId[];
@@ -36,28 +33,23 @@ export class DateRangePickerVisualComponent implements OnInit {
   constructor(
     private dateRangeService: SkyDateRangeService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      lastDonation: new FormControl()
+      lastDonation: new FormControl(),
     });
-    this.pickerFormControl.statusChanges
-      .subscribe((status) => {
-        console.log(
-          'Date range status change:',
-          status,
-          this.pickerFormControl.errors
-        );
-      });
+    this.pickerFormControl.statusChanges.subscribe((status) => {
+      console.log(
+        'Date range status change:',
+        status,
+        this.pickerFormControl.errors
+      );
+    });
 
-    this.pickerFormControl.valueChanges
-      .subscribe((value) => {
-        console.log(
-          'Date range value change:',
-          value
-        );
-      });
+    this.pickerFormControl.valueChanges.subscribe((value) => {
+      console.log('Date range value change:', value);
+    });
   }
 
   public toggleDisabled(): void {
@@ -79,7 +71,7 @@ export class DateRangePickerVisualComponent implements OnInit {
     const range: SkyDateRangeCalculation = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: new Date('1/1/2012'),
-      endDate: new Date('1/1/2013')
+      endDate: new Date('1/1/2013'),
     };
 
     this.pickerFormControl.setValue(range);
@@ -89,7 +81,7 @@ export class DateRangePickerVisualComponent implements OnInit {
     const range: SkyDateRangeCalculation = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: new Date('1/1/2013'),
-      endDate: new Date('1/1/2012')
+      endDate: new Date('1/1/2012'),
     };
 
     this.pickerFormControl.setValue(range);
@@ -99,7 +91,7 @@ export class DateRangePickerVisualComponent implements OnInit {
     const range: SkyDateRangeCalculation = {
       calculatorId: SkyDateRangeCalculatorId.SpecificRange,
       startDate: 'asdf' as any,
-      endDate: 'asdf' as any
+      endDate: 'asdf' as any,
     };
 
     this.pickerFormControl.setValue(range);

@@ -1,19 +1,16 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormControl,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
 
 @Component({
   selector: 'app-timepicker-visual',
-  templateUrl: './timepicker-visual.component.html'
+  templateUrl: './timepicker-visual.component.html',
 })
 export class TimepickerVisualComponent implements OnInit {
   public reactiveForm: FormGroup;
@@ -21,22 +18,19 @@ export class TimepickerVisualComponent implements OnInit {
   public time12Hour = '8:30 PM';
   public time24Hour = '20:30';
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) { }
+  constructor(private formBuilder: FormBuilder) {}
 
   public get reactiveTime(): AbstractControl {
     return this.reactiveForm.get('time');
   }
 
   public setReactiveTime(time: string) {
-    this.reactiveForm.setValue({'time': time});
+    this.reactiveForm.setValue({ time: time });
   }
 
   public ngOnInit(): void {
     this.reactiveForm = this.formBuilder.group({
-      time: new FormControl('2:15 PM', [Validators.required])
-
+      time: new FormControl('2:15 PM', [Validators.required]),
     });
 
     this.reactiveTime.statusChanges.subscribe((status: any) => {
