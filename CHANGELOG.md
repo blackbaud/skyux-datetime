@@ -1,6 +1,6 @@
 # 5.1.2 (2021-12-08)
 
-- Added support for Prettier code formatting. []()
+- Added support for Prettier code formatting. [#304](https://github.com/blackbaud/skyux-datetime/pull/304)
 
 # 5.1.1 (2021-12-08)
 
