@@ -1,4 +1,4 @@
-# 5.1.1 (2021-12-07)
+# 5.1.1 (2021-12-08)
 
 - Fixed the datepicker component to allow removal of custom dates when `customDates` argument is `undefined`. [#301](https://github.com/blackbaud/skyux-datetime/pull/301)
 
