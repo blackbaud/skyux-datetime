@@ -11,12 +11,15 @@ import { VisualComponent } from './visual.component';
 import { SkyInputBoxModule } from '@skyux/forms';
 import { SkyIdModule } from '@skyux/core';
 import { RouterModule } from '@angular/router';
-import { SkyDatepickerModule, SkyDatePipeModule, SkyDateRangePickerModule, SkyTimepickerModule } from 'projects/datetime/src/public-api';
+import {
+  SkyDatepickerModule,
+  SkyDatePipeModule,
+  SkyDateRangePickerModule,
+  SkyTimepickerModule,
+} from 'projects/datetime/src/public-api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
-
-
 
 @NgModule({
   declarations: [
@@ -27,7 +30,7 @@ import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
     FuzzyDatePipeVisualComponent,
     FuzzyDatepickerVisualComponent,
     TimepickerVisualComponent,
-    VisualComponent
+    VisualComponent,
   ],
   imports: [
     NoopAnimationsModule,
@@ -44,7 +47,7 @@ import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
     SkyInputBoxModule,
     SkyTimepickerModule,
     RouterModule,
-    SkyE2eThemeSelectorModule
-  ]
+    SkyE2eThemeSelectorModule,
+  ],
 })
-export class VisualModule { }
+export class VisualModule {}
