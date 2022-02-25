@@ -1,3 +1,7 @@
-# @skyux/datetime Workspace
+# @skyux/datetime (moved)
 
-For information about `@skyux/datetime` please visit the library's README file, located at `projects/datetime/README.md`.
+### *The source code for `@skyux/datetime` has moved to [blackbaud/skyux](https://github.com/blackbaud/skyux).*
+
+To work with the latest version of `@skyux/datetime`, go to [blackbaud/skyux](https://github.com/blackbaud/skyux).
+
+The source code for SKY UX 4 remains in the [`4.x.x`](https://github.com/blackbaud/skyux-datetime/tree/4.x.x) branch of this repo.
