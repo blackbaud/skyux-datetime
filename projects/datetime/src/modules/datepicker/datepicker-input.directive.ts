@@ -62,13 +62,12 @@ const SKY_DATEPICKER_VALIDATOR = {
 })
 export class SkyDatepickerInputDirective
   implements
-    OnInit,
-    OnDestroy,
-    AfterViewInit,
-    AfterContentInit,
-    ControlValueAccessor,
-    Validator
-{
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  AfterContentInit,
+  ControlValueAccessor,
+  Validator {
   /**
    * Specifies the date format for the input. Place this attribute on the `input` element
    * to override the default in the `SkyDatepickerConfigService`.
@@ -159,10 +158,10 @@ export class SkyDatepickerInputDirective
     if (value) {
       console.warn(
         '[Deprecation warning] You no longer need to provide a template reference variable ' +
-          'to the `skyDatepickerInput` attribute (this will be a breaking change in the next ' +
-          'major version release).\n' +
-          'Do this instead:\n' +
-          '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
+        'to the `skyDatepickerInput` attribute (this will be a breaking change in the next ' +
+        'major version release).\n' +
+        'Do this instead:\n' +
+        '<sky-datepicker>\n  <input skyDatepickerInput />\n</sky-datepicker>'
       );
     }
   }
@@ -287,7 +286,7 @@ export class SkyDatepickerInputDirective
     if (!this.datepickerComponent) {
       throw new Error(
         'You must wrap the `skyDatepickerInput` directive within a ' +
-          '`<sky-datepicker>` component!'
+        '`<sky-datepicker>` component!'
       );
     }
 
@@ -484,7 +483,7 @@ export class SkyDatepickerInputDirective
     if (value instanceof Date) {
       dateValue = value;
     } else if (typeof value === 'string') {
-      const date = this.dateFormatter.getDateFromString(
+      const date = this.dateFormatter.dateFromUserInput(
         value,
         this.dateFormat,
         this.strict
@@ -519,10 +518,10 @@ export class SkyDatepickerInputDirective
     return isValidIso;
   }
 
-  private onChange = (_: any) => {};
+  private onChange = (_: any) => { };
   /*istanbul ignore next */
-  private onTouched = () => {};
-  private onValidatorChange = () => {};
+  private onTouched = () => { };
+  private onValidatorChange = () => { };
 
   private notifyUpdatedValue(): void {
     this.onChange(this._value);

@@ -48,7 +48,7 @@ class TestComponent {
     customFormat: 'h:mm A',
   };
 
-  public onTimeChange = () => {};
+  public onTimeChange = () => { };
 }
 
 describe('Timepicker fixture', () => {
@@ -124,6 +124,6 @@ describe('Timepicker fixture', () => {
 
     fixture.detectChanges();
 
-    expect(timepicker.isValid).toBeFalse();
+    expect(timepicker.isValid).toBeTrue();
   });
 });

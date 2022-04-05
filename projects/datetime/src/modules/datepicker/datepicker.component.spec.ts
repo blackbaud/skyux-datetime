@@ -1,3 +1,17 @@
+import moment from 'moment';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { DatepickerInputBoxTestComponent } from './fixtures/datepicker-input-box.component.fixture';
+import { DatepickerNoFormatTestComponent } from './fixtures/datepicker-noformat.component.fixture';
+import { DatepickerReactiveTestComponent } from './fixtures/datepicker-reactive.component.fixture';
+import { DatepickerTestComponent } from './fixtures/datepicker.component.fixture';
+import { DatepickerTestModule } from './fixtures/datepicker.module.fixture';
+import { debug } from 'console';
+import { expect, expectAsync, SkyAppTestUtility } from '@skyux-sdk/testing';
+import { NgModel } from '@angular/forms';
+import { SkyAppLocaleInfo, SkyAppLocaleProvider } from '@skyux/i18n';
+import { SkyDatepickerComponent } from './datepicker.component';
+import { SkyDatepickerConfigService } from './datepicker-config.service';
 import {
   async,
   ComponentFixture,
@@ -7,11 +21,8 @@ import {
   tick,
 } from '@angular/core/testing';
 
-import { NgModel } from '@angular/forms';
 
-import { By } from '@angular/platform-browser';
 
-import { SkyAppLocaleInfo, SkyAppLocaleProvider } from '@skyux/i18n';
 
 import {
   SkyTheme,
@@ -20,26 +31,6 @@ import {
   SkyThemeSettings,
   SkyThemeSettingsChange,
 } from '@skyux/theme';
-
-import { expect, expectAsync, SkyAppTestUtility } from '@skyux-sdk/testing';
-
-import { BehaviorSubject, Observable, of } from 'rxjs';
-
-import { SkyDatepickerConfigService } from './datepicker-config.service';
-
-import { SkyDatepickerComponent } from './datepicker.component';
-
-import { DatepickerTestComponent } from './fixtures/datepicker.component.fixture';
-
-import { DatepickerTestModule } from './fixtures/datepicker.module.fixture';
-
-import { DatepickerInputBoxTestComponent } from './fixtures/datepicker-input-box.component.fixture';
-
-import { DatepickerNoFormatTestComponent } from './fixtures/datepicker-noformat.component.fixture';
-
-import { DatepickerReactiveTestComponent } from './fixtures/datepicker-reactive.component.fixture';
-
-import moment from 'moment';
 
 // #region helpers
 export class MyLocaleProvider extends SkyAppLocaleProvider {
@@ -674,34 +665,80 @@ describe('datepicker', () => {
         );
       }));
 
-      it('should attempt to convert poorly formatted date to ISO when strict is false', fakeAsync(() => {
+      it('should attempt to convert the date from 0202 by appending the current year', fakeAsync(() => {
         fixture.detectChanges();
-        const expectedISODate = moment('13/11/2019', isoFormat).toDate();
-        setInputProperty('13/11/2019', component, fixture);
-
-        // '13/11/2019' should get converted to '11/20/2013'.
-        expect(getInputElementValue(fixture)).toBe('11/20/2013');
-        expect(component.selectedDate).toEqual(expectedISODate);
+        const date = '0202'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('02/02/2022');
+        expect(component.selectedDate).toEqual(new Date('02/02/2022'));
+        expect(ngModel.valid).toEqual(true);
+      }));
+      it('should attempt to convert the date from 02022024 by appending separator', fakeAsync(() => {
+        fixture.detectChanges();
+        const date = '02022024'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('02/02/2024');
+        expect(component.selectedDate).toEqual(new Date('02/02/2024'));
+        expect(ngModel.valid).toEqual(true);
+      }));
+      it('should attempt to convert the date from 020224 by appending separator', fakeAsync(() => {
+        fixture.detectChanges();
+        const date = '020224'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('02/02/2024');
+        expect(component.selectedDate).toEqual(new Date('02/02/2024'));
+        expect(ngModel.valid).toEqual(true);
+      }));
+      it('should attempt to convert the date from 20 to 04/20/2022', fakeAsync(() => {
+        fixture.detectChanges();
+        const date = '20'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('04/20/2022');
+        expect(component.selectedDate).toEqual(new Date('04/20/2022'));
         expect(ngModel.valid).toEqual(true);
       }));
 
-      it('should NOT attempt to convert poorly formatted date to ISO and be invalid when strict is true', fakeAsync(() => {
-        component.strict = true;
+      it('should attempt to convert the date from 0202 by appending the current year', fakeAsync(() => {
+        component.dateFormat = 'DD/MM/YYYY';
         fixture.detectChanges();
-        setInputProperty('13/11/2019', component, fixture);
-
-        // '13/11/2019' should be seen as an invalid date, based on the formatting.
-        expect(getInputElementValue(fixture)).toBe('13/11/2019');
-        expect(component.selectedDate).toEqual('13/11/2019');
-        expect(ngModel.valid).toEqual(false);
+        const date = '02/02'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('02/02/2022');
+        expect(component.selectedDate).toEqual(new Date('02/02/2022'));
+        expect(ngModel.valid).toEqual(true);
       }));
-
-      it('should handle two digit years', fakeAsync(() => {
+      it('should attempt to convert the date from 02022024 by appending separator', fakeAsync(() => {
+        component.dateFormat = 'YYYY/DD/MM';
         fixture.detectChanges();
-        setInputProperty('5/12/98', component, fixture);
-
-        expect(getInputElementValue(fixture)).toBe('05/12/1998');
-        expect(component.selectedDate).toEqual(new Date('05/12/1998'));
+        const date = '02022024'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('0203/20/12');
+        expect(ngModel.valid).toEqual(true);
+      }));
+      it('should attempt to convert the date from 020224 by appending separator', fakeAsync(() => {
+        component.dateFormat = 'YYYY/DD/MM';
+        fixture.detectChanges();
+        const date = '020224'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('2003/02/12');
+        expect(ngModel.valid).toEqual(true);
+      }));
+      it('should attempt to convert the date from 020224 by appending separator', fakeAsync(() => {
+        component.dateFormat = 'YYYY/DD/MM';
+        fixture.detectChanges();
+        const date = '0202'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('2022/02/02');
+        expect(ngModel.valid).toEqual(true);
+      }));
+      it('should attempt to convert the date from 32 to 1932/04/04', fakeAsync(() => {
+        component.dateFormat = 'YYYY/DD/MM';
+        fixture.detectChanges();
+        const date = '32'
+        setInputProperty(date, component, fixture);
+        expect(getInputElementValue(fixture)).toBe('1932/05/04');
+        expect(component.selectedDate).toEqual(new Date('1932/04/05'));
+        expect(ngModel.valid).toEqual(true);
       }));
     });
 
@@ -744,41 +781,6 @@ describe('datepicker', () => {
 
         expect(getInputElementValue(fixture)).toBe('abcdebf');
         expect(component.selectedDate).toBe('abcdebf');
-        expect(ngModel.valid).toBe(false);
-      }));
-
-      it('should validate properly when a non-convertable date is passed through input change', fakeAsync(() => {
-        detectChanges(fixture);
-        setInputElementValue(nativeElement, '133320', fixture);
-
-        expect(getInputElementValue(fixture)).toBe('133320');
-        expect(component.selectedDate).toBe('133320');
-        expect(ngModel.valid).toBe(false);
-        expect(ngModel.pristine).toBe(false);
-        expect(ngModel.touched).toBe(true);
-      }));
-
-      it('should validate properly when a non-convertable date on initialization', fakeAsync(() => {
-        setInputProperty('133320', component, fixture);
-
-        expect(getInputElementValue(fixture)).toBe('133320');
-        expect(component.selectedDate).toBe('133320');
-        expect(ngModel.valid).toBe(false);
-        expect(ngModel.touched).toBe(true);
-
-        blurInput(fixture.nativeElement, fixture);
-
-        expect(ngModel.valid).toBe(false);
-        expect(ngModel.touched).toBe(true);
-      }));
-
-      it('should validate properly when a non-convertable date on model change', fakeAsync(() => {
-        detectChanges(fixture);
-
-        setInputProperty('133320', component, fixture);
-
-        expect(getInputElementValue(fixture)).toBe('133320');
-        expect(component.selectedDate).toBe('133320');
         expect(ngModel.valid).toBe(false);
       }));
 
@@ -948,7 +950,7 @@ describe('datepicker', () => {
     describe('disabled state', () => {
       it(
         'should disable the input and trigger button when disabled is set to true ' +
-          'and enable them when disabled is changed to false',
+        'and enable them when disabled is changed to false',
         fakeAsync(() => {
           component.isDisabled = true;
           detectChanges(fixture);
@@ -1264,17 +1266,6 @@ describe('datepicker', () => {
         expect(component.dateControl.valid).toEqual(true);
       }));
 
-      it('should NOT attempt to convert poorly formatted date to ISO and be invalid when strict is true', fakeAsync(() => {
-        component.strict = true;
-        fixture.detectChanges();
-        setFormControlProperty('13/11/2019', component, fixture);
-
-        // '13/11/2019' should be seen as an invalid date, based on the formatting.
-        expect(getInputElementValue(fixture)).toBe('13/11/2019');
-        expect(component.dateControl.value).toEqual('13/11/2019');
-        expect(component.dateControl.valid).toEqual(false);
-      }));
-
       it('should handle two digit years', fakeAsync(() => {
         fixture.detectChanges();
         setFormControlProperty('5/12/98', component, fixture);
@@ -1483,7 +1474,7 @@ describe('datepicker', () => {
     describe('disabled state', () => {
       it(
         'should disable the input and trigger button when disabled is set to true ' +
-          'and enable them when disabled is changed to false',
+        'and enable them when disabled is changed to false',
         () => {
           fixture.detectChanges();
           component.isDisabled = true;
